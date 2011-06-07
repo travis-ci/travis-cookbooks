@@ -1,4 +1,4 @@
-h1. About Travis cookbooks
+# About Travis cookbooks
 
 Travis cookbooks are collections of Chef cookbooks for setting up
 
@@ -8,6 +8,6 @@ Travis cookbooks are collections of Chef cookbooks for setting up
 
 
 
-h2. License
+## License
 
 See LICENSE file.
