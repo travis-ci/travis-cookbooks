@@ -1,0 +1,35 @@
+{
+  "name": "networking_basic",
+  "description": "Install Basic Netwoking Tools ans Utilities on Debian5 and Ubuntu10",
+  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES:\n\n= USAGE:\n\n",
+  "maintainer": "fredz",
+  "maintainer_email": "fred@frederico-araujo.com",
+  "license": "Apache 2.0",
+  "platforms": {
+    "ubuntu": [
+
+    ],
+    "debian": [
+
+    ]
+  },
+  "dependencies": {
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+  },
+  "groupings": {
+  },
+  "recipes": {
+  },
+  "version": "0.0.2"
+}
