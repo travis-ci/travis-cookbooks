@@ -5,7 +5,6 @@ class Chef
 			config = node[:mongodb][name.to_sym]
 
 			include_recipe "logrotate"
-      require_recipe "monit::default" unless config[:system_init] == "upstart"
 
 			if config[:dbpath]
 				directory config[:dbpath] do
@@ -87,12 +86,6 @@ class Chef
 				# http://www.mongodb.org/display/DOCS/Logging
 				restart_command "kill -SIGUSR1 `cat #{config[:pidfile]}`"
 			end
-
-      unless config[:system_init] == "upstart"
-        monitrc('mongodb', :app_name => name, :config => config)
-      end
-
 		end
-
 	end
 end
