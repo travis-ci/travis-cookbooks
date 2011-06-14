@@ -30,13 +30,13 @@ node[:rvm][:rubies].each do |ruby_version|
   bash "installing #{ruby_version}" do
     user "vagrant"
     code "rvm install #{ruby_version}"
-    not_if "rvm list | grep #{ruby_version}"
+    not_if "which rvm && rvm list | grep #{ruby_version}"
   end
 
   if ruby_version == default_ruby
     bash "make #{default_ruby} the default ruby" do
       user "vagrant"
-      code "rvm --default #{default_ruby}"
+      code "which rvm && rvm --default #{default_ruby}"
     end
   end
 end
