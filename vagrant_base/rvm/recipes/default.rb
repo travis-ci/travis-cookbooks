@@ -12,7 +12,7 @@ include_recipe "git"
 
 case node[:platform]
 when "debian","ubuntu"
-  %w( libreadline5-dev libssl-dev libxml2-dev libxslt1-dev zlib1g-dev ).each do | pkg |
+  %w( libreadline5-dev libssl-dev libxml2-dev libxslt1-dev zlib1g-dev ).each do |pkg|
     package pkg
   end
 end
