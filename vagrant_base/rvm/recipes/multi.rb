@@ -24,19 +24,20 @@
 
 include_recipe "rvm"
 
-default_ruby = node[:rvm][:default_ruby]
+default_ruby = node[:rvm][:default_ruby] || node[:rvm][:rubies].first
+rvm_command = "source \"$HOME/.rvm/scripts/rvm\" && rvm"
 
 node[:rvm][:rubies].each do |ruby_version|
   bash "installing #{ruby_version}" do
     user "vagrant"
-    code "rvm install #{ruby_version}"
-    not_if "which rvm && rvm list | grep #{ruby_version}"
+    code "#{rvm_command} install #{ruby_version}"
+    not_if "which rvm && #{rvm_command} list | grep #{ruby_version}"
   end
 
   if ruby_version == default_ruby
     bash "make #{default_ruby} the default ruby" do
       user "vagrant"
-      code "which rvm && rvm --default #{default_ruby}"
+      code "which rvm && #{rvm_command} --default #{default_ruby}"
     end
   end
 end

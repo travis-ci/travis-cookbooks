@@ -19,7 +19,7 @@ end
 
 bash "installing system-wide RVM stable" do
   user "vagrant"
-  code "bash < <( curl -L -B http://rvm.beginrescueend.com/install/rvm ) && source \"$HOME/.rvm/scripts/rvm\""
+  code "bash < <( curl -L -B http://rvm.beginrescueend.com/install/rvm )"
   not_if "which rvm"
 end
 
