@@ -37,7 +37,7 @@ node[:rvm][:rubies].each do |ruby_version|
   if ruby_version == default_ruby
     bash "make #{default_ruby} the default ruby" do
       user "vagrant"
-      code "which rvm && #{rvm_command} --default #{default_ruby}"
+      code "#{rvm_command} --default #{default_ruby}"
     end
   end
 end
