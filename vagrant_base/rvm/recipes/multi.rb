@@ -31,7 +31,7 @@ node[:rvm][:rubies].each do |ruby_version|
   bash "installing #{ruby_version}" do
     user "vagrant"
     code "#{rvm_command} install #{ruby_version} && rvm use #{ruby_version} && gem install bundler #{(node[:rvm][:default_gems]).join(' ')}"
-    not_if "which rvm && #{rvm_command} list | grep #{ruby_version}"
+    not_if "which rvm && rvm list | grep #{ruby_version}"
   end
 
   if ruby_version == default_ruby
