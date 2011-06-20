@@ -28,3 +28,11 @@ cookbook_file "/etc/profile.d/rvm.sh" do
   group "vagrant"
   mode 0755
 end
+
+cookbook_file "/home/vagrant/.rvmrc" do
+  owner "vagrant"
+  group "vagrant"
+  mode  0755
+
+  source "dot_rvmrc.sh"
+end
