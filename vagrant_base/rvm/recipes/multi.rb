@@ -25,19 +25,32 @@
 include_recipe "rvm"
 
 default_ruby = node[:rvm][:default_ruby] || node[:rvm][:rubies].first
-rvm_command = "source \"$HOME/.rvm/scripts/rvm\" && rvm"
+rvm_command  = "source \"$HOME/.rvm/scripts/rvm\" && rvm"
+
+rvm_user     = "vagrant"
 
 node[:rvm][:rubies].each do |ruby_version|
   bash "installing #{ruby_version}" do
-    user "vagrant"
+    user rvm_user
     code "#{rvm_command} install #{ruby_version} && rvm use #{ruby_version} && gem install bundler #{(node[:rvm][:default_gems]).join(' ')} --no-ri --no-rdoc"
     not_if "which rvm && rvm list | grep #{ruby_version}"
   end
 
   if ruby_version == default_ruby
     bash "make #{default_ruby} the default ruby" do
-      user "vagrant"
+      user rvm_user
       code "#{rvm_command} --default #{default_ruby} && rvm use #{ruby_version} && gem install chef --no-ri --no-rdoc"
     end
+  end
+end
+
+
+node[:rvm][:aliases].each do |existing_name, new_name|
+  bash "alais #{existing_name} => #{new_name}" do
+    user rvm_user
+    code "#{rvm_command} alias create #{new_name} #{existing_name}"
+
+    # alias creation is not idempotent. MK.
+    ignore_failure true
   end
 end
