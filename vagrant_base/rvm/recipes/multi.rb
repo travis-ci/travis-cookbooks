@@ -30,14 +30,14 @@ rvm_command = "source \"$HOME/.rvm/scripts/rvm\" && rvm"
 node[:rvm][:rubies].each do |ruby_version|
   bash "installing #{ruby_version}" do
     user "vagrant"
-    code "#{rvm_command} install #{ruby_version} && rvm use #{ruby_version} && gem install bundler #{(node[:rvm][:default_gems]).join(' ')}"
-    not_if "which rvm && #{rvm_command} list | grep #{ruby_version}"
+    code "#{rvm_command} install #{ruby_version} && rvm use #{ruby_version} && gem install bundler #{(node[:rvm][:default_gems]).join(' ')} --no-ri --no-rdoc"
+    not_if "which rvm && rvm list | grep #{ruby_version}"
   end
 
   if ruby_version == default_ruby
     bash "make #{default_ruby} the default ruby" do
       user "vagrant"
-      code "#{rvm_command} --default #{default_ruby} && rvm use #{ruby_version} && gem install chef"
+      code "#{rvm_command} --default #{default_ruby} && rvm use #{ruby_version} && gem install chef --no-ri --no-rdoc"
     end
   end
 end

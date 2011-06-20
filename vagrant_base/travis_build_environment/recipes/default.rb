@@ -35,3 +35,12 @@ cookbook_file "/etc/profile.d/travis_environment.sh" do
   group "vagrant"
   mode 0755
 end
+
+
+cookbook_file "/home/vagrant/.gemrc" do
+  owner "vagrant"
+  group "vagrant"
+  mode 0755
+
+  source "dot_gemrc.yml"
+end

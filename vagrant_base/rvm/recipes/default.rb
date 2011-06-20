@@ -17,7 +17,7 @@ when "debian","ubuntu"
   end
 end
 
-bash "installing system-wide RVM stable" do
+bash "install RVM" do
   user "vagrant"
   code "bash < <( curl -L -B http://rvm.beginrescueend.com/install/rvm )"
   not_if "which rvm"
@@ -27,4 +27,12 @@ cookbook_file "/etc/profile.d/rvm.sh" do
   owner "vagrant"
   group "vagrant"
   mode 0755
+end
+
+cookbook_file "/home/vagrant/.rvmrc" do
+  owner "vagrant"
+  group "vagrant"
+  mode  0755
+
+  source "dot_rvmrc.sh"
 end

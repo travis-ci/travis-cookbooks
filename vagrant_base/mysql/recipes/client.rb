@@ -55,6 +55,7 @@ else
 
   gem_package "mysql" do
     action :install
+    options '--no-ri --no-rdoc'
   end
 
 end
