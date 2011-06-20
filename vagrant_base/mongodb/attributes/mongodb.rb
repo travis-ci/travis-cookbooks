@@ -18,7 +18,7 @@ end
 
 ### GENERAL
 default[:mongodb][:server][:bind_ip]               = bind_ip
-default[:mongodb][:server][:config]                = "/etc/mongodb.conf"
+default[:mongodb][:server][:config]                = "/etc/init/mongodb-server.conf"
 default[:mongodb][:server][:dbpath]                = "/var/lib/mongodb"
 default[:mongodb][:server][:dir]                   = "/opt/mongodb-#{mongodb[:version]}"
 default[:mongodb][:server][:logpath]               = "/var/log/mongodb.log"
@@ -85,7 +85,7 @@ default[:mongodb][:server][:backup][:maxemailsize] = 4000
 ##########################################################################
 ### CONFIG SERVER
 default[:mongodb][:config_server][:bind_ip] = bind_ip
-default[:mongodb][:config_server][:config]  = "/etc/mongodb-config.conf"
+default[:mongodb][:config_server][:config]  = "/etc/init/mongodb-server.conf"
 default[:mongodb][:config_server][:datadir] = "/var/db/mongodb-config"
 default[:mongodb][:config_server][:logpath] = "/var/log/mongodb-config.log"
 default[:mongodb][:config_server][:pidfile] = "/var/run/mongodb-config.pid"

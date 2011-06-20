@@ -37,7 +37,7 @@
 		:replSet, # replica set name
 		:verbose, # Verbose logging output.
 	].each do |option|
-		if config[option] && !config[option].empty?
+		if config[option]
 %>
 <%= option %> = <%= config[option] %>
 <%
@@ -72,7 +72,7 @@ noauth = true
   source = <%= config[:slave_source] %>
 
   # Slave only: specify a single database to replicate
-  <% unless config[:slave_only].empty? %>
+  <% if config[:slave_only] %>
   only = <%= config[:slave_only] %>
   <% end %>
 

@@ -4,8 +4,6 @@ class Chef
 		def mongodb_process(name, variables = {})
 			config = node[:mongodb][name.to_sym]
 
-			include_recipe "logrotate"
-
 			if config[:dbpath]
 				directory config[:dbpath] do
 					owner "mongodb"
@@ -76,15 +74,6 @@ class Chef
 				subscribes :restart, resources(:template => config[:config])
 				subscribes :restart, resources(:template => "/etc/init.d/#{service_name}") if node[:mongodb][:installed_from] == "src"
 				subscribes :restart, resources(:template => "/etc/init/#{service_name}.conf") if node[:mongodb][:installed_from] == "apt"
-			end
-
-			logrotate "mongodb-#{service_name}" do
-				files config[:logpath]
-				frequency "daily"
-				rotate_count 7
-				compress true
-				# http://www.mongodb.org/display/DOCS/Logging
-				restart_command "kill -SIGUSR1 `cat #{config[:pidfile]}`"
 			end
 		end
 	end
