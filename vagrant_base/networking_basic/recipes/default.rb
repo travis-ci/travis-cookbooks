@@ -25,7 +25,8 @@ packages = [
   'tcpdump',
   'elinks',
   'lynx',
-  'bind9-host'
+  'bind9-host',
+  "libcurl4-openssl-dev"
 ]
 
 case node[:platform]
