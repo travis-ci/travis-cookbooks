@@ -46,7 +46,7 @@ end
 
 
 node[:rvm][:aliases].each do |existing_name, new_name|
-  bash "alais #{existing_name} => #{new_name}" do
+  bash "alias #{existing_name} => #{new_name}" do
     user rvm_user
     code "#{rvm_command} alias create #{new_name} #{existing_name}"
 
