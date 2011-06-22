@@ -54,3 +54,8 @@ node[:rvm][:aliases].each do |existing_name, new_name|
     ignore_failure true
   end
 end
+
+bash "clean up RVM sources, log files, etc" do
+  user rvm_user
+  code "#{rvm_command} cleanup all"
+end
