@@ -39,6 +39,9 @@ if attribute?('ec2')
   default['mysql']['ebs_vol_size'] = 50
 end
 
+# yes, for CI environment, empty password is a good idea. VM is rolled back after eack run anyway.
+default['mysql']['server_root_password'] = ""
+
 default['mysql']['allow_remote_root']               = false
 default['mysql']['tunable']['back_log']             = "128"
 default['mysql']['tunable']['key_buffer']           = "256M"
