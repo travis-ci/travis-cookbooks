@@ -13,3 +13,12 @@ GRANT REPLICATION SLAVE ON *.* TO 'repl'@'%' identified by '<%= node['mysql']['s
 GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY '<%= node['mysql']['server_root_password'] %>' WITH GRANT OPTION;
 <% end -%>
 SET PASSWORD FOR 'root'@'localhost' = PASSWORD('<%= node['mysql']['server_root_password'] %>');
+
+
+# CI user has all the privileges in the world, blank password and well-known hardcoded usernames.
+# This is certainly good enough because virtualbox VMs CI happens in are rolled back after each build.
+# For Travis needs, this is certainly a reasonable, intentional move. MK.
+CREATE USER 'travis'@'%' IDENTIFIED BY '';  GRANT ALL PRIVILEGES ON *.* TO 'travis'@'%';
+CREATE USER 'vagrant'@'%' IDENTIFIED BY ''; GRANT ALL PRIVILEGES ON *.* TO 'vagrant'@'%';
+# Ruby on Rails test suite uses it, and so do other projects. MK, bai.
+CREATE USER 'rails'@'%' IDENTIFIED BY '';  GRANT ALL PRIVILEGES ON *.* TO 'rails'@'%';

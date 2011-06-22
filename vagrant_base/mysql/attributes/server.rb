@@ -40,7 +40,14 @@ if attribute?('ec2')
 end
 
 # yes, for CI environment, empty password is a good idea. VM is rolled back after eack run anyway.
-default['mysql']['server_root_password'] = ""
+default['mysql']['server_root_password']   = ""
+default['mysql']['server_debian_password'] = ""
+default['mysql']['server_repl_password']   = ""
+
+default['mysql']['ci_user_name']           = "travis"
+default['mysql']['ci_user_password']       = ""
+
+
 
 default['mysql']['allow_remote_root']               = false
 default['mysql']['tunable']['back_log']             = "128"
