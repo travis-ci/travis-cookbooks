@@ -5,6 +5,11 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+# set these as early as possible. MK.
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+
+
 # don't put duplicate lines in the history. See bash(1) for more options
 # ... or force ignoredups and ignorespace
 HISTCONTROL=ignoredups:ignorespace
@@ -100,10 +105,5 @@ fi
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
 
-export RAILS_ENV=test
-export RACK_ENV=test
-
-export JRUBY_OPTS="--server"
+source /etc/profile.d/travis_environment.sh
