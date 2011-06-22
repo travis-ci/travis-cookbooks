@@ -44,3 +44,12 @@ cookbook_file "/home/vagrant/.gemrc" do
 
   source "dot_gemrc.yml"
 end
+
+
+cookbook_file "/home/vagrant/.bashrc" do
+  owner "vagrant"
+  group "vagrant"
+  mode 0755
+
+  source "dot_bashrc.sh"
+end
