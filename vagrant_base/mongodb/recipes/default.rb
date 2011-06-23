@@ -19,5 +19,4 @@
 # limitations under the License.
 #
 
-include_recipe "mongodb::apt"
-include_recipe "mongodb::server"
+include_recipe "mongodb::source"
