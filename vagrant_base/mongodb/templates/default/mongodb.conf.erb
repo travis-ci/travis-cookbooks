@@ -2,90 +2,126 @@
 # ANY MANUAL MODIFICATIONS WILL BE OVERWRITTEN
 # mongodb.conf
 
+# Where to store the data.
+
 # Note: if you run mongodb as a non-root user (recommended) you may
 # need to create and set permissions for this directory manually,
 # e.g., if the parent directory isn't mutable by the mongodb user.
+dbpath=<%= @node[:mongodb][:datadir] %>
 
-<%
-	config = node[:mongodb][@server_type]
+#where to log
+logpath=<%= @node[:mongodb][:logfile] %>
+logappend=true
 
-	[
-		# :auth, # authentication
-		:bind_ip,
-		:cpu, # Enables periodic logging of CPU utilization and I/O wait
-		:datadir,
-		:dbpath,
-		# Set oplogging level where n is
-		#   0=off (default)
-		#   1=W
-		#   2=R
-		#   3=both
-		#   7=W+some reads
-		:diaglog,
-    :logappend,
-		:logpath, # where to log
-		:nocursors, # Diagnostic/debugging option
-		:nohints, # Igonore query hints
-		:nohttpinterface, # Disable the HTTP interface (Defaults to localhost:27018).
-		:noprealloc, # Disable data file preallocation.
-		:noscripting, # Turns off server-side scripting.  This will result in greatly limited functionality
-		:notablescan, # Turns off table scans.  Any query that would do a table scan fails.
-		:nssize, # Specify .ns file size for new databases.
-		:objcheck, # Inspect all client data for validity on receipt (useful for developing drivers)
-		:port,
-		:quota, # Enable db quota management
-		:replSet, # replica set name
-		:verbose, # Verbose logging output.
-	].each do |option|
-		if config[option]
-%>
-<%= option %> = <%= config[option] %>
-<%
-		end
-	end
-%>
+port = <%= @node[:mongodb][:port] %>
 
-<% if config[:auth] %>
-# Turn on/off security. Off is currently the default
-# Not sure if this was fixed, but auth=false didn't use to work
+<% if @node[:mongodb][:log_cpu_io] %>
+# Enables periodic logging of CPU utilization and I/O wait
+cpu = true
+<% end %>
+
+<% if @node[:mongodb][:auth] %>
+# Turn on/off security.  Off is currently the default
 auth = true
 <% else %>
 noauth = true
 <% end %>
 
-<% if config[:mms] %>
-  # Accout token for Mongo monitoring server.
-  mms-token = <%= config[:token] %>
-
-  # Server name for Mongo monitoring server.
-  mms-name = <%= config[:name] %>
-
-  # Ping interval for Mongo monitoring server.
-  mms-interval = <%= config[:interval] %>
+<% if @node[:mongodb][:verbose] %>
+# Verbose logging output.
+verbose = true
 <% end %>
 
-<% if config[:replication] %>
+<% if @node[:mongodb][:objcheck] %>
+# Inspect all client data for validity on receipt (useful for
+# developing drivers)
+objcheck = true
+<% end %>
+
+<% if @node[:mongodb][:quota] %>
+# Enable db quota management
+quota = true
+<% end %>
+
+<% if @node[:mongodb][:diaglog] %>
+# Set oplogging level where n is
+#   0=off (default)
+#   1=W
+#   2=R
+#   3=both
+#   7=W+some reads
+diaglog = <%= @node[:mongodb][:diaglog] %>
+<% end %>
+
+<% if @node[:mongodb][:nocursors] %>
+# Diagnostic/debugging option
+nocursors = true
+<% end %>
+
+<% if @node[:mongodb][:nohints] %>
+# Ignore query hints
+nohints = true
+<% end %>
+
+<% if @node[:mongodb][:nohttp] %>
+# Disable the HTTP interface (Defaults to localhost:27018).
+nohttpinterface = true
+<% end %>
+
+<% if @node[:mongodb][:noscripting] %>
+# Turns off server-side scripting.  This will result in greatly limited functionality
+noscripting = true
+<% end %>
+
+<% if @node[:mongodb][:notablescan] %>
+# Turns off table scans.  Any query that would do a table scan fails.
+notablescan = true
+<% end %>
+
+<% if @node[:mongodb][:noprealloc] %>
+# Disable data file preallocation.
+noprealloc = true
+<% end %>
+
+<% if @node[:mongodb][:nssize] %>
+# Specify .ns file size for new databases.
+nssize = <%= @node[:mongodb][:nssize] %>
+<% end %>
+
+<% if @node[:mongodb][:mms] %>
+  # Accout token for Mongo monitoring server.
+  mms-token = <%= @node[:mongodb][:token] %>
+
+  # Server name for Mongo monitoring server.
+  mms-name = <%= @node[:mongodb][:name] %>
+
+  # Ping interval for Mongo monitoring server.
+  mms-interval = <%= @node[:mongodb][:interval] %>
+<% end %>
+
+<% if @node[:mongodb][:replication] %>
   # Replication Options
   # in replicated mongo databases, specify here whether this is a slave or master
-  <% if config[:slave] %>
-  slave = <%= config[:slave] %>
-  source = <%= config[:slave_source] %>
-
+  <% if @node[:mongodb][:slave] %>
+  slave = <%= @node[:mongodb][:slave] %>
+  source = <%= @node[:mongodb][:slave_source] %>
   # Slave only: specify a single database to replicate
-  <% if config[:slave_only] %>
-  only = <%= config[:slave_only] %>
+  only = <%= @node[:mongodb][:slave_only] %>
   <% end %>
 
+  <% if @node[:mongodb][:master] %>
+  master = <%= @node[:mongodb][:master] %>
+  source = <%= @node[:mongodb][:master_source] %>
   <% end %>
 
-  <% if config[:master] %>
-  master = <%= config[:master] %>
-  <% end %>
-
+  # Address of a server to pair with.
+  pairwith = <%= @node[:mongodb][:pairwith] %>
+  # Address of arbiter server.
+  arbiter = <%= @node[:mongodb][:arbiter] %>
   # Automatically resync if slave data is stale
-  <%= "autoresync" if config[:autoresync] %>
+  <%= p "autoresync" if @node[:mongodb][:autoresync] %>
   # Custom size for replication operation log.
-  oplogSize = <%= config[:oplogsize] %>
+  oplogSize = <%= @node[:mongodb][:oplogsize] %>
   # Size limit for in-memory storage of op ids.
-  opIdMem = <%= config[:opidmem] * 1024 * 1024 %>
+  opIdMem = <%= @node[:mongodb][:opidmem] * 1024 * 1024 %>
 <% end %>
