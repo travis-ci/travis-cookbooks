@@ -98,30 +98,3 @@ nssize = <%= @node[:mongodb][:nssize] %>
   # Ping interval for Mongo monitoring server.
   mms-interval = <%= @node[:mongodb][:interval] %>
 <% end %>
-
-<% if @node[:mongodb][:replication] %>
-  # Replication Options
-  # in replicated mongo databases, specify here whether this is a slave or master
-  <% if @node[:mongodb][:slave] %>
-  slave = <%= @node[:mongodb][:slave] %>
-  source = <%= @node[:mongodb][:slave_source] %>
-  # Slave only: specify a single database to replicate
-  only = <%= @node[:mongodb][:slave_only] %>
-  <% end %>
-
-  <% if @node[:mongodb][:master] %>
-  master = <%= @node[:mongodb][:master] %>
-  source = <%= @node[:mongodb][:master_source] %>
-  <% end %>
-
-  # Address of a server to pair with.
-  pairwith = <%= @node[:mongodb][:pairwith] %>
-  # Address of arbiter server.
-  arbiter = <%= @node[:mongodb][:arbiter] %>
-  # Automatically resync if slave data is stale
-  <%= p "autoresync" if @node[:mongodb][:autoresync] %>
-  # Custom size for replication operation log.
-  oplogSize = <%= @node[:mongodb][:oplogsize] %>
-  # Size limit for in-memory storage of op ids.
-  opIdMem = <%= @node[:mongodb][:opidmem] * 1024 * 1024 %>
-<% end %>
