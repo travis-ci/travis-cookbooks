@@ -36,10 +36,21 @@ node[:rvm][:rubies].each do |ruby_version|
     not_if "which rvm && rvm list | grep #{ruby_version}"
   end
 
+  bash "installing #{node[:rvm][:default_gems]).join(' ')}" do
+    user rvm_user
+    code "#{rvm_command} use #{ruby_version} && gem install bundler #{(node[:rvm][:default_gems]).join(' ')} --no-ri --no-rdoc"
+    not_if "which rvm && rvm list | grep #{ruby_version}"
+  end
+
   if ruby_version == default_ruby
     bash "make #{default_ruby} the default ruby" do
       user rvm_user
-      code "#{rvm_command} --default #{default_ruby} && rvm use #{ruby_version} && gem install chef --no-ri --no-rdoc"
+      code "#{rvm_command} --default #{default_ruby}"
+    end
+
+    bash "install chef" do
+      user rvm_user
+      code "#{rvm_command} use #{default_ruby} && gem install chef --no-ri --no-rdoc"
     end
   end
 end
