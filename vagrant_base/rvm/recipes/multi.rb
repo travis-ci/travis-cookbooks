@@ -39,7 +39,6 @@ node[:rvm][:rubies].each do |ruby_version|
   bash "installing #{node[:rvm][:default_gems].join(' ')}" do
     user rvm_user
     code "#{rvm_command} use #{ruby_version} && gem install bundler #{(node[:rvm][:default_gems]).join(' ')} --no-ri --no-rdoc"
-    not_if "which rvm && rvm list | grep #{ruby_version}"
   end
 
   if ruby_version == default_ruby
