@@ -26,14 +26,6 @@ directory node[:mongodb][:datadir] do
   recursive true
 end
 
-file node[:mongodb][:logfile] do
-  owner "mongodb"
-  group "mongodb"
-  mode 0644
-  action :create_if_missing
-  backup false
-end
-
 template node[:mongodb][:config] do
   source "mongodb.conf.erb"
   owner "mongodb"
@@ -47,12 +39,4 @@ service "mongodb" do
   action [:enable, :start]
   subscribes :restart, resources(:template => node[:mongodb][:config])
   subscribes :restart, resources(:template => "/etc/init.d/mongodb") if node[:mongodb][:installed_from] == "src"
-end
-
-template "/etc/logrotate.d/mongodb" do
-  source "logrotate.erb"
-  cookbook "mongodb"
-  owner "mongodb"
-  group "mongodb"
-  mode "0644"
 end

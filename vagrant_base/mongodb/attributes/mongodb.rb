@@ -57,45 +57,11 @@ default[:mongodb][:opidmem]       = 0
 
 default[:mongodb][:replica_set]   = "none"
 
-default[:mongodb][:replica_member_id] = 1
-default[:mongodb][:replica_priority] = 1 # set to 0 if the node should never become master
-
-default[:mongodb][:replica_initializer] = false # true if the node should initialize the set
-
-### SHARDING
-default[:mongodb][:shard_server]  = false
-
-
-
-### BACKUP
-default[:mongodb][:backup][:host]         = "localhost"
-default[:mongodb][:backup][:backupdir]    = "/var/backups/mongodb"
-default[:mongodb][:backup][:day]          = 6
-default[:mongodb][:backup][:compression]  = "bzip2"
-default[:mongodb][:backup][:cleanup]      = "yes"
-default[:mongodb][:backup][:latest]       = "yes"
-default[:mongodb][:backup][:mailaddress]  = false
-default[:mongodb][:backup][:mailcontent]  = "stdout"
-default[:mongodb][:backup][:maxemailsize] = 4000
-
 
 ### CONFIG SERVER
-default[:mongodb][:config_server][:datadir]     = "/var/db/mongodb-config"
+default[:mongodb][:config_server][:datadir]     = "/var/lib/mongodb"
 default[:mongodb][:config_server][:config]      = "/etc/mongodb-config.conf"
 default[:mongodb][:config_server][:logfile]     = "/var/log/mongodb-config.log"
 default[:mongodb][:config_server][:pidfile]     = "/var/run/mongodb-config.pid"
 default[:mongodb][:config_server][:host]        = "localhost"
 default[:mongodb][:config_server][:port]        = 27019
-
-
-
-### MONGOS
-default[:mongodb][:mongos][:config]      = "/etc/mongos.conf"
-default[:mongodb][:mongos][:logfile]     = "/var/log/mongos.log"
-default[:mongodb][:mongos][:pidfile]     = "/var/run/mongos.pid"
-default[:mongodb][:mongos][:host]        = "localhost"
-default[:mongodb][:mongos][:port]        = 27017
-
-
-### Monit
-default[:mongodb][:monit][:memory_usage]     = "60 %"
