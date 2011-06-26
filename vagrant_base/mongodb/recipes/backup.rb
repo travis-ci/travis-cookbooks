@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: mongodb
-# Recipe:: default
+# Recipe:: source
 #
 # Author:: Gerhard Lazu (<gerhard.lazu@papercavalier.com>)
 #
@@ -19,5 +19,8 @@
 # limitations under the License.
 #
 
-include_recipe "mongodb::apt"
-include_recipe "mongodb::server"
+template "/etc/cron.daily/automongobackup" do
+  source "automongobackup.sh.erb"
+  mode 0755
+  backup false
+end

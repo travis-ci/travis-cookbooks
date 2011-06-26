@@ -49,15 +49,36 @@
 ### END INIT INFO
 
 PATH=<%= @node[:mongodb][:dir] %>/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+<% if @is_mongos %>
+DAEMON=<%= @node[:mongodb][:dir] %>/bin/mongos
+<% else %>
 DAEMON=<%= @node[:mongodb][:dir] %>/bin/mongod
+<% end %>
 DESC=database
 
 # Default defaults.  Can be overridden by the /etc/default/$NAME
+<% if @is_config_server %>
+NAME=mongodb-config
+CONF=<%= @node[:mongodb][:config_server][:config] %>
+PIDFILE=<%= @node[:mongodb][:config_server][:pidfile] %>
+CONFIGSVR=--configsvr
+<% elsif @is_mongos %>
+NAME=mongos
+CONF=<%= @node[:mongodb][:mongos][:config] %>
+PIDFILE=<%= @node[:mongodb][:mongos][:pidfile] %>
+CONFIGDB="--configdb <%= @configdb_server_list %>"
+<% else %>
 NAME=mongodb
 CONF=<%= @node[:mongodb][:config] %>
-REST=<%= @node[:mongodb][:rest] %>
+REPLSET=<%= @node[:mongodb][:replica_set] %>
+SHARDSVR=<%= @node[:mongodb][:shard_server] %>
 PIDFILE=<%= @node[:mongodb][:pidfile] %>
+<% end %>
+
+<% unless @is_mongos %>
+REST=<%= @node[:mongodb][:rest] %>
 SYNCDELAY="--syncdelay <%= @node[:mongodb][:syncdelay] %>"
+<% end %>
 
 # Include mongodb defaults if available
 if [ -f /etc/default/$NAME ] ; then
@@ -75,6 +96,20 @@ if test "x$REST" = "xtrue"; then
   REST=--rest
 else
   REST=
+fi
+
+# This will make the server part of a replica set
+if test "x$REPLSET" = "x"; then
+  REPLSET=
+else
+  REPLSET="--replSet $REPLSET"
+fi
+
+# This will make the server participate in sharding
+if test "x$SHARDSVR" = "xtrue"; then
+  SHARDSVR=--shardsvr
+else
+  SHARDSVR=
 fi
 
 . /lib/lsb/init-functions
@@ -113,7 +148,7 @@ running() {
 
 start_server() {
 # Start the process using the wrapper
-  start-stop-daemon --background --start --quiet --pidfile $PIDFILE --make-pidfile --chuid $DAEMONUSER --exec $DAEMON -- $REST $SYNCDELAY --config $CONF
+  start-stop-daemon --background --start --quiet --pidfile $PIDFILE --make-pidfile --chuid $DAEMONUSER --exec $DAEMON -- $REST $REPLSET $SHARDSVR $CONFIGSVR $SYNCDELAY $CONFIGDB --config $CONF
   errcode=$?
   return $errcode
 }

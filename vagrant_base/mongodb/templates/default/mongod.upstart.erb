@@ -1,0 +1,16 @@
+# Ubuntu upstart file at /etc/init/mongodb.conf
+# Managed by Chef, no touchy.
+
+pre-start script
+    mkdir -p <%= node[:mongodb][:datadir] %>
+    mkdir -p <%= File.dirname(node[:mongodb][:logfile]) %>
+end script
+
+start on runlevel [2345]
+stop on runlevel [06]
+
+script
+  ENABLE_MONGODB="yes"
+  if [ -f /etc/default/mongodb ]; then . /etc/default/mongodb; fi
+  if [ "x$ENABLE_MONGODB" = "xyes" ]; then exec start-stop-daemon --start --quiet --chuid mongodb --exec  /usr/bin/mongod -- --config <%= node[:mongodb][:config] %>; fi
+end script

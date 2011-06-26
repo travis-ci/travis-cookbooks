@@ -1,9 +1,10 @@
-maintainer        "Paper Cavalier"
-maintainer_email  "code@papercavalier.com"
+maintainer        "Michael Strüder"
+maintainer_email  "mikezter@gmail.com"
 license           "Apache 2.0"
 description       "Installs and configures MongoDB 1.8.1"
-version           "0.2.3"
+version           "0.3"
 
+recipe "mongodb::apt", "Installs MongoDB from 10Gen's apt source and includes init.d script"
 recipe "mongodb::source", "Installs MongoDB from source and includes init.d script"
 recipe "mongodb::backup", "Sets up MongoDB backup script, taken from http://github.com/micahwedemeyer/automongobackup"
 
@@ -11,50 +12,42 @@ recipe "mongodb::backup", "Sets up MongoDB backup script, taken from http://gith
   supports os
 end
 
-depends "build-essential"
-
 # Package info
 attribute "mongodb/version",
   :display_name => "MongoDB version",
   :description => "Which MongoDB version will be installed",
-  :default => "1.6.2"
+  :default => "1.8.1"
 
 attribute "mongodb/source",
   :display_name => "MongoDB source file",
   :description => "Downloaded location for MongoDB"
 
-attribute "mongodb/i686/checksum",
-  :display_name => "MongoDB 32bit source file checksum",
+attribute "mongodb/checksum",
+  :display_name => "MongoDB source file checksum",
   :description => "Will make sure the source file is the real deal",
-  :default => "3ce4485494806648404e1ee96c223ec6"
-
-attribute "mongodb/x86_64/checksum",
-  :display_name => "MongoDB 64bit source file checksum",
-  :description => "Will make sure the source file is the real deal",
-  :default => "73df4aa4be049d733666cebf8f123b55"
-
+  :default => "e75a5cae641a53760df8cb866ad5d929"
 
 
 # Paths & port
 attribute "mongodb/dir",
   :display_name => "MongoDB installation path",
   :description => "MongoDB will be installed here",
-  :default => "/opt/mongodb-1.6.2"
+  :default => "/opt/mongodb"
 
 attribute "mongodb/datadir",
   :display_name => "MongoDB data store",
   :description => "All MongoDB data will be stored here",
-  :default => "/var/db/mongodb"
+  :default => "/var/lib/mongodb"
 
 attribute "mongodb/config",
   :display_name => "MongoDB config",
   :description => "Path to MongoDB config file",
-  :default => "/etc/mongo.conf"
+  :default => "/etc/mongodb.conf"
 
 attribute "mongodb/logfile",
   :display_name => "MongoDB log file",
   :description => "MongoDB will log into this file",
-  :default => "/var/log/mongodb.log"
+  :default => "/var/log/mongodb/mongodb.log"
 
 attribute "mongodb/pidfile",
   :display_name => "MongoDB PID file",
@@ -65,8 +58,6 @@ attribute "mongodb/port",
   :display_name => "MongoDB port",
   :description => "Accept connections on the specified port",
   :default => "27017"
-
-
 
 # Logging, access & others
 attribute "mongodb/log_cpu_io",
@@ -142,8 +133,6 @@ attribute "mongodb/nssize",
   :description => "Specify .ns file size for new databases",
   :default => "false"
 
-
-
 # Daemon options
 attribute "mongodb/rest",
   :display_name => "MongoDB REST",
@@ -154,8 +143,6 @@ attribute "mongodb/syncdelay",
   :display_name => "MongoDB syncdelay",
   :description => "Controls how often changes are flushed to disk",
   :default => "60"
-
-
 
 # Monitoring
 attribute "mongodb/mms",
@@ -175,39 +162,11 @@ attribute "mongodb/interval",
   :display_name => "MongoDB mms-interval",
   :description => "Ping interval for Mongo monitoring server"
 
-
-
 # Replication
 attribute "mongodb/replication",
   :display_name => "MongoDB replication",
   :description => "Enable if you want to configure replication",
   :default => "false"
-
-attribute "mongodb/slave",
-  :display_name => "MongoDB replication slave",
-  :description => "In replicated mongo databases, specify here whether this is a slave or master",
-  :default => "false"
-
-attribute "mongodb/slave_source",
-  :display_name => "MongoDB replication slave source",
-  :description => "Source for replication"
-
-attribute "mongodb/slave_only",
-  :display_name => "MongoDB replication slave only",
-  :description => "Slave only: specify a single database to replicate"
-
-attribute "mongodb/master",
-  :display_name => "MongoDB replication master",
-  :description => "In replicated mongo databases, specify here whether this is a slave or master",
-  :default => "false"
-
-attribute "mongodb/master_source",
-  :display_name => "MongoDB replication master source",
-  :description => "Source for replication"
-
-attribute "mongodb/pairwith",
-  :display_name => "MongoDB replication pairwith",
-  :description => "Address of a server to pair with"
 
 attribute "mongodb/arbiter",
   :display_name => "MongoDB replication arbiter",
@@ -227,3 +186,50 @@ attribute "mongodb/opidmem",
   :display_name => "MongoDB replication opidmem",
   :description => "Custom size limit for in-memory storage of op ids (in MB)",
   :default => "0"
+
+# Backups
+attribute "mongodb/backup/backupdir",
+  :display_name => "MongoDB backup directory",
+  :description => "Backup directory location",
+  :default => "/var/backups/mongodb"
+
+attribute "mongodb/backup/day",
+  :display_name => "MongoDB backup day",
+  :description => "Which day do you want weekly backups? (1 to 7 where 1 is Monday)",
+  :default => "6"
+
+attribute "mongodb/backup/compression",
+  :display_name => "MongoDB backup compression",
+  :description => "Choose Compression type. (gzip or bzip2)",
+  :default => "bzip2"
+
+attribute "mongodb/backup/cleanup",
+  :display_name => "MongoDB backup cleanup",
+  :description => "Choose if the uncompressed folder should be deleted after compression has completed",
+  :default => "yes"
+
+attribute "mongodb/backup/latest",
+  :display_name => "MongoDB backup latest",
+  :description => "Additionally keep a copy of the most recent backup in a seperate directory",
+  :default => "yes"
+
+attribute "mongodb/backup/mailaddress",
+  :display_name => "MongoDB backup mail",
+  :description => "Email Address to send mail to after each backup",
+  :default => "false"
+
+attribute "mongodb/backup/mailcontent",
+  :display_name => "MongoDB backup mailcontent",
+  :description => %{
+    What would you like to be mailed to you?
+    - log   : send only log file
+    - files : send log file and sql files as attachments (see docs)
+    - stdout : will simply output the log to the screen if run manually
+    - quiet : Only send logs if an error occurs
+  }.strip,
+  :default => "stdout"
+
+attribute "mongodb/backup/maxemailsize",
+  :display_name => "MongoDB backup max email size",
+  :description => "Set the maximum allowed email size in k. (4000 = approx 5MB email)",
+  :default => "4000"
