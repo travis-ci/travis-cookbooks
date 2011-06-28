@@ -30,3 +30,11 @@ cookbook_file "/usr/local/bin/timetrap.sh" do
 
   mode  0551
 end
+
+cookbook_file "/etc/profile.d/timetrap.sh" do
+  owner "root"
+  group "root"
+
+  mode  0755
+  source "timetrap_environment.sh"
+end

@@ -107,3 +107,4 @@ fi
 
 
 source /etc/profile.d/travis_environment.sh
+source /etc/profile.d/timetrap.sh
