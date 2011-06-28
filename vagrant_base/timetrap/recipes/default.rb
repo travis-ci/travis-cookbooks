@@ -25,7 +25,7 @@
 # from http://www.bashcookbook.com/bashinfo/source/bash-4.0/examples/scripts/timeout3
 
 cookbook_file "/usr/local/bin/timetrap.sh" do
-  user  "root"
+  owner "root"
   group "root"
 
   mode  0551
