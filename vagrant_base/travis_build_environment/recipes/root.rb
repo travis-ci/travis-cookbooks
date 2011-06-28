@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: travis_build_environment
-# Recipe:: default
+# Recipe:: root
 # Copyright 2011, Travis CI development team
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,13 +21,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-directory node[:travis_build_environment][:path] do
-  owner "vagrant"
-  group "vagrant"
-  mode  0755
-  action :create
+
+cookbook_file "/root/.bashrc" do
+  owner "root"
+  group "root"
+  mode 0644
+
+  source "root/dot_bashrc.sh"
 end
-
-
-include_recipe "travis_build_environment::root"
-include_recipe "travis_build_environment::vagrant"
