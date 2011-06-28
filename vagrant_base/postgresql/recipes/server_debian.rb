@@ -16,6 +16,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+template "/etc/profile.d/locale.sh" do
+  source "locale.sh"
+  owner "vagrant"
+  group "vagrant"
+  mode 0755
+end
+
+# I'm 100% sure that that will solve the issue with locales. When running that thing locally and installing
+# postgres, everything works just fine.
+#
+# Without it we get:
+#    postgres  | postgres | LATIN1   | en_US     | en_US |
+# With it:
+#    postgres  | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 |
+#
+bash "regenerate locales" do
+  user "vagrant"
+  code "/usr/sbin/locale-gen"
+end
 
 include_recipe "postgresql::client"
 
@@ -48,4 +67,9 @@ template "#{node[:postgresql][:dir]}/postgresql.conf" do
   group "postgres"
   mode 0600
   notifies :restart, resources(:service => "postgresql")
+end
+
+bash "create user" do
+  user "postgres"
+  code "createuser --no-password --no-superuser --createdb --no-createrole vagrant"
 end
