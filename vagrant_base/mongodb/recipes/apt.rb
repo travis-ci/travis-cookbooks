@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Cookbook Name:: mongodb
 # Recipe:: apt
@@ -19,6 +20,14 @@
 # limitations under the License.
 #
 
+node[:mongodb][:installed_from] = "apt"
+# default settings from apt repo
+node[:mongodb][:datadir]     = "/var/lib/mongodb"
+node[:mongodb][:config]      = "/etc/mongodb.conf"
+node[:mongodb][:logfile]     = "/var/log/mongodb/mongodb.log"
+node[:mongodb][:pidfile]     = "/var/run/mongodb.pid"
+
+
 execute "apt-get update" do
   action :nothing
 end
@@ -39,9 +48,10 @@ end
 
 package "mongodb-10gen"
 
-node[:mongodb][:installed_from] = "apt"
-# default settings from apt repo
-node[:mongodb][:datadir]     = "/var/lib/mongodb"
-node[:mongodb][:config]      = "/etc/mongodb.conf"
-node[:mongodb][:logfile]     = "/var/log/mongodb/mongodb.log"
-node[:mongodb][:pidfile]     = "/var/run/mongodb.pid"
+
+cookbook_file "/etc/init.d/mongodb" do
+  source "mongodb.sysvinit.sh"
+  owner  "root"
+
+  mode   0751
+end
