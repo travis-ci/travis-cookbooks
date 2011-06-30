@@ -36,5 +36,5 @@ cookbook_file "/etc/profile.d/timetrap.sh" do
   group "root"
 
   mode  0755
-  source "timetrap_environment"
+  source "timetrap_environment.sh"
 end
