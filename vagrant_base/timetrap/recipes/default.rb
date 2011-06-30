@@ -31,7 +31,7 @@ cookbook_file "/usr/local/bin/timetrap" do
   mode  0755
 end
 
-cookbook_file "/etc/profile.d/timetrap" do
+cookbook_file "/etc/profile.d/timetrap.sh" do
   owner "root"
   group "root"
 
