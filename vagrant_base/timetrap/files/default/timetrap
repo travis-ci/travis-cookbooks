@@ -49,8 +49,6 @@ therefore all delay/time values must be integers.
 EOF
 }
 
-declare timeoutMessage="Execution of $@ timed out and was terminated. Timeout interval used: ${timeout} seconds. Consider rewriting your stuff in C++, Hacker News says it will be faster."
-
 # Options.
 while getopts ":t:i:d:" option; do
     case "$option" in
@@ -61,6 +59,8 @@ while getopts ":t:i:d:" option; do
     esac
 done
 shift $((OPTIND - 1))
+
+declare timeoutMessage="Execution of $@ timed out and was terminated. Timeout interval used: ${timeout} seconds. Consider rewriting your stuff in C++, Hacker News says it will be faster."
 
 # $# should be at least 1 (the command to execute), however it may be strictly
 # greater than 1 if the command itself has options.
