@@ -1,6 +1,0 @@
-check process mongodb with pidfile <%= node[:mongodb][:pidfile] %>
-  start = "/etc/init.d/mongodb start"
-  stop  = "/etc/init.d/mongodb stop"
-  if memory usage > <%= node[:mongodb][:monit][:memory_usage] %> for 5 cycles then restart
-  if failed host 127.0.0.1 port <%= node[:mongodb][:port] %> then restart
-  if 5 restarts within 5 cycles then timeout
