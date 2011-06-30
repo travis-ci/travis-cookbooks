@@ -24,17 +24,17 @@
 # includes a shell script by Dmitry V Golovashkin <Dmitry.Golovashkin@sas.com>
 # from http://www.bashcookbook.com/bashinfo/source/bash-4.0/examples/scripts/timeout3
 
-cookbook_file "/usr/local/bin/timetrap.sh" do
-  owner "root"
-  group "root"
-
-  mode  0551
-end
-
-cookbook_file "/etc/profile.d/timetrap.sh" do
+cookbook_file "/usr/local/bin/timetrap" do
   owner "root"
   group "root"
 
   mode  0755
-  source "timetrap_environment.sh"
+end
+
+cookbook_file "/etc/profile.d/timetrap" do
+  owner "root"
+  group "root"
+
+  mode  0755
+  source "timetrap_environment"
 end
