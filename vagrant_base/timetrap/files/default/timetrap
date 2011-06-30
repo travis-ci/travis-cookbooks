@@ -1,18 +1,14 @@
 #!/bin/bash
 #
+#
 # The Bash shell script executes a command with a time-out.
 # Upon time-out expiration SIGTERM (15) is sent to the process. If the signal
 # is blocked, then the subsequent SIGKILL (9) terminates it.
 #
 # Based on the Bash documentation example.
-
-# Hello Chet,
-# please find attached a "little easier"  :-)  to comprehend
-# time-out example.  If you find it suitable, feel free to include
-# anywhere: the very same logic as in the original examples/scripts, a
-# little more transparent implementation to my taste.
+# Original author: Dmitry V Golovashkin <Dmitry.Golovashkin@sas.com>
 #
-# Dmitry V Golovashkin <Dmitry.Golovashkin@sas.com>
+# Modifications by The Travis CI Team (http://travis-ci.org)
 
 scriptName="${0##*/}"
 
@@ -53,6 +49,8 @@ therefore all delay/time values must be integers.
 EOF
 }
 
+declare timeoutMessage="Execution of $@ timed out and was terminated. Timeout interval used: ${timeout} seconds. Consider rewriting your stuff in C++, Hacker News says it will be faster."
+
 # Options.
 while getopts ":t:i:d:" option; do
     case "$option" in
@@ -83,7 +81,7 @@ fi
 
     # Be nice, post SIGTERM first.
     # The 'exit 0' below will be executed if any preceeding command fails.
-    kill -s SIGTERM $$ && kill -0 $$ && exit 1
+    kill -s SIGTERM $$ && kill -0 $$ && echo $timeoutMessage && exit 1
     sleep $delay
     kill -s SIGKILL $$
     exit 1
