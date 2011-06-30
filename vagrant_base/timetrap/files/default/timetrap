@@ -83,9 +83,10 @@ fi
 
     # Be nice, post SIGTERM first.
     # The 'exit 0' below will be executed if any preceeding command fails.
-    kill -s SIGTERM $$ && kill -0 $$ || exit 0
+    kill -s SIGTERM $$ && kill -0 $$ && exit 1
     sleep $delay
     kill -s SIGKILL $$
+    exit 1
 ) 2> /dev/null &
 
 exec "$@"
