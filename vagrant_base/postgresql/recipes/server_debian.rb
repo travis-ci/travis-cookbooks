@@ -17,11 +17,6 @@
 # limitations under the License.
 #
 
-bash "regenerate locales" do
-  user "vagrant"
-  code "/usr/sbin/locale-gen"
-end
-
 bash "export LC_ALL and LANG for current chef-solo session/root" do
   user "root"
   code "export LC_ALL='en_US.UTF-8' LANG='en_US.UTF-8'"
