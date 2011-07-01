@@ -60,7 +60,7 @@ while getopts ":t:i:d:" option; do
 done
 shift $((OPTIND - 1))
 
-declare timeoutMessage="Execution of $@ timed out and was terminated. Timeout interval used: ${timeout} seconds. Consider rewriting your stuff in Node.js, Hacker News says it will be faster."
+declare timeoutMessage="Execution of $@ timed out and was terminated. Timeout interval used: ${timeout} seconds. Consider rewriting your stuff in AssemblyScript, we have heard it handles Web Scale™"
 
 # $# should be at least 1 (the command to execute), however it may be strictly
 # greater than 1 if the command itself has options.
