@@ -25,7 +25,7 @@
 include_recipe "rvm"
 
 default_ruby = node[:rvm][:default_ruby] || node[:rvm][:rubies].first
-rvm_command  = "source \"$HOME/.rvm/scripts/rvm\" && rvm"
+rvm_command  = "$HOME/.rvm/bin/rvm"
 
 rvm_user     = "vagrant"
 
@@ -41,7 +41,7 @@ node[:rvm][:rubies].each do |ruby_version|
     bash "installing gem #{gem}" do
       user rvm_user
       code "#{rvm_command} gem install #{gem} --no-ri --no-rdoc"
-      not_if "which gem && gem list | grep #{gem}"
+      not_if "#{rvm_command} use #{ruby_version} && which gem && gem list | grep #{gem}"
     end
   end
 
