@@ -40,7 +40,7 @@ node[:rvm][:rubies].each do |ruby_version|
   gems.each do |gem|
     bash "installing gem #{gem}" do
       user rvm_user
-      code "rvm gem install #{gem} --no-ri --no-rdoc"
+      code "#{rvm_command} gem install #{gem} --no-ri --no-rdoc"
       not_if "which gem && gem list | grep #{gem}"
     end
   end
