@@ -34,3 +34,14 @@ when "redhat", "centos", "fedora", "suse"
 when "debian", "ubuntu"
   include_recipe "postgresql::server_debian"
 end
+
+["vagrant", "rails"].each do |username|
+  bash "create superuser #{username}" do
+    user "postgres"
+    code "createuser --no-password --superuser #{username}"
+
+    # a very lame way to make sure 2nd and other runs do not fail.
+    # the proper way is to simply use a .sql script to set up users. MK.
+    ignore_failure true
+  end
+end
