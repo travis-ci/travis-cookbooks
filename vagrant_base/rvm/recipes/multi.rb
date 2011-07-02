@@ -25,23 +25,23 @@
 include_recipe "rvm"
 
 default_ruby = node[:rvm][:default_ruby] || node[:rvm][:rubies].first
-rvm_command  = "$HOME/.rvm/bin/rvm"
+rvm_command  = "source \"$HOME/.rvm/scripts/rvm\" && rvm"
 
 rvm_user     = "vagrant"
 
 node[:rvm][:rubies].each do |ruby_version|
   bash "installing #{ruby_version}" do
     user rvm_user
-    code "#{rvm_command} install #{ruby_version} && rvm use #{ruby_version} && gem install bundler #{(node[:rvm][:default_gems]).join(' ')} --no-ri --no-rdoc"
+    code "#{rvm_command} install #{ruby_version} && #{rvm_command} use #{ruby_version} && gem install bundler #{(node[:rvm][:default_gems]).join(' ')} --no-ri --no-rdoc"
     not_if "which rvm && rvm list | grep #{ruby_version}"
   end
 
   gems = node[:rvm].fetch(:default_gems, []) | ['bundler']
-  gems.each do |gem|
-    bash "installing gem #{gem}" do
+  gems.each do |name|
+    bash "installing gem #{name}" do
       user rvm_user
-      code "#{rvm_command} gem install #{gem} --no-ri --no-rdoc"
-      not_if "#{rvm_command} use #{ruby_version} && which gem && gem list | grep #{gem}"
+      code "#{rvm_command} gem install #{name} --no-ri --no-rdoc"
+      not_if "#{rvm_command} use #{ruby_version} && which gem && gem list | grep #{name}"
     end
   end
 
