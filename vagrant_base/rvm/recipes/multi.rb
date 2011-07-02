@@ -25,7 +25,10 @@
 include_recipe "rvm"
 
 default_ruby = node[:rvm][:default_ruby] || node[:rvm][:rubies].first
-rvm_command  = "source \"$HOME/.rvm/scripts/rvm\" && rvm"
+
+source_rvm   = "source \"$HOME/.rvm/scripts/rvm\""
+rvm_command  = "#{source_rvm} && rvm"
+gem_command  = "#{source_rvm} && gem"
 
 rvm_user     = "vagrant"
 
@@ -38,10 +41,10 @@ node[:rvm][:rubies].each do |ruby_version|
 
   gems = node[:rvm].fetch(:default_gems, []) | ['bundler']
   gems.each do |name|
-    bash "installing gem #{name}" do
+    bash "installing gem #{name} for #{ruby_version}" do
       user rvm_user
-      code "#{rvm_command} gem install #{name} --no-ri --no-rdoc"
-      not_if "#{rvm_command} use #{ruby_version} && which gem && gem list | grep #{name}"
+      code   "#{rvm_command} && rvm use #{ruby_version} && gem install #{name} --no-ri --no-rdoc"
+      not_if "#{rvm_command} && rvm use #{ruby_version} && gem  list | grep #{name}"
     end
   end
 
@@ -51,7 +54,7 @@ node[:rvm][:rubies].each do |ruby_version|
       code "#{rvm_command} --default #{default_ruby}"
     end
 
-    bash "install gem chef" do
+    bash "install chef for the default Ruby" do
       user rvm_user
       code "#{rvm_command} use #{default_ruby} && gem install chef --no-ri --no-rdoc"
       not_if "which gem && gem list | grep chef"
