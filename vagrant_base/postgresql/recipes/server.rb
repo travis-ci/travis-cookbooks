@@ -35,6 +35,15 @@ when "debian", "ubuntu"
   include_recipe "postgresql::server_debian"
 end
 
+template "/etc/sysctl.conf" do
+  source "sysctl.conf.erb"
+  owner "root"
+  group "root"
+  mode 0644
+  notifies :reload, resources(:service => "postgresql")
+end
+
+
 ["vagrant", "rails"].each do |username|
   # drop first to make sure create user is a superuser even if it wasn't initially. MK.
   bash "drop superuser #{username}" do
