@@ -48,7 +48,7 @@ end
   # drop first to make sure create user is a superuser even if it wasn't initially. MK.
   bash "drop superuser #{username}" do
     user "postgres"
-    code "dropeuser --username postgres #{username}"
+    code "dropuser --username postgres #{username}"
     ignore_failure true
   end
   bash "create superuser #{username}" do
