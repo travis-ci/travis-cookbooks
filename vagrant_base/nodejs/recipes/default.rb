@@ -28,19 +28,15 @@ case node[:platform]
 when "debian", "ubuntu"
   # this assumes 32-bit base Vagrant box.
   # built via brew2deb, http://bit.ly/brew2deb. MK.
-  %w(nodejs_0.4.8+github1_i386.deb npm_1.0.12+github1_i386.deb).map { |deb| File.join(tmp, deb) }.each do |path|
+  %w(nodejs_0.4.8+github1_i386.deb npm_1.0.12+github1_i386.deb).each do |deb|
+    path = File.join(tmp, deb)
+
     cookbook_file(path) do
       owner "vagrant"
       group "vagrant"
     end
 
-    package "nodejs_0.4.8+github1_i386" do
-      action   :install
-      source   path
-      provider Chef::Provider::Package::Dpkg
-    end
-
-    package "npm_1.0.12+github1_i386.deb" do
+    package(deb) do
       action   :install
       source   path
       provider Chef::Provider::Package::Dpkg
