@@ -35,8 +35,19 @@ when "debian", "ubuntu"
   include_recipe "postgresql::server_debian"
 end
 
-template "/etc/sysctl.conf" do
-  source "sysctl.conf.erb"
+# for the current chef-solo run, it restarts PG when files like pg_hba.conf change. MK.
+# vagrant@lucid32:~$ sudo sysctl -w kernel.shmall=67108864
+# vagrant@lucid32:~$ sudo sysctl -w kernel.shmmax=67108864
+%w(shmmax shmall).each do |setting|
+  bash "bump kernel.#{setting} to 64 megs" do
+    user "vagrant"
+    code "sudo sysctl -w kernel.#{setting}=67108864"
+  end
+end
+
+# this take effect after reboot. MK.
+template "/etc/sysctl.d/30-shared-memory.conf" do
+  source "30-shared-memory.conf.erb"
   owner "root"
   group "root"
   mode 0644
