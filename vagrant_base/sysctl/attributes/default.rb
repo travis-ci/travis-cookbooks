@@ -1,4 +1,5 @@
 # 64 MB
-default[:sysctl][:kernel_shmall] = 67108864
+default[:sysctl][:kernel_shmall] = 134217728
 # 64 MB
-default[:sysctl][:kernel_shmmax] = 67108864
+default[:sysctl][:kernel_shmmax] = 134217728
+
