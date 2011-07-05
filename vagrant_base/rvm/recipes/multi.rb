@@ -26,7 +26,7 @@ include_recipe "rvm"
 
 default_ruby = node[:rvm][:default_ruby] || node[:rvm][:rubies].first
 
-source_rvm   = "source \"$HOME/.rvm/scripts/rvm\""
+source_rvm   = "source \"/home/vagrant/.rvm/scripts/rvm\""
 rvm_command  = "#{source_rvm} && rvm"
 gem_command  = "#{source_rvm} && gem"
 
