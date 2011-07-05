@@ -51,7 +51,6 @@ template "/etc/sysctl.d/30-shared-memory.conf" do
   owner "root"
   group "root"
   mode 0644
-  notifies :reload, resources(:service => "postgresql")
 end
 
 
