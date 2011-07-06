@@ -27,37 +27,37 @@ include_recipe "rvm"
 default_ruby = node[:rvm][:default_ruby] || node[:rvm][:rubies].first
 
 source_rvm   = "source \"/home/vagrant/.rvm/scripts/rvm\""
-rvm_command  = "#{source_rvm} && rvm"
+rvm  = "#{source_rvm} && rvm"
 gem_command  = "#{source_rvm} && gem"
 
 rvm_user     = "vagrant"
 
-node[:rvm][:rubies].each do |ruby_version|
-  bash "installing #{ruby_version}" do
+node[:rvm][:rubies].each do |ruby|
+  bash "installing #{ruby}" do
     user rvm_user
-    code "#{rvm_command} install #{ruby_version} && #{rvm_command} use #{ruby_version} && gem install bundler #{(node[:rvm][:default_gems]).join(' ')} --no-ri --no-rdoc"
-    not_if "which rvm && rvm list | grep #{ruby_version}"
+    code "#{rvm} install #{ruby} && #{rvm} use #{ruby} && gem install bundler #{(node[:rvm][:default_gems]).join(' ')} --no-ri --no-rdoc"
+    not_if "which rvm && rvm list | grep #{ruby}"
   end
 
   gems = node[:rvm].fetch(:default_gems, []) | ['bundler']
-  gems.each do |name|
-    bash "installing gem #{name} for #{ruby_version}" do
+  gems.each do |gem|
+    bash "installing gem #{gem} for #{ruby}" do
       user rvm_user
-      code   "#{rvm_command} && rvm use #{ruby_version} && gem install #{name} --no-ri --no-rdoc"
-      not_if "#{rvm_command} && rvm use #{ruby_version} && gem  list | grep #{name}"
+      code   "#{rvm} && rvm use #{ruby} && gem install #{gem} --no-ri --no-rdoc"
+      not_if "find ~/.rvm/gems/#{ruby}/gems -name '#{gem}-[0-9].[0-9].[0-9]'"
     end
   end
 
-  if ruby_version == default_ruby
+  if ruby == default_ruby
     bash "make #{default_ruby} the default ruby" do
       user rvm_user
-      code "#{rvm_command} --default #{default_ruby}"
+      code "#{rvm} --default #{default_ruby}"
     end
 
     bash "install chef for the default Ruby" do
       user rvm_user
-      code "#{rvm_command} use #{default_ruby} && gem install chef --no-ri --no-rdoc"
-      not_if "which gem && gem list | grep chef"
+      code "#{rvm} use #{default_ruby} && gem install chef --no-ri --no-rdoc"
+      not_if "find ~/.rvm/gems/#{ruby}/gems -name 'chef-[0-9].[0-9].[0-9]'"
     end
   end
 end
@@ -66,7 +66,7 @@ end
 node[:rvm][:aliases].each do |existing_name, new_name|
   bash "alias #{existing_name} => #{new_name}" do
     user rvm_user
-    code "#{rvm_command} alias create #{new_name} #{existing_name}"
+    code "#{rvm} alias create #{new_name} #{existing_name}"
 
     # alias creation is not idempotent. MK.
     ignore_failure true
@@ -75,5 +75,5 @@ end
 
 bash "clean up RVM sources, log files, etc" do
   user rvm_user
-  code "#{rvm_command} cleanup all"
+  code "#{rvm} cleanup all"
 end
