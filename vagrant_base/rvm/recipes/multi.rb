@@ -34,17 +34,19 @@ rvm_user     = "vagrant"
 
 node[:rvm][:rubies].each do |ruby_version|
   bash "installing #{ruby_version}" do
-    user rvm_user
-    code "#{rvm_command} install #{ruby_version} && #{rvm_command} use #{ruby_version} && gem install bundler #{(node[:rvm][:default_gems]).join(' ')} --no-ri --no-rdoc"
-    not_if "which rvm && rvm list | grep #{ruby_version}"
+    user        rvm_user
+    environment Hash['HOME' => "/home/vagrant", 'rvm_user_install_flag' => '1']
+    code        "#{rvm_command} install #{ruby_version} && #{rvm_command} use #{ruby_version} && gem install bundler #{(node[:rvm][:default_gems]).join(' ')} --no-ri --no-rdoc"
+    not_if      "which rvm && rvm list | grep #{ruby_version}"
   end
 
   gems = node[:rvm].fetch(:default_gems, []) | ['bundler']
   gems.each do |name|
     bash "installing gem #{name} for #{ruby_version}" do
-      user rvm_user
-      code   "#{rvm_command} && rvm use #{ruby_version} && gem install #{name} --no-ri --no-rdoc"
-      not_if "#{rvm_command} && rvm use #{ruby_version} && gem  list | grep #{name}"
+      user        rvm_user
+      environment Hash['HOME' => "/home/vagrant", 'rvm_user_install_flag' => '1']
+      code        "#{rvm_command} && rvm use #{ruby_version} && gem install #{name} --no-ri --no-rdoc"
+      not_if      "#{rvm_command} && rvm use #{ruby_version} && gem  list | grep #{name}"
     end
   end
 
