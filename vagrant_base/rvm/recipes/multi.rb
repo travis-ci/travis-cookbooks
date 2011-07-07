@@ -47,7 +47,7 @@ node[:rvm][:rubies].each do |ruby|
       user        rvm_user
       environment rvm_env
       code        "#{rvm_command} && rvm use #{ruby} && gem install #{gem} --no-ri --no-rdoc"
-      not_if      "find ~/.rvm/gems/*#{ruby}/gems -name '#{gem}-[0-9]*.[0-9]*.[0-9]*'"
+      not_if      "#{rvm_command} use #{default_ruby} && find $GEM_HOME/gems -name '#{gem}-[0-9]*.[0-9]*.[0-9]*'"
     end
   end
 end
@@ -62,7 +62,7 @@ bash "install chef for the default Ruby" do
   user   rvm_user
   environment rvm_env
   code   "#{rvm_command} use #{default_ruby} && gem install chef --no-ri --no-rdoc"
-  not_if "find ~/.rvm/gems/*#{default_ruby}/gems -name 'chef-[0-9]*.[0-9]*.[0-9]*'"
+  not_if "#{rvm_command} use #{default_ruby} && find $GEM_HOME/gems -name 'chef-[0-9]*.[0-9]*.[0-9]*'"
 end
 
 node[:rvm][:aliases].each do |existing_name, new_name|
