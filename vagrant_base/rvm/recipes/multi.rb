@@ -31,11 +31,12 @@ rvm_command  = "#{source_rvm} && rvm"
 gem_command  = "#{source_rvm} && gem"
 
 rvm_user     = "vagrant"
+rvm_env      = { 'HOME' => "/home/vagrant", 'rvm_user_install_flag' => '1' }
 
 node[:rvm][:rubies].each do |ruby|
   bash "installing #{ruby}" do
     user        rvm_user
-    environment Hash['HOME' => "/home/vagrant", 'rvm_user_install_flag' => '1']
+    environment rvm_env
     code        "#{rvm_command} install #{ruby} && #{rvm_command} use #{ruby} && gem install bundler #{(node[:rvm][:default_gems]).join(' ')} --no-ri --no-rdoc"
     not_if      "which rvm && rvm list | grep #{ruby}"
   end
@@ -44,7 +45,7 @@ node[:rvm][:rubies].each do |ruby|
   gems.each do |gem|
     bash "installing gem #{gem} for #{ruby}" do
       user        rvm_user
-      environment Hash['HOME' => "/home/vagrant", 'rvm_user_install_flag' => '1']
+      environment rvm_env
       code        "#{rvm_command} && rvm use #{ruby} && gem install #{gem} --no-ri --no-rdoc"
       not_if      "find ~/.rvm/gems/*#{ruby}/gems -name '#{gem}-[0-9]*.[0-9]*.[0-9]*'"
     end
@@ -53,11 +54,13 @@ end
 
 bash "make #{default_ruby} the default ruby" do
   user rvm_user
+  environment rvm_env
   code "#{rvm_command} --default #{default_ruby}"
 end
 
 bash "install chef for the default Ruby" do
   user   rvm_user
+  environment rvm_env
   code   "#{rvm_command} use #{default_ruby} && gem install chef --no-ri --no-rdoc"
   not_if "find ~/.rvm/gems/*#{default_ruby}/gems -name 'chef-[0-9]*.[0-9]*.[0-9]*'"
 end
@@ -65,6 +68,7 @@ end
 node[:rvm][:aliases].each do |existing_name, new_name|
   bash "alias #{existing_name} => #{new_name}" do
     user rvm_user
+    environment rvm_env
     code "#{rvm_command} alias create #{new_name} #{existing_name}"
 
     # alias creation is not idempotent. MK.
@@ -74,5 +78,6 @@ end
 
 bash "clean up RVM sources, log files, etc" do
   user rvm_user
+  environment rvm_env
   code "#{rvm_command} cleanup all"
 end
