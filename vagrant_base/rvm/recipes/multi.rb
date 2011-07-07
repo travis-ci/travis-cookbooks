@@ -47,7 +47,7 @@ node[:rvm][:rubies].each do |ruby|
       user        rvm_user
       environment rvm_env
       code        "#{rvm_command} && rvm use #{ruby} && gem install #{gem} --no-ri --no-rdoc"
-      not_if      "#{rvm_command} use #{default_ruby} && find $GEM_HOME/gems -name '#{gem}-[0-9]*.[0-9]*.[0-9]*'"
+      not_if      "#{rvm_command} use #{ruby} && find $GEM_HOME/gems -name '#{gem}-[0-9]*.[0-9]*.[0-9]*'"
     end
   end
 end
