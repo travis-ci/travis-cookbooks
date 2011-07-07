@@ -24,7 +24,7 @@
 
 include_recipe "rvm"
 
-default_ruby = node[:rvm][:default_ruby] || node[:rvm][:rubies].first
+default_ruby = node[:rvm][:default] || node[:rvm][:rubies].first
 
 source_rvm   = "source \"/home/vagrant/.rvm/scripts/rvm\""
 rvm_command  = "#{source_rvm} && rvm"
@@ -32,25 +32,25 @@ gem_command  = "#{source_rvm} && gem"
 
 rvm_user     = "vagrant"
 
-node[:rvm][:rubies].each do |ruby_version|
-  bash "installing #{ruby_version}" do
+node[:rvm][:rubies].each do |ruby|
+  bash "installing #{ruby}" do
     user        rvm_user
     environment Hash['HOME' => "/home/vagrant", 'rvm_user_install_flag' => '1']
-    code        "#{rvm_command} install #{ruby_version} && #{rvm} use #{ruby_version} && gem install bundler #{(node[:rvm][:default_gems]).join(' ')} --no-ri --no-rdoc"
-    not_if      "which rvm && rvm list | grep #{ruby_version}"
+    code        "#{rvm_command} install #{ruby} && #{rvm} use #{ruby} && gem install bundler #{(node[:rvm][:default_gems]).join(' ')} --no-ri --no-rdoc"
+    not_if      "which rvm && rvm list | grep #{ruby}"
   end
 
-  gems = node[:rvm].fetch(:default_gems, []) | ['bundler']
-  gems.each do |name|
-    bash "installing gem #{name} for #{ruby_version}" do
+  gems = node[:rvm].fetch(:gems, []) | ['bundler']
+  gems.each do |gem|
+    bash "installing gem #{gem} for #{ruby}" do
       user        rvm_user
       environment Hash['HOME' => "/home/vagrant", 'rvm_user_install_flag' => '1']
-      code        "#{rvm_command} && rvm use #{ruby_version} && gem install #{name} --no-ri --no-rdoc"
+      code        "#{rvm_command} && rvm use #{ruby} && gem install #{gem} --no-ri --no-rdoc"
       not_if      "find ~/.rvm/gems/#{ruby}/gems -name '#{gem}-[0-9].[0-9].[0-9]'"
     end
   end
 
-  if ruby_version == default_ruby
+  if ruby == default_ruby
     bash "make #{default_ruby} the default ruby" do
       user rvm_user
       code "#{rvm_command} --default #{default_ruby}"
