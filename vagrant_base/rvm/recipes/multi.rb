@@ -38,7 +38,7 @@ node[:rvm][:rubies].each do |ruby|
     user        rvm_user
     environment rvm_env
     code        "#{rvm_command} install #{ruby} && #{rvm_command} use #{ruby} && gem install bundler #{(node[:rvm][:default_gems]).join(' ')} --no-ri --no-rdoc"
-    not_if      "which rvm && rvm list | grep #{ruby}"
+    not_if      "#{rvm_command} && rvm list | grep #{ruby}"
   end
 
   gems = node[:rvm].fetch(:gems, []) | ['bundler']
