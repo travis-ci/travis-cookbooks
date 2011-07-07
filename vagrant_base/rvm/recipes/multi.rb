@@ -36,7 +36,7 @@ node[:rvm][:rubies].each do |ruby|
   bash "installing #{ruby}" do
     user        rvm_user
     environment Hash['HOME' => "/home/vagrant", 'rvm_user_install_flag' => '1']
-    code        "#{rvm_command} install #{ruby} && #{rvm} use #{ruby} && gem install bundler #{(node[:rvm][:default_gems]).join(' ')} --no-ri --no-rdoc"
+    code        "#{rvm_command} install #{ruby} && #{rvm_command} use #{ruby} && gem install bundler #{(node[:rvm][:default_gems]).join(' ')} --no-ri --no-rdoc"
     not_if      "which rvm && rvm list | grep #{ruby}"
   end
 
@@ -49,21 +49,18 @@ node[:rvm][:rubies].each do |ruby|
       not_if      "find ~/.rvm/gems/#{ruby}/gems -name '#{gem}-[0-9].[0-9].[0-9]'"
     end
   end
-
-  if ruby == default_ruby
-    bash "make #{default_ruby} the default ruby" do
-      user rvm_user
-      code "#{rvm_command} --default #{default_ruby}"
-    end
-
-    bash "install chef for the default Ruby" do
-      user   rvm_user
-      code   "#{rvm_command} use #{default_ruby} && gem install chef --no-ri --no-rdoc"
-      not_if "find ~/.rvm/gems/#{ruby}/gems -name 'chef-[0-9].[0-9].[0-9]'"
-    end
-  end
 end
 
+bash "make #{default_ruby} the default ruby" do
+  user rvm_user
+  code "#{rvm_command} --default #{default_ruby}"
+end
+
+bash "install chef for the default Ruby" do
+  user   rvm_user
+  code   "#{rvm_command} use #{default_ruby} && gem install chef --no-ri --no-rdoc"
+  not_if "find ~/.rvm/gems/#{default_ruby}/gems -name 'chef-[0-9].[0-9].[0-9]'"
+end
 
 node[:rvm][:aliases].each do |existing_name, new_name|
   bash "alias #{existing_name} => #{new_name}" do
