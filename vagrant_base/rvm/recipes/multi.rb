@@ -28,9 +28,10 @@ gems    = node[:rvm].fetch(:gems, []) | ['bundler']
 default = node[:rvm][:default] || node[:rvm][:rubies].first
 aliases = node[:rvm][:aliases] || []
 
-rvm  = "/home/vagrant/.rvm/bin/rvm"
+home = '/home/vagrant'
+rvm  = "#{home}/.rvm/bin/rvm"
 user = "vagrant"
-env  = { 'HOME' => "/home/vagrant", 'rvm_user_install_flag' => '1' }
+env  = { 'HOME' => home, 'rvm_user_install_flag' => '1' }
 
 setup = lambda do |target|
   target.environment env
@@ -41,14 +42,14 @@ node[:rvm][:rubies].each do |ruby|
   bash "installing #{ruby}" do
     setup.call(self)
     code   "#{rvm} install #{ruby}"
-    not_if "#{rvm} && rvm list strings | grep #{ruby}"
+    not_if "ls #{home}/.rvm/rubies | grep #{ruby}"
   end
 
   gems.each do |gem|
     bash "installing gem #{gem} for #{ruby}" do
       setup.call(self)
       code   "#{rvm} use #{ruby} && gem install #{gem} --no-ri --no-rdoc"
-      not_if "#{rvm} use #{ruby} && find $GEM_HOME/gems -name '#{gem}-[0-9]*.[0-9]*.[0-9]*'"
+      not_if "find $GEM_HOME/gems -name '#{gem}-[0-9]*.[0-9]*.[0-9]*'"
     end
   end
 end
@@ -61,7 +62,7 @@ end
 bash "install chef for the default Ruby" do
   setup.call(self)
   code   "#{rvm} use #{default} && gem install chef --no-ri --no-rdoc"
-  not_if "#{rvm} use #{default} && find $GEM_HOME/gems -name 'chef-[0-9]*.[0-9]*.[0-9]*'"
+  not_if "find $GEM_HOME/gems -name 'chef-[0-9]*.[0-9]*.[0-9]*'"
 end
 
 aliases.each do |existing_name, new_name|
