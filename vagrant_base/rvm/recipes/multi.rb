@@ -21,7 +21,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-
 include_recipe "rvm"
 
 gems    = node[:rvm].fetch(:gems, []) | ['bundler']
@@ -29,13 +28,13 @@ default = node[:rvm][:default] || node[:rvm][:rubies].first
 aliases = node[:rvm][:aliases] || []
 
 home = '/home/vagrant'
-rvm  = "#{home}/.rvm/bin/rvm"
-user = "vagrant"
+rvm  = "source #{home}/.rvm/scripts/rvm && rvm"
 env  = { 'HOME' => home, 'rvm_user_install_flag' => '1' }
+user = "vagrant"
 
-setup = lambda do |target|
-  target.environment env
-  target.user user
+setup = lambda do |bash|
+  bash.user user
+  bash.environment env
 end
 
 node[:rvm][:rubies].each do |ruby|
@@ -48,8 +47,8 @@ node[:rvm][:rubies].each do |ruby|
   gems.each do |gem|
     bash "installing gem #{gem} for #{ruby}" do
       setup.call(self)
-      code   "#{rvm} use #{ruby} && gem install #{gem} --no-ri --no-rdoc"
-      not_if "#{rvm} use #{ruby} && find $GEM_HOME/gems -name '#{gem}-[0-9]*.[0-9]*.[0-9]*'", :environment => env
+      code   "#{rvm} use #{ruby}; gem install #{gem} --no-ri --no-rdoc"
+      not_if "bash -c '#{rvm} use #{ruby}; find $GEM_HOME/gems -name \"#{gem}-[0-9]*.[0-9]*.[0-9]*\"'", :environment => env
     end
   end
 end
@@ -62,7 +61,7 @@ end
 bash "install chef for the default Ruby" do
   setup.call(self)
   code   "#{rvm} use #{default} && gem install chef --no-ri --no-rdoc"
-  not_if "#{rvm} use #{default} && find $GEM_HOME/gems -name 'chef-[0-9]*.[0-9]*.[0-9]*'", :environment => env
+  not_if "bash -c '#{rvm} use #{default} && find $GEM_HOME/gems -name \"chef-[0-9]*.[0-9]*.[0-9]*\"'", :environment => env
 end
 
 aliases.each do |existing_name, new_name|
@@ -75,7 +74,5 @@ end
 
 bash "clean up RVM sources, log files, etc" do
   setup.call(self)
-  environment env
-  user user
   code "#{rvm} cleanup all"
 end
