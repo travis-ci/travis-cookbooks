@@ -70,9 +70,7 @@ node[:rvm][:aliases].each do |existing_name, new_name|
     user rvm_user
     environment rvm_env
     code "#{rvm_command} alias create #{new_name} #{existing_name}"
-
-    # alias creation is not idempotent. MK.
-    ignore_failure true
+    ignore_failure true # alias creation is not idempotent. MK.
   end
 end
 

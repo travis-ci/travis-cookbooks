@@ -22,7 +22,7 @@ bash "install RVM" do
   cwd         "/home/vagrant"
   environment Hash['HOME' => "/home/vagrant", 'rvm_user_install_flag' => '1']
   code        "bash < <( curl -L -B http://rvm.beginrescueend.com/install/rvm )"
-  not_if      "which rvm"
+  not_if      "test -d /home/vagrant/.rvm"
 end
 
 cookbook_file "/etc/profile.d/rvm.sh" do
