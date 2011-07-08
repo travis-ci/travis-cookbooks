@@ -24,58 +24,57 @@
 
 include_recipe "rvm"
 
-default_ruby = node[:rvm][:default] || node[:rvm][:rubies].first
+gems    = node[:rvm].fetch(:gems, []) | ['bundler']
+default = node[:rvm][:default] || node[:rvm][:rubies].first
+aliases = node[:rvm][:aliases] || []
 
-source_rvm   = "source \"/home/vagrant/.rvm/scripts/rvm\""
-rvm_command  = "#{source_rvm} && rvm"
-gem_command  = "#{source_rvm} && gem"
+rvm  = "/home/vagrant/.rvm/bin/rvm"
+user = "vagrant"
+env  = { 'HOME' => "/home/vagrant", 'rvm_user_install_flag' => '1' }
 
-rvm_user     = "vagrant"
-rvm_env      = { 'HOME' => "/home/vagrant", 'rvm_user_install_flag' => '1' }
+setup = lambda do |target|
+  target.environment env
+  target.user user
+end
 
 node[:rvm][:rubies].each do |ruby|
   bash "installing #{ruby}" do
-    user        rvm_user
-    environment rvm_env
-    code        "#{rvm_command} install #{ruby} && #{rvm_command} use #{ruby} && gem install bundler #{(node[:rvm][:default_gems]).join(' ')} --no-ri --no-rdoc"
-    not_if      "#{rvm_command} && rvm list | grep #{ruby}"
+    setup.call(self)
+    code   "#{rvm} install #{ruby}"
+    not_if "#{rvm} && rvm list strings | grep #{ruby}"
   end
 
-  gems = node[:rvm].fetch(:gems, []) | ['bundler']
   gems.each do |gem|
     bash "installing gem #{gem} for #{ruby}" do
-      user        rvm_user
-      environment rvm_env
-      code        "#{rvm_command} && rvm use #{ruby} && gem install #{gem} --no-ri --no-rdoc"
-      not_if      "#{rvm_command} use #{ruby} && find $GEM_HOME/gems -name '#{gem}-[0-9]*.[0-9]*.[0-9]*'"
+      setup.call(self)
+      code   "#{rvm} use #{ruby} && gem install #{gem} --no-ri --no-rdoc"
+      not_if "#{rvm} use #{ruby} && find $GEM_HOME/gems -name '#{gem}-[0-9]*.[0-9]*.[0-9]*'"
     end
   end
 end
 
-bash "make #{default_ruby} the default ruby" do
-  user rvm_user
-  environment rvm_env
-  code "#{rvm_command} --default #{default_ruby}"
+bash "make #{default} the default ruby" do
+  setup.call(self)
+  code "#{rvm} --default #{default}"
 end
 
 bash "install chef for the default Ruby" do
-  user   rvm_user
-  environment rvm_env
-  code   "#{rvm_command} use #{default_ruby} && gem install chef --no-ri --no-rdoc"
-  not_if "#{rvm_command} use #{default_ruby} && find $GEM_HOME/gems -name 'chef-[0-9]*.[0-9]*.[0-9]*'"
+  setup.call(self)
+  code   "#{rvm} use #{default} && gem install chef --no-ri --no-rdoc"
+  not_if "#{rvm} use #{default} && find $GEM_HOME/gems -name 'chef-[0-9]*.[0-9]*.[0-9]*'"
 end
 
-node[:rvm][:aliases].each do |existing_name, new_name|
+aliases.each do |existing_name, new_name|
   bash "alias #{existing_name} => #{new_name}" do
-    user rvm_user
-    environment rvm_env
-    code "#{rvm_command} alias create #{new_name} #{existing_name}"
+    setup.call(self)
+    code "#{rvm} alias create #{new_name} #{existing_name}"
     ignore_failure true # alias creation is not idempotent. MK.
   end
 end
 
 bash "clean up RVM sources, log files, etc" do
-  user rvm_user
-  environment rvm_env
-  code "#{rvm_command} cleanup all"
+  setup.call(self)
+  environment env
+  user user
+  code "#{rvm} cleanup all"
 end
