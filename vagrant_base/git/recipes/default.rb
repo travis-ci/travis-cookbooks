@@ -16,9 +16,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require "tmpdir"
+
+tmp = Dir.tmpdir
 case node[:platform]
 when "debian", "ubuntu"
-  package "git-core"
-else 
-  package "git"
-end
+  # this assumes 32-bit base Vagrant box.
+  # built via brew2deb, http://bit.ly/brew2deb. MK.
+  %w(git_1.7.5.4-1+github5_i386.deb).each do |deb|
+    path = File.join(tmp, deb)
+
+    cookbook_file(path) do
+      owner "vagrant"
+      group "vagrant"
+    end
+
+    package(deb) do
+      action   :install
+      source   path
+      provider Chef::Provider::Package::Dpkg
+    end
+  end # each
+end # case
