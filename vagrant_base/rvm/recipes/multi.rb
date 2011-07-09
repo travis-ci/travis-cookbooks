@@ -23,7 +23,7 @@
 
 include_recipe "rvm"
 
-gems    = node[:rvm].fetch(:gems, []) | ['bundler']
+gems    = node[:rvm].fetch(:gems, []) | ['bundler', 'chef']
 default = node[:rvm][:default] || node[:rvm][:rubies].first
 aliases = node[:rvm][:aliases] || []
 
