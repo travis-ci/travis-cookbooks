@@ -25,6 +25,10 @@ when "debian", "ubuntu"
   # required by git-svn. MK.
   package "libsvn1"
   package "libsvn-perl"
+  package "liberror-perl"
+  package "perl-modules"
+  package "libwww-perl"
+  package "libterm-readkey-perl"
 
 
   # this assumes 32-bit base Vagrant box.
