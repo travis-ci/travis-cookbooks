@@ -23,7 +23,7 @@ tmp = Dir.tmpdir
 case node[:platform]
 when "debian", "ubuntu"
   # required by git-svn. MK.
-  package "subversion"
+  package "libsvn1"
   package "libsvn-perl"
 
 
