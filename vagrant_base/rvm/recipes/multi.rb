@@ -48,7 +48,7 @@ node[:rvm][:rubies].each do |ruby|
     bash "installing gem #{gem} for #{ruby}" do
       setup.call(self)
       code   "#{rvm} use #{ruby}; gem install #{gem} --no-ri --no-rdoc"
-      not_if "bash -c '#{rvm} use #{ruby}; find $GEM_HOME/gems -name \"#{gem}-[0-9]*.[0-9]*.[0-9]*\"'", :environment => env
+      not_if "bash -c '#{rvm} use #{ruby}; find $GEM_HOME/gems -name \"#{gem}-[0-9]*.[0-9]*.[0-9]*\" | grep #{gem}'", :environment => env
     end
   end
 end
@@ -61,7 +61,7 @@ end
 bash "install chef for the default Ruby" do
   setup.call(self)
   code   "#{rvm} use #{default} && gem install chef --no-ri --no-rdoc"
-  not_if "bash -c '#{rvm} use #{default} && find $GEM_HOME/gems -name \"chef-[0-9]*.[0-9]*.[0-9]*\"'", :environment => env
+  not_if "bash -c '#{rvm} use #{default} && find $GEM_HOME/gems -name \"chef-[0-9]*.[0-9]*.[0-9]*\" | grep chef'", :environment => env
 end
 
 aliases.each do |existing_name, new_name|
