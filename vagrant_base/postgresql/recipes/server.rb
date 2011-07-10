@@ -17,9 +17,16 @@
 # limitations under the License.
 #
 
+bash "export LC_ALL and LANG for current chef-solo session/root" do
+  user "root"
+  code "export LC_ALL='en_US.UTF-8' LANG='en_US.UTF-8'"
+end
+
+ENV['LC_ALL'] = "en_US.UTF-8"
+ENV['LANG']   = "en_US.UTF-8"
+
+
 # for the current chef-solo run, it restarts PG when files like pg_hba.conf change. MK.
-# vagrant@lucid32:~$ sudo sysctl -w kernel.shmall=67108864
-# vagrant@lucid32:~$ sudo sysctl -w kernel.shmmax=67108864
 %w(shmmax shmall).each do |setting|
   bash "bump kernel.#{setting} to #{node[:sysctl][:kernel_shmmax]}" do
     user "vagrant"
@@ -34,7 +41,6 @@ template "/etc/sysctl.d/30-shared-memory.conf" do
   group "root"
   mode 0644
 end
-
 
 
 include_recipe "postgresql::client"
@@ -54,6 +60,7 @@ when "redhat", "centos", "fedora", "suse"
 when "debian", "ubuntu"
   include_recipe "postgresql::server_debian"
 end
+
 
 
 ["vagrant", "rails"].each do |username|

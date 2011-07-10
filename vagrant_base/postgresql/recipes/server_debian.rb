@@ -17,14 +17,6 @@
 # limitations under the License.
 #
 
-bash "export LC_ALL and LANG for current chef-solo session/root" do
-  user "root"
-  code "export LC_ALL='en_US.UTF-8' LANG='en_US.UTF-8'"
-end
-
-ENV['LC_ALL'] = "en_US.UTF-8"
-ENV['LANG']   = "en_US.UTF-8"
-
 
 include_recipe "postgresql::client"
 

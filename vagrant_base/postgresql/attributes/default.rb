@@ -18,7 +18,6 @@
 #
 case platform
 when "debian"
-
   if platform_version.to_f == 5.0
     default[:postgresql][:version] = "8.3"
   elsif platform_version =~ /.*sid/
@@ -26,9 +25,7 @@ when "debian"
   end
 
   set[:postgresql][:dir] = "/etc/postgresql/#{node[:postgresql][:version]}/main"
-
 when "ubuntu"
-
   if platform_version.to_f <= 9.04
     default[:postgresql][:version] = "8.3"
   else
@@ -36,9 +33,7 @@ when "ubuntu"
   end
 
   set[:postgresql][:dir] = "/etc/postgresql/#{node[:postgresql][:version]}/main"
-
 when "fedora"
-
   if platform_version.to_f <= 12
     default[:postgresql][:version] = "8.3"
   else
@@ -46,14 +41,10 @@ when "fedora"
   end
 
   set[:postgresql][:dir] = "/var/lib/pgsql/data"
-
 when "redhat","centos"
-
   default[:postgresql][:version] = "8.4"
   set[:postgresql][:dir] = "/var/lib/pgsql/data"
-
 when "suse"
-
   if platform_version.to_f <= 11.1
     default[:postgresql][:version] = "8.3"
   else
@@ -61,15 +52,14 @@ when "suse"
   end
 
   set[:postgresql][:dir] = "/var/lib/pgsql/data"
-
 else
   default[:postgresql][:version] = "8.4"
   set[:postgresql][:dir]            = "/etc/postgresql/#{node[:postgresql][:version]}/main"
 end
 
-# 64 MB
-default[:sysctl][:kernel_shmall] = 134217728
-# 64 MB
+# in pages
+default[:sysctl][:kernel_shmall] = 32768
+# in bytes
 default[:sysctl][:kernel_shmmax] = 134217728
 
-default[:postgresql][:max_connections] = 1024
+default[:postgresql][:max_connections] = 512
