@@ -21,6 +21,11 @@ require "tmpdir"
 tmp = Dir.tmpdir
 case node[:platform]
 when "debian", "ubuntu"
+  # required by git-svn. MK.
+  package "subversion"
+  package "libsvn-perl"
+
+
   # this assumes 32-bit base Vagrant box.
   # built via brew2deb, http://bit.ly/brew2deb. MK.
   %w(git_1.7.5.4-1+github5_i386.deb).each do |deb|
