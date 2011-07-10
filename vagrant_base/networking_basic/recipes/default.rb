@@ -23,8 +23,6 @@ packages = [
   'iputils-ping',
   'netcat-openbsd',
   'tcpdump',
-  'elinks',
-  'lynx',
   'bind9-host',
   "libcurl4-openssl-dev"
 ]
