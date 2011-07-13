@@ -29,15 +29,5 @@ directory node[:travis_build_environment][:path] do
 end
 
 
-case node[:platform]
-when "ubuntu", "debian" then
-  cookbook_file "/etc/default/rcS" do
-    source "defaults/rcS"
-    mode   0644
-    owner  "root"
-    group  "root"
-  end
-end
-
 include_recipe "travis_build_environment::root"
 include_recipe "travis_build_environment::vagrant"
