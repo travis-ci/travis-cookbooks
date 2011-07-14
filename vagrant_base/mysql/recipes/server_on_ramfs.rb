@@ -1,5 +1,51 @@
 #
 # Cookbook Name:: mysql
+# Recipe:: server_on_ramfs
+#
+# Copyright 2011, Travis CI Development Team
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# IMPORTANT: this recipe is only really needed by the Ruby on Rails test suite
+#            that is very I/O demanding. It places MySQL'd data dir to a ramfs mount
+#            and copies existing data dir there so that system catalogs are in place, then 
+#            restarts mysqld once again. Copying & restart also will happen once again on boot.
+#            This whole sequence is indeed hacky and needs extra care. But c'est la vie,
+#            ActiveRecord test suite runs x3 times faster with this recipe in place. MK.
+
+
+require "fileutils"
+
+# first, set up /var/ramfs
+directory(node[:ramfs]) do
+  owner "root"
+  group "root"
+  mode "0755"
+  action :create
+end
+
+mount "/var/ramfs" do
+  fstype   "ramfs"
+  device   "/dev/null" # http://tickets.opscode.com/browse/CHEF-1657
+  options  "defaults,size=256m,noatime"
+  action   [:mount, :enable]
+end
+
+# next, install the packages, do pre-seeding, restart mysqld all from a regular
+# ext3 mount.
+#
+# Cookbook Name:: mysql
 # Recipe:: server
 #
 # Copyright 2008-2011, Opscode, Inc.
@@ -21,13 +67,22 @@
 
 include_recipe "mysql::client"
 
-# generate all passwords
-node.set_unless['mysql']['server_debian_password'] = secure_password
-node.set_unless['mysql']['server_root_password']   = secure_password
-node.set_unless['mysql']['server_repl_password']   = secure_password
+# for CI environment, blank passwords make sense
+node.set_unless['mysql']['server_debian_password'] = ""
+node.set_unless['mysql']['server_root_password']   = ""
+node.set_unless['mysql']['server_repl_password']   = ""
+
+package "mysql-server" do
+  action :install
+end
+
+previous_data_dir      = node['mysql']['data_dir'].dup
+new_data_dir           = "#{node[:ramfs]}/mysql"
+#node[:mysql][:datadir] = new_data_dir
+
+
 
 if platform?(%w{debian ubuntu})
-
   directory "/var/cache/local/preseeding" do
     owner "root"
     group "root"
@@ -54,12 +109,8 @@ if platform?(%w{debian ubuntu})
     group "root"
     mode "0600"
   end
-
 end
 
-package "mysql-server" do
-  action :install
-end
 
 service "mysql" do
   service_name value_for_platform([ "centos", "redhat", "suse", "fedora" ] => {"default" => "mysqld"}, "default" => "mysql")
@@ -72,25 +123,16 @@ service "mysql" do
   action :nothing
 end
 
-template "#{node['mysql']['conf_dir']}/my.cnf" do
-  source "my.cnf.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-  notifies :restart, resources(:service => "mysql"), :immediately
-end
 
 
 # set the root password on platforms
 # that don't support pre-seeding
 unless platform?(%w{debian ubuntu})
-
   execute "assign-root-password" do
     command "/usr/bin/mysqladmin -u root password \"#{node['mysql']['server_root_password']}\""
     action :run
     only_if "/usr/bin/mysql -u root -e 'show databases;'"
   end
-
 end
 
 grants_path = "#{node['mysql']['conf_dir']}/mysql_grants.sql"
@@ -115,4 +157,22 @@ execute "mysql-install-privileges" do
 
   # This is intentional, makes provisioning idempotent/re-entrant. antares_, svenfuchs.
   ignore_failure true
+end
+
+
+bash "cp -R #{previous_data_dir} #{new_data_dir}" do
+  code "cp -R #{previous_data_dir} #{new_data_dir}"
+end
+bash "chown -R mysql:mysql #{new_data_dir}" do
+  code "chown -R mysql:mysql #{new_data_dir}"
+end
+
+node[:mysql][:data_dir] = new_data_dir
+
+template "#{node['mysql']['conf_dir']}/my.cnf" do
+  source "my.cnf.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  notifies :restart, resources(:service => "mysql")#, :immediately
 end

@@ -1,0 +1,1 @@
+default[:ramfs] = "/var/ramfs"
