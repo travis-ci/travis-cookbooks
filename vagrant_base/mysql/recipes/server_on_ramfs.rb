@@ -109,6 +109,14 @@ if platform?(%w{debian ubuntu})
     group "root"
     mode "0600"
   end
+
+  # copies existing mysql datadir to the ramfs volume.
+  template "/etc/init/mysql.conf" do
+    source "init/mysql.conf.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+  end
 end
 
 
