@@ -53,9 +53,9 @@ node[:rvm][:rubies].each do |ruby|
   end
 end
 
-bash "make #{default} the default ruby" do
+bash "make 1.8.7 the default ruby" do
   setup.call(self)
-  code "#{rvm} --default #{default}"
+  code "#{rvm} --default 1.8.7"
 end
 
 bash "install chef for the default Ruby" do
