@@ -33,13 +33,7 @@ else
   set['mysql']['old_passwords']               = 0
 end
 
-if attribute?('ec2')
-  default['mysql']['ec2_path']    = "/mnt/mysql"
-  default['mysql']['ebs_vol_dev'] = "/dev/sdi"
-  default['mysql']['ebs_vol_size'] = 50
-end
-
-# yes, for CI environment, empty password is a good idea. VM is rolled back after eack run anyway.
+# yes, for the CI environment, empty password is a good idea. VM is rolled back after eack run anyway.
 default['mysql']['server_root_password']   = ""
 default['mysql']['server_debian_password'] = ""
 default['mysql']['server_repl_password']   = ""

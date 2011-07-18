@@ -17,14 +17,12 @@
 # limitations under the License.
 #
 
-::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
-
 include_recipe "mysql::client"
 
-# generate all passwords
-node.set_unless['mysql']['server_debian_password'] = secure_password
-node.set_unless['mysql']['server_root_password']   = secure_password
-node.set_unless['mysql']['server_repl_password']   = secure_password
+# yes, for the CI environment, empty password is a good idea. VM is rolled back after eack run anyway.
+node.set_unless['mysql']['server_debian_password'] = ""
+node.set_unless['mysql']['server_root_password']   = ""
+node.set_unless['mysql']['server_repl_password']   = ""
 
 if platform?(%w{debian ubuntu})
 
