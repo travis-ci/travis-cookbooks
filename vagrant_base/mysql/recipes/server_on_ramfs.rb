@@ -82,3 +82,16 @@ template "#{node['mysql']['conf_dir']}/my.cnf" do
   # yes, notify about restart at the end of Chef run and NOT immediately
   notifies :restart, resources(:service => "mysql"), :delayed
 end
+
+
+# Tweak Upstart job script to copy /var/lib/mysql => /var/ramfs/mysql before
+# starting mysqld up.
+template "/etc/init/mysql.conf" do
+  source "init/mysql.conf.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+
+  # install this template only after mysql-install-privileges has run, but not earlier
+  subscribes :create, resources(:execute => "mysql-install-privileges"), :immediately
+end
