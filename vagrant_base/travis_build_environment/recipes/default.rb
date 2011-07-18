@@ -31,3 +31,11 @@ end
 
 include_recipe "travis_build_environment::root"
 include_recipe "travis_build_environment::vagrant"
+
+cookbook_file "/etc/default/locale" do
+  owner "root"
+  group "root"
+  mode 0644
+
+  source "etc/default/locale.sh"
+end

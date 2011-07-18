@@ -56,9 +56,9 @@ directory "/home/vagrant/builds" do
 end
 
 mount "/home/vagrant/builds" do
-  fstype   "tmpfs"
+  fstype   "ramfs"
   device   "/dev/null" # http://tickets.opscode.com/browse/CHEF-1657, doesn't seem to be included in 0.10.0
-  options  "defaults,size=500m,noatime"
+  options  "defaults,size=350m,noatime"
   action   [:mount, :enable]
 end
 
