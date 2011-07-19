@@ -2,8 +2,9 @@
 
 Travis cookbooks are collections of Chef cookbooks for setting up
 
- * Travis worker
- * Vagrant base VM
+ * Vagrant VMs
+ * Travis worker machine
+ * Messaging broker (once Travis migrates to [amqp & RabbitMQ](http://github.com/ruby-amqp/amqp))
  * Anything else we may need to set up
 
 ## Installing inside Vagrant Box using Chef-solo, sample Vagrantfile
