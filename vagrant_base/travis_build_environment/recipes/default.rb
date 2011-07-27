@@ -39,3 +39,11 @@ cookbook_file "/etc/default/locale" do
 
   source "etc/default/locale.sh"
 end
+
+template "/etc/hosts" do
+  owner "root"
+  group "root"
+  mode 0644
+
+  source "etc/hosts.erb"
+end
