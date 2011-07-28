@@ -9,4 +9,6 @@ ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
 
 # put Varnish in front of rubygems.org
-# TBD
+<% node[:travis_build_environment].fetch(:hosts, Hash.new).each do |host, ip| %>
+<%= ip %> <%= host %>
+<% end %>
