@@ -59,7 +59,7 @@ if node[:use_tmpfs]
   mount "/home/vagrant/builds" do
     fstype   "tmpfs"
     device   "/dev/null" # http://tickets.opscode.com/browse/CHEF-1657, doesn't seem to be included in 0.10.0
-    options  "defaults,size=#{node[:travis_build_environment][:builds_volume_size]},noatime"
+    options  "defaults,size=#{node.travis_build_environment.builds_volume_size},noatime"
     action   [:mount, :enable]
   end
 end
