@@ -21,14 +21,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-directory node[:travis_build_environment][:path] do
-  owner "vagrant"
-  group "vagrant"
-  mode  0755
-  action :create
-end
-
-
 include_recipe "travis_build_environment::root"
 include_recipe "travis_build_environment::vagrant"
 
