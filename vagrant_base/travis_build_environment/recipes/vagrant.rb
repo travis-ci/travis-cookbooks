@@ -63,4 +63,3 @@ if node[:use_tmpfs]
     action   [:mount, :enable]
   end
 end
-
