@@ -1,0 +1,32 @@
+{
+  "recipes": {
+  },
+  "conflicting": {
+  },
+  "license": "Apache 2.0",
+  "long_description": "= DESCRIPTION:\n\nInstalls Leiningen for building Clojure projects.\n\nRetrieve shell script, install jar files.\n",
+  "providing": {
+  },
+  "platforms": {
+  },
+  "maintainer": "Michael S. Klishin",
+  "replacing": {
+  },
+  "attributes": {
+  },
+  "maintainer_email": "michael.s.klishin@gmail.com",
+  "description": "Installs SBT (Simple Build Tool) 0.10.x for building Scala and Java projects.",
+  "groupings": {
+  },
+  "version": "1.0.0",
+  "recommendations": {
+  },
+  "name": "sbt",
+  "dependencies": {
+    "java": [
+
+    ]
+  },
+  "suggestions": {
+  }
+}
