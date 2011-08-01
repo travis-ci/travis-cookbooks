@@ -1,1 +1,2 @@
 gem: --no-ri --no-rdoc
+:verbose: really
