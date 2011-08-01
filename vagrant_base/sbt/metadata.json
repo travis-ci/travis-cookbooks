@@ -4,7 +4,7 @@
   "conflicting": {
   },
   "license": "Apache 2.0",
-  "long_description": "= DESCRIPTION:\n\nInstalls Leiningen for building Clojure projects.\n\nRetrieve shell script, install jar files.\n",
+  "long_description": "Installs SBT (Simple Build Tool) 0.10.x for building Scala and Java projects.\n",
   "providing": {
   },
   "platforms": {
