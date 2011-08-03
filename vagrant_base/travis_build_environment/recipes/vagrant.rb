@@ -55,11 +55,11 @@ directory "/home/vagrant/builds" do
   action :create
 end
 
-if node.travis_build_environment.use_tmpfs_for_builds
-  mount "/home/vagrant/builds" do
-    fstype   "tmpfs"
-    device   "/dev/null" # http://tickets.opscode.com/browse/CHEF-1657, doesn't seem to be included in 0.10.0
-    options  "defaults,size=#{node.travis_build_environment.builds_volume_size},noatime"
-    action   [:mount, :enable]
-  end
+
+mount "/home/vagrant/builds" do
+  fstype   "tmpfs"
+  device   "/dev/null" # http://tickets.opscode.com/browse/CHEF-1657, doesn't seem to be included in 0.10.0
+  options  "defaults,size=#{node.travis_build_environment.builds_volume_size},noatime"
+  action   [:mount, :enable]
+  only_if { node.travis_build_environment[:use_tmpfs_for_builds] }
 end
