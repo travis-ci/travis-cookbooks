@@ -51,7 +51,7 @@ node.kerl.releases.each do |rel, build|
     user    node.kerl.user
     group   node.kerl.group
 
-    environment({'HOME' => home, 'USER' => node.kerl.user)
+    environment({'HOME' => home, 'USER' => node.kerl.user})
 
     not_if "#{node.kerl.path} list builds | grep #{rel}"
 
