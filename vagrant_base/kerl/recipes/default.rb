@@ -30,6 +30,7 @@ end
 
 
 home = "/home/#{node.kerl.user}"
+env  = { 'HOME' => home, 'USER' => node.kerl.user }
 
 execute "erlang.releases.update" do
   command "#{node.kerl.path} update releases"
@@ -51,11 +52,8 @@ node.kerl.releases.each do |rel, build|
     user    node.kerl.user
     group   node.kerl.group
 
-    environment({'HOME' => home, 'USER' => node.kerl.user})
+    environment(env)
 
-    not_if "#{node.kerl.path} list builds | grep #{rel}"
-
-    # run when kerl has finished updating the list of available releases
-    subscribes :run, resources(:execute => "erlang.releases.update")
+    not_if "#{node.kerl.path} list builds | grep #{rel}", :user => node.kerl.user, :environment => env
   end
 end
