@@ -23,6 +23,15 @@ when "ubuntu","debian"
   end # each
 end # case
 
+installation_root = "/home/#{node.kerl.user}/otp"
+
+directory(installation_root) do
+  owner node.kerl.user
+  group node.kerl.group
+  mode  "0755"
+  action :create
+end
+
 remote_file(node.kerl.path) do
   source "https://raw.github.com/spawngrid/kerl/master/kerl"
   mode "0755"
@@ -30,23 +39,28 @@ end
 
 
 home = "/home/#{node.kerl.user}"
-env  = { 'HOME' => home, 'USER' => node.kerl.user }
+env  = {
+  'HOME'               => home,
+  'USER'               => node.kerl.user,
+  'KERL_DISABLE_AGNER' => 'yes',
+  "KERL_BASE_DIR"      => "#{home}/.kerl"
+}
 
 execute "erlang.releases.update" do
   command "#{node.kerl.path} update releases"
 
   user    node.kerl.user
   group   node.kerl.group
-  environment({'HOME' => home, "KERL_BASE_DIR" => "#{home}/.kerl"})
+
+  environment(env)
 
   # run when kerl script is downloaded & installed
   subscribes :run, resources(:remote_file => node.kerl.path)
 end
 
 
-log(node.kerl.to_hash.inspect)
 node.kerl.releases.each do |rel, build|
-  execute "install Erlang #{rel}" do
+  execute "build Erlang #{rel}" do
     command "#{node.kerl.path} build #{rel} #{rel.downcase}"
 
     user    node.kerl.user
@@ -55,5 +69,17 @@ node.kerl.releases.each do |rel, build|
     environment(env)
 
     not_if "#{node.kerl.path} list builds | grep #{rel}", :user => node.kerl.user, :environment => env
+  end
+
+
+  execute "install Erlang #{rel}" do
+    command "#{node.kerl.path} install #{rel.downcase} #{installation_root}/#{rel.downcase}"
+
+    user    node.kerl.user
+    group   node.kerl.group
+
+    environment(env)
+
+    not_if "#{node.kerl.path} list installations | grep #{rel}", :user => node.kerl.user, :environment => env
   end
 end
