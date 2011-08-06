@@ -18,6 +18,7 @@
 # limitations under the License.
 
 require "tmpdir"
+require "rbconfig"
 
 tmp = Dir.tmpdir
 case node[:platform]
@@ -30,10 +31,13 @@ when "debian", "ubuntu"
   package "libwww-perl"
   package "libterm-readkey-perl"
 
+  packages = if RbConfig::CONFIG['arch'] =~ /64/
+               %w(git_1.7.5.4-1+github5_amd64.deb)
+             else
+               %w(git_1.7.5.4-1+github5_i386.deb)
+             end
 
-  # this assumes 32-bit base Vagrant box.
-  # built via brew2deb, http://bit.ly/brew2deb. MK.
-  %w(git_1.7.5.4-1+github5_i386.deb).each do |deb|
+  packages.each do |deb|
     path = File.join(tmp, deb)
 
     cookbook_file(path) do
