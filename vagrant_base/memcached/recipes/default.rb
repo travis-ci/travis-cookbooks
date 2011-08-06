@@ -3,6 +3,7 @@
 # Recipe:: default
 #
 # Copyright 2009, Opscode, Inc.
+# Copyright 2022, Travis CI Development Team
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,8 +22,10 @@ package "memcached" do
   action :upgrade
 end
 
-package "libmemcached-dev" do
-  action :upgrade
+%w(libmemcached-dev libsasl2-dev).each do |pkg|
+  package(pkg) do
+    action :upgrade
+  end
 end
 
 service "memcached" do
