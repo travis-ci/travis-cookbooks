@@ -30,7 +30,13 @@ end
 package "postgresql"
 
 service "postgresql" do
-  service_name "postgresql-#{node.postgresql.version}"
+  case [node[:platform], node[:platform_version]]
+  when ["ubuntu", "10.04"] then
+    service_name "postgresql-#{node.postgresql.version}"
+  when ["ubuntu", "11.04"] then
+    service_name "postgresql"
+  end
+
   supports :restart => true, :status => true, :reload => true
   action :nothing
 end
