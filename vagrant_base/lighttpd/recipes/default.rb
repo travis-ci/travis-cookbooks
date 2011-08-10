@@ -24,3 +24,16 @@
 package "lighttpd" do
   action :install
 end
+
+service "lighttpd" do
+  supports :restart => true
+  action :nothing
+end
+
+template "/etc/lighttpd/lighttpd.conf" do
+  source "lighttpd.conf.erb"
+  owner "root"
+  group "root"
+  mode 0644
+  notifies :restart, resources(:service => "lighttpd")
+end
