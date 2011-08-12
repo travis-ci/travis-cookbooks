@@ -61,7 +61,7 @@ end
 
 node.kerl.releases.each do |rel, build|
   execute "build Erlang #{rel}" do
-    command "#{node.kerl.path} build #{rel} #{rel.downcase}"
+    command "#{node.kerl.path} build #{rel} #{rel}"
 
     user    node.kerl.user
     group   node.kerl.group
@@ -73,7 +73,7 @@ node.kerl.releases.each do |rel, build|
 
 
   execute "install Erlang #{rel}" do
-    command "#{node.kerl.path} install #{rel.downcase} #{installation_root}/#{rel.downcase}"
+    command "#{node.kerl.path} install #{rel} #{installation_root}/#{rel}"
 
     user    node.kerl.user
     group   node.kerl.group
