@@ -2,7 +2,7 @@
 # Cookbook Name:: kerl
 # Recipe:: default
 #
-# Copyright 2011, Michael S. Klishin
+# Copyright 2011, Michael S. Klishin, Ward Bekker
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
