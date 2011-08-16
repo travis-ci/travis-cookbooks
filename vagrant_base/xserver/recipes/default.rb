@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: xvfb
+# Cookbook Name:: xserver
 # Recipe:: default
 # Copyright 2011, Travis CI development team
 #
@@ -21,6 +21,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package "xvfb" do
-  action :install
-end
+list = case platform
+when "ubuntu", "debian" then
+  %w(xserver-xorg-core xvfb)
+end # case
+
+list.each { |pkg| package(pkg) { action :install } }
