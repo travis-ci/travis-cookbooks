@@ -15,6 +15,7 @@ v = node[:rabbitmq][:version]
 
   remote_file "#{node[:rabbitmq][:plugin_directory]}/#{filename}" do
     source "http://www.rabbitmq.com/releases/plugins/v#{v}/#{filename}"
+    mode '0644'
   end
 end 
 
