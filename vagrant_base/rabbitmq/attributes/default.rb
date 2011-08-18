@@ -8,3 +8,5 @@ default[:rabbitmq][:mnesiadir] = nil
 default[:rabbitmq][:cluster] = "no"
 default[:rabbitmq][:cluster_config] = "/etc/rabbitmq/rabbitmq_cluster.config"
 default[:rabbitmq][:cluster_disk_nodes] = []
+#plugins
+default[:rabbitmq][:plugin_directory] = "/usr/lib/rabbitmq/lib/rabbitmq_server-2.5.1/plugins/"
