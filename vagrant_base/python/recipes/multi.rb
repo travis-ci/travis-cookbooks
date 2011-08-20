@@ -43,3 +43,31 @@ python_pkgs.each do |pkg|
     action :install
   end
 end
+
+
+include_recipe "python::pip"
+include_recipe "python::virtualenv"
+
+# not a good practice but sufficient for travis-ci.org needs, so lets keep it
+# hardcoded. MK.
+installation_root = "/home/vagrant/virtualenv"
+
+directory(installation_root) do
+  owner "vagrant"
+  group "vagrant"
+  mode  "0755"
+
+  action :create
+end
+
+
+%w(python2.6 python2.7 python3.2).each do |py|
+  python_virtualenv "/home/vagrant" do
+    owner       "vagrant"
+    group       "vagrant"
+    interpreter py
+    path        "#{installation_root}/#{py}"
+
+    action :create
+  end
+end
