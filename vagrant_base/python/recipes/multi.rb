@@ -34,7 +34,7 @@ end
 
 python_pkgs = value_for_platform(
   ["debian","ubuntu"] => {
-    "default" => ["python","python-dev", "python2.7", "python3.2"]
+    "default" => (%w(python-dev) + node.python.multi.pythons)
   }
 )
 
@@ -61,7 +61,7 @@ directory(installation_root) do
 end
 
 
-%w(python2.6 python2.7 python3.2).each do |py|
+node.python.multi.pythons.each do |py|
   python_virtualenv "/home/vagrant" do
     owner       "vagrant"
     group       "vagrant"

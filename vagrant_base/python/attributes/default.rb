@@ -26,3 +26,5 @@ default['python']['checksum'] = '80e387bcf57eae8ce26726753584fd63e060ec11682d114
 default['python']['prefix_dir'] = '/usr/local'
 
 default['python']['configure_options'] = %W{--prefix=#{python['prefix_dir']}}
+
+default['python']['multi']['pythons'] = %w(python2.6 python2.7 python3.2)
