@@ -20,12 +20,16 @@ include_recipe('kerl')
 
 remote_file("/tmp/rebar.tar.gz") do
   source node.rebar.release  
+  owner node.rebar.user
+  group node.rebar.group
 end
 
-execute "active an erlang installation with kerl" do
-  command "otp=`kerl list installations | head -n 1 | cut -f2 -d\" \"` && source \"$otp/activate\""
-end
-
-execute "install rebar" do
-  command "tar xvf /tmp/rebar.tar.gz rebar && cd /tmp/rebar && ./bootstrap && chmod +x rebar && sudo cp rebar #{node.rebar.path}"
+script "install rebar" do
+  interpreter "bash"
+  user node.rebar.user
+  cwd "/tmp"
+  code <<-EOH
+      source /home/#{node.kerl.user}/otp/R14B01/activate
+      tar xvf /tmp/rebar.tar.gz && cd /tmp/#{node.rebar.release_dir} && ./bootstrap && chmod +x rebar && sudo cp rebar #{node.rebar.path}
+  EOH
 end
