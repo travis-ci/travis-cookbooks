@@ -1,5 +1,5 @@
-default[:redis][:version]   = "2.2.4"
-default[:redis][:checksum]  = "c98260dfab860da934d465e829ad0866"
+default[:redis][:version]   = "2.2.12"
+default[:redis][:checksum]  = "61b287860cab3e89c49390b8f5ffb697"
 default[:redis][:source]    = "http://redis.googlecode.com/files/redis-#{redis[:version]}.tar.gz"
 
 default[:redis][:dir]       = "/opt/redis-#{redis[:version]}"
