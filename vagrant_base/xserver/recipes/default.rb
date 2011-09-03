@@ -27,3 +27,11 @@ when "ubuntu", "debian" then
 end # case
 
 list.each { |pkg| package(pkg) { action :install } }
+
+cookbook_file "/etc/init.d/xvfb" do
+  owner "root"
+  group "root"
+  mode  0644
+
+  source "etc/init.d/xvfb.sh"
+end
