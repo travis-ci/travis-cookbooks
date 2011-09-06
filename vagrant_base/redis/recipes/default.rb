@@ -23,6 +23,22 @@
 
 require "tmpdir"
 
+user "redis" do
+  system true
+
+  action :create
+end
+
+
+%w(/var/lib/redis, /var/log/redis).each do |dir|
+  directory(dir) do
+    owner "redis"
+    group "redis"
+
+    action :create
+  end
+end
+
 tmp = Dir.tmpdir
 case node[:platform]
 when "debian", "ubuntu"
@@ -42,4 +58,14 @@ when "debian", "ubuntu"
       provider Chef::Provider::Package::Dpkg
     end
   end # each
+
+  bash "update rc.d" do
+    code <<-CODE
+    sudo update-rc.d redis-server defaults
+    sudo service redis-server start
+    CODE
+    user "root"
+
+    subscribes :run, resources(:package => "redis2-server_2.2.12+github1_i386.deb"), :immediately
+  end
 end # case
