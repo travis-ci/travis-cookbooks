@@ -68,4 +68,9 @@ when "debian", "ubuntu"
 
     subscribes :run, resources(:package => "redis2-server_2.2.12+github1_i386.deb"), :immediately
   end
+
+  service "redis-server" do
+    supports :restart => true, :status => true, :reload => true
+    action [:enable, :start]
+  end
 end # case
