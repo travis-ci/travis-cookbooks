@@ -41,4 +41,9 @@ when "debian", "ubuntu"
       provider Chef::Provider::Package::Dpkg
     end
   end # each
+
+  service "riak" do
+    supports :restart => true, :status => true, :reload => true
+    action [:enable, :start]
+  end
 end # case
