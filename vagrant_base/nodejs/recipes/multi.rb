@@ -46,11 +46,19 @@ end
 
 nvm = "source /home/vagrant/.nvm/nvm.sh; nvm"
 
+bash "syncing nvm with http://nodejs.org/" do
+  user "vagrant"
+  cwd "/home/vagrant"
+  code "#{nvm} sync"
+end
+
 node[:nodejs][:versions].each do |node|
   bash "installing node version #{node}" do
-    Chef::Log.info("Installing node v#{node}")
+    creates "/home/vagrant/.nvm/#{node}"
     user "vagrant"
-    not_if  "ls -l /home/vagrant/.nvm | grep \"^d\" | grep #{node}"
+    group "vagrant"
+    cwd "/home/vagrant"
+    environment({'HOME' => "/home/vagrant"})
     code  "#{nvm} install v#{node}"
   end
 end
@@ -63,6 +71,7 @@ end
 node[:nodejs][:aliases].each do |existing_name, new_name|
   bash "alias node #{existing_name} => #{new_name}" do
     user "vagrant"
+    cwd "/home/vagrant"
     code "#{nvm} alias #{new_name} v#{existing_name}"
   end
 end
