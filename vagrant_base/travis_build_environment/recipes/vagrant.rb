@@ -48,6 +48,25 @@ cookbook_file "/home/vagrant/.bashrc" do
   source "vagrant/dot_bashrc.sh"
 end
 
+
+directory "/home/vagrant/.ssh" do
+  owner  "vagrant"
+  group  "vagrant"
+  mode   "0755"
+
+  action :create
+end
+
+
+cookbook_file "/home/vagrant/.ssh/known_hosts" do
+  owner "vagrant"
+  group "vagrant"
+  mode  0600
+  
+  source "vagrant/known_hosts"
+end
+
+
 directory "/home/vagrant/builds" do
   owner "vagrant"
   group "vagrant"
