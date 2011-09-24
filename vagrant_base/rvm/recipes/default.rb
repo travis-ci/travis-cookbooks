@@ -3,7 +3,7 @@
 # Recipe:: default
 
 # Make sure that the package list is up to date on Ubuntu/Debian.
-include_recipe "apt" if [ 'debian', 'ubuntu' ].member? node[:platform]
+include_recipe "apt" if ['debian', 'ubuntu'].member? node[:platform]
 
 # Make sure we have all we need to compile ruby implementations:
 include_recipe "networking_basic"
@@ -12,7 +12,7 @@ include_recipe "git"
 
 case node[:platform]
 when "debian","ubuntu"
-  %w( libreadline5-dev libssl-dev libxml2-dev libxslt1-dev zlib1g-dev ).each do |pkg|
+  %w(libreadline5-dev libssl-dev libxml2-dev libxslt1-dev zlib1g-dev).each do |pkg|
     package pkg
   end
 end
@@ -21,7 +21,11 @@ bash "install RVM" do
   user        "vagrant"
   cwd         "/home/vagrant"
   environment Hash['HOME' => "/home/vagrant", 'rvm_user_install_flag' => '1']
-  code        "bash < <( curl -L -B http://rvm.beginrescueend.com/install/rvm )"
+  code        <<-SH
+  curl -s https://rvm.beginrescueend.com/install/rvm -o rvm-installer
+  chmod +x rvm-installer
+  ./rvm-installer --version #{node.rvm.version}
+  SH
   not_if      "test -d /home/vagrant/.rvm"
 end
 
