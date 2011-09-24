@@ -64,7 +64,7 @@ bash "install chef for the default Ruby" do
   not_if "bash -c '#{rvm} use #{default} && find $GEM_HOME/gems -name \"chef-[0-9]*.[0-9]*.[0-9]*\" | grep chef'", :environment => env
 end
 
-aliases.each do |existing_name, new_name|
+aliases.each do |new_name, existing_name|
   bash "alias #{existing_name} => #{new_name}" do
     setup.call(self)
     code "#{rvm} alias create #{new_name} #{existing_name}"
