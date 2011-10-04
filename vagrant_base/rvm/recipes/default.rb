@@ -9,6 +9,8 @@ include_recipe "apt" if ['debian', 'ubuntu'].member? node[:platform]
 include_recipe "networking_basic"
 include_recipe "build-essential"
 include_recipe "git"
+include_recipe "libyaml"
+include_recipe "libgdbm"
 
 case node[:platform]
 when "debian","ubuntu"
