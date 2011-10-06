@@ -38,18 +38,12 @@ nvm_version()
         return
     fi
     # If it looks like an explicit version, don't do anything funny
-    if [[ "$PATTERN" == v*.*.* ]]; then
+    if [[ "$PATTERN" == v?*.?*.?* ]]; then
         VERSION="$PATTERN"
     fi
     # The default version is the current one
     if [ ! "$PATTERN" -o "$PATTERN" = 'current' ]; then
         VERSION=`node -v 2>/dev/null`
-    fi
-    if [ "$PATTERN" = 'stable' ]; then
-        PATTERN='*.*[02468].'
-    fi
-    if [ "$PATTERN" = 'latest' ]; then
-        PATTERN='*.*.'
     fi
     if [ "$PATTERN" = 'all' ]; then
         (cd $NVM_DIR; \ls -dG v* 2>/dev/null || echo "N/A")
@@ -84,21 +78,18 @@ nvm()
       echo "    nvm install <version>       Download and install a <version>"
       echo "    nvm uninstall <version>     Uninstall a version"
       echo "    nvm use <version>           Modify PATH to use <version>"
-      echo "    nvm ls                      List versions (installed versions are blue)"
+      echo "    nvm ls                      List installed versions"
       echo "    nvm ls <version>            List versions matching a given description"
       echo "    nvm deactivate              Undo effects of NVM on current shell"
-      echo "    nvm sync                    Update the local cache of available versions"
       echo "    nvm alias [<pattern>]       Show all aliases beginning with <pattern>"
       echo "    nvm alias <name> <version>  Set an alias named <name> pointing to <version>"
       echo "    nvm unalias <name>          Deletes the alias named <name>"
       echo "    nvm copy-packages <version> Install global NPM packages contained in <version> to current version"
       echo
       echo "Example:"
-      echo "    nvm install v0.4.0          Install a specific version number"
-      echo "    nvm use stable              Use the stable release"
-      echo "    nvm install latest          Install the latest, possibly unstable version"
+      echo "    nvm install v0.4.12         Install a specific version number"
       echo "    nvm use 0.2                 Use the latest available 0.2.x release"
-      echo "    nvm alias default v0.4.0    Set v0.4.0 as the default"
+      echo "    nvm alias default 0.4       Auto use the latest installed v0.4.x version"
       echo
     ;;
     "install" )
@@ -108,6 +99,9 @@ nvm()
       fi
       [ "$NOCURL" ] && curl && return
       VERSION=`nvm_version $2`
+
+      [ -d "$NVM_DIR/$VERSION" ] && echo "$VERSION is already installed." && return
+
       tarball=''
       if [ "`curl -Is "http://nodejs.org/dist/$VERSION/node-$VERSION.tar.gz" | grep '200 OK'`" != '' ]; then
         tarball="http://nodejs.org/dist/$VERSION/node-$VERSION.tar.gz"
@@ -131,7 +125,7 @@ nvm()
         if ! which npm ; then
           echo "Installing npm..."
           # TODO: if node version 0.2.x add npm_install=0.2.19 before sh
-          curl http://npmjs.org/install.sh | clean=yes sh
+          curl http://npmjs.org/install.sh | clean=no sh
         fi
       else
         echo "nvm: install $VERSION failed!"
@@ -150,10 +144,9 @@ nvm()
       fi
 
       # Delete all files related to target version.
-      (cd "$NVM_DIR" && \
-          rm -rf "node-$VERSION" 2>/dev/null && \
-          mkdir -p "$NVM_DIR/src" && \
+      (mkdir -p "$NVM_DIR/src" && \
           cd "$NVM_DIR/src" && \
+          rm -rf "node-$VERSION" 2>/dev/null && \
           rm -f "node-$VERSION.tar.gz" 2>/dev/null && \
           rm -rf "$NVM_DIR/$VERSION" 2>/dev/null)
       echo "Uninstalled node $VERSION"
@@ -164,8 +157,6 @@ nvm()
         nvm unalias `basename $A`
       done
 
-      # Run sync in order to restore version stub file in $NVM_DIR.
-      nvm sync 1>/dev/null
     ;;
     "deactivate" )
       if [[ $PATH == *$NVM_DIR/*/bin* ]]; then
@@ -219,7 +210,6 @@ nvm()
           echo -ne "$P: \t"; nvm_version $P
       done
       nvm alias
-      echo "# use 'nvm sync' to update from nodejs.org"
     ;;
     "alias" )
       mkdir -p $NVM_DIR/alias
@@ -248,7 +238,6 @@ nvm()
       echo $3 > "$NVM_DIR/alias/$2"
       if [ ! "$3" = "$VERSION" ]; then
           echo "$2 -> $3 (-> $VERSION)"
-          echo "! WARNING: Moving target. Aliases to implicit versions may change without warning."
       else
         echo "$2 -> $3"
       fi
@@ -259,21 +248,6 @@ nvm()
       [ ! -f $NVM_DIR/alias/$2 ] && echo "Alias $2 doesn't exist!" && return
       rm -f $NVM_DIR/alias/$2
       echo "Deleted alias $2"
-    ;;
-    "sync" )
-        [ "$NOCURL" ] && curl && return
-        LATEST=`nvm_version latest`
-        STABLE=`nvm_version stable`
-        (cd $NVM_DIR
-        rm -f v* 2>/dev/null
-        printf "# syncing with nodejs.org..."
-        for VER in `curl -s http://nodejs.org/dist/ -o - | grep 'v[0-9].*' | sed -e 's/.*node-//' -e 's/\.tar\.gz.*//' -e 's/<[^>]*>//' -e 's/\/<[^>]*>.*//'`; do
-            touch $VER
-        done
-        echo " done."
-        )
-        [ "$STABLE" = `nvm_version stable` ] || echo "NEW stable: `nvm_version stable`"
-        [ "$LATEST" = `nvm_version latest` ] || echo "NEW latest: `nvm_version latest`"
     ;;
     "copy-packages" )
         if [ $# -ne 2 ]; then

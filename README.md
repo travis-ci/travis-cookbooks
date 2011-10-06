@@ -87,7 +87,6 @@ vms:
     - networking_basic
     - openssl
     - sysctl
-    - libyaml # libyaml MUST be installed before rubies. MK.
     - emacs::nox
     - vim
     - timetrap
