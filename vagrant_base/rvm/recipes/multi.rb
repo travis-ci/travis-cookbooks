@@ -38,6 +38,7 @@ setup = lambda do |bash|
 end
 
 node[:rvm][:rubies].each do |ruby|
+  ruby = ruby.split(' ')[0]
   bash "installing #{ruby}" do
     setup.call(self)
     code   "#{rvm} install #{ruby}"
