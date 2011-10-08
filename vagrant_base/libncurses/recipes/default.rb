@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: ncurses
+# Cookbook Name:: libncurses
 # Recipe:: default
 # Copyright 2011, Travis CI development team
 #
