@@ -37,19 +37,18 @@ setup = lambda do |bash|
   bash.environment env
 end
 
-node[:rvm][:rubies].each do |ruby|
-  ruby = ruby.split(' ')[0]
-  bash "installing #{ruby}" do
+node[:rvm][:rubies].each do  | name, ruby |
+  bash "installing #{name}" do
     setup.call(self)
     code   "#{rvm} install #{ruby}"
-    not_if "ls #{home}/.rvm/rubies | grep #{ruby}"
+    not_if "ls #{home}/.rvm/rubies | grep #{name}"
   end
 
   gems.each do |gem|
-    bash "installing gem #{gem} for #{ruby}" do
+    bash "installing gem #{gem} for #{name}" do
       setup.call(self)
-      code   "#{rvm} use #{ruby}; gem install #{gem} --no-ri --no-rdoc"
-      not_if "bash -c '#{rvm} use #{ruby}; find $GEM_HOME/gems -name \"#{gem}-[0-9]*.[0-9]*.[0-9]*\" | grep #{gem}'", :environment => env
+      code   "#{rvm} use #{name}; gem install #{gem} --no-ri --no-rdoc"
+      not_if "bash -c '#{rvm} use #{name}; find $GEM_HOME/gems -name \"#{gem}-[0-9]*.[0-9]*.[0-9]*\" | grep #{gem}'", :environment => env
     end
   end
 end
