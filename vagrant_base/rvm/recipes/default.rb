@@ -37,15 +37,6 @@ bash "install RVM" do
   not_if      "test -d /home/vagrant/.rvm"
 end
 
-
-cookbook_file "/home/vagrant/.rvm/scripts/fetch" do
-  owner "vagrant"
-  group "vagrant"
-  mode  0755
-
-  source "rvm_fetch.sh"
-end
-
 cookbook_file "/etc/profile.d/rvm.sh" do
   owner "vagrant"
   group "vagrant"
