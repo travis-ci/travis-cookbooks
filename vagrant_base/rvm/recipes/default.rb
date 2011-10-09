@@ -24,9 +24,9 @@ bash "install RVM" do
   cwd         "/home/vagrant"
   environment Hash['HOME' => "/home/vagrant", 'rvm_user_install_flag' => '1']
   code        <<-SH
-  curl -s https://rvm.beginrescueend.com/install/rvm -o rvm-installer
-  chmod +x rvm-installer
-  ./rvm-installer --version #{node.rvm.version}
+  curl -s http://rvm.beginrescueend.com/install/rvm -o /tmp/rvm-installer
+  chmod +x /tmp/rvm-installer
+  /tmp/rvm-installer --version #{node.rvm.version}
   SH
   not_if      "test -d /home/vagrant/.rvm"
 end
