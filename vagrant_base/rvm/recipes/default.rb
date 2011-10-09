@@ -19,12 +19,18 @@ when "debian","ubuntu"
   end
 end
 
+cookbook_file "/tmp/rvm-installer.sh" do
+  owner "vagrant"
+  group "vagrant"
+  mode 0755
+end
+
+
 bash "install RVM" do
   user        "vagrant"
   cwd         "/home/vagrant"
   environment Hash['HOME' => "/home/vagrant", 'rvm_user_install_flag' => '1']
   code        <<-SH
-  curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer -o /tmp/rvm-installer
   chmod +x /tmp/rvm-installer
   /tmp/rvm-installer --version #{node.rvm.version}
   SH
