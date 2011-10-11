@@ -27,10 +27,10 @@ gems    = node[:rvm].fetch(:gems, []) | ['bundler', 'chef']
 default = node[:rvm][:default] || node[:rvm][:rubies].first
 aliases = node[:rvm][:aliases] || []
 
-home = '/home/vagrant'
+home = node[:rvm][:home]
 rvm  = "source #{home}/.rvm/scripts/rvm && rvm"
 env  = { 'HOME' => home, 'rvm_user_install_flag' => '1' }
-user = "vagrant"
+user = node[:rvm][:user]/
 
 setup = lambda do |bash|
   bash.user user
@@ -54,9 +54,9 @@ node[:rvm][:rubies].each do |ruby|
   end
 end
 
-bash "make 1.8.7 the default ruby" do
+bash "make #{node[:rvm][:default]} the default ruby" do
   setup.call(self)
-  code "#{rvm} --default 1.8.7"
+  code "#{rvm} --default #{node[:rvm][:default]}"
 end
 
 bash "install chef for the default Ruby" do
