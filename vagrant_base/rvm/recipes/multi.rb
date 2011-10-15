@@ -30,7 +30,7 @@ aliases = node[:rvm][:aliases] || []
 home = node[:rvm][:home]
 rvm  = "source #{home}/.rvm/scripts/rvm && rvm"
 env  = { 'HOME' => home, 'rvm_user_install_flag' => '1' }
-user = node[:rvm][:user]/
+user = node[:rvm][:user]
 
 setup = lambda do |bash|
   bash.user user
