@@ -21,7 +21,7 @@ end
 
 bash "install RVM" do
   user        node[:rvm][:user]
-  cwd         hode[:rvm][:home]
+  cwd         node[:rvm][:home]
   environment Hash['HOME' => node[:rvm][:home], 'rvm_user_install_flag' => '1']
   code        <<-SH
   curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer -o /tmp/rvm-installer
