@@ -37,8 +37,8 @@ setup = lambda do |bash|
   bash.environment env
 end
 
-node[:rvm][:rubies].each do  | name, ruby |
-  bash "installing #{name}" do
+node[:rvm][:rubies].each do  |name, ruby|
+  bash "installing #{name} (#{ruby})" do
     setup.call(self)
     code   "#{rvm} install #{ruby}"
     not_if "ls #{home}/.rvm/rubies | grep #{name}"
