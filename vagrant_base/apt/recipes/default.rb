@@ -17,11 +17,14 @@
 # limitations under the License.
 #
 
-e = execute "apt-get update" do
-  action :nothing
+execute "apt-get update" do
+  action :run
 end
+template "/etc/apt/sources.list" do
+  source "sources.list.erb"
 
-e.run_action(:run)
+  notifies :run, resources(:execute => "apt-get update"), :immediately
+end
 
 %w{/var/cache/local /var/cache/local/preseeding}.each do |dirname|
   directory dirname do
