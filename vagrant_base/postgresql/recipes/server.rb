@@ -29,8 +29,8 @@ ENV['LANG']   = "en_US.UTF-8"
 # for the current chef-solo run, it restarts PG when files like pg_hba.conf change. MK.
 %w(shmmax shmall).each do |setting|
   bash "bump kernel.#{setting} to #{node[:sysctl][:kernel_shmmax]}" do
-    user "vagrant"
-    code "sudo sysctl -w kernel.#{setting}=#{node[:sysctl][:kernel_shmmax]}"
+    user "root"
+    code "sysctl -w kernel.#{setting}=#{node[:sysctl][:kernel_shmmax]}"
   end
 end
 
