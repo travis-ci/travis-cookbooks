@@ -27,13 +27,13 @@ tmp = Dir.tmpdir
 case node[:platform]
 when "debian", "ubuntu"
   # this assumes 32-bit base Vagrant box.
-  %w(riak_1.0.0-1_i386.deb).each do |deb|
+  ["riak_#{node.riak.version}-1_i386.deb"].each do |deb|
     path = File.join(tmp, deb)
 
     remote_file(path) do
       owner  "vagrant"
       group  "vagrant"
-      source "http://downloads.basho.com.s3-website-us-east-1.amazonaws.com/riak/1.0/1.0.0/riak_1.0.0-1_i386.deb"
+      source "http://downloads.basho.com.s3-website-us-east-1.amazonaws.com/riak/1.0/#{node.riak.version}/#{deb}"
     end
 
     package(deb) do
