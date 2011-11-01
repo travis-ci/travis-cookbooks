@@ -107,11 +107,11 @@ bash "installing 1.9.3" do
 end
 
 # then install Rubinius with 1.9 mode by default using 1.9.3
-# bash "installing Rubinius in 1.9 mode by default using Ruby 1.9.3" do
-#   setup.call(self)
-#   code   "#{rvm} use 1.9.3 && #{rvm} install rbx-head -n d19 --branch 2.0.testing -- default-version=1.9"
-#   not_if "ls #{home}/.rvm/rubies | grep rbx-head-d19"
-# end
+bash "installing Rubinius in 1.9 mode by default using Ruby 1.9.3" do
+  setup.call(self)
+  code   "#{rvm} use 1.9.3 && #{rvm} install rbx-head -n d19 --branch 2.0.testing -- --default-version=1.9"
+  not_if "ls #{home}/.rvm/rubies | grep rbx-head-d19"
+end
 
 
 # then install ruby-head
