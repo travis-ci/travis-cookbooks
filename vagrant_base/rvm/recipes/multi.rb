@@ -132,7 +132,7 @@ end
 
 
 # now we can install gems by iterating over rubies in any order. MK.
-%w(1.8.7 jruby rbx ree 1.9.2 1.9.3 ruby-head).each do |name|
+%w(1.8.7 jruby rbx ree 1.9.2 1.9.3 ruby-head 1.8.6 rbx-head-d19).each do |name|
   gems.each do |gem|
     bash "installing gem #{gem} for #{name}" do
       setup.call(self)
