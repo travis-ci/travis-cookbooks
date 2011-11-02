@@ -7,14 +7,14 @@ case node['platform']
     end
 end
 
-directory(node.phpfarm.path) do
+directory node.phpfarm.path do
   owner node.phpfarm.user
   group node.phpfarm.group
   mode  "0755"
   action :create
 end
 
-remote_file("/tmp/phpfarm-0.1.0.tar.bz2") do
+remote_file "/tmp/phpfarm-0.1.0.tar.bz2" do
   source "http://downloads.sourceforge.net/project/phpfarm/phpfarm/v0.1/phpfarm-0.1.0.tar.bz2"
   mode "0755"
 end
