@@ -7,7 +7,9 @@ case node['platform']
     end
 end
 
-directory node.phpfarm.path do
+phpfarm_path = "#{node.phpfarm.home}/.phpfarm"
+
+directory phpfarm_path do
   owner node.phpfarm.user
   group node.phpfarm.group
   mode  "0755"
@@ -23,9 +25,9 @@ bash "extract phpfarm" do
   user node.phpfarm.user
   group node.phpfarm.group
   code <<-EOF
-  tar xjf /tmp/phpfarm-0.1.0.tar.bz2 -C #{node.phpfarm.path}
-  mv #{node.phpfarm.path}/phpfarm-0.1.0/* #{node.phpfarm.path}
-  rmdir #{node.phpfarm.path}/phpfarm-0.1.0
+  tar xjf /tmp/phpfarm-0.1.0.tar.bz2 -C #{phpfarm_path}
+  mv #{phpfarm_path}/phpfarm-0.1.0/* #{phpfarm_path}
+  rmdir #{phpfarm_path}/phpfarm-0.1.0
   EOF
-  not_if "test -f #{node.phpfarm.path}/src/compile.sh"
+  not_if "test -f #{phpfarm_path}/src/compile.sh"
 end

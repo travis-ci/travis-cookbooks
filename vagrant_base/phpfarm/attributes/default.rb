@@ -1,3 +1,3 @@
-default[:phpfarm][:path]  = "/home/vagrant/phpfarm"
 default[:phpfarm][:user]  = "vagrant"
 default[:phpfarm][:group] = "vagrant"
+default[:phpfarm][:home]  = "/home/vagrant"

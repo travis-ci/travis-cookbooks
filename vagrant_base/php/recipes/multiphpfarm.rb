@@ -6,13 +6,14 @@ node.php.multi.phps.each do |php_version|
     action :create
   end
 
-  pyrus_bin = "#{node.phpfarm.path}/inst/bin/pyrus-#{php_version}"
-  phpunit_bin = "#{node.phpfarm.path}/inst/php-#{php_version}/bin/phpunit"
+  phpfarm_path = "#{node.phpfarm.home}/.phpfarm"
+  pyrus_bin = "#{phpfarm_path}/inst/bin/pyrus-#{php_version}"
+  phpunit_bin = "#{phpfarm_path}/inst/php-#{php_version}/bin/phpunit"
   bash "install phpunit" do
     user "vagrant"
     group "vagrant"
-    environment Hash["HOME" => "/home/vagrant"]
-    cwd node.phpfarm.path
+    environment Hash["HOME" => node.phpfarm.home]
+    cwd phpfarm_path
     code <<-EOF
     . #{pyrus_bin} channel-discover pear.phpunit.de
     . #{pyrus_bin} channel-discover pear.symfony-project.com
