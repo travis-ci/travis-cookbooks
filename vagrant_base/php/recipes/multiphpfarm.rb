@@ -1,4 +1,16 @@
+include_recipe "phpfarm"
+include_recipe "phpenv"
+
+phpfarm_path = "#{node.phpfarm.home}/.phpfarm"
+phpenv_path = "#{node.phpenv.home}/.phpenv"
+
+# symlink php versions installed by phpfarm into phpenv
+link "#{phpenv_path}/versions" do
+  to "#{phpfarm_path}/inst"
+end
+
 node.php.multi.phps.each do |php_version|
+
   phpfarm_compile php_version do
     owner "vagrant"
     group "vagrant"
@@ -6,7 +18,6 @@ node.php.multi.phps.each do |php_version|
     action :create
   end
 
-  phpfarm_path = "#{node.phpfarm.home}/.phpfarm"
   pyrus_bin = "#{phpfarm_path}/inst/bin/pyrus-#{php_version}"
   phpunit_bin = "#{phpfarm_path}/inst/php-#{php_version}/bin/phpunit"
   bash "install phpunit" do
