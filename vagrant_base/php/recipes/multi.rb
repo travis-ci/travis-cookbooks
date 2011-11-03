@@ -9,7 +9,7 @@ link "#{phpenv_path}/versions" do
   to "#{phpfarm_path}/inst"
 end
 
-node.php.multi.phps.each do |php_version|
+node.php.multi.versions.each do |php_version|
 
   phpfarm_compile php_version do
     owner "vagrant"
