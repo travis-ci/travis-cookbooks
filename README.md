@@ -2,113 +2,22 @@
 
 Travis cookbooks are collections of Chef cookbooks for setting up
 
- * Vagrant VMs
- * Travis worker machine
- * Messaging broker (once Travis migrates to [amqp & RabbitMQ](http://github.com/ruby-amqp/amqp))
+ * VMs (CI environment)
+ * Travis worker machine (host OS)
+ * Messaging broker (Travis is being migrated to [amqp & RabbitMQ](http://github.com/ruby-amqp/amqp))
  * Anything else we may need to set up
 
-## Installing inside Vagrant Box using Chef-solo, sample Vagrantfile
+## Travis-Build Migration
 
-``` ruby
-$: << 'lib'
-require 'yaml'
-require 'travis/worker'
+Travis cookbooks are now part of a larger project that travis-ci.org developers use to create VM images for Ci environment. It is called [travis-boxes](https://github.com/travis-ci/travis-boxes)
+and will be at the heart of version 3 of travis-ci.org.
 
-config = Travis::Worker.config.vms
-with_base = ENV['WITH_BASE'] == 'true'
 
-Vagrant::Config.run do |c|
-  config.vms.each_with_index do |name, num|
-    next if name == 'base' && !with_base
+## Developing Cookbooks
 
-    c.vm.define(name) do |c|
-      c.vm.box = name == 'base' ? 'base' : "worker-#{num}"
-      c.vm.forward_port('ssh', 22, 2220 + num)
-
-      c.vm.customize do |vm|
-        vm.memory_size = config.memory.to_i
-      end
-
-      if config.recipes?
-        c.vm.provision :chef_solo do |chef|
-          chef.cookbooks_path = config.cookbooks
-          chef.log_level = :debug # config.log_level
-
-          config.recipes.each do |recipe|
-            chef.add_recipe(recipe)
-          end
-
-          chef.json.merge!(config.json)
-        end
-      end
-    end
-  end
-end
-```
-
-then in .worker.yml, add :vms section that lists the cookbooks you want to provision:
-
-``` yaml
-vms:
-  count: 3
-  base: lucid32
-  memory: 1536
-  cookbooks: 'vendor/cookbooks/vagrant_base'
-  json:
-    rvm:
-      rubies:
-        - 1.8.6
-        - 1.8.7
-        - 1.8.7-p174
-        - 1.8.7-p249
-        - 1.9.2
-        - 1.9.1-p378
-        - jruby
-        - rbx
-        - rbx-2.0.0pre
-        - ree
-        - ruby-head
-      gems:
-        - bundler
-        - rake
-        - chef
-      aliases:
-        rbx-2.0.0pre: rbx-2.0
-        1.9.1-p378:   1.9.1
-    mysql:
-      server_root_password: ""
-    postgresql:
-      max_connections: 256
-  recipes:
-    - travis_build_environment
-    - apt
-    - build-essential
-    - scons
-    - networking_basic
-    - openssl
-    - sysctl
-    - emacs::nox
-    - vim
-    - timetrap
-    - git
-    - java::openjdk
-    - libqt4
-    - libv8
-    - nodejs
-    - rvm
-    - rvm::multi
-    - sqlite
-    - postgresql::client
-    - postgresql::server
-    - redis
-    - mysql::client
-    - mysql::server
-    - mongodb
-    - memcached
-    - rabbitmq
-    - imagemagick
-```
+Cookbooks are developed using Vagrant with either [travis-boxes](https://github.com/travis-ci/travis-boxes) or [Sous Chef](https://github.com/michaelklishin/sous-chef).
+See those projects for more detailed instructions.
 
 ## License
 
-See LICENSE file.
+See the LICENSE file.
