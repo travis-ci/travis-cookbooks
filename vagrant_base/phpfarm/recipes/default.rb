@@ -31,3 +31,12 @@ bash "extract phpfarm" do
   EOF
   not_if "test -f #{phpfarm_path}/src/compile.sh"
 end
+
+template "#{phpfarm_path}/src/custom-php.ini" do
+  owner node.phpfarm.user
+  group node.phpfarm.group
+  source "custom-php.ini.erb"
+  variables(
+    :memory_limit => node.phpfarm.custom.php_ini.memory_limit
+  )
+end
