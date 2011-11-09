@@ -34,3 +34,9 @@ node.php.multi.versions.each do |php_version|
   end
 
 end
+
+node.php.multi.aliases.each do |short_version, target_version|
+  link "#{phpenv_path}/versions/php-#{short_version}" do
+    to "#{phpenv_path}/versions/php-#{target_version}"
+  end
+end
