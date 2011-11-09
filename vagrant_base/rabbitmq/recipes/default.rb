@@ -49,3 +49,6 @@ end
 
 package "rabbitmq-server"
 
+service "rabbitmq-server" do
+  supports :restart => true, :status => true, :reload => true
+end
