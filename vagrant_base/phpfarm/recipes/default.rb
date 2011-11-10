@@ -2,7 +2,7 @@ include_recipe "apt"
 
 case node['platform']
   when "ubuntu", "debian"
-    %w{libbz2-dev libc-client2007e-dev libcurl4-gnutls-dev libfreetype6-dev libgmp3-dev libjpeg62-dev libkrb5-dev libmcrypt-dev libpng12-dev libssl-dev libt1-dev libmhash-dev libexpat1-dev libxml2-dev}.each do |pkg|
+    %w{libbz2-dev libc-client2007e-dev libcurl4-gnutls-dev libfreetype6-dev libgmp3-dev libjpeg62-dev libkrb5-dev libmcrypt-dev libpng12-dev libssl-dev libt1-dev libmhash-dev libexpat1-dev libxml2-dev libicu-dev language-pack-fr}.each do |pkg|
       package(pkg) { action :install }
     end
 end
@@ -37,6 +37,13 @@ template "#{phpfarm_path}/src/custom-php.ini" do
   group node.phpfarm.group
   source "custom-php.ini.erb"
   variables(
+    :timezone     => node.phpfarm.custom.php_ini.timezone,
     :memory_limit => node.phpfarm.custom.php_ini.memory_limit
   )
+end
+
+template "#{phpfarm_path}/src/custom-options.sh" do
+  owner node.phpfarm.user
+  group node.phpfarm.group
+  source "custom-options.sh.erb"
 end
