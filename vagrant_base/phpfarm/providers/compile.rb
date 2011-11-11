@@ -4,7 +4,7 @@ action :create do
     new_resource = @new_resource
     phpfarm_path = "#{node.phpfarm.home}/.phpfarm"
     version = new_resource.version
-    bash "install PHP with phpfarm" do
+    bash "install PHP #{version} with phpfarm" do
       user new_resource.owner
       group new_resource.group
       cwd Chef::Config[:file_cache_path]
