@@ -21,6 +21,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+include_recipe "timezone"
+include_recipe "timetrap"
+
 include_recipe "travis_build_environment::root"
 include_recipe "travis_build_environment::vagrant"
 
