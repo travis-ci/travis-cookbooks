@@ -10,7 +10,6 @@ link "#{phpenv_path}/versions" do
 end
 
 node.php.multi.versions.each do |php_version|
-
   phpfarm_compile php_version do
     owner "vagrant"
     group "vagrant"
@@ -18,7 +17,7 @@ node.php.multi.versions.each do |php_version|
     action :create
   end
 
-  pyrus_bin = "#{phpfarm_path}/inst/bin/pyrus-#{php_version}"
+  pyrus_bin   = "#{phpfarm_path}/inst/bin/pyrus-#{php_version}"
   phpunit_bin = "#{phpfarm_path}/inst/php-#{php_version}/bin/phpunit"
   bash "install phpunit on PHP #{php_version}" do
     user "vagrant"
@@ -31,8 +30,10 @@ node.php.multi.versions.each do |php_version|
     . #{pyrus_bin} install phpunit/PHPUnit
     EOF
     not_if "test -f #{phpunit_bin}"
-  end
 
+    action :nothing # will be run by the phpfarm resource. MK.
+    subscribes :run, resources("phpfarm_compile[#{php_version}]")
+  end
 end
 
 node.php.multi.aliases.each do |short_version, target_version|
