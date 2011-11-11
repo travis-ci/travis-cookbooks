@@ -8,6 +8,7 @@
 # set these as early as possible. MK.
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
+export TZ=UTC
 
 
 # don't put duplicate lines in the history. See bash(1) for more options
