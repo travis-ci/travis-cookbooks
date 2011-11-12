@@ -7,9 +7,8 @@ action :create do
     bash "install PHP #{version} with phpfarm" do
       user new_resource.owner
       group new_resource.group
-      cwd Chef::Config[:file_cache_path]
+      cwd "#{phpfarm_path}/src"
       code <<-EOF
-      cd #{phpfarm_path}/src
       ./compile.sh #{version}
       EOF
       not_if "test -f #{phpfarm_path}/inst/bin/php-#{version}"
