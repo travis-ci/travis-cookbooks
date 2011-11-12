@@ -17,9 +17,10 @@ node.php.multi.versions.each do |php_version|
     action :create
   end
 
-  pyrus_bin   = "#{phpfarm_path}/inst/bin/pyrus-#{php_version}"
-  phpunit_bin = "#{phpfarm_path}/inst/php-#{php_version}/bin/phpunit"
   bash "install phpunit on PHP #{php_version}" do
+    pyrus_bin   = "#{phpfarm_path}/inst/bin/pyrus-#{php_version}"
+    phpunit_bin = "#{phpfarm_path}/inst/php-#{php_version}/bin/phpunit"
+
     user "vagrant"
     group "vagrant"
     environment Hash["HOME" => node.phpfarm.home]
