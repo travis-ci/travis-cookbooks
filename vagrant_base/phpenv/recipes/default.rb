@@ -15,6 +15,13 @@ bash "install phpenv" do
   not_if "test -f #{node.phpenv.home}/.phpenv/bin/phpenv"
 end
 
+directory "#{node.phpenv.home}/.phpenv/versions" do
+  owner  node[:phpbuild][:user]
+  group  node[:phpbuild][:group]
+  mode   "0755"
+  action :create
+end
+
 cookbook_file "/etc/profile.d/phpenv.sh" do
   owner node.phpenv.user
   group node.phpenv.group

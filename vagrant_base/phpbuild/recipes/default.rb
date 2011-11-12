@@ -9,18 +9,41 @@ end
 
 phpbuild_path = "#{node[:phpbuild][:home]}/.php-build"
 
-remote_file "/tmp/CHH-php-build.tar.gz" do
-  source "https://github.com/CHH/php-build/tarball/master"
-  mode "0755"
+git phpbuild_path do
+  user       node[:phpbuild][:user]
+  group      node[:phpbuild][:group]
+  repository "git://github.com/CHH/php-build.git"
+  revision   "693715de0b59ea0642e3e94c3a72d8cd76b1be49"
+  action     :checkout
 end
 
-bash "extract php-build" do
-  user node[:phpbuild][:user]
-  group node[:phpbuild][:group]
+git "/tmp/php-build-plugin-phpunit" do
+  user       node[:phpbuild][:user]
+  group      node[:phpbuild][:group]
+  repository "git://github.com/CHH/php-build-plugin-phpunit.git"
+  revision   "0030458a985557671752afaeb7a28f8077b59be9"
+  action     :checkout
+end
+
+directory "#{phpbuild_path}/versions" do
+  owner  node[:phpbuild][:user]
+  group  node[:phpbuild][:group]
+  mode   "0755"
+  action :create
+end
+
+directory "#{phpbuild_path}/tmp" do
+  owner  node[:phpbuild][:user]
+  group  node[:phpbuild][:group]
+  mode   "0755"
+  action :create
+end
+
+bash "install php-build plugins" do
+  user   node[:phpbuild][:user]
+  group  node[:phpbuild][:group]
   code <<-EOF
-  tar xzf /tmp/CHH-php-build.tar.gz -C /tmp
-  mv /tmp/CHH-php-build-ccfdb27 #{phpbuild_path}
-  mkdir #{phpbuild_path}/tmp
+  cp /tmp/php-build-plugin-phpunit/share/php-build/after-install.d/phpunit #{phpbuild_path}/share/php-build/after-install.d
   EOF
-  not_if "test -f #{phpbuild_path}/bin/php-build"
+  not_if "test -f #{phpbuild_path}/share/php-build/after-install.d/phpunit"
 end
