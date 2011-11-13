@@ -1,4 +1,6 @@
 include_recipe "apt"
+include_recipe "mysql::client"
+include_recipe "postgresql::client"
 
 case node[:platform]
   when "ubuntu", "debian"
@@ -46,4 +48,10 @@ bash "install php-build plugins" do
   cp /tmp/php-build-plugin-phpunit/share/php-build/after-install.d/phpunit #{phpbuild_path}/share/php-build/after-install.d
   EOF
   not_if "test -f #{phpbuild_path}/share/php-build/after-install.d/phpunit"
+end
+
+template "#{phpbuild_path}/share/php-build/default_configure_options" do
+  owner  node.phpfarm.user
+  group  node.phpfarm.group
+  source "default_configure_options.erb"
 end

@@ -2,16 +2,16 @@ include_recipe "phpenv"
 include_recipe "phpbuild"
 
 phpbuild_path = "#{node.phpbuild.home}/.php-build"
-phpenv_path = "#{node.phpenv.home}/.phpenv"
+phpenv_path   = "#{node.phpenv.home}/.phpenv"
 
 node.php.multi.versions.each do |php_version|
 
   phpbuild_build "#{phpenv_path}/versions" do
     version php_version
-    owner "vagrant"
-    group "vagrant"
+    owner   "vagrant"
+    group   "vagrant"
 
-    action :create
+    action  :create
   end
 
 end
