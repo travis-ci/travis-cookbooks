@@ -1,5 +1,5 @@
-default[:leiningen][:version]        = "1.6.1.1"
+default[:leiningen][:version]        = "1.6.2"
 default[:leiningen][:install_script] = "https://github.com/technomancy/leiningen/raw/#{leiningen[:version]}/bin/lein"
 default[:leiningen][:jar_url]        = "http://github.com/downloads/technomancy/leiningen/leiningen-#{leiningen[:version]}-standalone.jar"
-default[:leiningen][:jar_checksum]   = "e7df260f139ca3aeb137b7335b10c8cb"
+default[:leiningen][:jar_checksum]   = "9bc52854d878e69a761273f240d5cef2"
 default[:leiningen][:jar_dir]        = "/usr/share/java"

@@ -1,4 +1,6 @@
 include_recipe "apt"
+include_recipe "mysql::client"
+include_recipe "postgresql::client"
 
 case node['platform']
   when "ubuntu", "debian"
