@@ -3,3 +3,5 @@ tmp/*
 .DS_Store
 *.class
 *.rbc
+#~
+~*
