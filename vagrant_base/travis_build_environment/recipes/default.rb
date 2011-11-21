@@ -42,3 +42,7 @@ template "/etc/hosts" do
 
   source "etc/hosts.erb"
 end
+
+include_recipe "iptables"
+
+

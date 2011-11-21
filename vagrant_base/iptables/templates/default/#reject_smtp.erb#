@@ -1,0 +1,2 @@
+sudo iptables -A OUTPUT -p tcp --dport 25 -j REJECT
+sudo iptables -A INPUT  -p tcp --dport 25 -j REJECT
