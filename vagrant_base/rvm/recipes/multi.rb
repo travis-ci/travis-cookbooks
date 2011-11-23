@@ -55,7 +55,9 @@ end
 
 # now we can install gems by iterating over rubies in any order. MK.
 node.rvm.rubies.each do |rb|
-  name = rb[:name]
+  # handle cases when Rubinius in 1.9 mode will have the same :name
+  # as Rubinius in 1.8 but will be available via rvm under a different name. MK.
+  name = rb[:check_for] || rb[:name]
 
   gems.each do |gem|
     bash "installing gem #{gem} for #{name}" do
