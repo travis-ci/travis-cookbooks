@@ -1,3 +1,5 @@
+export DEBIAN_FRONTEND=noninteractive
+
 export CI=true
 export TRAVIS=true
 
