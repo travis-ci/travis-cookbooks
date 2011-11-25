@@ -46,6 +46,12 @@ env  = {
   "KERL_BASE_DIR"      => "#{home}/.kerl"
 }
 
+case [node[:platform], node[:platform_version]]
+when ["ubuntu", "11.04"] then
+    # fixes compilation with Ubuntu 11.04 zlib. MK.
+  env["KERL_CONFIGURE_OPTIONS"] = "--enable-dynamic-ssl-lib --enable-hipe"
+end
+
 execute "erlang.releases.update" do
   command "#{node.kerl.path} update releases"
 
