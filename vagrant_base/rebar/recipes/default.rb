@@ -26,10 +26,11 @@ end
 
 script "install rebar" do
   interpreter "bash"
-  user node.rebar.user
+  user "root"
   cwd "/tmp"
   code <<-EOH
       source /home/#{node.kerl.user}/otp/R14B02/activate
-      tar xvf /tmp/rebar.tar.gz && cd /tmp/#{node.rebar.release_dir} && ./bootstrap && chmod +x rebar && sudo cp rebar #{node.rebar.path}
+      tar xvf /tmp/rebar.tar.gz && cd /tmp/#{node.rebar.release_dir} && ./bootstrap && chmod +x rebar && cp rebar #{node.rebar.path}
+      chown #{node.rebar.user} #{node.rebar.path}
   EOH
 end
