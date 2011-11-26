@@ -29,7 +29,7 @@ script "install rebar" do
   user node.rebar.user
   cwd "/tmp"
   code <<-EOH
-      source /home/#{node.kerl.user}/otp/R14B01/activate
+      source /home/#{node.kerl.user}/otp/R14B02/activate
       tar xvf /tmp/rebar.tar.gz && cd /tmp/#{node.rebar.release_dir} && ./bootstrap && chmod +x rebar && sudo cp rebar #{node.rebar.path}
   EOH
 end
