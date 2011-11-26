@@ -19,7 +19,7 @@
 include_recipe('kerl')
 
 remote_file("/tmp/rebar.tar.gz") do
-  source node.rebar.release  
+  source node.rebar.release
   owner node.rebar.user
   group node.rebar.group
 end
