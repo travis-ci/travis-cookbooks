@@ -46,12 +46,6 @@ end
 
 nvm = "source /home/vagrant/.nvm/nvm.sh; nvm"
 
-bash "syncing nvm with http://nodejs.org/" do
-  user "vagrant"
-  cwd "/home/vagrant"
-  code "#{nvm} sync"
-end
-
 node[:nodejs][:versions].each do |node|
   bash "installing node version #{node}" do
     creates "/home/vagrant/.nvm/#{node}"
