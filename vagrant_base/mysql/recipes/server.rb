@@ -61,7 +61,9 @@ end
 
 service "mysql" do
   service_name value_for_platform([ "centos", "redhat", "suse", "fedora" ] => {"default" => "mysqld"}, "default" => "mysql")
-  if (platform?("ubuntu") && node.platform_version.to_f >= 10.04)
+  if (platform?("ubuntu") && node.platform_version.to_f >= 11.04)
+    provider Chef::Provider::Service::Upstart
+
     restart_command "restart mysql"
     stop_command "stop mysql"
     start_command "start mysql"
