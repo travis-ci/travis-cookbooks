@@ -19,7 +19,7 @@
 
 # IMPORTANT: this recipe is only really needed by the Ruby on Rails test suite
 #            that is very I/O demanding. It places MySQL'd data dir to a ramfs mount
-#            and copies existing data dir there so that system catalogs are in place, then 
+#            and copies existing data dir there so that system catalogs are in place, then
 #            restarts mysqld once again. Copying & restart also will happen once again on boot.
 #            This whole sequence is indeed hacky and needs extra care. But c'est la vie,
 #            ActiveRecord test suite runs x3 times faster with this recipe in place. MK.
@@ -57,6 +57,19 @@ end
 # ext3 mount.
 
 include_recipe "mysql::server"
+
+case [node[:platform], node[:platform_version]]
+# wipe out apparmor on 11.04, it won't let mysqld to start from /var/ramfs with default policies. MK.
+when ["ubuntu", "11.04"] then
+  package "apparmor" do
+    action :remove
+  end
+
+  package "apparmor-utils" do
+    action :remove
+  end
+end
+
 
 
 log "['mysql']['data_dir'] = #{node['mysql']['data_dir']}"

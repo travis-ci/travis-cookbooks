@@ -61,13 +61,10 @@ end
 
 service "mysql" do
   service_name value_for_platform([ "centos", "redhat", "suse", "fedora" ] => {"default" => "mysqld"}, "default" => "mysql")
+
   if (platform?("ubuntu") && node.platform_version.to_f >= 11.04)
     provider Chef::Provider::Service::Upstart
-
-    restart_command "restart mysql"
-    stop_command "stop mysql"
-    start_command "start mysql"
-  end
+ end
   supports :status => true, :restart => true, :reload => true
   action :nothing
 end
@@ -77,14 +74,13 @@ template "#{node['mysql']['conf_dir']}/my.cnf" do
   owner "root"
   group "root"
   mode "0644"
-  notifies :restart, resources(:service => "mysql"), :immediately
+ notifies :restart, resources(:service => "mysql"), :immediately
 end
 
 
 # set the root password on platforms
 # that don't support pre-seeding
 unless platform?(%w{debian ubuntu})
-
   execute "assign-root-password" do
     command "/usr/bin/mysqladmin -u root password \"#{node['mysql']['server_root_password']}\""
     action :run
