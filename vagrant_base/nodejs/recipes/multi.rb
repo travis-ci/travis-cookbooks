@@ -59,7 +59,7 @@ end
 
 bash "make the default node" do
   user "vagrant"
-  code "#{nvm} alias default v#{node[:default]}"
+  code "#{nvm} alias default v#{node[:nodejs][:default]}"
 end
 
 node[:nodejs][:aliases].each do |existing_name, new_name|
