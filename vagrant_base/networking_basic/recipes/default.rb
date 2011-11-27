@@ -10,20 +10,16 @@
 packages = [
   'lsof',
   'iptables',
-  'jwhois',
   'whois',
   'curl',
   'wget',
   'rsync',
-  'jnettop',
   'nmap',
   'traceroute',
   'ethtool',
   'iproute',
   'iputils-ping',
-  'netcat-openbsd',
   'tcpdump',
-  'bind9-host',
   "libcurl4-openssl-dev"
 ]
 
