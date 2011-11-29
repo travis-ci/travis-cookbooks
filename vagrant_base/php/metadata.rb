@@ -1,10 +1,10 @@
 maintainer        "Loïc Frering"
 maintainer_email  "loic.frering@gmail.com"
 license           "Apache 2.0"
-description       "Installs phpfarm and phpenv for multiple PHP versions management."
+description       "Installs php-build and phpenv for multiple PHP versions management."
 version           "1.0.0"
 
 depends "build-essential"
 depends "apt"
-depends "phpfarm"
+depends "php-build"
 depends "phpenv"

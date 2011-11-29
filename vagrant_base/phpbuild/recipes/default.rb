@@ -55,7 +55,7 @@ bash "install php-build plugins" do
 end
 
 template "#{phpbuild_path}/share/php-build/default_configure_options" do
-  owner  node.phpfarm.user
-  group  node.phpfarm.group
+  owner  node[:phpbuild][:user]
+  group  node[:phpbuild][:group]
   source "default_configure_options.erb"
 end

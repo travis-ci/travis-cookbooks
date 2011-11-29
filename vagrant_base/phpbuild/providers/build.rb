@@ -17,8 +17,8 @@ action :create do
     end
 
     template "#{target_path}/etc/conf.d/travis.ini" do
-      owner    node.phpfarm.user
-      group    node.phpfarm.group
+      owner    new_resource.owner
+      group    new_resource.group
       cookbook "phpbuild"
       source   "travis.ini.erb"
       variables(
