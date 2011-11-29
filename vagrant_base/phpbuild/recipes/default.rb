@@ -18,16 +18,16 @@ phpbuild_path = "#{node[:phpbuild][:home]}/.php-build"
 git phpbuild_path do
   user       node[:phpbuild][:user]
   group      node[:phpbuild][:group]
-  repository "git://github.com/CHH/php-build.git"
-  revision   "559214ce65284936597b2208e3cb602205578a41"
+  repository node[:phpbuild][:git][:repository]
+  revision   node[:phpbuild][:git][:revision]
   action     :checkout
 end
 
 git "/tmp/php-build-plugin-phpunit" do
   user       node[:phpbuild][:user]
   group      node[:phpbuild][:group]
-  repository "git://github.com/CHH/php-build-plugin-phpunit.git"
-  revision   "a6a5ce4a5126b90a02dd473b63f660515de7d183"
+  repository node[:phpbuild][:phpunit_plugin][:git][:repository]
+  revision   node[:phpbuild][:phpunit_plugin][:git][:revision]
   action     :checkout
 end
 
