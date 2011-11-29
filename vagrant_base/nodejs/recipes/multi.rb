@@ -69,3 +69,19 @@ node[:nodejs][:aliases].each do |existing_name, new_name|
     code "#{nvm} alias #{new_name} v#{existing_name}"
   end
 end
+
+bash "installing stable npm for node 0.6" do
+  # Install npm to walkaround problems with npm `Bad argument` error
+  # (it overrides npm installed by 0.6 versions)
+  #
+  # XXX(mmalecki) Remove me when npm shipped with node becomes stable
+  user "vagrant"
+  group "vagrant"
+  cwd "/home/vagrant"
+  environment({'HOME' => "/home/vagrant"})
+  code <<-EOH
+    #{nvm} use 0.6
+    curl http://npmjs.org/install.sh | clean=yes sh
+  EOH
+end
+
