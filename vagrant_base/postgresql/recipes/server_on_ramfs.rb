@@ -17,21 +17,9 @@
 # limitations under the License.
 #
 
-directory node[:ramfs] do
-  owner "root"
-  group "root"
-  mode "0755"
-  action :create
-end
+include_recipe "ramfs"
 
-mount node[:ramfs] do
-  fstype   "ramfs"
-  device   "/dev/null" # http://tickets.opscode.com/browse/CHEF-1657
-  options  "defaults,size=256m,noatime"
-  action   [:mount, :enable]
-end
-
-node[:postgresql][:data_dir] = "#{node[:ramfs]}/postgresql"
+node[:postgresql][:data_dir] = "#{node[:ramfs][:dir]}/postgresql"
 
 include_recipe "postgresql::server"
 

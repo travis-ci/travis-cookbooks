@@ -26,8 +26,8 @@ else
     get_versions
 fi
 
-if [ ! -d <%= node.ramfs %>/postgresql ]; then
-    cp -rp /var/lib/postgresql/<%= node.postgresql.version %>/main <%= node.ramfs %>/postgresql
+if [ ! -d <%= node.ramfs.dir %>/postgresql ]; then
+    cp -rp /var/lib/postgresql/<%= node.postgresql.version %>/main <%= node.ramfs.dir %>/postgresql
 fi
 
 case "$1" in
