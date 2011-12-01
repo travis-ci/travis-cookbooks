@@ -83,7 +83,7 @@ fi
     # The 'exit 0' below will be executed if any preceeding command fails.
     kill -s SIGTERM $$ && kill -0 $$ && echo $timeoutMessage && exit 1
     sleep $delay
-    kill -s SIGKILL $$
+    sudo kill -s SIGKILL $$ && echo "SIGTERM was ignored, using sudo + SIGKILL" && exit 1
     exit 1
 ) 2> /dev/null &
 
