@@ -22,11 +22,9 @@ pre-start script
 
     # copies existing mysql datadir to the ramfs volume, makes ActiveRecord test suite finish
     # 3 times quicker.
-    if ! -d /var/ramfs; then
-        mkdir /var/ramfs && mount -t ramfs -o size=256M ramfs /var/ramfs/
-        cp -R /var/lib/mysql /var/ramfs/
-        chown -R mysql:mysql /var/ramfs/mysql
-    fi  
+    if [ ! -d <%= node.ramfs.dir %>/mysql ]; then
+      cp -rp /var/lib/mysql <%= node.ramfs.dir %>/mysql
+    fi
 
     [ -d /var/run/mysqld ] || install -m 755 -o mysql -g root -d /var/run/mysqld
     # Load AppArmor profile
