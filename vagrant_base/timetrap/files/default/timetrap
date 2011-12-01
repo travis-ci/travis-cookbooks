@@ -79,7 +79,7 @@ fi
     done
 
     # The 'exit 1' below will be executed if any preceeding command fails.
-    kill -s SIGKILL $$ && kill -0 $$ && echo $timeoutMessage && exit 1
+    sudo kill -s SIGKILL $$ && kill -0 $$ && echo $timeoutMessage && exit 1
     exit 1
 ) 2> /dev/null &
 
