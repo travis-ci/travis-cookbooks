@@ -2,8 +2,7 @@
 #
 #
 # The Bash shell script executes a command with a time-out.
-# Upon time-out expiration SIGTERM (15) is sent to the process. If the signal
-# is blocked, then the subsequent SIGKILL (9) terminates it.
+# Upon time-out expiration SIGTKILL (9) is sent to the process.
 #
 # Based on the Bash documentation example.
 # Original author: Dmitry V Golovashkin <Dmitry.Golovashkin@sas.com>
@@ -79,11 +78,8 @@ fi
         ((t -= interval))
     done
 
-    # Be nice, post SIGTERM first.
-    # The 'exit 0' below will be executed if any preceeding command fails.
-    kill -s SIGTERM $$ && kill -0 $$ && echo $timeoutMessage && exit 1
-    sleep $delay
-    sudo kill -s SIGKILL $$ && echo "SIGTERM was ignored, using sudo + SIGKILL" && exit 1
+    # The 'exit 1' below will be executed if any preceeding command fails.
+    kill -s SIGKILL $$ && kill -0 $$ && echo $timeoutMessage && exit 1
     exit 1
 ) 2> /dev/null &
 
