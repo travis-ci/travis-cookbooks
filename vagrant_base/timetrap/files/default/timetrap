@@ -35,16 +35,8 @@ Synopsis
         Number of seconds to wait for command completion.
         Default value: $DEFAULT_TIMEOUT seconds.
 
-    -i interval
-        Interval between checks if the process is still alive.
-        Positive integer, default value: $DEFAULT_INTERVAL seconds.
-
-    -d delay
-        Delay between posting the SIGTERM signal and destroying the
-        process by SIGKILL. Default value: $DEFAULT_DELAY seconds.
-
 As of today, Bash does not support floating point arithmetic (sleep does),
-therefore all delay/time values must be integers.
+therefore time value must be an integer.
 EOF
 }
 
@@ -79,7 +71,7 @@ fi
     done
 
     # The 'exit 1' below will be executed if any preceeding command fails.
-    sudo kill -s SIGKILL $$ && kill -0 $$ && echo $timeoutMessage && exit 1
+    sudo kill -s SIGKILL $$ && echo && echo $timeoutMessage && exit 1
     exit 1
 ) 2> /dev/null &
 
