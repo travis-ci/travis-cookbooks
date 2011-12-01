@@ -38,45 +38,18 @@
 
 require "fileutils"
 
-# first, set up /var/ramfs
-directory(node[:ramfs]) do
-  owner "root"
-  group "root"
-  mode "0755"
-  action :create
-end
-
-mount "/var/ramfs" do
-  fstype   "ramfs"
-  device   "/dev/null" # http://tickets.opscode.com/browse/CHEF-1657
-  options  "defaults,size=256m,noatime"
-  action   [:mount, :enable]
-end
+include_recipe "ramfs"
 
 # next, install the packages, do pre-seeding, restart mysqld all from a regular
 # ext3 mount.
 
 include_recipe "mysql::server"
 
-case [node[:platform], node[:platform_version]]
-# wipe out apparmor on 11.04, it won't let mysqld to start from /var/ramfs with default policies. MK.
-when ["ubuntu", "11.04"] then
-  package "apparmor" do
-    action :remove
-  end
-
-  package "apparmor-utils" do
-    action :remove
-  end
-end
-
-
-
 log "['mysql']['data_dir'] = #{node['mysql']['data_dir']}"
 log "[:mysql][:data_dir] = #{node[:mysql][:data_dir]}"
 
-bash "cp -R #{node['mysql']['data_dir']} #{node[:ramfs]}/mysql" do
-  code "cp -R #{node['mysql']['data_dir']} #{node[:ramfs]}/mysql && chown -R mysql:mysql #{node[:ramfs]}/mysql"
+bash "cp -R #{node['mysql']['data_dir']} #{node[:ramfs][:dir]}/mysql" do
+  code "cp -R #{node['mysql']['data_dir']} #{node[:ramfs][:dir]}/mysql && chown -R mysql:mysql #{node[:ramfs][:dir]}/mysql"
 
   # run this bash snippet only after mysql-install-privileges has run, but not earlier
   subscribes :run, resources(:execute => "mysql-install-privileges"), :immediately
