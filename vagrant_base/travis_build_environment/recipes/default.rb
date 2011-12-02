@@ -58,3 +58,5 @@ when ["ubuntu", "11.04"] then
     action :remove
   end
 end
+
+execute "rm /etc/update-motd.d/*"
