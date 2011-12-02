@@ -59,4 +59,8 @@ when ["ubuntu", "11.04"] then
   end
 end
 
-execute "rm /etc/update-motd.d/*"
+# improve sshd startup stability. See https://github.com/jedi4ever/veewee/issues/159 for rationale
+# and some stats about boot failures. MK.
+execute "rm /etc/update-motd.d/*" do
+  ignore_failure true
+end
