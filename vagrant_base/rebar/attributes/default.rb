@@ -1,5 +1,4 @@
 default[:rebar][:path]     = "/usr/local/bin/rebar"
 default[:rebar][:user]     = "vagrant"
 default[:rebar][:group]    = "vagrant"
-default[:rebar][:release]  = "https://nodeload.github.com/wardbekker/rebar/tarball/RELEASE-2" 
-default[:rebar][:release_dir] = "wardbekker-rebar-adaa8ad"
+default[:rebar][:release]  = "https://github.com/downloads/basho/rebar/rebar"
