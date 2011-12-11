@@ -18,19 +18,9 @@
 
 include_recipe('kerl')
 
-remote_file("/tmp/rebar.tar.gz") do
+remote_file("/usr/local/bin/rebar") do
   source node.rebar.release
   owner node.rebar.user
   group node.rebar.group
-end
-
-script "install rebar" do
-  interpreter "bash"
-  user "root"
-  cwd "/tmp"
-  code <<-EOH
-      source /home/#{node.kerl.user}/otp/R14B02/activate
-      tar xvf /tmp/rebar.tar.gz && cd /tmp/#{node.rebar.release_dir} && ./bootstrap && chmod +x rebar && cp rebar #{node.rebar.path}
-      chown #{node.rebar.user} #{node.rebar.path}
-  EOH
+  mode  0755
 end
