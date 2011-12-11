@@ -14,12 +14,9 @@ packages = [
   'curl',
   'wget',
   'rsync',
-  'nmap',
   'traceroute',
-  'ethtool',
   'iproute',
   'iputils-ping',
-  'tcpdump',
   "libcurl4-openssl-dev"
 ]
 
