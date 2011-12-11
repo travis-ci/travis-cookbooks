@@ -4,6 +4,11 @@ include_recipe "phpbuild"
 phpbuild_path = "#{node.phpbuild.home}/.php-build"
 phpenv_path   = "#{node.phpenv.home}/.phpenv"
 
+package "re2c" do
+  action :install
+end
+
+
 node.php.multi.versions.each do |php_version|
 
   phpbuild_build "#{phpenv_path}/versions" do
