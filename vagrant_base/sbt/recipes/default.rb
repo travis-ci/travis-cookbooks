@@ -24,8 +24,8 @@ tmp = Dir.tmpdir
 case node[:platform]
 when "debian", "ubuntu"
   # this assumes 32-bit base Vagrant box.
-  # home-made .deb package tweaking with sbt-installer-ubuntizer scripts 
-  # see https://github.com/przemek-pokrywka/sbt-installer-ubuntizer 
+  # home-made .deb package tweaking with sbt-installer-ubuntizer scripts
+  # see https://github.com/przemek-pokrywka/sbt-installer-ubuntizer
   %w(sbt-0.11.2.deb).each do |deb|
     path = File.join(tmp, deb)
 
