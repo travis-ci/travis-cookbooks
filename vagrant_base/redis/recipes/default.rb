@@ -42,31 +42,19 @@ end
 tmp = Dir.tmpdir
 case node[:platform]
 when "debian", "ubuntu"
-  # this assumes 32-bit base Vagrant box.
-  # built via brew2deb, http://bit.ly/brew2deb. MK.
-  %w(redis2-server_2.2.12+github1_i386.deb).each do |deb|
-    path = File.join(tmp, deb)
+  deb  = "redis.deb"
+  path = File.join(tmp, deb)
 
-    cookbook_file(path) do
-      owner "vagrant"
-      group "vagrant"
-    end
+  remote_file(path) do
+    source node[:redis][:package][:url]
+    owner  node[:redis][:package][:user]
+    group  node[:redis][:package][:group]
+  end
 
-    package(deb) do
-      action   :install
-      source   path
-      provider Chef::Provider::Package::Dpkg
-    end
-  end # each
-
-  bash "update rc.d" do
-    code <<-CODE
-    sudo update-rc.d redis-server defaults
-    sudo service redis-server start
-    CODE
-    user "root"
-
-    subscribes :run, resources(:package => "redis2-server_2.2.12+github1_i386.deb"), :immediately
+  package(deb) do
+    action   :install
+    source   path
+    provider Chef::Provider::Package::Dpkg
   end
 
   service "redis-server" do

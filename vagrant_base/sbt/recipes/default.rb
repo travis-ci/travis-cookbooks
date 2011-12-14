@@ -30,8 +30,8 @@ when "debian", "ubuntu"
     path = File.join(tmp, deb)
 
     cookbook_file(path) do
-      owner "vagrant"
-      group "vagrant"
+      owner node[:sbt][:user]
+      group node[:sbt][:group]
     end
 
     package(deb) do
@@ -41,3 +41,18 @@ when "debian", "ubuntu"
     end
   end # each
 end # case
+
+
+node[:sbt][:scala][:versions].each do |version|
+  execute "force sbt to download its own dependencies (for scala #{version})" do
+    # we have to use "help" here because many other commands will cause
+    # sbt to start its interactive REPL session and that will block the entire
+    # chef run. We also must set cwd or the run will stall. MK.
+    command "sbt ++#{version} help compile < /dev/null"
+    user    node[:sbt][:user]
+    cwd     node[:sbt][:home]
+
+    timeout node[:sbt][:boot][:timeout]
+    action  :run
+  end
+end
