@@ -43,6 +43,14 @@ template "/etc/hosts" do
   source "etc/hosts.erb"
 end
 
+template "/etc/apt/apt.conf.d/60assumeyes" do
+  owner "root"
+  group "root"
+  mode 0644
+
+  source "etc/apt/assumeyes.erb"
+end
+
 include_recipe "iptables"
 
 
