@@ -9,6 +9,6 @@ default[:rabbitmq][:cluster] = "no"
 default[:rabbitmq][:cluster_config] = "/etc/rabbitmq/rabbitmq_cluster.config"
 default[:rabbitmq][:cluster_disk_nodes] = []
 #plugins
-default[:rabbitmq][:version] = '2.7.0'
+default[:rabbitmq][:version] = '2.7.1'
 default[:rabbitmq][:plugin_directory] = "/usr/lib/rabbitmq/lib/rabbitmq_server-#{node[:rabbitmq][:version]}/plugins"
 
