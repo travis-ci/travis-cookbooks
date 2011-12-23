@@ -18,6 +18,10 @@ It is called [travis-boxes](https://github.com/travis-ci/travis-boxes).
 Cookbooks are developed using Vagrant with either [travis-boxes](https://github.com/travis-ci/travis-boxes) or [Sous Chef](https://github.com/michaelklishin/sous-chef).
 See those projects for more detailed instructions.
 
+Please note that from December 2011 and going forward, *Chef cookbooks must be Ruby 1.9.2-compatible* because we switched to Ruby 1.9.2 for running Chef
+during provisioning.
+
+
 ## License
 
 See the LICENSE file.
