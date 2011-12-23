@@ -23,6 +23,8 @@
 
 include_recipe "rvm"
 
+log "Using Ruby #{RUBY_VERSION}..."
+
 default_ruby = node[:rvm][:default]
 gems         = node[:rvm].fetch(:gems, []) | ['bundler', 'rake']
 aliases      = node[:rvm][:aliases] || []
