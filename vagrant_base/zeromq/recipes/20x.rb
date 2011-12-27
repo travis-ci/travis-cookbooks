@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: zeromq
-# Recipe:: default
+# Recipe:: 2.0.x
 #
 # Copyright 2011, Travis CI Development Team
 #
@@ -17,25 +17,17 @@
 # limitations under the License.
 #
 
-require "tmpdir"
+apt_repository "zeromq PPA" do
+  uri "http://ppa.launchpad.net/chris-lea/zeromq/ubuntu"
+  distribution "natty"
+  components ["main"]
+  key "https://raw.github.com/gist/dc879e13ab46579f80bb/4b9afa5f31d34eaf29ae209f6c2b99891d9935f1/gistfile1.txt"
+  action :add
+end
 
-tmp = Dir.tmpdir
-case node[:platform]
-when "debian", "ubuntu"
-  # this assumes 32-bit base Vagrant box.
-  ["zeromq_2.1.10+fpm0_i386.deb"].each do |deb|
-    path = File.join(tmp, deb)
+package "libzmq-dev"
+package "libzmq1"
 
-    remote_file(path) do
-      source node[:zeromq][:package][:url]
-      owner  node[:zeromq][:package][:user]
-      group  node[:zeromq][:package][:group]
-    end
-
-    package(deb) do
-      action   :install
-      source   path
-      provider Chef::Provider::Package::Dpkg
-    end
-  end # each
-end # case
+# in case some test suites compile bindings like jzmq
+# from source, for whatever reason. MK.
+package "libtool"
