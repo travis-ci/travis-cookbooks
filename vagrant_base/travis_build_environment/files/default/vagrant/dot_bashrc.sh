@@ -105,7 +105,7 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 fi
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
-
+export JAVA_HOME="/usr/lib/jvm/java-6-<%= node['java']['install_flavor'] %>"
 
 source /etc/profile.d/travis_environment.sh
 source /etc/profile.d/timetrap.sh
