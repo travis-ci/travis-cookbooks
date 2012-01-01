@@ -22,7 +22,7 @@
 # THE SOFTWARE.
 
 
-cookbook_file "/root/.bashrc" do
+template "/root/.bashrc" do
   owner "root"
   group "root"
   mode 0644

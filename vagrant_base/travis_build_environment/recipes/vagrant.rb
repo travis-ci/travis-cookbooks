@@ -40,7 +40,7 @@ cookbook_file "/home/vagrant/.gemrc" do
 end
 
 
-cookbook_file "/home/vagrant/.bashrc" do
+template "/home/vagrant/.bashrc" do
   owner "vagrant"
   group "vagrant"
   mode 0755
