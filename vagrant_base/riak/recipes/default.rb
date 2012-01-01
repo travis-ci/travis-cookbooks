@@ -34,17 +34,29 @@ when "debian", "ubuntu"
       owner  "vagrant"
       group  "vagrant"
       source "http://downloads.basho.com.s3-website-us-east-1.amazonaws.com/riak/1.0/#{node.riak.version}/#{deb}"
+
+      not_if "which riak"
     end
 
     package(deb) do
       action   :install
       source   path
       provider Chef::Provider::Package::Dpkg
+
+      not_if "which riak"
     end
   end # each
 
   service "riak" do
     supports :restart => true, :status => true, :reload => true
     action [:enable, :start]
+  end
+
+  ruby_block "switch to eleveldb backend" do
+    block do
+      fe = Chef::Util::FileEdit.new("/etc/riak/app.config")
+      fe.search_file_replace_line(/{storage_backend, /, "{storage_backend, riak_kv_eleveldb_backend},")
+      fe.write_file
+    end
   end
 end # case
