@@ -52,6 +52,8 @@ when ["ubuntu", "11.04"] then
   env["KERL_CONFIGURE_OPTIONS"] = "--enable-dynamic-ssl-lib --enable-hipe"
 end
 
+# updates list of available releases. Needed for kerl to recognize
+# R15B, for example. MK.
 execute "erlang.releases.update" do
   command "#{node.kerl.path} update releases"
 
@@ -74,7 +76,8 @@ node.kerl.releases.each do |rel, build|
 
     environment(env)
 
-    not_if "#{node.kerl.path} list builds | grep #{rel}", :user => node.kerl.user, :environment => env
+    # make sure R14B02 won't cause R14B to be skipped. MK.
+    not_if "#{node.kerl.path} list builds | grep \"^#{rel}$\"", :user => node.kerl.user, :environment => env
   end
 
 
