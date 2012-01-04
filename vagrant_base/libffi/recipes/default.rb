@@ -25,7 +25,7 @@ case node[:platform]
 when "ubuntu", "debian" then
   case node[:version]
   when "11.04" then
-    package "libffi5n"
+    package "libffi5"
   when "11.10" then
     package "libffi6"
   end
