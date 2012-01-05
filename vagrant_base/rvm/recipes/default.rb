@@ -14,8 +14,17 @@ include_recipe "libgdbm"
 
 case node[:platform]
 when "debian","ubuntu"
-  %w(libreadline5-dev libssl-dev libxml2-dev libxslt1-dev zlib1g-dev).each do |pkg|
+  %w(libssl-dev libxml2-dev libxslt1-dev zlib1g-dev).each do |pkg|
     package pkg
+  end
+
+  case node[:version]
+  when "11.04" then
+    package "libreadline5-dev"
+    package "libreadline5"
+  when "11.10" then
+    package "libreadline-dev"
+    package "libreadline6"
   end
 end
 
