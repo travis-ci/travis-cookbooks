@@ -18,14 +18,23 @@
 # limitations under the License.
 
 pkgs = value_for_platform(
-  ["centos","redhat","fedora"] => {
-    "default" => ["java-1.6.0-openjdk","java-1.6.0-openjdk-devel"]
-  },
-  "default" => ["openjdk-6-jdk","default-jdk"]
-)
+                          ["centos","redhat","fedora"] => {
+                            "default" => ["java-1.6.0-openjdk","java-1.6.0-openjdk-devel"]
+                          },
+                          "default" => ["openjdk-6-jdk","default-jdk"]
+                          )
 
 execute "update-java-alternatives" do
-  command "update-java-alternatives -s java-6-openjdk"
+  alternative = case [node[:platform], node[:platform_version]]
+                when ["ubuntu", "11.04"] then
+                  "java-6-openjdk"
+                when ["ubuntu", "11.04"] then
+                  "java-1.6.0-openjdk"
+                else
+                  "java-1.6.0-openjdk"
+                end
+
+  command "update-java-alternatives -s #{alternative}"
   returns [0,2]
   action :nothing
   only_if { platform?("ubuntu", "debian") }
