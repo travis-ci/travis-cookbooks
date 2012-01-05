@@ -49,7 +49,7 @@ end
 node.rvm.rubies.each do |rb|
   bash "installing #{rb[:name]} with RVM arguments #{rb[:arguments]}" do
     setup.call(self)
-    code   "#{rvm} use #{rb.fetch(:using, '1.8.7')} && #{rvm} install #{rb[:name]} #{rb[:arguments]}"
+    code   "#{rvm} use #{rb.fetch(:using, default_ruby)} && #{rvm} install #{rb[:name]} #{rb[:arguments]}"
     not_if "ls #{home}/.rvm/rubies | grep #{rb[:check_for] || rb[:name]}"
   end
 end
