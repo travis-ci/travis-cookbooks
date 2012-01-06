@@ -1,0 +1,26 @@
+#********************************************************************
+# JVM Parameters
+#********************************************************************
+ 
+wrapper.java.additional.1=-Dorg.neo4j.server.properties=<%= node.neo4j.server.conf_dir %>/neo4j-server.properties
+wrapper.java.additional.2=-Djava.util.logging.config.file=<%= node.neo4j.server.conf_dir %>/logging.properties
+
+# Initial Java Heap Size (in MB)
+wrapper.java.initmemory=<%= node.neo4j.server.jvm.xms %>
+
+# Maximum Java Heap Size (in MB)
+wrapper.java.maxmemory=<%= node.neo4j.server.jvm.xmx %>
+
+#********************************************************************
+# Wrapper settings
+#********************************************************************
+# Override default pidfile and lockfile 
+wrapper.pidfile=<%= node.neo4j.server.pid_path %>
+wrapper.lockfile=<%= node.neo4j.server.lock_path %>
+
+# Name of the service
+wrapper.name=neo4j
+
+# User account to be used for linux installs. Will default to current
+# user if not set.
+wrapper.user=<%= node.neo4j.server.user %>
