@@ -22,6 +22,10 @@ require "tmpdir"
 tmp = Dir.tmpdir
 case node[:platform]
 when "debian", "ubuntu"
+  package "uuid-dev" do
+    action :install
+  end
+
   # this assumes 32-bit base Vagrant box.
   ["zeromq_2.1.10+fpm0_i386.deb"].each do |deb|
     path = File.join(tmp, deb)
