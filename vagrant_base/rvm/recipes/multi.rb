@@ -29,6 +29,8 @@ default_ruby = node[:rvm][:default]
 gems         = node[:rvm].fetch(:gems, []) | ['bundler', 'rake']
 aliases      = node[:rvm][:aliases] || []
 
+log "Default Ruby will be #{default_ruby}"
+
 home = node[:rvm][:home]
 rvm  = "source #{home}/.rvm/scripts/rvm && rvm"
 env  = { 'HOME' => home, 'rvm_user_install_flag' => '1' }
