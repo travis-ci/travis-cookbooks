@@ -10,6 +10,10 @@ default[:neo4j][:server] = {
     :xms => 32,
     :xmx => 512
   },
+  :limits => {
+    :memlock => 'unlimited',
+    :nofile  => 48000
+  },
   # needed only to recursively change permissions. Don't forget to update this
   # when you change :data_dir location!
   :lib_dir   => "/var/lib/neo4j-server/",

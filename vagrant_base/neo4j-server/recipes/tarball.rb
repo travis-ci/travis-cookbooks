@@ -108,6 +108,17 @@ template "#{node.neo4j.server.conf_dir}/neo4j-wrapper.conf" do
 end
 
 # 6. Add initd service
+bash "Update limits.conf for #{node.neo4j.server.user}" do
+  user 'root'
+
+  code <<-END.gsub(/^    /, '')
+    echo '#{node.neo4j.server.user}     -    nofile    #{node.neo4j.server.limits.nofile}'  >> /etc/security/limits.conf
+    echo '#{node.neo4j.server.user}     -    memlock   #{node.neo4j.server.limits.memlock}' >> /etc/security/limits.conf
+    echo 'session    required   pam_limits.so'                                       >> /etc/pam.d/su
+  END
+end
+
+
 template "/etc/init.d/neo4j" do
   source "neo4j.init.erb"
   owner 'root'
@@ -115,6 +126,6 @@ template "/etc/init.d/neo4j" do
 end
 
 service "neo4j" do
-  supports :status => true, :restart => true
-  action [ :enable ]
+  supports :start => true, :stop => true, :status => true, :restart => true
+  action [:enable, :start]
 end
