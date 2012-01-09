@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: maven3
-# Recipe:: default
+# Recipe:: tarball
 #
-# Copyright 2011, Travis CI Development Team
+# Copyright 2011-2012, Travis CI Development Team
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,19 +17,15 @@
 # limitations under the License.
 #
 
-
-
 include_recipe "java"
 
-case node.platform
-when "redhat", "centos", "fedora" then
-  include_recipe "jpackage"
-  include_recipe "maven3::tarball"
-when "ubuntu", "debian" then
-  case node.platform_version
-  when "11.04" then
-    include_recipe "maven3::tarball"
-  when "11.10" then
-    include_recipe "maven3::ppa"
-  end
+cookbook_file "/tmp/install_maven3.sh" do
+  source "install_maven3.sh"
+  mode   0755
+  backup false
+end
+
+execute "/tmp/install_maven3.sh" do
+  command "/bin/sh /tmp/install_maven3.sh"
+  action  :run
 end
