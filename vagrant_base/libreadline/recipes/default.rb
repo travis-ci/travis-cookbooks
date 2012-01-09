@@ -23,10 +23,6 @@
 
 case node[:platform]
 when "debian","ubuntu"
-  %w(libssl-dev libxml2-dev libxslt1-dev zlib1g-dev).each do |pkg|
-    package pkg
-  end
-
   case node[:version]
   when "11.04" then
     package "libreadline5-dev"
