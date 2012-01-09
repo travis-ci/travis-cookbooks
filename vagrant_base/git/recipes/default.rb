@@ -49,6 +49,8 @@ when "debian", "ubuntu"
       action   :install
       source   path
       provider Chef::Provider::Package::Dpkg
+
+      not_if "which git"
     end
   end # each
 end # case
