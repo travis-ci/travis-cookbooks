@@ -35,12 +35,12 @@
 # The default values of these variables are driven from the -D command-line
 # option or PGDATA environment variable, represented here as ConfigDir.
 
-data_directory = '<%= node.postgresql.data_dir -%>'		        # use data in another directory
-hba_file       = '/etc/postgresql/<%= node.postgresql.version -%>/main/pg_hba.conf'	  # host-based authentication file
-ident_file     = '/etc/postgresql/<%= node.postgresql.version -%>/main/pg_ident.conf'	# ident configuration file
+data_directory = '<%= node.postgresql.data_dir -%>'                     # use data in another directory
+hba_file       = '/etc/postgresql/<%= node.postgresql.version -%>/main/pg_hba.conf'       # host-based authentication file
+ident_file     = '/etc/postgresql/<%= node.postgresql.version -%>/main/pg_ident.conf'   # ident configuration file
 
 # If external_pid_file is not explicitly set, no extra PID file is written.
-external_pid_file = '/var/run/postgresql/<%= node.postgresql.version -%>-main.pid'		# write an extra PID file
+external_pid_file = '/var/run/postgresql/<%= node.postgresql.version -%>-main.pid'              # write an extra PID file
 
 
 #------------------------------------------------------------------------------
@@ -71,26 +71,26 @@ ssl = true
 
 # - Memory -
 
-shared_buffers = 24MB			# min 128kB or max_connections*16kB
-					# (change requires restart)
-#temp_buffers = 8MB			# min 800kB
-#max_prepared_transactions = 5		# can be 0 or more
-					# (change requires restart)
+shared_buffers = 24MB                   # min 128kB or max_connections*16kB
+                                        # (change requires restart)
+#temp_buffers = 8MB                     # min 800kB
+#max_prepared_transactions = 5          # can be 0 or more
+                                        # (change requires restart)
 # Note:  Increasing max_prepared_transactions costs ~600 bytes of shared memory
 # per transaction slot, plus lock space (see max_locks_per_transaction).
-#work_mem = 1MB				# min 64kB
-#maintenance_work_mem = 16MB		# min 1MB
-#max_stack_depth = 2MB			# min 100kB
+#work_mem = 1MB                         # min 64kB
+#maintenance_work_mem = 16MB            # min 1MB
+#max_stack_depth = 2MB                  # min 100kB
 
 # - Free Space Map -
 
-<% if node.postgresql.version == "8.4" %>
-<% # max_fsm_pages doesn't exist on 8.4 %>
-#max_fsm_pages = 153600			# min max_fsm_relations*16, 6 bytes each
-					# (change requires restart)
+<% if node.postgresql.version.to_f >= "8.4" %>
+<% # max_fsm_pages doesn't exist on 8.4+ %>
+#max_fsm_pages = 153600                 # min max_fsm_relations*16, 6 bytes each
+                                        # (change requires restart)
 <% else %>
-max_fsm_pages = 153600			# min max_fsm_relations*16, 6 bytes each
-					# (change requires restart)
+max_fsm_pages = 153600                  # min max_fsm_relations*16, 6 bytes each
+                                        # (change requires restart)
 <% end %>
 
 
@@ -100,35 +100,35 @@ max_fsm_pages = 153600			# min max_fsm_relations*16, 6 bytes each
 
 # - Where to Log -
 
-#log_destination = 'stderr'		# Valid values are combinations of
-					# stderr, csvlog, syslog and eventlog,
-					# depending on platform.  csvlog
-					# requires logging_collector to be on.
+#log_destination = 'stderr'             # Valid values are combinations of
+                                        # stderr, csvlog, syslog and eventlog,
+                                        # depending on platform.  csvlog
+                                        # requires logging_collector to be on.
 
 # This is used when logging to stderr:
-#logging_collector = off		# Enable capturing of stderr and csvlog
-					# into log files. Required to be on for
-					# csvlogs.
-					# (change requires restart)
+#logging_collector = off                # Enable capturing of stderr and csvlog
+                                        # into log files. Required to be on for
+                                        # csvlogs.
+                                        # (change requires restart)
 
 # These are only used if logging_collector is on:
-#log_directory = 'pg_log'		# directory where log files are written,
-					# can be absolute or relative to PGDATA
-#log_filename = 'postgresql-%Y-%m-%d_%H%M%S.log'	# log file name pattern,
-					# can include strftime() escapes
-#log_truncate_on_rotation = off		# If on, an existing log file of the
-					# same name as the new log file will be
-					# truncated rather than appended to.
-					# But such truncation only occurs on
-					# time-driven rotation, not on restarts
-					# or size-driven rotation.  Default is
-					# off, meaning append to existing files
-					# in all cases.
-#log_rotation_age = 1d			# Automatic rotation of logfiles will
-					# happen after that time.  0 to disable.
-#log_rotation_size = 10MB		# Automatic rotation of logfiles will
-					# happen after that much log output.
-					# 0 to disable.
+#log_directory = 'pg_log'               # directory where log files are written,
+                                        # can be absolute or relative to PGDATA
+#log_filename = 'postgresql-%Y-%m-%d_%H%M%S.log'        # log file name pattern,
+                                        # can include strftime() escapes
+#log_truncate_on_rotation = off         # If on, an existing log file of the
+                                        # same name as the new log file will be
+                                        # truncated rather than appended to.
+                                        # But such truncation only occurs on
+                                        # time-driven rotation, not on restarts
+                                        # or size-driven rotation.  Default is
+                                        # off, meaning append to existing files
+                                        # in all cases.
+#log_rotation_age = 1d                  # Automatic rotation of logfiles will
+                                        # happen after that time.  0 to disable.
+#log_rotation_size = 10MB               # Automatic rotation of logfiles will
+                                        # happen after that much log output.
+                                        # 0 to disable.
 
 # These are relevant when logging to syslog:
 #syslog_facility = 'LOCAL0'
@@ -137,54 +137,54 @@ max_fsm_pages = 153600			# min max_fsm_relations*16, 6 bytes each
 
 # - When to Log -
 
-#client_min_messages = notice		# values in order of decreasing detail:
-					#   debug5
-					#   debug4
-					#   debug3
-					#   debug2
-					#   debug1
-					#   log
-					#   notice
-					#   warning
-					#   error
+#client_min_messages = notice           # values in order of decreasing detail:
+                                        #   debug5
+                                        #   debug4
+                                        #   debug3
+                                        #   debug2
+                                        #   debug1
+                                        #   log
+                                        #   notice
+                                        #   warning
+                                        #   error
 
-#log_min_messages = notice		# values in order of decreasing detail:
-					#   debug5
-					#   debug4
-					#   debug3
-					#   debug2
-					#   debug1
-					#   info
-					#   notice
-					#   warning
-					#   error
-					#   log
-					#   fatal
-					#   panic
+#log_min_messages = notice              # values in order of decreasing detail:
+                                        #   debug5
+                                        #   debug4
+                                        #   debug3
+                                        #   debug2
+                                        #   debug1
+                                        #   info
+                                        #   notice
+                                        #   warning
+                                        #   error
+                                        #   log
+                                        #   fatal
+                                        #   panic
 
-#log_error_verbosity = default		# terse, default, or verbose messages
+#log_error_verbosity = default          # terse, default, or verbose messages
 
-#log_min_error_statement = error	# values in order of decreasing detail:
-				 	#   debug5
-					#   debug4
-					#   debug3
-					#   debug2
-					#   debug1
-				 	#   info
-					#   notice
-					#   warning
-					#   error
-					#   log
-					#   fatal
-					#   panic (effectively off)
+#log_min_error_statement = error        # values in order of decreasing detail:
+                                        #   debug5
+                                        #   debug4
+                                        #   debug3
+                                        #   debug2
+                                        #   debug1
+                                        #   info
+                                        #   notice
+                                        #   warning
+                                        #   error
+                                        #   log
+                                        #   fatal
+                                        #   panic (effectively off)
 
-#log_min_duration_statement = -1	# -1 is disabled, 0 logs all statements
-					# and their durations, > 0 logs only
-					# statements running at least this time.
+#log_min_duration_statement = -1        # -1 is disabled, 0 logs all statements
+                                        # and their durations, > 0 logs only
+                                        # statements running at least this time.
 
-#silent_mode = off			# DO NOT USE without syslog or
-					# logging_collector
-					# (change requires restart)
+#silent_mode = off                      # DO NOT USE without syslog or
+                                        # logging_collector
+                                        # (change requires restart)
 
 # - What to Log -
 
@@ -211,11 +211,11 @@ log_line_prefix = '%t '
 datestyle = 'iso, mdy'
 
 # These settings are initialized by initdb, but they can be changed.
-lc_messages = 'en_US.UTF-8'		# locale for system error message
-					# strings
-lc_monetary = 'en_US.UTF-8'		# locale for monetary formatting
-lc_numeric = 'en_US.UTF-8'		# locale for number formatting
-lc_time = 'en_US.UTF-8'		# locale for time formatting
+lc_messages = 'en_US.UTF-8'             # locale for system error message
+                                        # strings
+lc_monetary = 'en_US.UTF-8'             # locale for monetary formatting
+lc_numeric = 'en_US.UTF-8'              # locale for number formatting
+lc_time = 'en_US.UTF-8'         # locale for time formatting
 
 # default configuration for text search
 default_text_search_config = 'pg_catalog.english'
