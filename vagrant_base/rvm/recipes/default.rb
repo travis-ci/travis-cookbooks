@@ -11,22 +11,7 @@ include_recipe "build-essential"
 include_recipe "git"
 include_recipe "libyaml"
 include_recipe "libgdbm"
-
-case node[:platform]
-when "debian","ubuntu"
-  %w(libssl-dev libxml2-dev libxslt1-dev zlib1g-dev).each do |pkg|
-    package pkg
-  end
-
-  case node[:version]
-  when "11.04" then
-    package "libreadline5-dev"
-    package "libreadline5"
-  when "11.10" then
-    package "libreadline-dev"
-    package "libreadline6"
-  end
-end
+include_recipe "libreadline"
 
 bash "install RVM" do
   user        node[:rvm][:user]
