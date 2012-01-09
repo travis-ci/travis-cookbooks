@@ -24,7 +24,7 @@
 
 case node.platform
 when "ubuntu", "debian" then
-  %w(libssl-dev libxml2-dev libxslt1-dev zlib1g-dev).each do |pkg|
+  %w(libssl-dev libxml2-dev libxslt1-dev libxslt-dev zlib1g-dev).each do |pkg|
     package pkg
   end
 end
