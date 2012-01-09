@@ -17,13 +17,8 @@
 # limitations under the License.
 
 include_recipe "libreadline"
-
-case node['platform']
-when "ubuntu","debian"
-  %w{libncurses5-dev libssl-dev}.each do |pkg|
-    package(pkg) { action :install }
-  end # each
-end # case
+include_recipe "libssl"
+include_recipe "libncurses"
 
 installation_root = "/home/#{node.kerl.user}/otp"
 

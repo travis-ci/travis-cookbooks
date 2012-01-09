@@ -32,8 +32,8 @@ include_recipe "libyaml"
 include_recipe "libgdbm"
 include_recipe "libreadline"
 include_recipe "libxml"
-
-
+include_recipe "libssl"
+include_recipe "libncurses"
 
 bash "install RVM" do
   user        node[:rvm][:user]

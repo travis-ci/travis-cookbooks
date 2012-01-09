@@ -20,9 +20,14 @@
 require "tmpdir"
 require "rbconfig"
 
+include_recipe "libssl"
+
 tmp = Dir.tmpdir
 case node[:platform]
 when "debian", "ubuntu"
+  package "libssl0.9.8"
+  package "libssl-dev"
+
   # required by git-svn. MK.
   package "libsvn1"
   package "libsvn-perl"
