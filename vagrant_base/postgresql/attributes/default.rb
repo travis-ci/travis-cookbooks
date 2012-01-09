@@ -18,40 +18,44 @@
 #
 case platform
 when "debian"
-  if platform_version.to_f == 5.0
-    default[:postgresql][:version] = "8.3"
-  elsif platform_version =~ /.*sid/
-    default[:postgresql][:version] = "8.4"
-  end
+  default[:postgresql][:version] = if platform_version.to_f == 5.0
+                                     "8.3"
+                                   elsif platform_version =~ /.*sid/
+                                     "8.4"
+                                   end
 
   set[:postgresql][:dir] = "/etc/postgresql/#{node[:postgresql][:version]}/main"
   set[:postgresql][:data_dir] = "/var/lib/postgresql/#{node[:postgresql][:version]}/main"
 when "ubuntu"
-  if platform_version.to_f <= 9.04
-    default[:postgresql][:version] = "8.3"
-  else
-    default[:postgresql][:version] = "8.4"
-  end
+  default[:postgresql][:version] = if platform_version.to_f <= 9.04
+                                     "8.3"
+                                   elsif platform_version.to_f >= 11.10
+                                     "9.1"
+                                   else
+                                     "8.4"
+                                   end
+
+  default[:postgresql][:ssl] = (default[:postgresql][:version].to_f >= 8.4)
 
   set[:postgresql][:dir] = "/etc/postgresql/#{node[:postgresql][:version]}/main"
   set[:postgresql][:data_dir] = "/var/lib/postgresql/#{node[:postgresql][:version]}/main"
 when "fedora"
-  if platform_version.to_f <= 12
-    default[:postgresql][:version] = "8.3"
-  else
-    default[:postgresql][:version] = "8.4"
-  end
+  default[:postgresql][:version] = if platform_version.to_f <= 12
+                                     "8.3"
+                                   else
+                                     "8.4"
+                                   end
 
   set[:postgresql][:dir] = "/var/lib/pgsql/data"
 when "redhat","centos"
   default[:postgresql][:version] = "8.4"
   set[:postgresql][:dir] = "/var/lib/pgsql/data"
 when "suse"
-  if platform_version.to_f <= 11.1
-    default[:postgresql][:version] = "8.3"
-  else
-    default[:postgresql][:version] = "8.4"
-  end
+  default[:postgresql][:version] = if platform_version.to_f <= 11.1
+                                     "8.3"
+                                   else
+                                     "8.4"
+                                   end
 
   set[:postgresql][:dir] = "/var/lib/pgsql/data"
 else
