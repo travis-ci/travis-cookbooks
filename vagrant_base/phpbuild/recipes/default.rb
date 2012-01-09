@@ -2,15 +2,20 @@ include_recipe "apt"
 include_recipe "mysql::client"
 include_recipe "postgresql::client"
 
+include_recipe "libxml"
+include_recipe "libssl"
+
 case node[:platform]
   when "ubuntu", "debian"
-    %w{libbz2-dev libc-client2007e-dev libcurl4-gnutls-dev libfreetype6-dev libgmp3-dev libjpeg8-dev libkrb5-dev libmcrypt-dev libpng12-dev libssl-dev libt1-dev libmhash-dev libexpat1-dev libxml2-dev libicu-dev libtidy-dev libxslt-dev language-pack-fr re2c}.each do |pkg|
+    %w{libbz2-dev libc-client2007e-dev libcurl4-gnutls-dev libfreetype6-dev libgmp3-dev libjpeg8-dev libkrb5-dev libmcrypt-dev libpng12-dev libt1-dev libmhash-dev libexpat1-dev libicu-dev libtidy-dev language-pack-fr re2c}.each do |pkg|
       package(pkg) { action :install }
     end
 
-    link "/usr/lib/libpng.so" do
-      to "/usr/lib/i386-linux-gnu/libpng.so"
+  %w(libpng libjpeg).each do |lib|
+    link "/usr/lib/#{lib}.so" do
+      to "/usr/lib/i386-linux-gnu/#{lib}.so"
     end
+  end
 end
 
 phpbuild_path = "#{node[:phpbuild][:home]}/.php-build"
