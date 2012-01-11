@@ -6,14 +6,19 @@ include_recipe "libxml"
 include_recipe "libssl"
 
 case node[:platform]
-  when "ubuntu", "debian"
-    %w{libbz2-dev libc-client2007e-dev libcurl4-gnutls-dev libfreetype6-dev libgmp3-dev libjpeg8-dev libkrb5-dev libmcrypt-dev libpng12-dev libt1-dev libmhash-dev libexpat1-dev libicu-dev libtidy-dev language-pack-fr re2c}.each do |pkg|
-      package(pkg) { action :install }
-    end
+when "ubuntu", "debian"
+  %w{libbz2-dev libc-client2007e-dev libcurl4-gnutls-dev libfreetype6-dev libgmp3-dev libjpeg8-dev libkrb5-dev libmcrypt-dev libpng12-dev libt1-dev libmhash-dev libexpat1-dev libicu-dev libtidy-dev language-pack-fr re2c lemon}.each do |pkg|
+    package(pkg) { action :install }
+  end
 
-  %w(libpng libjpeg).each do |lib|
-    link "/usr/lib/#{lib}.so" do
-      to "/usr/lib/i386-linux-gnu/#{lib}.so"
+  link "/usr/lib/libpng.so" do
+    to "/usr/lib/i386-linux-gnu/libpng.so"
+  end
+
+  # in 11.10, we also have to symlink libjpeg. MK.
+  if node[:platform_version].to_f >= 11.10
+    link "/usr/lib/libjpeg.so" do
+      to "/usr/lib/i386-linux-gnu/libjpeg.so"
     end
   end
 end
