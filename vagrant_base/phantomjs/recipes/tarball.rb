@@ -26,8 +26,9 @@
 # 1. Download the tarball
 require "tmpdir"
 
-tmp         = File.join(Dir.tmpdir, "phantomjs-#{node.phantomjs.version}.tar.gz")
-tarball_dir = File.join(Dir.tmpdir, "phantomjs")
+td          = Dir.tmpdir
+tmp         = File.join(td, "phantomjs-#{node.phantomjs.version}.tar.gz")
+tarball_dir = File.join(td, "phantomjs")
 
 remote_file(tmp) do
   source node.phantomjs.tarball.url
