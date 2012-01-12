@@ -20,7 +20,7 @@
 # This recipe relies on a PPA package and is Ubuntu/Debian specific. Please
 # keep this in mind.
 
-include_recipe "xserver"
+include_recipe "java"
 
 apt_repository "phantomjs-ppa" do
   uri          "http://ppa.launchpad.net/jerome-etienne/neoip/ubuntu"
