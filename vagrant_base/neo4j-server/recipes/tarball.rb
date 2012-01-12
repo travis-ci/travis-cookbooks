@@ -43,8 +43,9 @@ end
 # 1. Download the tarball to /tmp
 require "tmpdir"
 
-tmp         = File.join(Dir.tmpdir, "neo4j-community-#{node.neo4j.server.version}.tar.gz")
-tarball_dir = File.join(Dir.tmpdir, "neo4j-community-#{node.neo4j.server.version}")
+td          = Dir.tmpdir
+tmp         = File.join(td, "neo4j-community-#{node.neo4j.server.version}.tar.gz")
+tarball_dir = File.join(td, "neo4j-community-#{node.neo4j.server.version}")
 
 remote_file(tmp) do
   source node.neo4j.server.tarball.url
