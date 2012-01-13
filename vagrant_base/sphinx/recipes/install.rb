@@ -29,6 +29,6 @@ node.sphinx.versions.each do |version, path|
       make && make install
     SHELL
 
-    not_if "/usr/local/sphinx-#{version}"
+    not_if "test -d /usr/local/sphinx-#{version}"
   end
 end
