@@ -2,13 +2,7 @@ package 'libmysql++-dev' do
   action :install
 end
 
-package 'postgresql-client' do
-  action :install
-end
-
-package 'libpq-dev' do
-  action :install
-end
+include_recipe "postgresql::client"
 
 script 'download libstemmer once' do
   interpreter 'bash'
@@ -21,7 +15,7 @@ end
 
 node.sphinx.versions.each do |version, path|
   log("Installing Sphinx #{version} to #{path}") { level :debug }
-  
+
   script 'install sphinx with libstemmer' do
     interpreter 'bash'
     code <<-SHELL
@@ -31,8 +25,10 @@ node.sphinx.versions.each do |version, path|
       cp libstemmer_c.tgz sphinx-#{version}/libstemmer_c.tgz
       cd sphinx-#{version}
       tar zxvf libstemmer_c.tgz
-      ./configure --with-mysql --with-pgsql --with-libstemmer --prefix=#{path} 
+      ./configure --with-mysql --with-pgsql --with-libstemmer --prefix=#{path}
       make && make install
     SHELL
+
+    not_if "/usr/local/sphinx-#{version}"
   end
 end
