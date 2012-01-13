@@ -108,4 +108,3 @@ fi
 export JAVA_HOME="/usr/lib/jvm/java-6-<%= node['java']['install_flavor'] %>"
 
 source /etc/profile.d/travis_environment.sh
-source /etc/profile.d/timetrap.sh

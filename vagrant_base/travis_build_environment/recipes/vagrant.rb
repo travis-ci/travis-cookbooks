@@ -62,7 +62,7 @@ cookbook_file "/home/vagrant/.ssh/known_hosts" do
   owner "vagrant"
   group "vagrant"
   mode  0600
-  
+
   source "vagrant/known_hosts"
 end
 

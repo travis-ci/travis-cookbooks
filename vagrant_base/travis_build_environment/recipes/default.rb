@@ -22,7 +22,6 @@
 # THE SOFTWARE.
 
 include_recipe "timezone"
-include_recipe "timetrap"
 
 include_recipe "travis_build_environment::root"
 include_recipe "travis_build_environment::vagrant"
