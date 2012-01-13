@@ -28,7 +28,5 @@ node.sphinx.versions.each do |version, path|
       ./configure --with-mysql --with-pgsql --with-libstemmer --prefix=#{path}
       make && make install
     SHELL
-
-    not_if "test -d /usr/local/sphinx-#{version}"
   end
 end
