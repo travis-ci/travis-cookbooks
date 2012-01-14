@@ -12,10 +12,10 @@ bash "install phpenv" do
   code <<-EOF
   . /tmp/phpenv-install.sh
   EOF
-  not_if "test -f #{node.phpenv.home}/.phpenv/bin/phpenv"
+  not_if "test -f #{node.travis_build_environment.home}/.phpenv/bin/phpenv"
 end
 
-directory "#{node.phpenv.home}/.phpenv/versions" do
+directory "#{node.travis_build_environment.home}/.phpenv/versions" do
   owner  node.travis_build_environment.user
   group  node.travis_build_environment.group
   mode   "0755"
