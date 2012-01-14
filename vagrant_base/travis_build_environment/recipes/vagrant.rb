@@ -23,59 +23,59 @@
 
 
 cookbook_file "/etc/profile.d/travis_environment.sh" do
-  owner "vagrant"
-  group "vagrant"
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
   mode 0755
 
   source "vagrant/travis_environment.sh"
 end
 
 
-cookbook_file "/home/vagrant/.gemrc" do
-  owner "vagrant"
-  group "vagrant"
+cookbook_file "#{node.travis_build_environment.home}/.gemrc" do
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
   mode 0755
 
   source "vagrant/dot_gemrc.yml"
 end
 
 
-template "/home/vagrant/.bashrc" do
-  owner "vagrant"
-  group "vagrant"
+template "#{node.travis_build_environment.home}/.bashrc" do
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
   mode 0755
 
   source "vagrant/dot_bashrc.sh"
 end
 
 
-directory "/home/vagrant/.ssh" do
-  owner  "vagrant"
-  group  "vagrant"
+directory "#{node.travis_build_environment.home}/.ssh" do
+  owner  node.travis_build_environment.user
+  group  node.travis_build_environment.group
   mode   "0755"
 
   action :create
 end
 
 
-cookbook_file "/home/vagrant/.ssh/known_hosts" do
-  owner "vagrant"
-  group "vagrant"
+cookbook_file "#{node.travis_build_environment.home}/.ssh/known_hosts" do
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
   mode  0600
 
   source "vagrant/known_hosts"
 end
 
 
-directory "/home/vagrant/builds" do
-  owner "vagrant"
-  group "vagrant"
+directory "#{node.travis_build_environment.home}/builds" do
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
   mode "0755"
   action :create
 end
 
 
-mount "/home/vagrant/builds" do
+mount "#{node.travis_build_environment.home}/builds" do
   fstype   "tmpfs"
   device   "/dev/null" # http://tickets.opscode.com/browse/CHEF-1657, doesn't seem to be included in 0.10.0
   options  "defaults,size=#{node.travis_build_environment.builds_volume_size},noatime"

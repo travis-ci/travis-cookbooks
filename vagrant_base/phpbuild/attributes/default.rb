@@ -1,7 +1,3 @@
-default[:phpbuild][:user]  = "vagrant"
-default[:phpbuild][:group] = "vagrant"
-default[:phpbuild][:home]  = "/home/vagrant"
-
 default[:phpbuild][:git][:repository]                  = "git://github.com/CHH/php-build.git"
 default[:phpbuild][:git][:revision]                    = "92857d6dcd6e87262e3f8df78f18e5b2a7b3263f"
 default[:phpbuild][:phpunit_plugin][:git][:repository] = "git://github.com/CHH/php-build-plugin-phpunit.git"

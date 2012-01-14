@@ -53,7 +53,7 @@ end
 
 # Symlink /usr/local/bin/phantomjs
   link "/usr/local/bin/phantomjs" do
-    owner node.phantomjs.user
-    group node.phantomjs.user
+    owner node.travis_build_environment.user
+    group node.travis_build_environment.group
     to    "/usr/local/phantomjs/bin/phantomjs"
   end

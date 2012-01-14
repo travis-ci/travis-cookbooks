@@ -24,18 +24,18 @@
 require "tmpdir"
 
 permissions_setup = Proc.new do |resource|
-  resource.owner "vagrant"
-  resource.group "vagrant"
+  resource.owner node.travis_build_environment.user
+  resource.group node.travis_build_environment.group
   resource.mode 0755
 end
 
-directory "/home/vagrant/.nvm" do
+directory "#{node.travis_build_environment.home}/.nvm" do
   permissions_setup.call(self)
 end
 
 # Note that nvm will automatically install npm, the node package manager,
 # for each installed version of node.
-cookbook_file "/home/vagrant/.nvm/nvm.sh" do
+cookbook_file "#{node.travis_build_environment.home}/.nvm/nvm.sh" do
   permissions_setup.call(self)
 end
 
@@ -44,28 +44,28 @@ cookbook_file "/etc/profile.d/nvm.sh" do
   source "profile_entry.sh"
 end
 
-nvm = "source /home/vagrant/.nvm/nvm.sh; nvm"
+nvm = "source #{node.travis_build_environment.home}/.nvm/nvm.sh; nvm"
 
-node[:nodejs][:versions].each do |node|
-  bash "installing node version #{node}" do
-    creates "/home/vagrant/.nvm/#{node}"
-    user "vagrant"
-    group "vagrant"
-    cwd "/home/vagrant"
-    environment({'HOME' => "/home/vagrant"})
-    code  "#{nvm} install v#{node}"
+node[:nodejs][:versions].each do |version|
+  bash "installing node version #{version}" do
+    creates "#{node.travis_build_environment.home}/.nvm/#{version}"
+    user  node.travis_build_environment.user
+    group node.travis_build_environment.group
+    cwd   node.travis_build_environment.home
+    environment({'HOME' => "#{node.travis_build_environment.home}"})
+    code  "#{nvm} install v#{version}"
   end
 end
 
 bash "make the default node" do
-  user "vagrant"
+  user node.travis_build_environment.user
   code "#{nvm} alias default v#{node[:nodejs][:default]}"
 end
 
 node[:nodejs][:aliases].each do |existing_name, new_name|
   bash "alias node #{existing_name} => #{new_name}" do
-    user "vagrant"
-    cwd "/home/vagrant"
+    user node.travis_build_environment.user
+    cwd  node.travis_build_environment.home
     code "#{nvm} alias #{new_name} v#{existing_name}"
   end
 end

@@ -1,15 +1,15 @@
 include_recipe "phpenv"
 include_recipe "phpbuild"
 
-phpbuild_path = "#{node.phpbuild.home}/.php-build"
-phpenv_path   = "#{node.phpenv.home}/.phpenv"
+phpbuild_path = "#{node.travis_build_environment.home}/.php-build"
+phpenv_path   = "#{node.travis_build_environment.home}/.phpenv"
 
 node.php.multi.versions.each do |php_version|
 
   phpbuild_build "#{phpenv_path}/versions" do
     version php_version
-    owner   "vagrant"
-    group   "vagrant"
+    owner   node.travis_build_environment.user
+    group   node.travis_build_environment.group
 
     action  :create
   end

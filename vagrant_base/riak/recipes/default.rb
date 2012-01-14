@@ -26,13 +26,12 @@ require "tmpdir"
 tmp = Dir.tmpdir
 case node[:platform]
 when "debian", "ubuntu"
-  # this assumes 32-bit base Vagrant box.
   ["riak_#{node.riak.version}-1_i386.deb"].each do |deb|
     path = File.join(tmp, deb)
 
     remote_file(path) do
-      owner  "vagrant"
-      group  "vagrant"
+      owner  node.travis_build_environment.user
+      group  node.travis_build_environment.group
       source "http://downloads.basho.com.s3-website-us-east-1.amazonaws.com/riak/1.0/#{node.riak.version}/#{deb}"
 
       not_if "which riak"

@@ -47,8 +47,8 @@ when "debian", "ubuntu"
 
   remote_file(path) do
     source node[:redis][:package][:url]
-    owner  node[:redis][:package][:user]
-    group  node[:redis][:package][:group]
+    owner  node.travis_build_environment.user
+    group  node.travis_build_environment.group
   end
 
   package(deb) do

@@ -6,9 +6,9 @@ remote_file "/tmp/phpenv-install.sh"  do
 end
 
 bash "install phpenv" do
-  user node[:phpenv][:user]
-  group node.phpenv.group
-  environment Hash["HOME" => node.phpenv.home]
+  user  node.travis_build_environment.user
+  group node.travis_build_environment.group
+  environment Hash["HOME" => node.travis_build_environment.home]
   code <<-EOF
   . /tmp/phpenv-install.sh
   EOF
@@ -16,14 +16,14 @@ bash "install phpenv" do
 end
 
 directory "#{node.phpenv.home}/.phpenv/versions" do
-  owner  node[:phpbuild][:user]
-  group  node[:phpbuild][:group]
+  owner  node.travis_build_environment.user
+  group  node.travis_build_environment.group
   mode   "0755"
   action :create
 end
 
 cookbook_file "/etc/profile.d/phpenv.sh" do
-  owner node.phpenv.user
-  group node.phpenv.group
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
   mode 0755
 end

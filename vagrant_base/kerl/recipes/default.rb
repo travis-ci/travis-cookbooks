@@ -20,11 +20,11 @@ include_recipe "libreadline"
 include_recipe "libssl"
 include_recipe "libncurses"
 
-installation_root = "/home/#{node.kerl.user}/otp"
+installation_root = "/home/#{node.travis_build_environment.user}/otp"
 
 directory(installation_root) do
-  owner node.kerl.user
-  group node.kerl.group
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
   mode  "0755"
   action :create
 end
@@ -35,10 +35,10 @@ remote_file(node.kerl.path) do
 end
 
 
-home = "/home/#{node.kerl.user}"
+home = "/home/#{node.travis_build_environment.user}"
 env  = {
   'HOME'               => home,
-  'USER'               => node.kerl.user,
+  'USER'               => node.travis_build_environment.user,
   'KERL_DISABLE_AGNER' => 'yes',
   "KERL_BASE_DIR"      => "#{home}/.kerl"
 }
@@ -54,8 +54,8 @@ end
 execute "erlang.releases.update" do
   command "#{node.kerl.path} update releases"
 
-  user    node.kerl.user
-  group   node.kerl.group
+  user    node.travis_build_environment.user
+  group   node.travis_build_environment.group
 
   environment(env)
 
@@ -68,24 +68,24 @@ node.kerl.releases.each do |rel, build|
   execute "build Erlang #{rel}" do
     command "#{node.kerl.path} build #{rel} #{rel}"
 
-    user    node.kerl.user
-    group   node.kerl.group
+    user    node.travis_build_environment.user
+    group   node.travis_build_environment.group
 
     environment(env)
 
     # make sure R14B02 won't cause R14B to be skipped. MK.
-    not_if "#{node.kerl.path} list builds | grep \"^#{rel}$\"", :user => node.kerl.user, :environment => env
+    not_if "#{node.kerl.path} list builds | grep \"^#{rel}$\"", :user => node.travis_build_environment.user, :environment => env
   end
 
 
   execute "install Erlang #{rel}" do
     command "#{node.kerl.path} install #{rel} #{installation_root}/#{rel}"
 
-    user    node.kerl.user
-    group   node.kerl.group
+    user    node.travis_build_environment.user
+    group   node.travis_build_environment.group
 
     environment(env)
 
-    not_if "#{node.kerl.path} list installations | grep #{rel}", :user => node.kerl.user, :environment => env
+    not_if "#{node.kerl.path} list installations | grep #{rel}", :user => node.travis_build_environment.user, :environment => env
   end
 end

@@ -23,41 +23,41 @@ when "ubuntu", "debian"
   end
 end
 
-phpbuild_path = "#{node[:phpbuild][:home]}/.php-build"
+phpbuild_path = "#{node.travis_build_environment.home}/.php-build"
 
 git phpbuild_path do
-  user       node[:phpbuild][:user]
-  group      node[:phpbuild][:group]
+  user       node.travis_build_environment.user
+  group      node.travis_build_environment.group
   repository node[:phpbuild][:git][:repository]
   revision   node[:phpbuild][:git][:revision]
   action     :checkout
 end
 
 git "/tmp/php-build-plugin-phpunit" do
-  user       node[:phpbuild][:user]
-  group      node[:phpbuild][:group]
+  user       node.travis_build_environment.user
+  group      node.travis_build_environment.group
   repository node[:phpbuild][:phpunit_plugin][:git][:repository]
   revision   node[:phpbuild][:phpunit_plugin][:git][:revision]
   action     :checkout
 end
 
 directory "#{phpbuild_path}/versions" do
-  owner  node[:phpbuild][:user]
-  group  node[:phpbuild][:group]
+  owner  node.travis_build_environment.user
+  group  node.travis_build_environment.group
   mode   "0755"
   action :create
 end
 
 directory "#{phpbuild_path}/tmp" do
-  owner  node[:phpbuild][:user]
-  group  node[:phpbuild][:group]
+  owner  node.travis_build_environment.user
+  group  node.travis_build_environment.group
   mode   "0755"
   action :create
 end
 
 bash "install php-build plugins" do
-  user   node[:phpbuild][:user]
-  group  node[:phpbuild][:group]
+  user   node.travis_build_environment.user
+  group  node.travis_build_environment.group
   code <<-EOF
   cp /tmp/php-build-plugin-phpunit/share/php-build/after-install.d/phpunit #{phpbuild_path}/share/php-build/after-install.d
   EOF
@@ -65,7 +65,7 @@ bash "install php-build plugins" do
 end
 
 template "#{phpbuild_path}/share/php-build/default_configure_options" do
-  owner  node[:phpbuild][:user]
-  group  node[:phpbuild][:group]
+  owner  node.travis_build_environment.user
+  group  node.travis_build_environment.group
   source "default_configure_options.erb"
 end

@@ -26,11 +26,11 @@ require "tmpdir"
 tmp = Dir.tmpdir
 case node[:platform]
 when "debian", "ubuntu"
-  # this assumes 32-bit base Vagrant box. MK.
+  # this assumes 32-bit base box. MK.
   %w(libv8-3.0.12.23_3.0.12.23-1_i386.deb libv8-dev_3.0.12.23-1_i386.deb).map { |deb| File.join(tmp, deb) }.each do |path|
     cookbook_file(path) do
-      owner "vagrant"
-      group "vagrant"
+      owner node.travis_build_environment.user
+      group node.travis_build_environment.user
     end
 
     package "libv8-3.0.12" do

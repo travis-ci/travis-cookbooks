@@ -46,8 +46,8 @@ when "debian", "ubuntu"
     path = File.join(tmp, deb)
 
     cookbook_file(path) do
-      owner "vagrant"
-      group "vagrant"
+      owner node.travis_build_environment.user
+      group node.travis_build_environment.group
     end
 
     package(deb) do

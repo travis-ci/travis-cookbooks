@@ -36,26 +36,26 @@ include_recipe "libssl"
 include_recipe "libncurses"
 
 bash "install RVM" do
-  user        node[:rvm][:user]
-  cwd         node[:rvm][:home]
-  environment Hash['HOME' => node[:rvm][:home], 'rvm_user_install_flag' => '1']
+  user        node.travis_build_environment.user
+  cwd         node.travis_build_environment.home
+  environment Hash['HOME' => node.travis_build_environment.home, 'rvm_user_install_flag' => '1']
   code        <<-SH
   curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer -o /tmp/rvm-installer
   chmod +x /tmp/rvm-installer
   /tmp/rvm-installer --version #{node.rvm.version}
   SH
-  not_if      "test -d #{node[:rvm][:home]}/.rvm"
+  not_if      "test -d #{node.travis_build_environment.home}/.rvm"
 end
 
 cookbook_file "/etc/profile.d/rvm.sh" do
-  owner node[:rvm][:user]
-  group node[:rvm][:user]
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
   mode 0755
 end
 
-cookbook_file "#{node[:rvm][:home]}/.rvmrc" do
-  owner node[:rvm][:user]
-  group node[:rvm][:user]
+cookbook_file "#{node.travis_build_environment.home}/.rvmrc" do
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
   mode  0755
 
   source "dot_rvmrc.sh"

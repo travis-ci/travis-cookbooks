@@ -2,7 +2,8 @@
 # Cookbook Name:: sbt
 # Recipe:: default
 #
-# Copyright 2011, Michael S. Klishin
+# Copyright 2011-2012, Michael S. Klishin
+# Copyright 2011-2012, Travis CI Development Team
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,15 +24,14 @@ require "tmpdir"
 tmp = Dir.tmpdir
 case node[:platform]
 when "debian", "ubuntu"
-  # this assumes 32-bit base Vagrant box.
   # home-made .deb package tweaking with sbt-installer-ubuntizer scripts
   # see https://github.com/przemek-pokrywka/sbt-installer-ubuntizer
   %w(sbt-0.11.2.deb).each do |deb|
     path = File.join(tmp, deb)
 
     cookbook_file(path) do
-      owner node[:sbt][:user]
-      group node[:sbt][:group]
+      owner node.travis_build_environment.user
+      group node.travis_build_environment.group
     end
 
     package(deb) do
@@ -49,8 +49,8 @@ node[:sbt][:scala][:versions].each do |version|
     # sbt to start its interactive REPL session and that will block the entire
     # chef run. We also must set cwd or the run will stall. MK.
     command "sbt ++#{version} help compile < /dev/null"
-    user    node[:sbt][:user]
-    cwd     node[:sbt][:home]
+    user    node.travis_build_environment.user
+    cwd     node.travis_build_environment.home
 
     timeout node[:sbt][:boot][:timeout]
     action  :run

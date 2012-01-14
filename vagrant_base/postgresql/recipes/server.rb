@@ -63,7 +63,7 @@ end
 
 
 
-["vagrant", "rails"].each do |username|
+[node.travis_build_environment.user, "rails"].each do |username|
   # drop first to make sure create user is a superuser even if it wasn't initially. MK.
   bash "drop superuser #{username}" do
     user "postgres"

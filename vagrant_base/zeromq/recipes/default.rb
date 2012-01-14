@@ -26,7 +26,7 @@ when "debian", "ubuntu"
     action :install
   end
 
-  # this assumes 32-bit base Vagrant box.
+  # this assumes 32-bit base box.
   ["zeromq_2.1.10+fpm0_i386.deb"].each do |deb|
     path = File.join(tmp, deb)
 

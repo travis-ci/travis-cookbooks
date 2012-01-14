@@ -20,7 +20,7 @@ include_recipe('kerl')
 
 remote_file("/usr/local/bin/rebar") do
   source node.rebar.release
-  owner node.rebar.user
-  group node.rebar.group
-  mode  0755
+  owner  node.travis_build_environment.user
+  group  node.travis_build_environment.group
+  mode   0755
 end
