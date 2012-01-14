@@ -1,9 +1,11 @@
+neo4j_version = "1.6.M03"
+
 default[:neo4j][:server] = {
-  :version => "1.6.M02",
+  :version => neo4j_version,
   :installation_dir => "/usr/local/neo4j-server",
   :tarball => {
-    :url => "http://dist.neo4j.org/neo4j-community-1.6.M02-unix.tar.gz",
-    :md5 => "d90e08da7de51d3c56b56688a731fc7a"
+    :url => "http://dist.neo4j.org/neo4j-community-#{neo4j_version}-unix.tar.gz",
+    :md5 => "dd53734691da8a1a6518b0d12d283996"
   },
   :user => "neo4j",
   :jvm  => {
