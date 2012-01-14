@@ -31,10 +31,10 @@ aliases      = node[:rvm][:aliases] || []
 
 log "Default Ruby will be #{default_ruby}"
 
-home = node[:rvm][:home]
+home = node.travis_build_environment.home
 rvm  = "source #{home}/.rvm/scripts/rvm && rvm"
 env  = { 'HOME' => home, 'rvm_user_install_flag' => '1' }
-user = node[:rvm][:user]
+user = node.travis_build_environment.user
 
 setup = lambda do |bash|
   bash.user user
