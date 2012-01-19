@@ -97,6 +97,10 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
+if [ -f /etc/profile ]; then
+    . /etc/profile
+fi
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -106,5 +110,3 @@ fi
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 export JAVA_HOME="/usr/lib/jvm/java-6-<%= node['java']['install_flavor'] %>"
-
-source /etc/profile.d/travis_environment.sh
