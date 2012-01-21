@@ -25,7 +25,7 @@ include_recipe "apt" if ['debian', 'ubuntu'].member?(node[:platform])
 include_recipe "networking_basic"
 include_recipe "build-essential"
 
-bash "install RVM" do
+bash "install Pythonbrew" do
   user        node.travis_build_environment.user
   cwd         node.travis_build_environment.home
   environment Hash['HOME' => node.travis_build_environment.home]
