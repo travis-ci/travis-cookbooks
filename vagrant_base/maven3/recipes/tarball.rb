@@ -19,8 +19,12 @@
 
 include_recipe "java"
 
-cookbook_file "/tmp/install_maven3.sh" do
-  source "install_maven3.sh"
+package "wget" do
+  action :install
+end
+
+template "/tmp/install_maven3.sh" do
+  source "install_maven3.sh.erb"
   mode   0755
   backup false
 end
