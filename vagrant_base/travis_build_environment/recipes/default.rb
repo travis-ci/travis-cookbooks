@@ -71,3 +71,10 @@ end
 execute "rm /etc/update-motd.d/*" do
   ignore_failure true
 end
+
+# Make sure we don't have obscure issues with SSL certificates.
+# See https://bugs.launchpad.net/ubuntu/+source/ca-certificates-java/+bug/873517
+# and http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=623671. MK.
+execute "/usr/sbin/update-ca-certificates -f" do
+  user "root"
+end
