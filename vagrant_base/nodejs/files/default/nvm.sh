@@ -4,6 +4,8 @@
 #
 # Implemented by Tim Caswell <tim@creationix.com>
 # with much bash help from Matthew Ranney
+#
+# Modifications by the Travis CI Development Team.
 
 # Auto detect the NVM_DIR
 if [ ! -d "$NVM_DIR" ]; then
@@ -23,8 +25,8 @@ if [ ! `which curl` ]; then
             wget $ARGS
         }
     else
-        NOCURL='nocurl'
-        curl() { echo 'Need curl or wget to proceed.' >&2; }
+        echo 'Need curl or wget to proceed. Terminating.'
+        exit 1
     fi
 fi
 
@@ -97,7 +99,6 @@ nvm()
         nvm help
         return
       fi
-      [ "$NOCURL" ] && curl && return
       VERSION=`nvm_version $2`
 
       [ -d "$NVM_DIR/$VERSION" ] && echo "$VERSION is already installed." && return
@@ -138,7 +139,8 @@ nvm()
       fi
       VERSION=`nvm_version $2`
       if [ ! -d $NVM_DIR/$VERSION ]; then
-        echo "$VERSION version is not installed yet"
+        echo "$VERSION version is not installed"
+        nvm ls;
         return;
       fi
 
@@ -179,7 +181,8 @@ nvm()
       fi
       VERSION=`nvm_version $2`
       if [ ! -d $NVM_DIR/$VERSION ]; then
-        echo "$VERSION version is not installed yet"
+        echo "$VERSION version is not installed"
+        nvm ls;
         return;
       fi
       if [[ $PATH == *$NVM_DIR/*/bin* ]]; then
