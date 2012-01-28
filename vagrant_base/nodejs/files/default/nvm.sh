@@ -124,7 +124,6 @@ nvm()
         nvm use $VERSION
         if ! which npm ; then
           echo "Installing npm..."
-          # TODO: if node version 0.2.x add npm_install=0.2.19 before sh
           curl http://npmjs.org/install.sh | clean=no sh
         fi
       else
