@@ -1,30 +1,36 @@
 #
-# Cookbook Name:: debian_basic
+# Cookbook Name:: networking_basic
 # Recipe:: default
 #
-# Copyright 2010, fredz
+# Copyright 2011-2012, Travis CI Development Team
 #
-# All rights reserved - Do Not Redistribute
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 #
-
-packages = [
-  'lsof',
-  'iptables',
-  'whois',
-  'curl',
-  'wget',
-  'rsync',
-  'traceroute',
-  'iproute',
-  'iputils-ping',
-  "libcurl4-openssl-dev"
-]
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
 
 case node[:platform]
-  when "debian", "ubuntu"
-    packages.each do |pkg|
-      package pkg do
-        action :install
+when "debian", "ubuntu"
+  packages = [
+              'lsof',
+              'iptables',
+              'curl',
+              'wget',
+              'rsync',
+              "libcurl4-openssl-dev"
+             ]
+
+  packages.each do |pkg|
+    package pkg do
+      action :install
     end
   end
 end
