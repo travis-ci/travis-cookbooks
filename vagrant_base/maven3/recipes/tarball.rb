@@ -33,4 +33,3 @@ execute "/tmp/install_maven3.sh" do
   command "/bin/sh /tmp/install_maven3.sh"
   action  :run
 end
-
