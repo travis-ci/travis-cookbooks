@@ -1,4 +1,6 @@
 include_recipe "apt"
+include_recipe "git"
+
 include_recipe "mysql::client"
 include_recipe "postgresql::client"
 
