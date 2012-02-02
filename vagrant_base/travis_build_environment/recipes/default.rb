@@ -24,7 +24,7 @@
 include_recipe "timezone"
 
 include_recipe "travis_build_environment::root"
-include_recipe "travis_build_environment::vagrant"
+include_recipe "travis_build_environment::non_privileged_user"
 
 cookbook_file "/etc/default/locale" do
   owner "root"

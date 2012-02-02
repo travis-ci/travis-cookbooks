@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: travis_build_environment
-# Recipe:: vagrant
+# Recipe:: non_privileged_user
 # Copyright 2011, Travis CI development team
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
