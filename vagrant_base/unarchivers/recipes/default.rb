@@ -22,8 +22,8 @@
 # THE SOFTWARE.
 
 list = case node.platform
-when "ubuntu", "debian" then
-  %w(gzip bzip2 zip unzip)
-end # case
+       when "ubuntu", "debian" then
+         %w(gzip bzip2 zip unzip libbz2-dev)
+       end # case
 
 list.each { |pkg| package(pkg) { action :install } }
