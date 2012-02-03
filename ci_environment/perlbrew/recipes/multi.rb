@@ -18,7 +18,7 @@ end
 
 node.perlbrew.perls.each do |pl|
   args = pl[:arguments].to_s
-  args << " -n" if node.perlbrew.notests
+  args << " --notest"
 
   bash "installing #{pl[:version]} as #{pl[:name]} with Perlbrew arguments: #{args}" do
     setup.call(self)
