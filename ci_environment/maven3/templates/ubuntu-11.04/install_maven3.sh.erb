@@ -23,10 +23,10 @@ cd /tmp
     wget http://files.travis-ci.org/packages/tar/maven3/apache-maven-<%= node.maven.version %>-bin.tar.gz && tar -xvf ./*gz
 }
 
-sudo mv /tmp/apache-maven-3.* /usr/lib/mvn/
-
 sudo apt-get remove maven2
 sudo rm -f /usr/bin/mvn
+sudo mkdir -p /usr/lib/mvn
+sudo mv /tmp/apache-maven-3.* /usr/lib/mvn/
 sudo ln -s /usr/lib/mvn/apache-maven-<%= node.maven.version %>/bin/mvn /usr/bin/mvn
 
 mvn -version
