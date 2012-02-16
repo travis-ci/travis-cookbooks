@@ -32,4 +32,6 @@ end
 execute "/tmp/install_maven3.sh" do
   command "/bin/sh /tmp/install_maven3.sh"
   action  :run
+
+  not_if "which mvn && mvn --version | grep 'Apache Maven 3'"
 end
