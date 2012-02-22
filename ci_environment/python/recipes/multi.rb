@@ -28,6 +28,9 @@ when "ubuntu"
     distribution node['lsb']['codename']
     components   ['main']
 
+    key          "DB82666C"
+    keyserver    "keyserver.ubuntu.com"
+
     action :add
   end
 end
@@ -44,13 +47,12 @@ python_pkgs.each do |pkg|
   end
 end
 
-
-include_recipe "python::pip"
+# virtualenv includes pip. MK.
 include_recipe "python::virtualenv"
 
 # not a good practice but sufficient for travis-ci.org needs, so lets keep it
 # hardcoded. MK.
-installation_root = "/home/vagrant/virtualenv"
+installation_root = File.join(node.travis_build_environment.home, "virtualenv")
 
 directory(installation_root) do
   owner "vagrant"
@@ -62,9 +64,11 @@ end
 
 
 node.python.multi.pythons.each do |py|
-  python_virtualenv "/home/vagrant" do
-    owner       "vagrant"
-    group       "vagrant"
+  log "Creating a new virtualenv for #{py}"
+
+  python_virtualenv node.travis_build_environment.home do
+    owner       node.travis_build_environment.user
+    group       node.travis_build_environment.group
     interpreter py
     path        "#{installation_root}/#{py}"
 
