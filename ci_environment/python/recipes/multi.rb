@@ -42,7 +42,7 @@ python_pkgs = value_for_platform(
 )
 
 python_pkgs.each do |pkg|
-  package pkg do
+  package "#{pkg}-dev" do
     action :install
   end
 end
