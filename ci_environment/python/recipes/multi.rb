@@ -35,14 +35,6 @@ when "ubuntu"
   end
 end
 
-# # undo possible python::default actions that cause dependency conflicts. MK.
-# package "python" do
-#   action :remove
-# end
-# package "python-dev" do
-#   action :remove
-# end
-
 
 python_pkgs = value_for_platform(
   ["debian","ubuntu"] => {
