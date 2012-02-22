@@ -21,6 +21,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+# python2.6 fails to install because some dependency in base VM images
+# creates this directory and it confuses apt. MK.
+directory "/usr/lib/python2.6/site-packages" do
+  recursive true
+  action :delete
+  ignore_failure true
+end
+
+
 case node['platform']
 when "ubuntu"
   apt_repository "fkrull_deadsnakes" do
