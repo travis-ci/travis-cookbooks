@@ -27,4 +27,4 @@ default['python']['prefix_dir'] = '/usr/local'
 
 default['python']['configure_options'] = %W{--prefix=#{python['prefix_dir']}}
 
-default['python']['multi']['pythons'] = %w(python2.5 python2.6 python2.7 python3.2)
+default['python']['multi']['pythons'] = %w(python2.5 python2.6 python2.7 python3.1 python3.2)
