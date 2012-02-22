@@ -1,1 +1,1 @@
-default[:riak][:version] = "1.0.3"
+default[:riak][:version] = "1.1.0"

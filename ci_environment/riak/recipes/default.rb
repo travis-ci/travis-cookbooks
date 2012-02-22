@@ -30,9 +30,11 @@ when "debian", "ubuntu"
     path = File.join(tmp, deb)
 
     remote_file(path) do
+      v = node.riak.version
+
       owner  node.travis_build_environment.user
       group  node.travis_build_environment.group
-      source "http://downloads.basho.com.s3-website-us-east-1.amazonaws.com/riak/1.0/#{node.riak.version}/#{deb}"
+      source "http://downloads.basho.com.s3-website-us-east-1.amazonaws.com/riak/#{v.split('.').first(2).join('.')}/#{v}/#{deb}"
 
       not_if "which riak"
     end
