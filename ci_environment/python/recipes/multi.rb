@@ -24,12 +24,6 @@
 # To support Python 2.5 via Dead Snakes we will have to figure out
 # why it causes python2.6-minimal dependencies to be broken. MK.
 #
-# package "python" do
-#   action :remove
-# end
-# package "python-dev" do
-#   action :remove
-# end
 #
 # case node['platform']
 # when "ubuntu"
@@ -51,28 +45,23 @@ python_pkgs = value_for_platform(
   }
 )
 
-python_pkgs.each do |pkg|
+python_pkgs.sort.each do |pkg|
   package "#{pkg}-dev" do
     action :install
   end
 end
-
-# virtualenv includes pip. MK.
-include_recipe "python::virtualenv"
 
 # not a good practice but sufficient for travis-ci.org needs, so lets keep it
 # hardcoded. MK.
 installation_root = File.join(node.travis_build_environment.home, "virtualenv")
 
 directory(installation_root) do
-  owner "vagrant"
-  group "vagrant"
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
   mode  "0755"
 
   action :create
 end
-
-
 node.python.multi.pythons.each do |py|
   log "Creating a new virtualenv for #{py}"
 
@@ -85,3 +74,6 @@ node.python.multi.pythons.each do |py|
     action :create
   end
 end
+
+# virtualenv includes pip. MK.
+include_recipe "python::virtualenv"
