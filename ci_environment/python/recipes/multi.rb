@@ -21,19 +21,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-case node['platform']
-when "ubuntu"
-  apt_repository "fkrull_deadsnakes" do
-    uri          "http://ppa.launchpad.net/fkrull/deadsnakes/ubuntu"
-    distribution node['lsb']['codename']
-    components   ['main']
-
-    key          "DB82666C"
-    keyserver    "keyserver.ubuntu.com"
-
-    action :add
-  end
-end
+# Dead Snakes PPA provides 2.5 but also breaks python2.6 installation,
+# we decided to figure it out later. MK.
+#
+# case node['platform']
+# when "ubuntu"
+#   apt_repository "fkrull_deadsnakes" do
+#     uri          "http://ppa.launchpad.net/fkrull/deadsnakes/ubuntu"
+#     distribution node['lsb']['codename']
+#     components   ['main']
+#
+#     key          "DB82666C"
+#     keyserver    "keyserver.ubuntu.com"
+#
+#     action :add
+#   end
+# end
 
 package "python-dev" do
   action :install
