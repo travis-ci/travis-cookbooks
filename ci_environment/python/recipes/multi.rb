@@ -21,35 +21,34 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-# To support Python 2.5 via Dead Snakes we will have to figure out
-# why it causes python2.6-minimal dependencies to be broken. MK.
-#
-#
-# case node['platform']
-# when "ubuntu"
-#   apt_repository "fkrull_deadsnakes" do
-#     uri          "http://ppa.launchpad.net/fkrull/deadsnakes/ubuntu"
-#     distribution node['lsb']['codename']
-#     components   ['main']
-#
-#     key          "DB82666C"
-#     keyserver    "keyserver.ubuntu.com"
-#
-#     action :add
-#   end
+case node['platform']
+when "ubuntu"
+  apt_repository "fkrull_deadsnakes" do
+    uri          "http://ppa.launchpad.net/fkrull/deadsnakes/ubuntu"
+    distribution node['lsb']['codename']
+    components   ['main']
+
+    key          "DB82666C"
+    keyserver    "keyserver.ubuntu.com"
+
+    action :add
+  end
+end
+
+# # undo possible python::default actions that cause dependency conflicts. MK.
+# package "python" do
+#   action :remove
 # end
+# package "python-dev" do
+#   action :remove
+# end
+
 
 python_pkgs = value_for_platform(
   ["debian","ubuntu"] => {
     "default" => node.python.multi.pythons
   }
 )
-
-python_pkgs.sort.each do |pkg|
-  package "#{pkg}-dev" do
-    action :install
-  end
-end
 
 # not a good practice but sufficient for travis-ci.org needs, so lets keep it
 # hardcoded. MK.
@@ -62,9 +61,19 @@ directory(installation_root) do
 
   action :create
 end
-node.python.multi.pythons.each do |py|
-  log "Creating a new virtualenv for #{py}"
+# virtualenv includes pip. MK.
+include_recipe "python::virtualenv"
 
+node.python.multi.pythons.each do |py|
+  log "Installing #{py}"
+  package py do
+    action :install
+  end
+  package "#{py}-dev" do
+    action :install
+  end
+
+  log "Creating a new virtualenv for #{py}"
   python_virtualenv node.travis_build_environment.home do
     owner       node.travis_build_environment.user
     group       node.travis_build_environment.group
@@ -74,6 +83,3 @@ node.python.multi.pythons.each do |py|
     action :create
   end
 end
-
-# virtualenv includes pip. MK.
-include_recipe "python::virtualenv"

@@ -18,4 +18,4 @@
 # limitations under the License.
 #
 
-include_recipe "python::#{node['python']['install_method']}"
+include_recipe "python::package"
