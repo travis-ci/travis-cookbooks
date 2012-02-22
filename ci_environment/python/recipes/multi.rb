@@ -35,9 +35,12 @@ when "ubuntu"
   end
 end
 
+package "python-dev" do
+  action :install
+end
 python_pkgs = value_for_platform(
   ["debian","ubuntu"] => {
-    "default" => (%w(python-dev) + node.python.multi.pythons)
+    "default" => node.python.multi.pythons
   }
 )
 
