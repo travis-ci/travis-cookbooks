@@ -1,0 +1,1 @@
+export VIRTUAL_ENV_DISABLE_PROMPT=true

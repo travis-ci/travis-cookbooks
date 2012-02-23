@@ -20,6 +20,13 @@
 
 include_recipe "python::pip"
 
+cookbook_file "/etc/profile.d/virtualenv_settings.sh" do
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
+  mode 0755
+end
+
+
 python_pip "virtualenv" do
   action :install
 end
