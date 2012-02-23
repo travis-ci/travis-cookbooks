@@ -30,11 +30,15 @@ node[:mongodb][:pidfile]     = "/var/run/mongodb.pid"
 
 execute "apt-get update" do
   action :nothing
+
+  not_if "which mongod && which mongo"
 end
 
 execute "add 10gen apt key" do
   command "apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10"
   action :nothing
+
+  not_if "which mongod && which mongo"
 end
 
 # Note: hardcoded repo for SysV style init
@@ -44,10 +48,14 @@ cookbook_file "/etc/apt/sources.list.d/mongodb.list" do
   mode "0644"
   notifies :run, resources(:execute => "add 10gen apt key"), :immediately
   notifies :run, resources(:execute => "apt-get update"), :immediately
+
+  not_if "which mongod && which mongo"
 end
 
-package "mongodb-10gen"
-
+package "mongodb-10gen" do
+  action :install
+  not_if "which mongod && which mongo"
+end
 
 cookbook_file "/etc/init.d/mongodb" do
   source "mongodb.sysvinit.sh"
