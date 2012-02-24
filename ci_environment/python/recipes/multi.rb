@@ -82,7 +82,7 @@ node.python.multi.pythons.each do |py|
 
     cwd node.travis_build_environment.home
     code <<-EOH
-    #{installation_root}/#{py}/bin/pip install #{node.python.pip.packages.join(' ')}
+    #{installation_root}/#{py}/bin/pip install #{node.python.pip.packages.join(' ')} --use-mirrors
     EOH
 
     action :nothing
