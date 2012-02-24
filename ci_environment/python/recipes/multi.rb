@@ -46,10 +46,10 @@ end
 
 
 python_pkgs = value_for_platform(
-  ["debian","ubuntu"] => {
-    "default" => node.python.multi.pythons
-  }
-)
+                                 ["debian","ubuntu"] => {
+                                   "default" => node.python.multi.pythons
+                                 }
+                                 )
 
 # not a good practice but sufficient for travis-ci.org needs, so lets keep it
 # hardcoded. MK.
@@ -74,6 +74,21 @@ node.python.multi.pythons.each do |py|
     action :install
   end
 
+
+  script "preinstall pip packages" do
+    interpreter "bash"
+    user        node.travis_build_environment.user
+    group       node.travis_build_environment.group
+
+    cwd node.travis_build_environment.home
+    code <<-EOH
+    #{installation_root}/#{py}/bin/pip install #{node.python.pip.packages.join(' ')}
+    EOH
+
+    action :nothing
+  end
+
+
   log "Creating a new virtualenv for #{py}"
   python_virtualenv node.travis_build_environment.home do
     owner       node.travis_build_environment.user
@@ -82,5 +97,6 @@ node.python.multi.pythons.each do |py|
     path        "#{installation_root}/#{py}"
 
     action :create
+    notifies :run, resources(:script => "preinstall pip packages")
   end
 end
