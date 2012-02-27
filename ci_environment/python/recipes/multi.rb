@@ -74,19 +74,21 @@ node.python.multi.pythons.each do |py|
     action :install
   end
 
-
-  script "preinstall pip packages" do
-    interpreter "bash"
-    user        node.travis_build_environment.user
-    group       node.travis_build_environment.group
-
-    cwd node.travis_build_environment.home
-    code <<-EOH
-    #{installation_root}/#{py}/bin/pip install #{node.python.pip.packages.join(' ')} --use-mirrors
-    EOH
-
-    action :nothing
-  end
+  # commented out until we find a workaround for Vagrant issue #516
+  # script "preinstall pip packages" do
+  #   interpreter "bash"
+  #   user        node.travis_build_environment.user
+  #   group       node.travis_build_environment.group
+  #
+  #   cwd node.travis_build_environment.home
+  #   code <<-EOH
+  #   #{installation_root}/#{py}/bin/pip install --quiet #{node.python.pip.packages.join(' ')} --use-mirrors
+  #   EOH
+  #
+  #   environment({ "VIRTUAL_ENV_DISABLE_PROMPT" => "true" })
+  #
+  #   action :nothing
+  # end
 
 
   log "Creating a new virtualenv for #{py}"
@@ -97,6 +99,7 @@ node.python.multi.pythons.each do |py|
     path        "#{installation_root}/#{py}"
 
     action :create
-    notifies :run, resources(:script => "preinstall pip packages")
+    # commented out until we find a workaround for Vagrant issue #516
+    # notifies :run, resources(:script => "preinstall pip packages")
   end
 end

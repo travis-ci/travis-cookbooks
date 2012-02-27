@@ -28,6 +28,8 @@ action :create do
     execute "virtualenv --distribute --python=#{@new_resource.interpreter} #{@new_resource.path}" do
       user new_resource.owner if new_resource.owner
       group new_resource.group if new_resource.group
+
+      environment({ "VIRTUAL_ENV_DISABLE_PROMPT" => "true" })
     end
     new_resource.updated_by_last_action(true)
   end
