@@ -28,7 +28,7 @@ execute "update-java-alternatives" do
   alternative = case [node[:platform], node[:platform_version]]
                 when ["ubuntu", "11.04"] then
                   "java-6-openjdk"
-                when ["ubuntu", "11.04"] then
+                when ["ubuntu", "11.10"] then
                   "java-1.6.0-openjdk"
                 else
                   "java-1.6.0-openjdk"
