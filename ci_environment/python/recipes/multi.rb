@@ -42,10 +42,6 @@ when "ubuntu"
 
     action :add
   end
-
-  # ubunty/debian modify stdlib, install profiler package as recommended by
-  # dstufft. MK.
-  package "python-profiler"
 end
 
 
