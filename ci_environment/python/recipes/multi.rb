@@ -82,7 +82,6 @@ node.python.multi.pythons.each do |py|
     cwd node.travis_build_environment.home
     code <<-EOH
     #{installation_root}/#{py}/bin/pip install --quiet #{node.python.pip.packages.join(' ')} --use-mirrors
-    sleep 10 # prevent # of concurrent slow connections to go above VirtualBox NIC NAT limit. See Vagrant issue #516. MK.
     EOH
 
     environment({ "VIRTUAL_ENV_DISABLE_PROMPT" => "true" })
