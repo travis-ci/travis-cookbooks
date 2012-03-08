@@ -19,48 +19,5 @@
 
 include_recipe "java"
 
-jar_dir  = File.join(node.travis_build_environment.home, ".lein")
-jar_file = File.join(jar_dir, "self-installs", "#{jar_dir}/leiningen-#{node[:leiningen][:version]}-standalone.jar")
-
-[jar_dir, File.join(jar_dir, "self-installs")].each do |dir|
-  directory dir do
-    owner     node.travis_build_environment.user
-    group     node.travis_build_environment.group
-    recursive true
-
-    action    :create
-  end
-end
-
-ruby_block "lein-system-wide" do
-  block do
-    rc = Chef::Util::FileEdit.new("/usr/local/bin/lein")
-    rc.search_file_replace_line(/^LEIN_JAR=.*/, "LEIN_JAR=#{jar_file}")
-    rc.write_file
-  end
-  action :nothing
-end
-
-script "run lein self-install" do
-  interpreter "bash"
-  code        "/usr/local/bin/lein self-install"
-
-  cwd        node.travis_build_environment.home
-  user       node.travis_build_environment.user
-  environment({ "HOME" => node.travis_build_environment.home, "USER" => node.travis_build_environment.user })
-
-  action :nothing
-end
-
-remote_file "/usr/local/bin/lein" do
-  source   node[:leiningen][:install_script]
-  owner    node.travis_build_environment.user
-  group    node.travis_build_environment.group
-  mode     0755
-
-
-  notifies :create, resources(:ruby_block => "lein-system-wide"), :immediately
-  notifies :run,    resources(:script     => "run lein self-install")
-
-  not_if "grep -qx 'export LEIN_VERSION=\"#{node[:leiningen][:version]}\"' /usr/local/bin/lein"
-end
+include_recipe "leiningen::lein1x"
+include_recipe "leiningen::lein2x"
