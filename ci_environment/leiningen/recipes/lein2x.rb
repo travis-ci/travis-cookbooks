@@ -66,3 +66,16 @@ remote_file "/usr/local/bin/lein2" do
 
   not_if "grep -qx 'export LEIN_VERSION=\"#{node[:leiningen][:lein2][:version]}\"' /usr/local/bin/lein"
 end
+
+# workaround a nasty NPE in Lein 2.0 preview1 when lein2 is ran outside
+# of project and profiles.clj has no :plugins entry.
+# See https://groups.google.com/d/msg/clojure/jRRR9JlppNQ/lRJPB3b-4ycJ. MK.
+cookbook_file File.join(jar_dir, "profiles.clj") do
+  owner    node.travis_build_environment.user
+  group    node.travis_build_environment.group
+  mode     0644
+
+  subscribes :create, resources(:directory => jar_dir)
+
+  action :nothing
+end
