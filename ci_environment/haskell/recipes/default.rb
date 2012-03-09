@@ -21,6 +21,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+case node['platform']
+when "ubuntu"
+  apt_repository "mbeloborodiy_haskell_platform" do
+    uri          "http://ppa.launchpad.net/mbeloborodiy/ppa/ubuntu/"
+    distribution node['lsb']['codename']
+    components   ['main']
+
+    key          "F6B6FC93"
+    keyserver    "keyserver.ubuntu.com"
+
+    action :add
+  end
+end
+
 package "haskell-platform" do
   action :install
 end
