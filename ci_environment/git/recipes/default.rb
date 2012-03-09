@@ -50,11 +50,16 @@ when "debian", "ubuntu"
       group node.travis_build_environment.group
     end
 
+    file(path) do
+      action :nothing
+    end
+
     package(deb) do
       action   :install
       source   path
       provider Chef::Provider::Package::Dpkg
 
+      notifies :delete, resources(:file => path)
       not_if "which git"
     end
   end # each
