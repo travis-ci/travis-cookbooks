@@ -23,15 +23,17 @@
 
 case node['platform']
 when "ubuntu"
-  apt_repository "mbeloborodiy_haskell_platform" do
-    uri          "http://ppa.launchpad.net/mbeloborodiy/ppa/ubuntu/"
-    distribution node['lsb']['codename']
-    components   ['main']
+  if node[:platform_version].to_f < 11.10
+    apt_repository "mbeloborodiy_haskell_platform" do
+      uri          "http://ppa.launchpad.net/mbeloborodiy/ppa/ubuntu/"
+      distribution node['lsb']['codename']
+      components   ['main']
 
-    key          "F6B6FC93"
-    keyserver    "keyserver.ubuntu.com"
+      key          "F6B6FC93"
+      keyserver    "keyserver.ubuntu.com"
 
-    action :add
+      action :add
+    end
   end
 end
 
