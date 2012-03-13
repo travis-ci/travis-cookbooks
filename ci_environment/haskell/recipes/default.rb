@@ -37,6 +37,30 @@ when "ubuntu"
   end
 end
 
+script "initialize cabal" do
+  interpreter "bash"
+  user node.travis_build_environment.user
+  cwd  node.travis_build_environment.home
+
+  environment Hash['HOME' => node.travis_build_environment.home]
+
+  code <<-SH
+  cabal update
+  cabal install c2hs
+  SH
+
+  # triggered by haskell-platform installation
+  action :nothing
+end
+
 package "haskell-platform" do
   action :install
+
+  notifies :run, resources(:script => "initialize cabal")
+end
+
+cookbook_file "/etc/profile.d/cabal.sh" do
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
+  mode 0755
 end
