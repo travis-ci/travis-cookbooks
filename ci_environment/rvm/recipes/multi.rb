@@ -69,10 +69,19 @@ node.rvm.rubies.each do |rb|
   # as Rubinius in 1.8 but will be available via rvm under a different name. MK.
   name = rb[:check_for] || rb[:name]
 
-  gems.each do |gem|
-    bash "installing gem #{gem} for #{name}" do
+  # bundler 1.1+ requires 1.8.7. We still keep 1.8.6 for Sinatra but
+  # DO NOT depend on it being available. MK.
+  if name == "1.8.6"
+    bash "installing gems for #{name}" do
       setup.call(self)
-      code   "#{rvm} use #{name}; gem install #{gem} --no-ri --no-rdoc"
+      code   "#{rvm} use #{name}; gem install rake --no-ri --no-rdoc; gem install bundler --version '~> 1.0.21' --no-ri --no-rdoc"
+    end
+  else
+    gems.each do |gem|
+      bash "installing gem #{gem} for #{name}" do
+        setup.call(self)
+        code   "#{rvm} use #{name}; gem install #{gem} --no-ri --no-rdoc"
+      end
     end
   end
 end
