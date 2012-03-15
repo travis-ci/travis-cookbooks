@@ -17,34 +17,32 @@
 # limitations under the License.
 #
 
-package "iptables" 
+package "iptables"
 
-execute "rebuild-iptables" do
-  command "/usr/sbin/rebuild-iptables"
-  action :nothing
+iptables_ruleset_path = case node[:platform]
+                     when "redhat", "centos"
+                       "/etc/sysconfig/iptables"
+                     when "ubuntu", "debian"
+                       "/etc/iptables/general"
+                     end
+
+execute "restore iptables" do
+  command "/sbin/iptables-restore #{iptables_ruleset_path}"
+  action  :nothing
 end
 
-directory "/etc/iptables.d" do
+directory File.dirname(iptables_ruleset_path) do
   action :create
 end
 
-cookbook_file "/usr/sbin/rebuild-iptables" do
-  source "rebuild-iptables"
-  mode 0755
-end
+cookbook_file iptables_ruleset_path do
+  source "iptables_rules"
 
-case node[:platform]
-when "redhat", "centos"
-  iptables_save_file = "/etc/sysconfig/iptables"
-when "ubuntu", "debian"
-  iptables_save_file = "/etc/iptables/general"
+  notifies :run, resources(:execute => "restore iptables"), :delayed
 end
 
 template "/etc/network/if-pre-up.d/iptables_load" do
   source "iptables_load.erb"
   mode 0755
-  variables :iptables_save_file => iptables_save_file
+  variables :iptables_ruleset_path => iptables_ruleset_path
 end
-
-iptables_rule "all_established"
-iptables_rule "all_icmp"
