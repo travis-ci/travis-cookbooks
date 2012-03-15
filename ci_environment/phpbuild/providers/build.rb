@@ -9,7 +9,9 @@ action :create do
     bash "install PHP #{version} with php-build" do
       user        new_resource.owner
       group       new_resource.group
-      environment Hash["HOME" => node.travis_build_environment.home]
+      # LDFLAGS are necessary to solve PHP 5.3 issues with the intl extension, which is crucial
+      # for Symfony among other projects. MK.
+      environment Hash["HOME" => node.travis_build_environment.home, "LDFLAGS" => "-lstdc++"]
       cwd         "#{phpbuild_path}/bin"
       code <<-EOF
       ./php-build -i development #{version} #{target_path}
