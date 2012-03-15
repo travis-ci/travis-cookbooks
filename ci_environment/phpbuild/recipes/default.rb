@@ -22,9 +22,14 @@ when "ubuntu", "debian"
       action :install
     end
 
-    # on 11.10, we also have to symlink libjpeg. MK.
+    # on 11.10, we also have to symlink libjpeg and a bunch of other libraries
+    # because of the 32-bit/64-bit library directory separation. MK.
     link "/usr/lib/libjpeg.so" do
       to "/usr/lib/i386-linux-gnu/libjpeg.so"
+    end
+
+    link "/usr/lib/libstdc++.so.6" do
+      to "/usr/lib/i386-linux-gnu//usr/lib/libstdc++.so.6"
     end
   end
 end
