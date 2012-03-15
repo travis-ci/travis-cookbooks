@@ -1,0 +1,12 @@
+configure_option "--enable-fastcgi"
+
+configure_option -D "--with-openssl"
+
+configure_option -R "--with-mysql"
+configure_option -R "--with-mysqli"
+configure_option -R "--with-pdo-mysql"
+
+with_pear
+
+install_package "http://museum.php.net/php5/php-5.2.17.tar.bz2"
+install_xdebug "2.1.3"
