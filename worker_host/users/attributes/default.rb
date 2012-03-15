@@ -1,1 +1,1 @@
-default[:users] = []
+default[:users] = {}
