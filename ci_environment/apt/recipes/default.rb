@@ -20,10 +20,16 @@
 execute "apt-get update" do
   action :run
 end
+execute "apt-get -y autoclean autoremove" do
+  action :nothing
+end
 template "/etc/apt/sources.list" do
   source "sources.list.erb"
 
   notifies :run, resources(:execute => "apt-get update"), :immediately
+
+  # cleans up at the end of Chef run
+  notifies :run, resources(:execute => "apt-get -y autoclean autoremove")
 end
 
 %w{/var/cache/local /var/cache/local/preseeding}.each do |dirname|
