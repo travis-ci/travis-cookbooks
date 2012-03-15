@@ -17,8 +17,12 @@ when "ubuntu", "debian"
     to "/usr/lib/i386-linux-gnu/libpng.so"
   end
 
-  # in 11.10, we also have to symlink libjpeg. MK.
   if node[:platform_version].to_f >= 11.10
+    package "libltdl-dev" do
+      action :install
+    end
+
+    # on 11.10, we also have to symlink libjpeg. MK.
     link "/usr/lib/libjpeg.so" do
       to "/usr/lib/i386-linux-gnu/libjpeg.so"
     end
