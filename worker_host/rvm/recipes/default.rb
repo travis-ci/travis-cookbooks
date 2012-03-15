@@ -18,7 +18,7 @@ when "debian","ubuntu"
 end
 
 bash "installing system-wide RVM stable" do
-  code "bash -s < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer)"
+  code "sudo bash -s < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer)"
   not_if "which rvm"
 end
 
