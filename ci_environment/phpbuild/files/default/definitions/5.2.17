@@ -1,4 +1,5 @@
 configure_option "--enable-fastcgi"
+configure_option "--with-mime-magic"
 
 configure_option -D "--with-openssl"
 
