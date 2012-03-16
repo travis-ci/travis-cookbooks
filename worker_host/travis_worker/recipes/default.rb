@@ -1,3 +1,11 @@
+directory "#{node[:travis][:worker][:home]}" do
+  action :create
+  recursive true
+  owner "travis"  
+  group "travis"
+  mode "0755"
+end
+
 git "#{node[:travis][:worker][:home]}" do
   repository node[:travis][:worker][:repository]
   reference node[:travis][:worker][:ref]
@@ -17,7 +25,7 @@ template "#{node[:travis][:worker][:home]}/config/worker.yml" do
 end
 
 execute "bundle gems" do
-  command "rvm 1.9.2 do bundle install"
+  command "rvm 1.9.2 do bundle install --path vendor/bundle"
   user "travis"
   cwd node[:travis][:worker][:home]
 end
