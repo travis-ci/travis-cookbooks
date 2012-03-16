@@ -24,8 +24,9 @@ template "#{node[:travis][:worker][:home]}/config/worker.yml" do
             :vms => node[:travis][:worker][:vms]
 end
 
-execute "bundle gems" do
-  command "rvm 1.9.2 do bundle install --path vendor/bundle"
+rvm  = "source /usr/local/rvm/scripts/rvm && rvm"
+bash "bundle gems" do
+  code "#{rvm} 1.9.2 do bundle install --path vendor/bundle"
   user "travis"
   cwd node[:travis][:worker][:home]
 end
