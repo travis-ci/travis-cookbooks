@@ -1,0 +1,14 @@
+env: <%= @env %>
+<%= @env %>: 
+  log_level: info
+  amqp:
+  <% @amqp.each do |key, value| -%>
+    <%= key %>: <%= value %>
+  <% end -%>
+  vms:
+    count: <%= @vms %>
+    vbox_home: '/usr/lib/virtualbox'
+timeouts:
+  install: 600
+  before_script: 480
+  script: 1500
