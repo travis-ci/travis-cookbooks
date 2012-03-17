@@ -52,7 +52,18 @@ if platform?(%w{debian ubuntu})
     group "root"
     mode "0600"
   end
+end
 
+# wipe out apparmor on 11.04 and later, it prevents MySQLd from restarting for now
+# good reasons (as far as CI goes). MK.
+package "apparmor" do
+  action :remove
+  ignore_failure true
+end
+
+package "apparmor-utils" do
+  action :remove
+  ignore_failure true
 end
 
 package "mysql-server" do

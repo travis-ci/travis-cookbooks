@@ -61,17 +61,16 @@ end
 include_recipe "iptables"
 
 
-case [node[:platform], node[:platform_version]]
 # wipe out apparmor on 11.04, it may be a useful thing for typical servers but
 # in our case it is a major annoyance and nothing else. MK.
-when ["ubuntu", "11.04"] then
-  package "apparmor" do
-    action :remove
-  end
+package "apparmor" do
+  action :remove
+  ignore_failure true
+end
 
-  package "apparmor-utils" do
-    action :remove
-  end
+package "apparmor-utils" do
+  action :remove
+  ignore_failure true
 end
 
 # improve sshd startup stability. See https://github.com/jedi4ever/veewee/issues/159 for rationale

@@ -27,7 +27,29 @@ when "8.4"
   node.default[:postgresql][:ssl] = "true"
 end
 
-package "postgresql"
+# wipe out apparmor on 11.04 and later, it prevents PostgreSQL from restarting for now
+# good reasons (as far as CI goes). MK.
+package "apparmor" do
+  action :remove
+  ignore_failure true
+end
+
+package "apparmor-utils" do
+  action :remove
+  ignore_failure true
+end
+
+package "postgresql" do
+  action :install
+end
+
+package "postgresql-server-dev-all" do
+  action :install
+end
+
+package "postgresql-contrib" do
+  action :install
+end
 
 service "postgresql" do
   case [node[:platform], node[:platform_version]]
@@ -35,6 +57,8 @@ service "postgresql" do
     service_name "postgresql-#{node.postgresql.version}"
   when ["ubuntu", "11.04"] then
     service_name "postgresql"
+  when ["ubuntu", "11.10"] then
+    # ...
   end
 
   supports :restart => true, :status => true, :reload => true
