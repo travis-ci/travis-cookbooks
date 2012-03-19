@@ -19,13 +19,13 @@
 
 case node['platform']
 when "ubuntu","debian"
-  %w{build-essential binutils-doc}.each do |pkg|
+  %w{build-essential binutils-doc zsh}.each do |pkg|
     package pkg do
       action :install
     end
   end
 when "centos","redhat","fedora"
-  %w{gcc gcc-c++ kernel-devel make}.each do |pkg|
+  %w{gcc gcc-c++ kernel-devel make zsh}.each do |pkg|
     package pkg do
       action :install
     end
