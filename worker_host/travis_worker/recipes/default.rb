@@ -28,19 +28,19 @@ rvm  = "source /usr/local/rvm/scripts/rvm && rvm"
 nohup_rvm  = "source /usr/local/rvm/scripts/rvm && nohup rvm"
 
 bash "bundle gems" do
-  code "#{rvm} 1.9.2 do bundle install --path vendor/bundle"
+  code "#{rvm} jruby do bundle install --path vendor/bundle"
   user "travis"
   cwd node[:travis][:worker][:home]
 end
 
 bash "update VirtualBox images" do
-  code "#{rvm} jruby do bundle exec thor travis:worker:vms:update -r -d"
+  code "#{rvm} jruby do bundle exec thor travis:vms:update -r -d"
   user "travis"
   cwd node[:travis][:worker][:home]
 end
 
 bash "run Travis Worker" do
   code "#{nohup_rvm} bundle exec thor travis:worker:boot > log/worker.log &"
-  user travis
+  user "travis"
   cwd node[:travis][:worker][:home]
 end
