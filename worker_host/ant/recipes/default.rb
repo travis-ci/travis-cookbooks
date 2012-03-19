@@ -19,11 +19,6 @@
 
 include_recipe "java"
 
-case node.platform
-when "centos","redhat","fedora"
-  include_recipe "jpackage"
-end
-
 ant_pkgs = value_for_platform(
   ["debian","ubuntu",] => {
     "default" => ["ant","ant-contrib","ivy"]
