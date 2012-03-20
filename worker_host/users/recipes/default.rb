@@ -1,4 +1,8 @@
-users = search(:users)
+users = if Chef::Config[:solo]
+  node[:users]
+else
+  search(:users)
+end
 
 users.each do |user|
   user user[:id] do
