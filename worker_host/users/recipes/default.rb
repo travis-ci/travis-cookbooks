@@ -4,12 +4,15 @@ users.each do |user|
   user user[:id] do
     shell user[:shell]
     home user[:home]
+    supports :manage_home => true
+    action :create
   end
 
   if user[:ssh_key]
     directory "#{user[:home]}/.ssh" do
       mode "0700"
       owner user[:id]
+      action :create
     end
 
     template "#{user[:home]}/.ssh/authorized_keys" do
