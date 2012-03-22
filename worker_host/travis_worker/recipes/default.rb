@@ -1,6 +1,13 @@
-directory "#{node[:travis][:worker][:home]}" do
+directory node[:travis][:worker][:home] do
   action :create
   recursive true
+  owner "travis"  
+  group "travis"
+  mode "0755"
+end
+
+directory "#{node[:travis][:worker][:home]}/log" do
+  action :create
   owner "travis"  
   group "travis"
   mode "0755"
@@ -37,10 +44,13 @@ bash "update VirtualBox images" do
   code "#{rvm} jruby do bundle exec thor travis:vms:update -r -d 2>/dev/null"
   user "travis"
   cwd node[:travis][:worker][:home]
+  not_if {
+    File.exists?("#{node[:travis][:worker][:home]}/boxes/travis-#{node[:travis][:worker][:env]}.box")
+  }
 end
 
 bash "run Travis Worker" do
-  code "#{nohup_rvm} bundle exec thor travis:worker:boot > log/worker.log &"
+  code "#{nohup_rvm} jruby do bundle exec thor travis:worker:boot > log/worker.log &"
   user "travis"
   cwd node[:travis][:worker][:home]
 end
