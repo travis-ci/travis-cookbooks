@@ -34,7 +34,7 @@ bash "bundle gems" do
 end
 
 bash "update VirtualBox images" do
-  code "#{rvm} jruby do bundle exec thor travis:vms:update -r -d"
+  code "#{rvm} jruby do bundle exec thor travis:vms:update -r -d 2>/dev/null"
   user "travis"
   cwd node[:travis][:worker][:home]
 end
