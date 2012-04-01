@@ -33,7 +33,7 @@ tarball_dir = File.join(td, "phantomjs")
 remote_file(tmp) do
   source node.phantomjs.tarball.url
 
-  not_if "which phantomjs"
+  not_if "which phantomjs && [[ `phantomjs --version` == \"#{node.phantomjs.version}\" ]]"
 end
 
 # 2. Extract it
