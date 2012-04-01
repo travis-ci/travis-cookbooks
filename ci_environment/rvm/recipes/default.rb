@@ -42,7 +42,7 @@ bash "install RVM" do
   code        <<-SH
   curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer -o /tmp/rvm-installer
   chmod +x /tmp/rvm-installer
-  /tmp/rvm-installer --version #{node.rvm.version}
+  /tmp/rvm-installer #{node.rvm.version}
   SH
   not_if      "test -d #{node.travis_build_environment.home}/.rvm"
 end
