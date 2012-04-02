@@ -1,6 +1,11 @@
-execute "monit-reload-travis-worker" do
+execute "monit-reload" do
   action :nothing
-  command "monit reload travis-worker"
+  command "monit reload"
+end
+
+execute "monit-restart-travis-worker" do
+  action :nothing
+  command "monit restart travis-worker"
 end
 
 directory node[:travis][:worker][:home] do
@@ -42,6 +47,7 @@ bash "update VirtualBox images" do
   not_if {
     File.exists?("#{node[:travis][:worker][:home]}/boxes/travis-#{node[:travis][:worker][:env]}.box")
   }
+  notifies :run, resources(:execute => 'monit-restart-travis-worker')
 end
 
 template "#{node[:travis][:worker][:home]}/config/worker.yml" do
@@ -52,6 +58,14 @@ template "#{node[:travis][:worker][:home]}/config/worker.yml" do
   variables :amqp => node[:travis][:worker][:amqp],
             :env => node[:travis][:worker][:env],
             :vms => node[:travis][:worker][:vms]
-  notifies :reload, resources(:execute => 'monit-reload-travis-worker')
+  notifies :run, resources(:execute => 'monit-restart-travis-worker')
 end
 
+template "/etc/monit/conf.d/travis-worker.monitrc" do
+  source "travis-worker.monitrc.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  variables :home => node[:travis][:worker][:home]
+  notifies :run, resources(:execute => 'monit-reload')
+end
