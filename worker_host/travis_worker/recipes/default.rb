@@ -1,3 +1,8 @@
+execute "monit-reload-travis-worker" do
+  action :nothing
+  command "monit reload travis-worker"
+end
+
 directory node[:travis][:worker][:home] do
   action :create
   recursive true
@@ -21,16 +26,6 @@ git "#{node[:travis][:worker][:home]}" do
   user "travis"
 end
 
-template "#{node[:travis][:worker][:home]}/config/worker.yml" do
-  source "worker.yml.erb"
-  owner "travis"
-  group "travis"
-  mode "0600"
-  variables :amqp => node[:travis][:worker][:amqp],
-            :env => node[:travis][:worker][:env],
-            :vms => node[:travis][:worker][:vms]
-end
-
 rvm  = "source /usr/local/rvm/scripts/rvm && rvm"
 nohup_rvm  = "source /usr/local/rvm/scripts/rvm && nohup rvm"
 
@@ -49,8 +44,14 @@ bash "update VirtualBox images" do
   }
 end
 
-bash "run Travis Worker" do
-  code "#{nohup_rvm} jruby do bundle exec thor travis:worker:boot > log/worker.log &"
-  user "travis"
-  cwd node[:travis][:worker][:home]
+template "#{node[:travis][:worker][:home]}/config/worker.yml" do
+  source "worker.yml.erb"
+  owner "travis"
+  group "travis"
+  mode "0600"
+  variables :amqp => node[:travis][:worker][:amqp],
+            :env => node[:travis][:worker][:env],
+            :vms => node[:travis][:worker][:vms]
+  notifies :reload, resources(:execute => 'monit-reload-travis-worker')
 end
+
