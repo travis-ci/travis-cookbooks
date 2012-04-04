@@ -29,7 +29,7 @@ git "#{node[:travis][:worker][:home]}" do
   action :sync
   user "travis"
   group "travis"
-  notifies run, resources(:execute => 'monit-restart-travis-worker')
+  notifies :run, resources(:execute => 'monit-restart-travis-worker')
 end
 
 if not node[:travis][:worker][:post_checkout].empty?
