@@ -20,6 +20,13 @@ end
 users.each do |user|
   primary_group = user[:groups].nil? ? nil : user[:groups].first
 
+  directory File.dirname(user[:home]) do
+    action :create
+    recursive true
+    owner "root"
+    group "root"
+  end
+
   user user[:id] do
     shell user[:shell] || "/bin/bash"
     home user[:home]
