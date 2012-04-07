@@ -57,8 +57,8 @@ when "debian", "ubuntu"
 
   service "elasticsearch" do
     supports :restart => true, :status => true
-    # intentionally disabled on boot, supposed to be started manually by projects
-    # that need it. MK.
+    # intentionally disabled on boot to save on RAM available to projects,
+    # supposed to be started manually by projects that need it. MK.
     action [:disable]
   end
 end
