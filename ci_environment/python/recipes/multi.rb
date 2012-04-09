@@ -29,6 +29,8 @@ directory "/usr/lib/python2.6/site-packages" do
   ignore_failure true
 end
 
+include_recipe "pypy::ppa" if node.python.multi.pythons.include?("pypy")
+
 
 case node['platform']
 when "ubuntu"
@@ -45,11 +47,9 @@ when "ubuntu"
 end
 
 
-python_pkgs = value_for_platform(
-                                 ["debian","ubuntu"] => {
+python_pkgs = value_for_platform(["debian","ubuntu"] => {
                                    "default" => node.python.multi.pythons
-                                 }
-                                 )
+                                 })
 
 # not a good practice but sufficient for travis-ci.org needs, so lets keep it
 # hardcoded. MK.
