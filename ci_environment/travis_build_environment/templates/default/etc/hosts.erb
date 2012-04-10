@@ -4,13 +4,16 @@ hostname_to_set = case [node[:platform], node[:platform_version]]
                     "natty32"
                   when ["ubuntu", "11.10"] then
                     "oneiric32"
+                  when ["ubuntu", "12.04"] then
+                    "precise32"
                   end
 %>
 
 127.0.0.1       localhost
 127.0.1.1       <%= hostname_to_set %>
-# name of the machine where base VM box was built. MK.
-127.0.1.1       nettuno
+# backwards compatibility. MK.
+127.0.0.1       travis
+127.0.0.1       vagrant
 
 # The following lines are desirable for IPv6 capable hosts
 ::1     localhost ip6-localhost ip6-loopback

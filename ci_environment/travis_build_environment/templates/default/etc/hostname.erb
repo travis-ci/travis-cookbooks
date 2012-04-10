@@ -1,0 +1,11 @@
+<%
+hostname_to_set = case [node[:platform], node[:platform_version]]
+                  when ["ubuntu", "11.04"] then
+                    "natty32"
+                  when ["ubuntu", "11.10"] then
+                    "oneiric32"
+                  when ["ubuntu", "12.04"] then
+                    "precise32"
+                  end
+%>
+<%= hostname_to_set %>
