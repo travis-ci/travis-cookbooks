@@ -1,0 +1,6 @@
+<% @data.each do |mount, threshold| %>
+check filesystem rootfs with path <%= mount %>
+  if space usage > <%= threshold %> for 5 times within 15 cycles 
+    then alert else if succeeded for 10 cycles then alert
+
+<% end %>

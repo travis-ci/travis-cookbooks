@@ -1,0 +1,4 @@
+check system <%= node[:hostname] %>
+  <% @data.each do |name, threshold| %>
+  if <%= name %> > <%= threshold %> for 5 cycles then alert
+  <% end -%>
