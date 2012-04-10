@@ -72,9 +72,10 @@ bash "download VirtualBox images" do
 end
 
 bash "create VirtualBox images" do
-  code "#{rvm} jruby do bundle exec thor travis:vms:create"
+  code "#{rvm} jruby do ./bin/thor travis:vms:create &>/tmp/vbox-create.log"
   user "travis"
   cwd node[:travis][:worker][:home]
+  environment({"HOME" => node[:etc][:passwd][:travis][:dir]})
   notifies :run, resources(:execute => 'monit-restart-travis-worker')
   not_if {
     File.exists?("#{node[:travis][:worker][:home]}/../VirtualBox VMs/travis-#{node[:travis][:worker][:env]}-1")

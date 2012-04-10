@@ -10,6 +10,11 @@ groups = if Chef::Config[:solo]
            search(:groups)
          end
 
+ohai "reload_passwd" do
+  action :nothing
+  plugin "passwd"
+end
+
 groups.each do |group|
   group group[:id] do
     gid group[:gid]
@@ -34,6 +39,7 @@ users.each do |user|
     uid user[:uid]
     supports :manage_home => true
     action [:create, :manage]
+    notifies :reload, resources(:ohai => "reload_passwd"), :immediately
   end
 
   (user[:groups] || []).each do |group_name|

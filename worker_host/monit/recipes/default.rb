@@ -7,14 +7,6 @@ execute "monit-reload" do
   command "monit reload"
 end
 
-template "/etc/monit/monitrc" do
-  source "monitrc.erb"
-  owner "root"
-  group "root"
-  mode "0600"
-  variables :monit => node[:monit]
-end
-
 cookbook_file "/etc/default/monit" do
   source "default.monit"
   owner "root"
@@ -25,8 +17,17 @@ end
 
 service "monit" do
   supports :start => true, :restart => true, :reload => true
-  action :start
+  action [:enable, :start]
   ignore_failure true
+end
+
+template "/etc/monit/monitrc" do
+  source "monitrc.erb"
+  owner "root"
+  group "root"
+  mode "0600"
+  variables :monit => node[:monit]
+  notifies :run, resources(:execute => "monit-reload")
 end
 
 template "/etc/monit/conf.d/alerts.monitrc" do
