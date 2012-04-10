@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: build-essential
+# Cookbook Name:: chef-client
 # Recipe:: default
 #
-# Copyright 2008-2009, Opscode, Inc.
+# Copyright 2010, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,29 +17,4 @@
 # limitations under the License.
 #
 
-case node['platform']
-when "ubuntu","debian"
-  %w{build-essential binutils-doc zsh}.each do |pkg|
-    package pkg do
-      action :install
-    end
-  end
-when "centos","redhat","fedora"
-  %w{gcc gcc-c++ kernel-devel make zsh}.each do |pkg|
-    package pkg do
-      action :install
-    end
-  end
-end
-
-package "autoconf" do
-  action :install
-end
-
-package "flex" do
-  action :install
-end
-
-package "bison" do
-  action :install
-end
+include_recipe "chef-client::service"

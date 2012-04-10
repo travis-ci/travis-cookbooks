@@ -12,19 +12,16 @@ include_recipe "git"
 
 case node[:platform]
 when "debian","ubuntu"
-  %w( libreadline5-dev libssl-dev libxml2-dev libxslt1-dev zlib1g-dev ).each do | pkg |
+  %w( libreadline-dev libssl-dev libxml2-dev libxslt1-dev zlib1g-dev ).each do | pkg |
     package pkg
   end
 end
 
 bash "installing system-wide RVM stable" do
-  user "vagrant"
-  code "bash < <( curl -L -B http://rvm.beginrescueend.com/install/rvm )"
+  code "sudo bash -s < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer)"
   not_if "which rvm"
 end
 
 cookbook_file "/etc/profile.d/rvm.sh" do
-  owner "vagrant"
-  group "vagrant"
   mode 0755
 end

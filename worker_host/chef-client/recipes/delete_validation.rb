@@ -1,8 +1,9 @@
 #
-# Cookbook Name:: build-essential
-# Recipe:: default
+# Author:: Joshua Timberman <joshua@opscode.com>
+# Cookbook Name:: chef
+# Recipe:: delete_validation
 #
-# Copyright 2008-2009, Opscode, Inc.
+# Copyright 2010, Opscode, Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,31 +16,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-case node['platform']
-when "ubuntu","debian"
-  %w{build-essential binutils-doc zsh}.each do |pkg|
-    package pkg do
-      action :install
-    end
+unless node[:recipes].include?("chef-server")
+  file Chef::Config[:validation_key] do
+    action :delete
+    backup false
+    only_if { ::File.exists?(Chef::Config[:client_key]) }
   end
-when "centos","redhat","fedora"
-  %w{gcc gcc-c++ kernel-devel make zsh}.each do |pkg|
-    package pkg do
-      action :install
-    end
-  end
-end
-
-package "autoconf" do
-  action :install
-end
-
-package "flex" do
-  action :install
-end
-
-package "bison" do
-  action :install
 end

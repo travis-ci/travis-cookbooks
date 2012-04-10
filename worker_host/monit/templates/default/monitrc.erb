@@ -1,0 +1,6 @@
+# A comment so that Ubuntu's init script actually starts the daemon
+set daemon 60
+include /etc/monit/conf.d/*
+set logfile syslog facility log_daemon
+set httpd port 2812
+  allow localhost
