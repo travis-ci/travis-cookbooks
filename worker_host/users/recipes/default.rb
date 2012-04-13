@@ -60,11 +60,14 @@ users.each do |user|
     directory "#{user[:home]}/.ssh" do
       mode "0700"
       owner user[:id]
+      group primary_group
       action :create
     end
 
     template "#{user[:home]}/.ssh/authorized_keys" do
       mode "0600"
+      owner user[:id]
+      group primary_group
       source "authorized_keys.pub"
       variables :ssh_key => user[:ssh_key]
     end
