@@ -6,6 +6,10 @@ execute "monit-reload" do
   command "monit reload"
 end
 
+service "travis-worker" do
+  action :nothing
+end
+
 directory node[:travis][:worker][:home] do
   action :create
   recursive true
@@ -20,7 +24,7 @@ git node[:travis][:worker][:home] do
   action :sync
   user "travis"
   group "travis"
-#  notifies :run, resources(:execute => 'monit-restart-travis-worker')
+  notifies :restart, resources(:service => 'travis-worker')
 end
 
 directory "#{node[:travis][:worker][:home]}/log" do
@@ -36,6 +40,7 @@ if not node[:travis][:worker][:post_checkout].empty?
     user "travis"
     not_if "cd #{node[:travis][:worker][:home]} && #{node[:travis][:worker][:post_checkout][:condition]}"
     cwd node[:travis][:worker][:home]
+    notifies :restart, resources(:service => 'travis-worker')
   end
 end
 
@@ -55,7 +60,7 @@ template "#{node[:travis][:worker][:home]}/config/worker.yml" do
   variables :amqp => node[:travis][:worker][:amqp],
             :env => node[:travis][:worker][:env],
             :vms => node[:travis][:worker][:vms]
- # notifies :run, resources(:execute => 'monit-restart-travis-worker')
+  notifies :restart, resources(:service => 'travis-worker')
 end
 
 bash "download VirtualBox images" do
@@ -65,7 +70,7 @@ bash "download VirtualBox images" do
   not_if {
     File.exists?("#{node[:travis][:worker][:home]}/boxes/travis-#{node[:travis][:worker][:env]}.box")
   }
- # notifies :run, resources(:execute => 'monit-restart-travis-worker')
+  notifies :restart, resources(:service => 'travis-worker')
 end
 
 home = node[:etc][:passwd][:travis] ? node[:etc][:passwd][:travis][:dir] : node[:users].find{|user| user["id"] == 'travis'}[:home]
@@ -75,15 +80,10 @@ bash "create VirtualBox images" do
   user "travis"
   cwd node[:travis][:worker][:home]
   environment({"HOME" => home})
-  #notifies :run, resources(:execute => 'monit-restart-travis-worker')
   not_if {
     File.exists?("#{node[:travis][:worker][:home]}/../VirtualBox VMs/travis-#{node[:travis][:worker][:env]}-1")
   }
-end
-
-directory "/var/log/travis-worker" do
-  owner "travis"
-  action :create
+  notifies :restart, resources(:service => 'travis-worker')
 end
 
 runit_service "travis-worker" do
