@@ -10,6 +10,9 @@ groups = if Chef::Config[:solo]
            search(:groups)
          end
 
+node[:users] = users
+node[:groups] = groups
+
 ohai "reload_passwd" do
   action :nothing
   plugin "passwd"

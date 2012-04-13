@@ -1,0 +1,6 @@
+#!/bin/bash
+exec 2>&1
+source <%= @options[:rvm] %>
+cd <%= @options[:worker_home] %>
+rvm jruby
+exec ./bin/thor travis:worker:boot
