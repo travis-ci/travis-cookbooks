@@ -1,4 +1,4 @@
-set alert <%= @alerts["receiver"] %> on { timeout, connection, action, nonexist }
+set alert <%= @alerts["receiver"] %> on { pid, timeout, connection, action, nonexist }
 <% unless @alerts[:disabled] %>
 <%# Allow disabling alerts via "monit": { "alerts": { "disabled": true } }, in a node config %>
 set mailserver <%= @alerts["smtp"] %> port <%= @alerts["port"] %>

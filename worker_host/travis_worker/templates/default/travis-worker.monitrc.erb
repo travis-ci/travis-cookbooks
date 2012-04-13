@@ -1,2 +1,3 @@
 check process travis-worker
-  with pidfile <%= @home %>/log/travis_worker.pid
+  with pidfile /etc/sv/travis-worker/supervise/pid
+  if changed pid then alert
