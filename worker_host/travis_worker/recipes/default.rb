@@ -88,7 +88,9 @@ end
 
 runit_service "travis-worker" do
   options :rvm => "/usr/local/rvm/scripts/rvm",
-          :worker_home => node[:travis][:worker][:home]
+          :worker_home => node[:travis][:worker][:home],
+          :user => "travis",
+          :group => "travis"
 end
 
 template "/etc/monit/conf.d/travis-worker.monitrc" do
