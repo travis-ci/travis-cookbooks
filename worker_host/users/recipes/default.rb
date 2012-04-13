@@ -63,7 +63,7 @@ users.each do |user|
 
   if user[:extra_ssh_keys]
     user[:extra_ssh_keys].each do |user_id|
-      ssh_keys[user_id] = users.find{|user| user[:id] == user_id}[:ssh_key]
+      ssh_keys[user_id] = users.find{|u| u[:id] == user_id}[:ssh_key]
     end
   end
 
