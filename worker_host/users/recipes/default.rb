@@ -56,7 +56,18 @@ users.each do |user|
     end
   end
 
+  ssh_keys = {}
   if user[:ssh_key]
+    ssh_keys[user[:id]] = user[:ssh_key]
+  end
+
+  if user[:extra_ssh_keys]
+    user[:extra_ssh_keys].each do |user_id|
+      ssh_keys[user_id] = users.find{|user| user[:id] == user_id}[:ssh_key]
+    end
+  end
+
+  if ssh_keys.any?
     directory "#{user[:home]}/.ssh" do
       mode "0700"
       owner user[:id]
@@ -69,7 +80,7 @@ users.each do |user|
       owner user[:id]
       group primary_group
       source "authorized_keys.pub"
-      variables :ssh_key => user[:ssh_key]
+      variables :ssh_keys => ssh_keys
     end
   end
 end
