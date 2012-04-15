@@ -1,0 +1,32 @@
+<VirtualHost *:80>
+    ServerName <%= @node[:collectd][:collectd_web][:hostname] %>
+
+    DocumentRoot <%= @node[:collectd][:collectd_web][:path] %>
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+    <Directory <%= @node[:collectd][:collectd_web][:path] %>>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Order allow,deny
+        Allow from all
+    </Directory>
+
+    ScriptAlias /cgi-bin/ <%= @node[:collectd][:collectd_web][:path] %>/cgi-bin/
+    <Directory "<%= @node[:collectd][:collectd_web][:path] %>/cgi-bin">
+        AllowOverride None
+        Options ExecCGI -MultiViews
+        Order allow,deny
+        Allow from all
+    </Directory>
+
+    ErrorLog /var/log/apache2/error.log
+
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
+
+    CustomLog /var/log/apache2/access.log combined
+    ServerSignature On
+</VirtualHost>

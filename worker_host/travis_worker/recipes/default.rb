@@ -1,11 +1,13 @@
+require_recipe 'runit'
+require_recipe 'users'
+
 execute "monit-reload" do
   action :nothing
   command "monit reload"
 end
 
-execute "monit-restart-travis-worker" do
+service "travis-worker" do
   action :nothing
-  command "monit restart travis-worker"
 end
 
 directory node[:travis][:worker][:home] do
@@ -16,13 +18,13 @@ directory node[:travis][:worker][:home] do
   mode "0755"
 end
 
-git "#{node[:travis][:worker][:home]}" do
+git node[:travis][:worker][:home] do
   repository node[:travis][:worker][:repository]
   reference node[:travis][:worker][:ref]
   action :sync
   user "travis"
   group "travis"
-  notifies :run, resources(:execute => 'monit-restart-travis-worker')
+  notifies :restart, resources(:service => 'travis-worker')
 end
 
 directory "#{node[:travis][:worker][:home]}/log" do
@@ -38,11 +40,11 @@ if not node[:travis][:worker][:post_checkout].empty?
     user "travis"
     not_if "cd #{node[:travis][:worker][:home]} && #{node[:travis][:worker][:post_checkout][:condition]}"
     cwd node[:travis][:worker][:home]
+    notifies :restart, resources(:service => 'travis-worker')
   end
 end
 
 rvm  = "source /usr/local/rvm/scripts/rvm && rvm"
-nohup_rvm  = "source /usr/local/rvm/scripts/rvm && nohup rvm"
 
 bash "bundle gems" do
   code "#{rvm} jruby do bundle install --path vendor/bundle --binstubs"
@@ -58,7 +60,7 @@ template "#{node[:travis][:worker][:home]}/config/worker.yml" do
   variables :amqp => node[:travis][:worker][:amqp],
             :env => node[:travis][:worker][:env],
             :vms => node[:travis][:worker][:vms]
-  notifies :run, resources(:execute => 'monit-restart-travis-worker')
+  notifies :restart, resources(:service => 'travis-worker')
 end
 
 bash "download VirtualBox images" do
@@ -68,18 +70,27 @@ bash "download VirtualBox images" do
   not_if {
     File.exists?("#{node[:travis][:worker][:home]}/boxes/travis-#{node[:travis][:worker][:env]}.box")
   }
-  notifies :run, resources(:execute => 'monit-restart-travis-worker')
+  notifies :restart, resources(:service => 'travis-worker')
 end
+
+home = node[:etc][:passwd][:travis] ? node[:etc][:passwd][:travis][:dir] : node[:users].find{|user| user["id"] == 'travis'}[:home]
 
 bash "create VirtualBox images" do
   code "#{rvm} jruby do ./bin/thor travis:vms:create &>/tmp/vbox-create.log"
   user "travis"
   cwd node[:travis][:worker][:home]
-  environment({"HOME" => node[:etc][:passwd][:travis][:dir]})
-  notifies :run, resources(:execute => 'monit-restart-travis-worker')
+  environment({"HOME" => home})
   not_if {
     File.exists?("#{node[:travis][:worker][:home]}/../VirtualBox VMs/travis-#{node[:travis][:worker][:env]}-1")
   }
+  notifies :restart, resources(:service => 'travis-worker')
+end
+
+runit_service "travis-worker" do
+  options :rvm => "/usr/local/rvm/scripts/rvm",
+          :worker_home => node[:travis][:worker][:home],
+          :user => "travis",
+          :group => "travis"
 end
 
 template "/etc/monit/conf.d/travis-worker.monitrc" do

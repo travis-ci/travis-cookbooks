@@ -10,6 +10,9 @@ groups = if Chef::Config[:solo]
            search(:groups)
          end
 
+node[:users] = users
+node[:groups] = groups
+
 ohai "reload_passwd" do
   action :nothing
   plugin "passwd"
@@ -53,17 +56,31 @@ users.each do |user|
     end
   end
 
+  ssh_keys = {}
   if user[:ssh_key]
+    ssh_keys[user[:id]] = user[:ssh_key]
+  end
+
+  if user[:extra_ssh_keys]
+    user[:extra_ssh_keys].each do |user_id|
+      ssh_keys[user_id] = users.find{|u| u[:id] == user_id}[:ssh_key]
+    end
+  end
+
+  if ssh_keys.any?
     directory "#{user[:home]}/.ssh" do
       mode "0700"
       owner user[:id]
+      group primary_group
       action :create
     end
 
     template "#{user[:home]}/.ssh/authorized_keys" do
       mode "0600"
+      owner user[:id]
+      group primary_group
       source "authorized_keys.pub"
-      variables :ssh_key => user[:ssh_key]
+      variables :ssh_keys => ssh_keys
     end
   end
 end
