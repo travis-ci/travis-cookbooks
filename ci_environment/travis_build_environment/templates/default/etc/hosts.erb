@@ -14,6 +14,11 @@ hostname_to_set = case [node[:platform], node[:platform_version]]
 # backwards compatibility. MK.
 127.0.0.1       travis
 127.0.0.1       vagrant
+# host on which base box was built. Erlang services that use Mnesia
+# (like RabbitMQ) may create DB directories with this hostname in the name
+# during provisioning and if we change hostname later, they will have all
+# kinds of obscure issues. MK.
+127.0.0.1       nettuno
 
 # The following lines are desirable for IPv6 capable hosts
 ::1     localhost ip6-localhost ip6-loopback
