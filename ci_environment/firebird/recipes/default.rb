@@ -34,6 +34,10 @@ package "firebird2.5-super" do
   action :install
 end
 
+package "firebird2.5-dev" do
+  action :install
+end
+
 template "/etc/firebird/2.5/SYSDBA.password" do
   owner "root"
   group "root"
