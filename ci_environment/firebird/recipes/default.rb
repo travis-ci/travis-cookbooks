@@ -17,8 +17,21 @@
 # limitations under the License.
 #
 
+# Due to a bug in firebird 2.5, it is needed to fetch 2.5.1 from the ppa repository
+# https://help.ubuntu.com/community/Firebird2.5
+apt_repository "mapopa" do
+  uri          "http://ppa.launchpad.net/mapopa/ppa/ubuntu/"
+  distribution node['lsb']['codename']
+  components   ["main"]
+
+  key          "EF648708"
+  keyserver    "keyserver.ubuntu.com"
+
+  action :add
+end
+
 package "firebird2.5-super" do
-	action :upgrade
+  action :install
 end
 
 template "/etc/firebird/2.5/SYSDBA.password" do
