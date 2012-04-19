@@ -50,6 +50,8 @@ when "8.3"
   node.default[:postgresql][:ssl] = "off"
 when "8.4"
   node.default[:postgresql][:ssl] = "true"
+else
+  node.default[:postgresql][:ssl] = "true"
 end
 
 # Include the right "family" recipe for installing the server
