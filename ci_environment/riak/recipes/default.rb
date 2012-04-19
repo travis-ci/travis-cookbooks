@@ -23,11 +23,7 @@
 
 require "tmpdir"
 
-if platform_version.to_f >= 12.04
-  package "libssl0.9.8" do
-    action :install
-  end
-end
+include_recipe "libssl::098"
 
 tmp = Dir.tmpdir
 case node[:platform]

@@ -21,4 +21,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe "libssl::098"
+case node[:platform]
+when "debian", "ubuntu"
+  package "libssl0.9.8"
+  package "libssl-dev"
+end
