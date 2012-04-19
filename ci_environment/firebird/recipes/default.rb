@@ -54,6 +54,16 @@ template "/etc/firebird/2.5/firebird.conf" do
   source "firebird.conf.erb"
 end
 
+# Creating this file will allow the service to be started without running
+# `dpkg-reconfigure firebird2.5-super`
+template "/etc/default/firebird2.5" do
+  owner "root"
+  group "root"
+  mode "0644"
+
+  source "default.firebird.erb"
+end
+
 service "firebird2.5-super" do
   action [:disable]
 end
