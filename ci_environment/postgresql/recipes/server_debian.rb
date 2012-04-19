@@ -57,8 +57,6 @@ service "postgresql" do
   case [node[:platform], node[:platform_version]]
   when ["ubuntu", "10.04"] then
     service_name "postgresql-#{node.postgresql.version}"
-  when ["ubuntu", "11.04"] then
-    service_name "postgresql"
   else
     service_name "postgresql"
   end
