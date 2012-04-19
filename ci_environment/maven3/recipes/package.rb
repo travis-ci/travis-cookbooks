@@ -1,4 +1,4 @@
-n#
+#
 # Cookbook Name:: maven3
 # Recipe:: package
 #
