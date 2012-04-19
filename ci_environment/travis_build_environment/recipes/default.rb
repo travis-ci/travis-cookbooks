@@ -22,6 +22,7 @@
 # THE SOFTWARE.
 
 include_recipe "timezone"
+include_recipe "sysctl"
 
 include_recipe "travis_build_environment::root"
 include_recipe "travis_build_environment::non_privileged_user"
