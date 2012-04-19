@@ -1,8 +1,8 @@
-#
+n#
 # Cookbook Name:: maven3
-# Recipe:: default
+# Recipe:: package
 #
-# Copyright 2011, Travis CI Development Team
+# Copyright 2011-2012, Travis CI Development Team
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,21 +17,18 @@
 # limitations under the License.
 #
 
-
+# This recipe relies on a PPA package and is Ubuntu/Debian specific. Please
+# keep this in mind.
 
 include_recipe "java"
 
-case node.platform
-when "redhat", "centos", "fedora" then
-  include_recipe "jpackage"
-  include_recipe "maven3::tarball"
-when "ubuntu", "debian" then
-  case node.platform_version
-  when "11.04" then
-    include_recipe "maven3::tarball"
-  when "11.10" then
-    include_recipe "maven3::ppa"
-  else
-    include_recipe "maven3::package"
-  end
+package "maven" do
+  action :install
+end
+
+link "/usr/bin/mvn" do
+  owner "root"
+  group "root"
+
+  to    "/usr/bin/mvn3"
 end
