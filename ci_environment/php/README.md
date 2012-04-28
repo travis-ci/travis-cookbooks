@@ -1,5 +1,5 @@
 Description
 ===========
 
-Installs and configures phpfarm and phpenv for managing multiple PHP
+Installs and configures php-build and phpenv for managing multiple PHP
 versions.
