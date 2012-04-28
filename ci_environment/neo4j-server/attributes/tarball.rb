@@ -1,11 +1,11 @@
-neo4j_version = "1.6"
+neo4j_version = "1.7"
 
 default[:neo4j][:server] = {
   :version => neo4j_version,
   :installation_dir => "/usr/local/neo4j-server",
   :tarball => {
     :url => "http://dist.neo4j.org/neo4j-community-#{neo4j_version}-unix.tar.gz",
-    :md5 => "d9b12bbd269853c2a85ed12595e50409"
+    :md5 => "664fc56157a2b1a8fb6e334705494343"
   },
   :user => "neo4j",
   :jvm  => {
@@ -25,5 +25,8 @@ default[:neo4j][:server] = {
   :pid_path  => "/var/run/neo4j-server.pid",
   :http => {
     :port     => 7474
+  },
+  :https => {
+    :enabled => true
   }
 }
