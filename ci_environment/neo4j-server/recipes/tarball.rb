@@ -77,8 +77,12 @@ end
   end
 end
 
-[node.neo4j.server.lib_dir, node.neo4j.server.data_dir, File.join(node.neo4j.server.installation_dir, "data")].each do |dir|
-  # Chef sets permissions only to leaf nodes
+[node.neo4j.server.lib_dir,
+ node.neo4j.server.data_dir,
+ File.join(node.neo4j.server.installation_dir, "data"),
+ File.join(node.neo4j.server.installation_dir, "system"),
+ node.neo4j.server.installation_dir].each do |dir|
+  # Chef sets permissions only to leaf nodes, so we have to use a Bash script. MK.
   bash "chown -R #{node.neo4j.server.user}:#{node.neo4j.server.user} #{dir}" do
     user "root"
 
@@ -108,18 +112,22 @@ template "#{node.neo4j.server.conf_dir}/neo4j-wrapper.conf" do
   mode  0644
 end
 
-# 6. Add initd service
-bash "Update limits.conf for #{node.neo4j.server.user}" do
-  user 'root'
-
-  code <<-END.gsub(/^    /, '')
-    echo '#{node.neo4j.server.user}     -    nofile    #{node.neo4j.server.limits.nofile}'  >> /etc/security/limits.conf
-    echo '#{node.neo4j.server.user}     -    memlock   #{node.neo4j.server.limits.memlock}' >> /etc/security/limits.conf
-    echo 'session    required   pam_limits.so'                                       >> /etc/pam.d/su
-  END
+# 6. Know Your Limits
+template "/etc/security/limits.d/#{node.neo4j.server.user}.conf" do
+  source "neo4j-limits.conf.erb"
+  owner node.neo4j.server.user
+  mode  0644
 end
 
+ruby_block "make sure pam_limits.so is required" do
+  block do
+    fe = Chef::Util::FileEdit.new("/etc/pam.d/su")
+    fe.search_file_replace_line(/# session    required   pam_limits.so/, "session    required   pam_limits.so")
+    fe.write_file
+  end
+end
 
+# 6. init.d Service
 template "/etc/init.d/neo4j" do
   source "neo4j.init.erb"
   owner 'root'
@@ -128,5 +136,7 @@ end
 
 service "neo4j" do
   supports :start => true, :stop => true, :status => true, :restart => true
-  action [:enable, :start]
+  # intentionally disabled on boot to save on RAM available to projects,
+  # supposed to be started manually by projects that need it. MK.
+  action [:disable]
 end
