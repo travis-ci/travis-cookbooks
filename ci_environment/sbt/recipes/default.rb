@@ -21,23 +21,34 @@ include_recipe "java"
 
 require "tmpdir"
 
+include_recipe "libssl::098"
+
+# This recipe uses homegrown .deb package built with sbt-installer-ubuntizer scripts
+# originally developed by Przemek Pokrywka.
+# See https://github.com/michaelklishin/sbt-installer-ubuntizer
+
 tmp = Dir.tmpdir
 case node[:platform]
 when "debian", "ubuntu"
-  # home-made .deb package tweaking with sbt-installer-ubuntizer scripts
-  # see https://github.com/przemek-pokrywka/sbt-installer-ubuntizer
-  %w(sbt-0.11.2.deb).each do |deb|
+  ["sbt-#{node.sbt.version}.deb"].each do |deb|
     path = File.join(tmp, deb)
 
-    cookbook_file(path) do
-      owner node.travis_build_environment.user
-      group node.travis_build_environment.group
+    remote_file(path) do
+      v = node.sbt.version
+
+      owner  node.travis_build_environment.user
+      group  node.travis_build_environment.group
+      source "http://files.travis-ci.org/packages/deb/sbt/#{deb}"
+
+      not_if "which sbt"
     end
 
     package(deb) do
       action   :install
       source   path
       provider Chef::Provider::Package::Dpkg
+
+      not_if "which sbt"
     end
   end # each
 end # case
