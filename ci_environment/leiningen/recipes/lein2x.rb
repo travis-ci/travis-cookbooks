@@ -43,7 +43,8 @@ end
 
 script "run lein2 self-install" do
   interpreter "bash"
-  code        "/usr/local/bin/lein2 self-install"
+  # version forces leiningen to download core plugins like lein-newnew
+  code        "/usr/local/bin/lein2 self-install && /usr/local/bin/lein2 version"
 
   cwd        node.travis_build_environment.home
   user       node.travis_build_environment.user
