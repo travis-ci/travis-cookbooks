@@ -25,10 +25,3 @@ include_recipe "java"
 package "maven" do
   action :install
 end
-
-link "/usr/bin/mvn" do
-  owner "root"
-  group "root"
-
-  to    "/usr/bin/mvn3"
-end
