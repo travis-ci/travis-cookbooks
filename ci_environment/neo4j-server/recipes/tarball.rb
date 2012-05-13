@@ -93,6 +93,11 @@ end
 # 4. Symlink
 %w(neo4j neo4j-shell).each do |f|
   link "/usr/local/bin/#{f}" do
+    action :delete
+    only_if "test -L /usr/local/bin/#{f}"
+  end
+
+  link "/usr/local/bin/#{f}" do
     owner node.neo4j.server.user
     group node.neo4j.server.user
     to    "#{node.neo4j.server.installation_dir}/bin/#{f}"
