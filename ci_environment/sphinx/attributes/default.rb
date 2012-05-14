@@ -3,5 +3,6 @@ node[:sphinx] = {
     '2.0.1-beta' => '/usr/local/sphinx-2.0.1',
     '1.10-beta'  => '/usr/local/sphinx-1.10',
     '0.9.9'      => '/usr/local/sphinx-0.9.9'
-  }
+  },
+  :default => "2.0.1"
 }
