@@ -59,6 +59,6 @@ end
 
 %w(indexer indextool search searchd spelldump).each do |binary|
   link "/usr/local/bin/#{binary}" do
-    to "/usr/local/sphinx-#{node.sphinx.default}/bin/#{binary}"
+    to "/usr/local/sphinx-#{node.sphinx.linked}/bin/#{binary}"
   end
 end
