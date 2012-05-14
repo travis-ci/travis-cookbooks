@@ -1,12 +1,39 @@
-node.set[:sphinx][:versions] = {
-  '2.0.1-beta' => '/usr/local/sphinx-2.0.1',
-  '1.10-beta'  => '/usr/local/sphinx-1.10',
-  '0.9.9'      => '/usr/local/sphinx-0.9.9'
-}
+package 'libmysql++-dev' do
+  action :install
+end
 
-include_recipe 'sphinx::install'
+include_recipe "postgresql::client"
 
-%w( indexer indextool search searchd spelldump ).each do |binary|
+script 'download libstemmer once' do
+  interpreter 'bash'
+  code <<-SHELL
+    mkdir -p /tmp/sphinx_install
+    cd /tmp/sphinx_install
+    wget http://snowball.tartarus.org/dist/libstemmer_c.tgz
+  SHELL
+end
+
+node.sphinx.versions.each do |version, path|
+  log("Installing Sphinx #{version} to #{path}") { level :debug }
+
+  script 'install sphinx with libstemmer' do
+    interpreter 'bash'
+    code <<-SHELL
+      cd /tmp/sphinx_install
+      wget http://www.sphinxsearch.com/files/sphinx-#{version}.tar.gz
+      tar zxvf sphinx-#{version}.tar.gz
+      cp libstemmer_c.tgz sphinx-#{version}/libstemmer_c.tgz
+      cd sphinx-#{version}
+      tar zxvf libstemmer_c.tgz
+      ./configure --with-mysql --with-pgsql --with-libstemmer --prefix=#{path}
+      make && make install
+    SHELL
+
+    not_if "test -d #{path}"
+  end
+end
+
+%w(indexer indextool search searchd spelldump).each do |binary|
   link "/usr/local/bin/#{binary}" do
     to "/usr/local/sphinx-2.0.1/bin/#{binary}"
   end
