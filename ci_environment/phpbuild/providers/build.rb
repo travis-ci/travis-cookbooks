@@ -13,8 +13,9 @@ action :create do
       # for Symfony among other projects. MK.
       environment Hash["HOME" => node.travis_build_environment.home, "LDFLAGS" => "-lstdc++"]
       cwd         "#{phpbuild_path}/bin"
+      ini_suffix  = version < '5.3' ? 'dist' : 'development'
       code <<-EOF
-      ./php-build -i development #{version} #{target_path}
+      ./php-build -i #{ini_suffix} #{version} #{target_path}
       EOF
     end
 
