@@ -1,5 +1,11 @@
 require_recipe 'runit'
-require_recipe 'users'
+require_recipe 'jruby'
+
+users = if Chef::Config[:solo]
+          node[:users]
+        else
+          search(:users)
+        end
 
 execute "monit-reload" do
   action :nothing
@@ -44,10 +50,8 @@ if not node[:travis][:worker][:post_checkout].empty?
   end
 end
 
-rvm  = "source /usr/local/rvm/scripts/rvm && rvm"
-
 bash "bundle gems" do
-  code "#{rvm} jruby do bundle install --path vendor/bundle --binstubs"
+  code "node[:jruby][:bin] do bundle install --path vendor/bundle --binstubs"
   user "travis"
   cwd node[:travis][:worker][:home]
 end
@@ -64,7 +68,7 @@ template "#{node[:travis][:worker][:home]}/config/worker.yml" do
 end
 
 bash "download VirtualBox images" do
-  code "#{rvm} jruby do ./bin/thor travis:vms:download 2>/dev/null"
+  code "#{node[:jruby][:bin]} ./bin/thor travis:vms:download 2>/dev/null"
   user "travis"
   cwd node[:travis][:worker][:home]
   not_if {
@@ -73,10 +77,10 @@ bash "download VirtualBox images" do
   notifies :restart, resources(:service => 'travis-worker')
 end
 
-home = node[:etc][:passwd][:travis] ? node[:etc][:passwd][:travis][:dir] : node[:users].find{|user| user["id"] == 'travis'}[:home]
+home = node[:etc][:passwd][:travis] ? node[:etc][:passwd][:travis][:dir] : users.find{|user| user["id"] == 'travis'}[:home]
 
 bash "create VirtualBox images" do
-  code "#{rvm} jruby do ./bin/thor travis:vms:create &>/tmp/vbox-create.log"
+  code "#{node[:jruby][:bin] ./bin/thor travis:vms:create &>/tmp/vbox-create.log"
   user "travis"
   cwd node[:travis][:worker][:home]
   environment({"HOME" => home})
@@ -87,7 +91,7 @@ bash "create VirtualBox images" do
 end
 
 runit_service "travis-worker" do
-  options :rvm => "/usr/local/rvm/scripts/rvm",
+  options :jruby => node[:jruby][:bin],
           :worker_home => node[:travis][:worker][:home],
           :user => "travis",
           :group => "travis"
