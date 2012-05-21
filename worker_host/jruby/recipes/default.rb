@@ -14,9 +14,10 @@ dpkg_package "/var/tmp/#{node[:jruby][:deb]}" do
   action :install
 end
 
-%w{rake bundler}.each do |gem|
+(node[:jruby][:gems] || %w{rake bundler}).each do |gem|
   gem_package gem do
     gem_binary "/opt/jruby/bin/jgem"
     action :install
+    options "--no-ri --no-rdoc"
   end
 end
