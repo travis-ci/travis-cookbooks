@@ -59,7 +59,8 @@ node.rvm.rubies.each do |rb|
     setup.call(self)
     code   "#{rvm} use #{rb.fetch(:using, default_ruby)} && #{rvm} install #{rb[:name]} #{rb[:arguments]}"
     # with all the Rubies we provide, checking for various directories under .rvm/rubies/* is pretty much impossible without
-    # depending on the exact versions provided. MK.
+    # depending on the exact versions provided. So we use this neat technique suggested by
+    # mpapis. MK.
     not_if "#{rvm} #{rb[:check_for] || rb[:name]} do echo 'Found'"
   end
 end
