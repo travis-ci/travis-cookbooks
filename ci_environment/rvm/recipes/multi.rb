@@ -51,14 +51,16 @@ end
 bash "installing #{default_ruby}" do
   setup.call(self)
   code   "#{rvm} install #{default_ruby} && #{rvm} use --default #{default_ruby}"
-  not_if "ls #{home}/.rvm/rubies | grep #{default_ruby}"
+  not_if "#{rvm} #{default_ruby} do echo 'Found'"
 end
 
 node.rvm.rubies.each do |rb|
   bash "installing #{rb[:name]} with RVM arguments #{rb[:arguments]}" do
     setup.call(self)
     code   "#{rvm} use #{rb.fetch(:using, default_ruby)} && #{rvm} install #{rb[:name]} #{rb[:arguments]}"
-    not_if "ls #{home}/.rvm/rubies | grep #{rb[:check_for] || rb[:name]}"
+    # with all the Rubies we provide, checking for various directories under .rvm/rubies/* is pretty much impossible without
+    # depending on the exact versions provided. MK.
+    not_if "#{rvm} #{rb[:check_for] || rb[:name]} do echo 'Found'"
   end
 end
 
