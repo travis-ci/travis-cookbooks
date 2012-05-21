@@ -51,7 +51,7 @@ if not node[:travis][:worker][:post_checkout].empty?
 end
 
 bash "bundle gems" do
-  code "node[:jruby][:bin] do bundle install --path vendor/bundle --binstubs"
+  code "#{File.dirname(node[:jruby][:bin])}/bundle install --path vendor/bundle --binstubs"
   user "travis"
   cwd node[:travis][:worker][:home]
 end
@@ -80,7 +80,7 @@ end
 home = node[:etc][:passwd][:travis] ? node[:etc][:passwd][:travis][:dir] : users.find{|user| user["id"] == 'travis'}[:home]
 
 bash "create VirtualBox images" do
-  code "#{node[:jruby][:bin] ./bin/thor travis:vms:create &>/tmp/vbox-create.log"
+  code "#{node[:jruby][:bin]} ./bin/thor travis:vms:create &>/tmp/vbox-create.log"
   user "travis"
   cwd node[:travis][:worker][:home]
   environment({"HOME" => home})
