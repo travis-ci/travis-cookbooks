@@ -1,1 +1,1 @@
-default[:rvm][:version] = "1.13.8"
+default[:rvm][:version] = "stable"
