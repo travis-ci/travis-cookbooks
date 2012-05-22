@@ -1,5 +1,11 @@
 require_recipe 'runit'
-require_recipe 'users'
+require_recipe 'jruby'
+
+users = if Chef::Config[:solo]
+          node[:users]
+        else
+          search(:users)
+        end
 
 execute "monit-reload" do
   action :nothing
@@ -34,6 +40,26 @@ directory "#{node[:travis][:worker][:home]}/log" do
   mode "0755"
 end
 
+directory "#{node[:travis][:worker][:home]}/.VirtualBox" do
+  action :create
+  owner "travis"
+  group "travis"
+  mode "0755"
+end
+
+home = node[:etc][:passwd][:travis] ? node[:etc][:passwd][:travis][:dir] : users.find{|user| user["id"] == 'travis'}[:home]
+
+link "#{node[:travis][:worker][:home]}/.VirtualBox/VirtualBox.xml" do
+  to "#{home}/.VirtualBox/VirtualBox.xml"
+  action :create
+  link_type :symbolic
+  owner "travis"
+  group "travis"
+  not_if {
+    File.exists?("#{node[:travis][:worker][:home]}/.VirtualBox/VirtualBox.xml")
+  }
+end
+
 if not node[:travis][:worker][:post_checkout].empty?
   bash "run post checkout hook (#{node[:travis][:worker][:post_checkout][:command]})" do
     code node[:travis][:worker][:post_checkout][:command]
@@ -44,11 +70,10 @@ if not node[:travis][:worker][:post_checkout].empty?
   end
 end
 
-rvm  = "source /usr/local/rvm/scripts/rvm && rvm"
-
 bash "bundle gems" do
-  code "#{rvm} jruby do bundle install --path vendor/bundle --binstubs"
+  code "#{File.dirname(node[:jruby][:bin])}/bundle install --path vendor/bundle --binstubs"
   user "travis"
+  group "travis"
   cwd node[:travis][:worker][:home]
 end
 
@@ -64,20 +89,22 @@ template "#{node[:travis][:worker][:home]}/config/worker.yml" do
 end
 
 bash "download VirtualBox images" do
-  code "#{rvm} jruby do ./bin/thor travis:vms:download 2>/dev/null"
+  code "#{node[:jruby][:bin]} ./bin/thor travis:vms:download 2>/dev/null"
   user "travis"
+  group "travis"
   cwd node[:travis][:worker][:home]
   not_if {
     File.exists?("#{node[:travis][:worker][:home]}/boxes/travis-#{node[:travis][:worker][:env]}.box")
   }
   notifies :restart, resources(:service => 'travis-worker')
+  environment({"HOME" => home})
 end
 
-home = node[:etc][:passwd][:travis] ? node[:etc][:passwd][:travis][:dir] : node[:users].find{|user| user["id"] == 'travis'}[:home]
 
 bash "create VirtualBox images" do
-  code "#{rvm} jruby do ./bin/thor travis:vms:create &>/tmp/vbox-create.log"
+  code "#{node[:jruby][:bin]} ./bin/thor travis:vms:create &>/tmp/vbox-create.log"
   user "travis"
+  group "travis"
   cwd node[:travis][:worker][:home]
   environment({"HOME" => home})
   not_if {
@@ -87,7 +114,7 @@ bash "create VirtualBox images" do
 end
 
 runit_service "travis-worker" do
-  options :rvm => "/usr/local/rvm/scripts/rvm",
+  options :jruby => node[:jruby][:bin],
           :worker_home => node[:travis][:worker][:home],
           :user => "travis",
           :group => "travis"
