@@ -40,6 +40,26 @@ directory "#{node[:travis][:worker][:home]}/log" do
   mode "0755"
 end
 
+directory "#{node[:travis][:worker][:home]}/.VirtualBox" do
+  action :create
+  owner "travis"
+  group "travis"
+  mode "0755"
+end
+
+home = node[:etc][:passwd][:travis] ? node[:etc][:passwd][:travis][:dir] : users.find{|user| user["id"] == 'travis'}[:home]
+
+link "#{node[:travis][:worker][:home]}/.VirtualBox/VirtualBox.xml" do
+  to "#{home}/.VirtualBox/VirtualBox.xml"
+  action :create
+  link_type :symbolic
+  owner "travis"
+  group "travis"
+  not_if {
+    File.exists?("#{node[:travis][:worker][:home]}/.VirtualBox/VirtualBox.xml")
+  }
+end
+
 if not node[:travis][:worker][:post_checkout].empty?
   bash "run post checkout hook (#{node[:travis][:worker][:post_checkout][:command]})" do
     code node[:travis][:worker][:post_checkout][:command]
@@ -53,6 +73,7 @@ end
 bash "bundle gems" do
   code "#{File.dirname(node[:jruby][:bin])}/bundle install --path vendor/bundle --binstubs"
   user "travis"
+  group "travis"
   cwd node[:travis][:worker][:home]
 end
 
@@ -70,18 +91,20 @@ end
 bash "download VirtualBox images" do
   code "#{node[:jruby][:bin]} ./bin/thor travis:vms:download 2>/dev/null"
   user "travis"
+  group "travis"
   cwd node[:travis][:worker][:home]
   not_if {
     File.exists?("#{node[:travis][:worker][:home]}/boxes/travis-#{node[:travis][:worker][:env]}.box")
   }
   notifies :restart, resources(:service => 'travis-worker')
+  environment({"HOME" => home})
 end
 
-home = node[:etc][:passwd][:travis] ? node[:etc][:passwd][:travis][:dir] : users.find{|user| user["id"] == 'travis'}[:home]
 
 bash "create VirtualBox images" do
   code "#{node[:jruby][:bin]} ./bin/thor travis:vms:create &>/tmp/vbox-create.log"
   user "travis"
+  group "travis"
   cwd node[:travis][:worker][:home]
   environment({"HOME" => home})
   not_if {
