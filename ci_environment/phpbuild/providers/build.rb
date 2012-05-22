@@ -5,6 +5,7 @@ action :create do
     phpbuild_path = "#{node.travis_build_environment.home}/.php-build"
     version       = new_resource.version
     target_path   = "#{new_resource.path}/#{version}"
+    pear_option   = @new_resource.with_pear ? "--pear" : ""
 
     bash "install PHP #{version} with php-build" do
       user        new_resource.owner
@@ -14,7 +15,7 @@ action :create do
       environment Hash["HOME" => node.travis_build_environment.home, "LDFLAGS" => "-lstdc++"]
       cwd         "#{phpbuild_path}/bin"
       code <<-EOF
-      ./php-build -i development #{version} #{target_path}
+      ./php-build -i development #{pear_option} #{version} #{target_path}
       EOF
     end
 
