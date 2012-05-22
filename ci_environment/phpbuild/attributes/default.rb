@@ -1,5 +1,5 @@
 default[:phpbuild][:git][:repository]                  = "git://github.com/CHH/php-build.git"
-default[:phpbuild][:git][:revision]                    = "626576b7d9f702ce088de5f122cc3bca60266843"
+default[:phpbuild][:git][:revision]                    = "16f6212df2603dd85c7952bd29d986f720cf5782"
 default[:phpbuild][:phpunit_plugin][:git][:repository] = "git://github.com/CHH/php-build-plugin-phpunit.git"
 default[:phpbuild][:phpunit_plugin][:git][:revision]   = "a6a5ce4a5126b90a02dd473b63f660515de7d183"
 
