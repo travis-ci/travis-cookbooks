@@ -33,3 +33,10 @@ end
 package "oracle-java7-installer" do
   action :install
 end
+
+
+cookbook_file "/usr/lib/jvm/.java-7-oracle.jinfo" do
+  source "oraclejdk7.jinfo"
+  owner "root"
+  mode 0644
+end
