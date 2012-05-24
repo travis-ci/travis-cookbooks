@@ -11,15 +11,14 @@ pkgs = value_for_platform(["centos","redhat","fedora","scientific","amazon"] => 
 # once we test the waters and write the announcement, this will be moved to the
 # openjdk7 recipe. MK.
 execute "update-java-alternatives" do
+  base        = "java-1.6.0-openjdk"
   alternative = case [node[:platform], node[:platform_version]]
-                when ["ubuntu", "11.04"] then
-                  "java-6-openjdk"
                 when ["ubuntu", "11.10"] then
-                  "java-1.6.0-openjdk"
+                  base
                 when ["ubuntu", "12.04"] then
-                  "java-1.6.0-openjdk-i386"
+                  "#{base}-i386"
                 else
-                  "java-1.6.0-openjdk"
+                  base
                 end
 
   command "update-java-alternatives -s #{alternative}"
