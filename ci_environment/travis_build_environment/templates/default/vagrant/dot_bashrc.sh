@@ -110,3 +110,11 @@ fi
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 export JAVA_HOME="/usr/lib/jvm/java-6-<%= node['java']['install_flavor'] %>"
+
+
+# until rvm and rubygems-bundler gems are removed from the RVM itself (this
+# has already been agreed on by Bundler and RVM maintainers), we need to
+# remove them to make sure bundler behavior does not change. MK.
+gem uninstall rvm rubygems-bundler -a -I
+# per discussion with mpapis. MK.
+rm -r ~/.rvm/gemsets/default*

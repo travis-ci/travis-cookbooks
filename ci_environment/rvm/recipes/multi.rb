@@ -99,5 +99,5 @@ end
 
 bash "clean up RVM sources, log files, etc" do
   setup.call(self)
-  code "#{rvm} cleanup all"
+  code "echo 'yes' || gem uninstall rvm rubygems-bundler -I -a && #{rvm} cleanup all"
 end
