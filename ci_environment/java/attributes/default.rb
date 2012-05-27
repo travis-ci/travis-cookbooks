@@ -29,6 +29,5 @@ else
 end
 
 default[:java][:multi] = {
-  :versions => ["openjdk6", "openjdk7", "oraclejdk7"],
-  :switcher_path => "/usr/local/bin/jdk_switcher"
+  :versions => ["openjdk6", "openjdk7", "oraclejdk7"]
 }
