@@ -50,7 +50,7 @@ end
 # make sure default Ruby is installed first
 bash "installing #{default_ruby}" do
   setup.call(self)
-  code   "#{rvm} install #{default_ruby} && #{rvm} use --default #{default_ruby}"
+  code   "rm -rf $HOME/.rvm/gemsets/global.gems && rm -rf $HOME/.rvm/gemsets/default.gems && #{rvm} install #{default_ruby} && #{rvm} use --default #{default_ruby}"
   not_if "#{rvm} #{default_ruby} do echo 'Found'"
 end
 
@@ -99,5 +99,5 @@ end
 
 bash "clean up RVM sources, log files, etc" do
   setup.call(self)
-  code "echo 'yes' | #{rvm} @global,default do gem uninstall rvm rubygems-bundler -a -I && #{rvm} cleanup all"
+  code "#{rvm} cleanup all"
 end
