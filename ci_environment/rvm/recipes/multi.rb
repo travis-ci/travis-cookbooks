@@ -50,7 +50,8 @@ end
 # make sure default Ruby is installed first
 bash "installing #{default_ruby}" do
   setup.call(self)
-  code   "rm -rf $HOME/.rvm/gemsets/global.gems && rm -rf $HOME/.rvm/gemsets/default.gems && #{rvm} install #{default_ruby} && #{rvm} use --default #{default_ruby}"
+  # we install rake here because it needs to be available by the time Rubiniuses are compiled. MK.
+  code   "rm -rf $HOME/.rvm/gemsets/global.gems && rm -rf $HOME/.rvm/gemsets/default.gems && #{rvm} install #{default_ruby} && #{rvm} use --default #{default_ruby} && #{rvm} @global do gem install rake"
   not_if "#{rvm} #{default_ruby} do echo 'Found'"
 end
 

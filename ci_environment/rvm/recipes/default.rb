@@ -35,6 +35,20 @@ include_recipe "libxml"
 include_recipe "libssl"
 include_recipe "libncurses"
 
+# RVM uses .rvm/gemsets.NAME.gems to list the default list of gems it will
+# automatically install. We override it to include rake v0.9.2 and bundler ~> 1.1.0. MK.
+%w(default global).each do |gemset|
+  cookbook_file "#{node.travis_build_environment.home}/.rvm/gemsets/#{gemset}.gems" do
+    owner node.travis_build_environment.user
+    group node.travis_build_environment.group
+    mode  0755
+
+    source "default_gems.txt"
+    action :nothing
+  end
+end
+
+
 bash "install RVM" do
   user        node.travis_build_environment.user
   cwd         node.travis_build_environment.home
@@ -42,10 +56,13 @@ bash "install RVM" do
   code        <<-SH
   curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer -o /tmp/rvm-installer
   chmod +x /tmp/rvm-installer
-  /tmp/rvm-installer --version #{node.rvm.version}
+  /tmp/rvm-installer #{node.rvm.version}
   ~/.rvm/bin/rvm version
   SH
   not_if      "test -d #{node.travis_build_environment.home}/.rvm"
+
+  notifies :create, resources(:cookbook_file => "#{node.travis_build_environment.home}/.rvm/gemsets/default.gems")
+  notifies :create, resources(:cookbook_file => "#{node.travis_build_environment.home}/.rvm/gemsets/global.gems")
 end
 
 cookbook_file "/etc/profile.d/rvm.sh" do
