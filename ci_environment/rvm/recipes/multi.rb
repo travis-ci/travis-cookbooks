@@ -100,5 +100,5 @@ end
 
 bash "clean up RVM sources, log files, etc" do
   setup.call(self)
-  code "#{rvm} cleanup all"
+  code "#{rvm} cleanup all && echo 'yes' | #{rvm} 1.8.7@global do gem uninstall ffi json rake-compiler rdoc ruby-debug -a -I"
 end
