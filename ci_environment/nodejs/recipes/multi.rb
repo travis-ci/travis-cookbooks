@@ -1,7 +1,7 @@
 #
 # Cookbook Name:: node.js
-# Recipe:: n
-# Copyright 2011, Travis CI development team
+# Recipe:: multi
+# Copyright 2011-2012, Travis CI development team
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
