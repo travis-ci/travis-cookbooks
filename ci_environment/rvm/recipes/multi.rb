@@ -100,5 +100,8 @@ end
 
 bash "clean up RVM sources, log files, etc" do
   setup.call(self)
-  code "#{rvm} cleanup all && (echo 'yes' | #{rvm} 1.8.7@global do gem uninstall ffi json rake-compiler rdoc ruby-debug -a -I) || true"
+  # Rubinius is preinstalling gems via gem so if GEM_HOME is set, it will INSTALL GEMS FOR THE WRONG RUBY
+  # and those gems will fail to load. Because it is unrealistic that Rubinius will stop preinstalling gems,
+  # we just purge all the stuff it drags in here. Per long and painful investigation with mpapis. MK.
+  code "#{rvm} cleanup all && (echo 'yes' | #{rvm} all do rvm @default,@global do gem uninstall ffi json rake-compiler rdoc ruby-debug -a -I) || true"
 end
