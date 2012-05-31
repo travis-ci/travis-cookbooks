@@ -32,13 +32,14 @@ include_recipe "ant"
 log "Using Ruby #{RUBY_VERSION}..."
 
 default_ruby = node[:rvm][:default]
-gems         = node[:rvm].fetch(:gems, []) | ['bundler', 'rake']
 aliases      = node[:rvm][:aliases] || []
+default_ruby_arguments = node.rvm.rubies.select{|rb| rb["name"] == default_ruby }.map{|rb| rb["arguments"] }.first
 
 log "Default Ruby will be #{default_ruby}"
 
 home = node.travis_build_environment.home
 rvm  = "source #{home}/.rvm/scripts/rvm && rvm"
+bin_rvm  = "#{home}/.rvm/bin/rvm"
 env  = { 'HOME' => home, 'rvm_user_install_flag' => '1' }
 user = node.travis_build_environment.user
 
@@ -48,45 +49,20 @@ setup = lambda do |bash|
 end
 
 # make sure default Ruby is installed first
-bash "installing #{default_ruby}" do
+bash "installing #{default_ruby} with RVM arguments #{default_ruby_arguments}" do
   setup.call(self)
-  # we install rake here because it needs to be available by the time Rubiniuses are compiled. MK.
-  code   "rm -rf $HOME/.rvm/gemsets/global.gems && rm -rf $HOME/.rvm/gemsets/default.gems && #{rvm} install #{default_ruby} && #{rvm} use --default #{default_ruby} && #{rvm} @global do gem install rake"
+  code   "#{bin_rvm} install #{default_ruby} -j 3 #{default_ruby_arguments} && #{rvm} alias create default #{default_ruby}"
   not_if "#{rvm} #{default_ruby} do echo 'Found'"
 end
 
 node.rvm.rubies.each do |rb|
+  next if rb[:name] == default_ruby
   bash "installing #{rb[:name]} with RVM arguments #{rb[:arguments]}" do
     setup.call(self)
-    code   "#{rvm} use #{rb.fetch(:using, default_ruby)} && #{rvm} install #{rb[:name]} #{rb[:arguments]}"
+    code "#{rvm} #{rb.fetch(:using, default_ruby)} do #{bin_rvm} install #{rb[:name]} -j 3 #{rb[:arguments]}"
     # with all the Rubies we provide, checking for various directories under .rvm/rubies/* is pretty much impossible without
-    # depending on the exact versions provided. So we use this neat technique suggested by
-    # mpapis. MK.
-    not_if "#{rvm} #{rb[:check_for] || rb[:name]} do echo 'Found'"
-  end
-end
-
-
-# now we can install gems by iterating over rubies in any order. MK.
-node.rvm.rubies.each do |rb|
-  # handle cases when Rubinius in 1.9 mode will have the same :name
-  # as Rubinius in 1.8 but will be available via rvm under a different name. MK.
-  name = rb[:check_for] || rb[:name]
-
-  # bundler 1.1+ requires 1.8.7. We still keep 1.8.6 for Sinatra but
-  # DO NOT depend on it being available. MK.
-  if name == "1.8.6"
-    bash "installing gems for #{name}" do
-      setup.call(self)
-      code   "#{rvm} use #{name}; gem install rake --no-ri --no-rdoc; gem install bundler --version '~> 1.0.21' --no-ri --no-rdoc"
-    end
-  else
-    gems.each do |gem|
-      bash "installing gem #{gem} for #{name}" do
-        setup.call(self)
-        code   "#{rvm} use #{name}; gem install #{gem} --no-ri --no-rdoc"
-      end
-    end
+    # depending on the exact versions provided. So we use this neat technique suggested by mpapis. MK.
+    not_if "#{rvm} #{rb[:name]} do echo 'Found'"
   end
 end
 
@@ -94,14 +70,12 @@ aliases.each do |new_name, existing_name|
   bash "alias #{existing_name} => #{new_name}" do
     setup.call(self)
     code "#{rvm} alias create #{new_name} #{existing_name}"
-    ignore_failure true # alias creation is not idempotent. MK.
+    only_if "#{rvm} #{existing_name} do echo 'Found'"
   end
 end
 
 bash "clean up RVM sources, log files, etc" do
   setup.call(self)
-  # Rubinius is preinstalling gems via gem so if GEM_HOME is set, it will INSTALL GEMS FOR THE WRONG RUBY
-  # and those gems will fail to load. Because it is unrealistic that Rubinius will stop preinstalling gems,
-  # we just purge all the stuff it drags in here. Per long and painful investigation with mpapis. MK.
-  code "#{rvm} cleanup all && (echo 'yes' | #{rvm} all do rvm @default,@global do gem uninstall ffi json rake-compiler rdoc ruby-debug -a -I) || true"
+  # gemset empty is needed only till https://github.com/rubinius/rubinius/pull/1759 gets fixed. @mpapis
+  code "#{rvm} cleanup all && #{rvm} all do rvm --force gemset empty || true"
 end
