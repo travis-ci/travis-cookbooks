@@ -56,7 +56,7 @@ bash "installing #{default_ruby} with RVM arguments #{default_ruby_arguments}" d
 end
 
 node.rvm.rubies.
-  reject {|r| rb[:name] == default_ruby}.each do |rb|
+  reject {|rb| rb[:name] == default_ruby}.each do |rb|
   bash "installing #{rb[:name]} with RVM arguments #{rb[:arguments]}" do
     setup.call(self)
     # another work around for https://github.com/rubinius/rubinius/pull/1759. MK.
