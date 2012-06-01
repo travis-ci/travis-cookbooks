@@ -71,7 +71,8 @@ aliases.each do |new_name, existing_name|
   bash "alias #{existing_name} => #{new_name}" do
     setup.call(self)
     code "#{rvm} alias create #{new_name} #{existing_name}"
-    only_if "#{rvm} #{existing_name} do echo 'Found'"
+
+    ignore_failure true # alias creation is not idempotent. MK.
   end
 end
 
