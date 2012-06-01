@@ -30,8 +30,37 @@ apt_repository "webupd8team-java-ppa" do
   action :add
 end
 
+require "tmpdir"
+
+# running this installer is necessary because Leiningen 2 Preview 5 uses HTTPS for all requests to clojars.org.
+# clojars.org, in turn, happens to use a TLS certificate from StartSSL which is not included into the default
+# keychain for Oracle JDK 7. Which means, all Clojure projects on travis will blow up as soon as they try to
+# install dependencies.
+#
+# Regardless of how this plays out for Leiningen, we need to make sure Travis users don't have
+# to suffer from this. MK.
+ca_installer_location = File.join(Dir.tmpdir, "install_startssl_certificates.sh")
+
+cookbook_file(ca_installer_location) do
+  source "startssl_root_ca_installer.sh"
+  owner  "root"
+  mode   0755
+end
+
+execute "install StarSSL CA certificate for Oracle JDK 7" do
+  user    "root"
+  command "/bin/sh #{ca_installer_location} && rm #{ca_installer_location}"
+
+  timeout 15
+  action  :nothing
+  
+  environment  Hash["JAVA_HOME" => node.java.oraclejdk7.java_home]
+end
+
 package "oracle-java7-installer" do
   action :install
+
+  notifies :run, resources(:execute => "install StarSSL CA certificate for Oracle JDK 7")
 end
 
 
