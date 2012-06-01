@@ -59,7 +59,8 @@ node.rvm.rubies.each do |rb|
   next if rb[:name] == default_ruby
   bash "installing #{rb[:name]} with RVM arguments #{rb[:arguments]}" do
     setup.call(self)
-    code "#{rvm} #{rb.fetch(:using, default_ruby)} do #{bin_rvm} install #{rb[:name]} -j 3 #{rb[:arguments]}"
+    # another work around for https://github.com/rubinius/rubinius/pull/1759. MK.
+    code "#{rvm} #{rb.fetch(:using, default_ruby)} do #{bin_rvm} install #{rb[:name]} -j 3 #{rb[:arguments]} && #{rvm} all do rvm --force gemset empty"
     # with all the Rubies we provide, checking for various directories under .rvm/rubies/* is pretty much impossible without
     # depending on the exact versions provided. So we use this neat technique suggested by mpapis. MK.
     not_if "#{rvm} #{rb[:name]} do echo 'Found'"
