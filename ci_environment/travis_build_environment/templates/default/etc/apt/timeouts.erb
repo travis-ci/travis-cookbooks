@@ -1,5 +1,7 @@
 Acquire {
   http {
+    // So that dead slow or timing out repositories do not stall the update process
+    // for everybody. MK.
     Timeout "<%= node.travis_build_environment.apt.timeout %>"
   }
 }
