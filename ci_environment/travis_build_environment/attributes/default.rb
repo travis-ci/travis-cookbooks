@@ -8,6 +8,7 @@ default[:travis_build_environment] = {
 
   :apt                  => {
     # in seconds
-    :timeout => 10
+    :timeout => 10,
+    :retries => 2
   }
 }
