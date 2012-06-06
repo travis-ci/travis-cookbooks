@@ -67,6 +67,14 @@ template "/etc/apt/apt.conf.d/60assumeyes" do
   source "etc/apt/assumeyes.erb"
 end
 
+template "/etc/apt/apt.conf.d/37timeouts" do
+  owner "root"
+  group "root"
+  mode 0644
+
+  source "etc/apt/timeouts.erb"
+end
+
 include_recipe "iptables"
 
 
