@@ -35,3 +35,19 @@ when "ubuntu", "debian" then
     include_recipe "maven3::package"
   end
 end
+
+per_user_settings = File.join(node.travis_build_environment.home, ".m2", "settings.xml")
+cookbook_file(per_user_settings) do
+  mode 0644
+
+  action :nothing
+end
+
+
+directory(File.join(node.travis_build_environment.home, ".m2")) do
+  owner  node.travis_build_environment.user
+  group  node.travis_build_environment.group
+
+  action :create
+  notifies :create, resources(:cookbook_file => per_user_settings)
+end
