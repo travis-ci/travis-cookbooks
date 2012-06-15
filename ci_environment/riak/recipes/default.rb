@@ -59,6 +59,10 @@ when "debian", "ubuntu"
     block do
       fe = Chef::Util::FileEdit.new("/etc/riak/app.config")
       fe.search_file_replace_line(/{storage_backend, /, "{storage_backend, riak_kv_eleveldb_backend},")
+      # this enables Riak Search and Riak Control. In the CI env, Control is useless but without duplicating
+      # the entire config, there is no easy way to replace just search's entry via Chef::Util::FileEdit. So we roll
+      # with Control enabled, it does not hurt. MK.
+      fe.search_file_replace_line(/{enabled, false}/, "{enabled, true}")
       fe.write_file
     end
   end
