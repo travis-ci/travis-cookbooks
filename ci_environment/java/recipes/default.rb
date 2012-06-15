@@ -19,4 +19,4 @@
 # limitations under the License.
 #
 
-include_recipe "java::openjdk6"
+include_recipe "java::openjdk7"
