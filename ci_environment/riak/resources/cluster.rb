@@ -1,5 +1,5 @@
 #
-# Author:: Benjamin Black (<b@b3k.us>) and Sean Cribbs (<sean@basho.com>)
+# Author:: Sean Cribbs (<sean@basho.com>)
 # Cookbook Name:: riak
 #
 # Copyright (c) 2011 Basho Technologies, Inc.
@@ -16,16 +16,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+actions :join, :leave
 
-include_attribute "riak::package"
-include_attribute "riak::core"
-include_attribute "riak::erlang"
-include_attribute "riak::kernel"
-include_attribute "riak::kv"
-include_attribute "riak::sasl"
-include_attribute "riak::err"
-include_attribute "riak::lager"
-include_attribute "riak::sysmon"
-include_attribute "riak::merge"
-include_attribute "riak::control"
-include_attribute "riak::search"
+attribute :cluster_name, :kind_of => [String], :name_attribute => true
+attribute :cluster_members, :kind_of => [Array]
+attribute :node_name, :kind_of => [String], :required => true
+attribute :timeout, :kind_of => [Fixnum], :default => 30
+attribute :joined, :default => false
+attribute :riak_admin_path, :kind_of => [String], :default => "/usr/sbin"
+attribute :ring_ready

@@ -17,15 +17,10 @@
 # limitations under the License.
 #
 
-include_attribute "riak::package"
-include_attribute "riak::core"
-include_attribute "riak::erlang"
-include_attribute "riak::kernel"
-include_attribute "riak::kv"
-include_attribute "riak::sasl"
-include_attribute "riak::err"
-include_attribute "riak::lager"
-include_attribute "riak::sysmon"
-include_attribute "riak::merge"
-include_attribute "riak::control"
-include_attribute "riak::search"
+default.riak.package.type = "binary"
+default.riak.package.version.major = "1"
+default.riak.package.version.minor = "1"
+default.riak.package.version.incremental = "2"
+default.riak.package.version.build = "1"
+default.riak.package.source_checksum = '34878ed258fa4bc63b8440ad624909e3773a560a00d753d73f8c5467005123de'
+default.riak.package.config_dir = "/etc/riak"

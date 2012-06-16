@@ -17,15 +17,6 @@
 # limitations under the License.
 #
 
-include_attribute "riak::package"
-include_attribute "riak::core"
-include_attribute "riak::erlang"
-include_attribute "riak::kernel"
-include_attribute "riak::kv"
-include_attribute "riak::sasl"
-include_attribute "riak::err"
-include_attribute "riak::lager"
-include_attribute "riak::sysmon"
-include_attribute "riak::merge"
-include_attribute "riak::control"
-include_attribute "riak::search"
+default.riak.kernel.limit_port_range = true
+default.riak.kernel.inet_dist_listen_min = 6000
+default.riak.kernel.inet_dist_listen_max = 7999

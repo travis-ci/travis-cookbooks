@@ -17,15 +17,14 @@
 # limitations under the License.
 #
 
-include_attribute "riak::package"
 include_attribute "riak::core"
-include_attribute "riak::erlang"
-include_attribute "riak::kernel"
-include_attribute "riak::kv"
-include_attribute "riak::sasl"
-include_attribute "riak::err"
-include_attribute "riak::lager"
-include_attribute "riak::sysmon"
-include_attribute "riak::merge"
-include_attribute "riak::control"
-include_attribute "riak::search"
+
+default.riak.erlang.node_name = "riak@127.0.0.1"
+default.riak.erlang.cookie = "riak"
+default.riak.erlang.kernel_polling = true
+default.riak.erlang.async_threads = 64
+default.riak.erlang.error_logger_warnings = :w
+default.riak.erlang.smp = "enable"
+default.riak.erlang.env_vars.ERL_MAX_PORTS = 4096
+default.riak.erlang.env_vars.ERL_FULLSWEEP_AFTER = 0
+default.riak.erlang.env_vars.ERL_CRASH_DUMP = "/var/log/riak/erl_crash.dump"

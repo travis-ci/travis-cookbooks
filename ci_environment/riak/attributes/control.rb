@@ -1,5 +1,5 @@
 #
-# Author:: Benjamin Black (<b@b3k.us>) and Sean Cribbs (<sean@basho.com>)
+# Author:: Sean Carey (<densone@basho.com>)
 # Cookbook Name:: riak
 #
 # Copyright (c) 2011 Basho Technologies, Inc.
@@ -17,15 +17,7 @@
 # limitations under the License.
 #
 
-include_attribute "riak::package"
-include_attribute "riak::core"
-include_attribute "riak::erlang"
-include_attribute "riak::kernel"
-include_attribute "riak::kv"
-include_attribute "riak::sasl"
-include_attribute "riak::err"
-include_attribute "riak::lager"
-include_attribute "riak::sysmon"
-include_attribute "riak::merge"
-include_attribute "riak::control"
-include_attribute "riak::search"
+default.riak.control.enabled = :false
+default.riak.control.auth = :userlist
+default.riak.control.userlist.default_user = ["user","pass"]
+default.riak.control.admin = :true

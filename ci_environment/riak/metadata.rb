@@ -17,15 +17,16 @@
 # limitations under the License.
 #
 
-include_attribute "riak::package"
-include_attribute "riak::core"
-include_attribute "riak::erlang"
-include_attribute "riak::kernel"
-include_attribute "riak::kv"
-include_attribute "riak::sasl"
-include_attribute "riak::err"
-include_attribute "riak::lager"
-include_attribute "riak::sysmon"
-include_attribute "riak::merge"
-include_attribute "riak::control"
-include_attribute "riak::search"
+maintainer        "Basho Technologies, Inc."
+maintainer_email  "riak@basho.com"
+license           "Apache 2.0"
+description       "Installs and configures Riak distributed data store"
+version           "1.1.2"
+recipe            "riak", "Installs Riak"
+recipe            "riak::autoconf", "Automatically configure nodes from chef-server information."
+recipe            "riak::innostore", "Install and configure the Innostore backend."
+recipe            "riak::iptables", "Automatically configure iptables rules for Riak."
+
+%w{ubuntu debian centos redhat suse fedora}.each do |os|
+  supports os
+end
