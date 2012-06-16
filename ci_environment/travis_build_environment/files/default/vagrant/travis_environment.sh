@@ -23,3 +23,4 @@ export RACK_ENV=test
 # -J-XX:+TieredCompilation to enable tiered compilation mode (long story short:
 #                          to improve startup time, especially on JDK 7+)
 export JRUBY_OPTS="--server -Xcext.enabled=false -J-Xss2m -J-Xmx256m -J-XX:+TieredCompilation"
+export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=192m"
