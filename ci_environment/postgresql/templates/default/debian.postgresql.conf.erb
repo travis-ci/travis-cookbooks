@@ -65,6 +65,12 @@ ssl = true
 #ssl_ciphers = 'ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH'
 
 
+# fsync, full page writes
+# turning these off for CI is reasonable
+fsync = off
+full_page_writes = off
+
+
 #------------------------------------------------------------------------------
 # RESOURCE USAGE (except WAL)
 #------------------------------------------------------------------------------
