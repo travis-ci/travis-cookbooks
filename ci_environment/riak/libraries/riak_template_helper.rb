@@ -77,10 +77,6 @@ module RiakTemplateHelper
 
 
   def prepare_app_config(riak)
-
-    node.riak.core.http[0][0] = node[:network][:interfaces][node.riak.net_dev_int][:addresses].select { |address, data| data[:family] == "inet" }[0][0]
-    node.riak.kv.pb_ip        = node[:network][:interfaces][node.riak.net_dev_int][:addresses].select { |address, data| data[:family] == "inet" }[0][0]
-
     #Each backend in multi-backend will be a keyless tuple, so add them to KEYLESS_ATTRIBUTES
     riak[:kv].fetch(:multi_backend, {}).each_key { |k| KEYLESS_ATTRIBUTES.push(k) }
 

@@ -32,7 +32,7 @@ default.riak.kv.riak_kv_stat = true
 default.riak.kv.legacy_stats = true
 default.riak.kv.vnode_vclocks = true
 default.riak.kv.legacy_keylisting = false
-default.riak.kv.pb_ip = "127.0.0.1"
+default.riak.kv.pb_ip = "0.0.0.0"
 default.riak.kv.pb_port = 8087
 
 # +-------------------------+
