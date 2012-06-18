@@ -43,3 +43,5 @@ end
 package "bison" do
   action :install
 end
+
+include_recipe "cmake"

@@ -27,3 +27,11 @@ when "centos","redhat","fedora"
 else
   set['java']['java_home'] = "/usr/lib/jvm/default-java"
 end
+
+default[:java][:multi] = {
+  :versions => ["openjdk6", "openjdk7", "oraclejdk7"]
+}
+
+default[:java][:oraclejdk7] = {
+  :java_home => "/usr/lib/jvm/java-7-oracle"
+}

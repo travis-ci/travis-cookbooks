@@ -4,5 +4,11 @@ default[:travis_build_environment] = {
   :home                 => "/home/travis",
   :hosts                => Hash.new,
   :builds_volume_size   => "350m",
-  :use_tmpfs_for_builds => true
+  :use_tmpfs_for_builds => true,
+
+  :apt                  => {
+    # in seconds
+    :timeout => 10,
+    :retries => 2
+  }
 }

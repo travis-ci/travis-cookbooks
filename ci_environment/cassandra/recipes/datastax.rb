@@ -31,13 +31,7 @@ apt_repository "datastax" do
   action :add
 end
 
-# DataStax Server Community Edition package will not install w/o this
-# one installed. MK.
-package "python-cql" do
-  action :install
-end
-
-package "dsc" do
+package "cassandra" do
   action :install
 end
 

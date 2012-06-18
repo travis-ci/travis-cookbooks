@@ -5,6 +5,7 @@ action :create do
     phpbuild_path = "#{node.travis_build_environment.home}/.php-build"
     version       = new_resource.version
     target_path   = "#{new_resource.path}/#{version}"
+    pear_option   = @new_resource.with_pear ? "--pear" : ""
 
     bash "install PHP #{version} with php-build" do
       user        new_resource.owner
@@ -13,8 +14,9 @@ action :create do
       # for Symfony among other projects. MK.
       environment Hash["HOME" => node.travis_build_environment.home, "LDFLAGS" => "-lstdc++"]
       cwd         "#{phpbuild_path}/bin"
+      ini_suffix  = version < '5.3' ? 'dist' : 'development'
       code <<-EOF
-      ./php-build -i development #{version} #{target_path}
+      ./php-build -i #{ini_suffix} #{pear_option} #{version} #{target_path}
       EOF
     end
 
