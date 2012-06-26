@@ -22,6 +22,7 @@
           </snapshots>
           <url>https://oss.sonatype.org/content/repositories/releases/</url>
         </repository>
+
         <repository>
           <id>sonatype-snapshots</id>
           <name>OSS Sonatype repo (snapshots)</name>
@@ -36,6 +37,22 @@
             <checksumPolicy>fail</checksumPolicy>
           </snapshots>
           <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
+
+        <repository>
+          <id>sonatype</id>
+          <name>Apache repo (releases)</name>
+          <releases>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+            <checksumPolicy>warn</checksumPolicy>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+            <updatePolicy>never</updatePolicy>
+            <checksumPolicy>fail</checksumPolicy>
+          </snapshots>
+          <url>https://repository.apache.org/releases/</url>
         </repository>
 
         <repository>
@@ -93,6 +110,13 @@
       <name>Travis CI oss.sonatype.org mirror (snapshots)</name>
       <url>http://maven.travis-ci.org/nexus/content/repositories/sonatype-snapshots/</url>
       <mirrorOf>sonatype-snapshots</mirrorOf>
+    </mirror>
+
+    <mirror>
+      <id>travis-ci-apache</id>
+      <name>Travis CI repository.apache.org mirror (releases)</name>
+      <url>http://maven.travis-ci.org/nexus/content/repositories/apache/</url>
+      <mirrorOf>apache</mirrorOf>
     </mirror>
 
     <mirror>
