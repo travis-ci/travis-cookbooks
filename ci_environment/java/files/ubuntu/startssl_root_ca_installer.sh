@@ -7,8 +7,7 @@
 # Check if JAVA_HOME is set
 if [ "$JAVA_HOME" = "" ]
 then
-    echo "ERROR: JAVA_HOME must be set."
-    exit 1
+    JAVA_HOME="/usr/lib/jvm/java-7-oracle"
 fi
 
 # Check if cacerts file is present
@@ -20,11 +19,11 @@ fi
 
 # Download the startssl certs
 echo "Downloading certs..."
-wget --quiet --continue http://www.startssl.com/certs/ca.crt
-wget --quiet --continue http://www.startssl.com/certs/sub.class1.server.ca.crt
-wget --quiet --continue http://www.startssl.com/certs/sub.class2.server.ca.crt
-wget --quiet --continue http://www.startssl.com/certs/sub.class3.server.ca.crt
-wget --quiet --continue http://www.startssl.com/certs/sub.class4.server.ca.crt
+wget --continue http://www.startssl.com/certs/ca.crt
+wget --continue http://www.startssl.com/certs/sub.class1.server.ca.crt
+wget --continue http://www.startssl.com/certs/sub.class2.server.ca.crt
+wget --continue http://www.startssl.com/certs/sub.class3.server.ca.crt
+wget --continue http://www.startssl.com/certs/sub.class4.server.ca.crt
 
 # Install certs into global keystore
 echo "Adding certs to cacerts keystore (sudo password required)..."
