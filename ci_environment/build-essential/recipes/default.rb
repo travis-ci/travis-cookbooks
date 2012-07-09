@@ -45,4 +45,3 @@ package "bison" do
 end
 
 include_recipe "cmake"
-include_recipe "clang"
