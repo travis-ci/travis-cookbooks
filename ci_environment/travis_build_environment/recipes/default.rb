@@ -75,6 +75,14 @@ template "/etc/apt/apt.conf.d/37timeouts" do
   source "etc/apt/timeouts.erb"
 end
 
+cookbook_file "/etc/sudoers.d/env_keep" do
+  owner "root"
+  group "root"
+  mode 0440
+
+  source "etc/sudoers/env_keep"
+end
+
 include_recipe "iptables"
 
 
