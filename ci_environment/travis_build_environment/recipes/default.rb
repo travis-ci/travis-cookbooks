@@ -24,6 +24,9 @@
 include_recipe "timezone"
 include_recipe "sysctl"
 
+# installs custom templates for sshd_config and ssh upstart script. MK.
+include_recipe "openssh"
+
 include_recipe "travis_build_environment::root"
 include_recipe "travis_build_environment::non_privileged_user"
 
@@ -81,24 +84,6 @@ cookbook_file "/etc/sudoers.d/env_keep" do
   mode 0440
 
   source "etc/sudoers/env_keep"
-end
-
-cookbook_file "/etc/ssh/sshd_config" do
-  owner "root"
-  group "root"
-  mode 0644
-
-  source "etc/ssh/sshd_config"
-end
-
-# installs a fix that makes ssh wait for the network to
-# start up (see http://blog.roberthallam.org/2010/06/sshd-not-running-at-startup/). MK.
-cookbook_file "/etc/init.d/ssh" do
-  owner "root"
-  group "root"
-  mode  0755
-
-  source "etc/initd/ssh"
 end
 
 include_recipe "iptables"
