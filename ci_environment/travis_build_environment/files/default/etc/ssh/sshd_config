@@ -2,10 +2,11 @@
 
 # ONLY use IPv4 (we don't need IPv6 for host-local connections
 # from Travis workers).
-# See https://bugzilla.redhat.com/show_bug.cgi?id=640857 for more information.
-ListenAddress 0.0.0.0
+# See https://bugzilla.redhat.com/show_bug.cgi?id=640857 for more information
 
 Port 22
+
+ListenAddress 0.0.0.0
 
 Protocol 2
 
