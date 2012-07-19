@@ -52,3 +52,5 @@ UsePAM yes
 # Effectively disables SSH timeouts
 ClientAliveInterval 30
 ClientAliveCountMax 99999
+
+MaxStartups 100
