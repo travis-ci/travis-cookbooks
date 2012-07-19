@@ -19,7 +19,7 @@ KeyRegenerationInterval 3600
 ServerKeyBits 768
 
 SyslogFacility AUTH
-LogLevel INFO
+LogLevel VERBOSE
 
 LoginGraceTime 120
 PermitRootLogin yes
