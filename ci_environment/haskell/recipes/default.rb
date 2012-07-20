@@ -51,6 +51,8 @@ script "initialize cabal" do
 
   # triggered by haskell-platform installation
   action :nothing
+  # until http://haskell.1045720.n5.nabble.com/Cabal-install-fails-due-to-recent-HUnit-tt5715081.html#none is resolved :( MK.
+  ignore_failure true
 end
 
 package "haskell-platform" do
