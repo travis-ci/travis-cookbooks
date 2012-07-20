@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: haskell
-# Recipe:: default
+# Recipe:: ppa
 # Copyright 2012, Travis CI development team
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,45 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe "haskell::source"
+case node['platform']
+when "ubuntu"
+  if node[:platform_version].to_f < 11.10
+    apt_repository "mbeloborodiy_haskell_platform" do
+      uri          "http://ppa.launchpad.net/mbeloborodiy/ppa/ubuntu/"
+      distribution node['lsb']['codename']
+      components   ['main']
+
+      key          "F6B6FC93"
+      keyserver    "keyserver.ubuntu.com"
+
+      action :add
+    end
+  end
+end
+
+script "initialize cabal" do
+  interpreter "bash"
+  user node.travis_build_environment.user
+  cwd  node.travis_build_environment.home
+
+  environment Hash['HOME' => node.travis_build_environment.home]
+
+  code <<-SH
+  cabal update
+  cabal install c2hs
+  SH
+
+  # triggered by haskell-platform installation
+  action :nothing
+  # until http://haskell.1045720.n5.nabble.com/Cabal-install-fails-due-to-recent-HUnit-tt5715081.html#none is resolved :( MK.
+  ignore_failure true
+end
+
+package "haskell-platform" do
+  action :install
+
+  notifies :run, resources(:script => "initialize cabal")
+end
 
 cookbook_file "/etc/profile.d/cabal.sh" do
   owner node.travis_build_environment.user
