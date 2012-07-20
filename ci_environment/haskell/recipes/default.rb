@@ -21,10 +21,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe "haskell::source"
-
 cookbook_file "/etc/profile.d/cabal.sh" do
   owner node.travis_build_environment.user
   group node.travis_build_environment.group
   mode 0755
 end
+
+include_recipe "haskell::source"

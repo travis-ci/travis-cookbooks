@@ -44,6 +44,9 @@ bash "build and install Haskell Platform" do
     tar zfx #{local_tarball}
     cd `tar -tf #{local_tarball} | head -n 1`
 
+    which ghc
+    ghc --version
+
     ./configure
     make
     make install
