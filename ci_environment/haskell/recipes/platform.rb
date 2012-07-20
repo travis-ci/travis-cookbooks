@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: haskell
-# Recipe:: ghc
+# Recipe:: platform
 # Copyright 2012, Travis CI development team
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,47 +21,39 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-%w(libgmp3-dev freeglut3 freeglut3-dev).each do |pkg|
-  package(pkg) do
-    action :install
-  end
-end
-
-link "/usr/lib/libgmp.so.3" do
-  to "/usr/lib/libgmp.so"
-
-  not_if "test -L /usr/lib/libgmp.so.3"
-end
-
+include_recipe "haskell::ghc"
 
 require "tmpdir"
 
 td            = Dir.tmpdir
-local_tarball = File.join(td, "ghc-#{node.ghc.version}-i386-unknown-linux.tar.bz2")
+local_tarball = File.join(td, "haskell-platform-#{node.haskell.platform.version}.tar.gz")
 
 remote_file(local_tarball) do
-  source "http://www.haskell.org/ghc/dist/#{node.ghc.version}/ghc-#{node.ghc.version}-i386-unknown-linux.tar.bz2"
+  source "http://lambda.haskell.org/platform/download/#{node.haskell.platform.version}/haskell-platform-#{node.haskell.platform.version}.tar.gz"
 
   not_if "test -f #{local_tarball}"
 end
 
 # 2. Extract it
 # 3. configure, make install
-bash "build and install GHC" do
+bash "build and install Haskell Platform" do
   user "root"
   cwd  "/tmp"
 
   code <<-EOS
-    tar jfx #{local_tarball}
-    cd ghc-#{node.ghc.version}
+    tar zfx #{local_tarball}
+    cd `tar -tf #{local_tarball} | head -n 1`
 
     ./configure
-    sudo make install
+    make
+    make install
     cd ../
-    rm -rf ghc-#{node.ghc.version}
+    rm -rf `tar -tf #{local_tarball} | head -n 1`
     rm #{local_tarball}
+
+    cabal update
+    cabal install hunit c2hs
   EOS
 
-  creates "/usr/local/bin/ghc"
-  not_if "ghc --version | grep #{node.ghc.version}"
+  creates "/usr/local/bin/cabal"
 end

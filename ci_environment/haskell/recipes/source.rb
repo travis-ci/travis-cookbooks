@@ -22,3 +22,4 @@
 # THE SOFTWARE.
 
 include_recipe "haskell::ghc"
+include_recipe "haskell::platform"
