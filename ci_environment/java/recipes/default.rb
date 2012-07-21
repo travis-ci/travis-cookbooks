@@ -4,7 +4,7 @@
 # Recipe:: default
 #
 # Copyright 2008-2011, Opscode, Inc.
-# Copyright 20011-2012, Travis CI Development Team
+# Copyright 2011-2012, Travis CI Development Team
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
