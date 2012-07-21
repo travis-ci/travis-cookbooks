@@ -25,5 +25,10 @@ node.perlbrew.perls.each do |pl|
     code   "#{brew} install #{pl[:version]} --as #{pl[:name]} #{args}"
     not_if "ls #{home}/perl5/perlbrew/perls | grep #{pl[:name]}"
   end
+
+  bash "preinstall Dist::Zilla" do
+    setup.call(self)
+    code   "#{brew} use #{pl[:name]} && cpanm Dist::Zilla --force"
+  end
 end
 
