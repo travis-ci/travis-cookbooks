@@ -28,7 +28,7 @@ node.perlbrew.perls.each do |pl|
 
   bash "preinstall Dist::Zilla" do
     setup.call(self)
-    code   "#{brew} use #{pl[:name]} && cpanm Dist::Zilla --force"
+    code   "#{brew} use #{pl[:name]} && cpanm Dist::Zilla --force --notest --mirror 'http://cpan.mirrors.travis-ci.org'"
   end
 end
 
