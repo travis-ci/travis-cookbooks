@@ -74,16 +74,8 @@ end
 git "/tmp/php-build-plugin-phpunit" do
   user       node.travis_build_environment.user
   group      node.travis_build_environment.group
-  repository node[:phpbuild][:plugins][:phpunit][:git][:repository]
-  revision   node[:phpbuild][:plugins][:phpunit][:git][:revision]
-  action     :checkout
-end
-
-git "/tmp/php-build-plugin-composer" do
-  user       node.travis_build_environment.user
-  group      node.travis_build_environment.group
-  repository node[:phpbuild][:plugins][:composer][:git][:repository]
-  revision   node[:phpbuild][:plugins][:composer][:git][:revision]
+  repository node[:phpbuild][:phpunit_plugin][:git][:repository]
+  revision   node[:phpbuild][:phpunit_plugin][:git][:revision]
   action     :checkout
 end
 
@@ -101,19 +93,13 @@ directory "#{phpbuild_path}/tmp" do
   action :create
 end
 
-node.phpbuild.plugins.each do |plugin_name, plugin_data|
-  node.php.multi.aliases.each do |short_version, target_version|
-    if plugin_data[:php_versions].include? short_version then
-      bash "install php-build plugins" do
-        user   node.travis_build_environment.user
-        group  node.travis_build_environment.group
-        code <<-EOF
-        cp /tmp/php-build-plugin-#{plugin_name}/share/php-build/after-install.d/#{plugin_name} #{phpbuild_path}/share/php-build/after-install.d
-        EOF
-        not_if "test -f #{phpbuild_path}/share/php-build/after-install.d/#{plugin_name}"
-      end
-    end
-  end
+bash "install php-build plugins" do
+  user   node.travis_build_environment.user
+  group  node.travis_build_environment.group
+  code <<-EOF
+  cp /tmp/php-build-plugin-phpunit/share/php-build/after-install.d/phpunit #{phpbuild_path}/share/php-build/after-install.d
+  EOF
+  not_if "test -f #{phpbuild_path}/share/php-build/after-install.d/phpunit"
 end
 
 template "#{phpbuild_path}/share/php-build/default_configure_options" do
