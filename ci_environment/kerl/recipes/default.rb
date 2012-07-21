@@ -34,11 +34,8 @@ directory(installation_root) do
 end
 
 remote_file(node.kerl.path) do
-  source "http://files.travis-ci.org/kerl"
+  source "https://raw.github.com/spawngrid/kerl/master/kerl"
   mode "0755"
-
-  owner node.travis_build_environment.user
-  group node.travis_build_environment.group
 end
 
 
