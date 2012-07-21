@@ -83,7 +83,8 @@ node.kerl.releases.each do |rel, build|
 
 
   execute "install Erlang #{rel}" do
-    command "#{node.kerl.path} install #{rel} #{installation_root}/#{rel} && rm -rf #{node.travis_build_environment.home}/.kerl/builds/#{rel}/"
+    # cleanup is available starting with https://github.com/spawngrid/kerl/pull/28
+    command "#{node.kerl.path} install #{rel} #{installation_root}/#{rel} && #{node.kerl.path} cleanup #{rel} && rm -rf #{node.travis_build_environment.home}/.kerl/archives/*"
 
     user    node.travis_build_environment.user
     group   node.travis_build_environment.group
