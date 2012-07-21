@@ -27,3 +27,7 @@
 execute "apt-get -y autoclean autoremove" do
   action :run
 end
+
+execute "rm -rf /tmp/php*" do
+  action :run
+end
