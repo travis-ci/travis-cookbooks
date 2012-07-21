@@ -40,7 +40,7 @@ td            = Dir.tmpdir
 local_tarball = File.join(td, "ghc-#{node.ghc.version}-i386-unknown-linux.tar.bz2")
 
 remote_file(local_tarball) do
-  source "http://www.haskell.org/ghc/dist/#{node.ghc.version}/ghc-#{node.ghc.version}-i386-unknown-linux.tar.bz2"
+  source "http://www.haskell.org/ghc/dist/#{node.ghc.version}/ghc-#{node.ghc.version}-#{node.ghc.arch}-unknown-linux.tar.bz2"
 
   not_if "test -f #{local_tarball}"
 end
