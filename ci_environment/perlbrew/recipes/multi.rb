@@ -26,9 +26,11 @@ node.perlbrew.perls.each do |pl|
     not_if "ls #{home}/perl5/perlbrew/perls | grep #{pl[:name]}"
   end
 
-  bash "preinstall Dist::Zilla" do
-    setup.call(self)
-    code   "#{brew} use #{pl[:name]} && cpanm Dist::Zilla --force --notest --mirror 'http://cpan.mirrors.travis-ci.org'"
+  node.perlbrew.modules.each do |mod|
+    bash "preinstall #{mod} via cpanm" do
+      setup.call(self)
+      code   "#{brew} use #{pl[:name]} && cpanm #{mod} --force --notest --mirror 'http://cpan.mirrors.travis-ci.org'"
+    end    
   end
 end
 
