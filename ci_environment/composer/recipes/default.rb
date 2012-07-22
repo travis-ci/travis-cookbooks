@@ -1,6 +1,6 @@
 include_recipe "php::multi"
 
-phpenv_path = "#{node.phpenv.home}/.phpenv"
+phpenv_path = "#{node.travis_build_environment.home}/.phpenv"
 
 node[:php][:multi][:versions].each do |php_version|
 
@@ -15,8 +15,6 @@ node[:php][:multi][:versions].each do |php_version|
     group  node[:phpbuild][:group]
     mode   "0755"
     source "composer.erb"
-    variables(
-      :phpbin_path => bin_path
-    )
+    variables(:phpbin_path => bin_path)
   end
 end
