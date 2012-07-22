@@ -3,5 +3,5 @@ default[:perlbrew] = {
                { :name => "5.14", :version => "perl-5.14.2" },
                { :name => "5.12", :version => "perl-5.12.4" },
                { :name => "5.10", :version => "perl-5.10.1" }],
-  :modules => %w(Dist::Zilla Moose)
+  :modules => %w(Dist::Zilla Moose Test::Pod Test::Pod::Coverage Test::Exception Test::Kwalitee Dist::Zilla::Plugin::Bootstrap::lib Catalyst LWP Module::Install Test::Most)
 }
