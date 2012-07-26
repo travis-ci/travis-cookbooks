@@ -25,7 +25,9 @@ when "centos","redhat","fedora"
   default['java']['arch'] = kernel['machine'] =~ /x86_64/ ? "amd64" : "i586"
   set['java']['java_home'] = "/usr/lib/jvm/java"
 else
-  set['java']['java_home'] = "/usr/lib/jvm/default-java"
+  arch = kernel['machine'] =~ /x86_64/ ? "amd64" : "i386"
+  default['java']['arch'] = arch
+  set['java']['java_home'] = "/usr/lib/jvm/java-7-openjdk-#{arch}/"
 end
 
 default[:java][:multi] = {
