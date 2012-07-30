@@ -22,5 +22,6 @@ export RACK_ENV=test
 # -J-Xmx256m sets maximum allowed JVM heap size to 256 MB (64m by default)
 # -J-XX:+TieredCompilation to enable tiered compilation mode (long story short:
 #                          to improve startup time, especially on JDK 7+)
-export JRUBY_OPTS="--server -Xcext.enabled=false -J-Xss2m -J-Xmx256m -J-XX:+TieredCompilation"
+# -Xcompile.invokedynamic=false disables invokedynamic which seemingly causes 32 bit OpenJDKs (6 and 7) to segfault
+export JRUBY_OPTS="--server -Xcext.enabled=false -Xcompile.invokedynamic=false -J-Xss2m -J-Xmx256m -J-XX:+TieredCompilation"
 export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=192m"
