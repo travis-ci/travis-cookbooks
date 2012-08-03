@@ -72,3 +72,8 @@ node[:nodejs][:aliases].each do |existing_name, new_name|
     code "#{nvm} alias #{new_name} v#{existing_name}"
   end
 end
+
+bash "clean up build artifacts & sources" do
+  user node.travis_build_environment.user
+  code "rm -rf #{File.join(node.travis_build_environment.home, '.nvm', 'src')}"
+end
