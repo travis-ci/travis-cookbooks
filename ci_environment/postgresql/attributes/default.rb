@@ -69,3 +69,6 @@ default[:sysctl][:kernel_shmall] = 32768
 default[:sysctl][:kernel_shmmax] = 134217728
 
 default[:postgresql][:max_connections] = 512
+
+# suppress warning output from build clients
+default[:postgresql][:client_min_messages] = "error"
