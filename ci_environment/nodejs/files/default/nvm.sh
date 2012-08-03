@@ -125,7 +125,11 @@ nvm()
         nvm use $VERSION
         if ! which npm ; then
           echo "Installing npm..."
-          curl http://npmjs.org/install.sh | clean=no sh
+          pushd .
+          cd /tmp
+          wget http://npmjs.org/install.sh -O npm_installer.sh
+          sh /tmp/npm_installer.sh
+          popd
         fi
       else
         echo "nvm: install $VERSION failed!"
