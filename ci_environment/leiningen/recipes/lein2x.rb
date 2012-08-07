@@ -41,18 +41,14 @@ ruby_block "lein2-system-wide" do
   action :nothing
 end
 
-env = Hash["LEIN_JVM_OPTS" => "-Xmx128m"]
-
 script "run lein2 self-install" do
   interpreter "bash"
   # version forces leiningen to download core plugins like lein-newnew
   code        "/usr/local/bin/lein2 self-install && /usr/local/bin/lein2 version"
 
-  environment env
-
   cwd        node.travis_build_environment.home
   user       node.travis_build_environment.user
-  environment({ "HOME" => node.travis_build_environment.home, "USER" => node.travis_build_environment.user })
+  environment({ "HOME" => node.travis_build_environment.home, "USER" => node.travis_build_environment.user, "LEIN_JVM_OPTS" => "-Xmx128m" })
 
   not_if "ls #{jar_file}"
 
