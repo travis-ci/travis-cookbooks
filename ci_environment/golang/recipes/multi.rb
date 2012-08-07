@@ -19,7 +19,7 @@
 
 include_recipe "gvm"
 
-log "Default Go version will be #{node.golang.default_version}"
+log "Default Go version will be #{node.golang.multi.default_version}"
 
 home = node.travis_build_environment.home
 gvm  = "source #{home}/.gvm/scripts/gvm && gvm"
