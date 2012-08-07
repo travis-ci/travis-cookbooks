@@ -29,7 +29,7 @@ directory "/usr/lib/python2.6/site-packages" do
   ignore_failure true
 end
 
-include_recipe "pypy::ppa" if node.python.multi.pythons.include?("pypy")
+include_recipe "pypy::tarball" if node.python.multi.pythons.include?("pypy")
 
 
 case node['platform']
@@ -66,12 +66,16 @@ end
 include_recipe "python::virtualenv"
 
 node.python.multi.pythons.each do |py|
-  log "Installing #{py}"
-  package py do
-    action :install
-  end
-  package "#{py}-dev" do
-    action :install
+  # pypy is provisioned via tarball. MK.
+  unless py == "pypy"
+    log "Installing #{py}"
+    package py do
+      action :install
+    end
+
+    package "#{py}-dev" do
+      action :install
+    end
   end
 
   script "preinstall pip packages" do
