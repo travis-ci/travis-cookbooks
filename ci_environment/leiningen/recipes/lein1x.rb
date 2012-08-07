@@ -32,8 +32,6 @@ jar_file = File.join(jar_dir, "self-installs", "#{jar_dir}/leiningen-#{node[:lei
   end
 end
 
-env = Hash["LEIN_JVM_OPTS" => "-Xmx128m"]
-
 ruby_block "lein-system-wide" do
   block do
     rc = Chef::Util::FileEdit.new("/usr/local/bin/lein")
@@ -47,11 +45,9 @@ script "run lein self-install" do
   interpreter "bash"
   code        "/usr/local/bin/lein self-install"
 
-  environment env
-
   cwd        node.travis_build_environment.home
   user       node.travis_build_environment.user
-  environment({ "HOME" => node.travis_build_environment.home, "USER" => node.travis_build_environment.user })
+  environment({ "HOME" => node.travis_build_environment.home, "USER" => node.travis_build_environment.user, "LEIN_JVM_OPTS" => "-Xmx128m" })
 
   not_if "ls #{jar_file}"
 
