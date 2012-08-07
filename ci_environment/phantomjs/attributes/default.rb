@@ -1,10 +1,10 @@
 version = "1.6.1"
-arch    = arch = kernel['machine'] =~ /x86_64/ ? "amd64" : "i686"
+arch    = arch = kernel['machine'] =~ /x86_64/ ? "x86_64" : "i686"
 
 default[:phantomjs] = {
   :version => version,
+  :arch    => arch,
   :tarball => {
-    :arch => arch,
-    :url  => "http://phantomjs.googlecode.com/files/phantomjs-#{version}-linux-#{arch}-dynamic.tar.gz"
+    :url  => "http://phantomjs.googlecode.com/files/phantomjs-#{version}-linux-#{arch}-dynamic.tar.bz2"
   }
 }

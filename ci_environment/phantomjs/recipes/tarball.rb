@@ -28,7 +28,7 @@ require "tmpdir"
 
 td          = Dir.tmpdir
 tmp         = File.join(td, "phantomjs-#{node.phantomjs.version}.tar.gz")
-tarball_dir = File.join(td, "phantomjs")
+tarball_dir = File.join(td, "phantomjs-#{node.phantomjs.version}-linux-#{node.phantomjs.arch}-dynamic")
 
 remote_file(tmp) do
   source node.phantomjs.tarball.url
@@ -44,7 +44,7 @@ bash "extract #{tmp}, move it to /usr/local/phantomjs" do
 
   code <<-EOS
     rm -rf /usr/local/phantomjs
-    tar xfz #{tmp}
+    tar xfj #{tmp}
     mv --force #{tarball_dir} /usr/local/phantomjs
   EOS
 
@@ -52,8 +52,8 @@ bash "extract #{tmp}, move it to /usr/local/phantomjs" do
 end
 
 # Symlink /usr/local/bin/phantomjs
-  link "/usr/local/bin/phantomjs" do
-    owner node.travis_build_environment.user
-    group node.travis_build_environment.group
-    to    "/usr/local/phantomjs/bin/phantomjs"
-  end
+link "/usr/local/bin/phantomjs" do
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
+  to    "/usr/local/phantomjs/bin/phantomjs"
+end
