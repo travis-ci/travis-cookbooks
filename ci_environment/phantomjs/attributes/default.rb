@@ -1,5 +1,5 @@
 version = "1.6.1"
-arch    = arch = kernel['machine'] =~ /x86_64/ ? "x86_64" : "i686"
+arch    = kernel['machine'] =~ /x86_64/ ? "x86_64" : "i686"
 
 default[:phantomjs] = {
   :version => version,
