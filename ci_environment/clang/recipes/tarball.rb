@@ -28,26 +28,26 @@ arch = case node.clang.version
          "i386"
        end
 
-filename = case [node[:platform], node[:platform_version]]
-           when ["ubuntu", "11.10"] then
-             "clang+llvm-#{node.clang.version}-#{arch}-linux-ubuntu-11.10.tar.bz2"
-           when ["ubuntu", "12.04"] then
-             "clang+llvm-#{node.clang.version}-#{arch}-linux-ubuntu-12.04.tar.gz"
-           end
+ext = case [node[:platform], node[:platform_version]]
+      when ["ubuntu", "11.10"]
+        "tar.bz2"
+      when ["ubuntu", "12.04"]
+        "tar.gz"
+      end
+
+filename = "clang+llvm-#{node.clang.version}-#{arch}-linux-#{node[:platform]}-#{node[:platform_version]}"
 
 installation_dir = "/usr/local/clang"
-
-
 
 # 1. Download the tarball to /tmp
 require "tmpdir"
 
 td            = Dir.tmpdir
-local_tarball = File.join(td, "clang+llvm-#{node.clang.version}-#{arch}-linux-ubuntu-11.10.tar.bz2")
-tarball_dir   = File.join(td, "clang+llvm-#{node.clang.version}-#{arch}-linux-ubuntu-11.10")
+local_tarball = File.join(td, "#{filename}.#{ext}")
+tarball_dir   = File.join(td, filename)
 
 remote_file(local_tarball) do
-  source "http://llvm.org/releases/#{node.clang.version}/#{filename}"
+  source "http://llvm.org/releases/#{node.clang.version}/#{filename}.#{ext}"
 
   not_if "which clang"
 end
