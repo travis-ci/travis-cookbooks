@@ -31,7 +31,7 @@ setup = lambda do |bash|
   bash.environment env
 end
 
-node.golang.versions.each do |v|
+node.golang.multi.versions.each do |v|
   bash "golang::multi: installing #{v}" do
     setup.call(self)
     code "#{gvm} install #{v}"
@@ -39,7 +39,7 @@ node.golang.versions.each do |v|
   end
 end
 
-bash "set #{node.golang.default_version} to be the default Go runtime version" do
+bash "set #{node.golang.multi.default_version} to be the default Go runtime version" do
   setup.call(self)
-  code "#{gvm} use #{node.golang.default_version} --default"
+  code "#{gvm} use #{node.golang.multi.default_version} --default"
 end

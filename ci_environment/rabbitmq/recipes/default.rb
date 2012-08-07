@@ -47,6 +47,13 @@ template "/etc/rabbitmq/rabbitmq-env.conf" do
   mode 0644
 end
 
+template "/etc/rabbitmq/rabbitmq.config" do
+  source "rabbitmq.config.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
 package "rabbitmq-server"
 
 service "rabbitmq-server" do

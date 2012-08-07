@@ -12,3 +12,5 @@ default[:rabbitmq][:cluster_disk_nodes] = []
 default[:rabbitmq][:version] = '2.8.0'
 default[:rabbitmq][:plugin_directory] = "/usr/lib/rabbitmq/lib/rabbitmq_server-#{node[:rabbitmq][:version]}/plugins"
 
+
+default[:rabbitmq][:high_memory_watermark]  = 0.04
