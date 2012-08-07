@@ -25,5 +25,12 @@ node.perlbrew.perls.each do |pl|
     code   "#{brew} install #{pl[:version]} --as #{pl[:name]} #{args}"
     not_if "ls #{home}/perl5/perlbrew/perls | grep #{pl[:name]}"
   end
+
+  node.perlbrew.modules.each do |mod|
+    bash "preinstall #{mod} via cpanm" do
+      setup.call(self)
+      code   "#{brew} use #{pl[:name]} && cpanm #{mod} --force --notest --mirror 'http://cpan.mirrors.travis-ci.org'"
+    end    
+  end
 end
 

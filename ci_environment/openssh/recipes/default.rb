@@ -1,8 +1,8 @@
 #
-# Author:: Benjamin Black (<b@b3k.us>) and Sean Cribbs (<sean@basho.com>)
-# Cookbook Name:: riak
+# Cookbook Name:: openssh
+# Recipe:: default
 #
-# Copyright (c) 2011 Basho Technologies, Inc.
+# Copyright 2012, Travis CI Development Team
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,10 +17,26 @@
 # limitations under the License.
 #
 
-default.riak.package.type = "binary"
-default.riak.package.version.major = "1"
-default.riak.package.version.minor = "1"
-default.riak.package.version.incremental = "4"
-default.riak.package.version.build = "1"
-default.riak.package.source_checksum = '202c7b969a8b389cde176f267ab4f90fb17dc71c6a2b785fc67915719d0b06f2'
-default.riak.package.config_dir = "/etc/riak"
+package "openssh-server" do
+  action :install
+end
+
+service "ssh" do
+  action [:start, :enable]
+end
+
+cookbook_file "/etc/ssh/sshd_config" do
+  owner "root"
+  group "root"
+  mode 0644
+end
+
+# installs a fix that makes ssh wait for the network to
+# start up (see http://blog.roberthallam.org/2010/06/sshd-not-running-at-startup/). MK.
+cookbook_file "/etc/init.d/ssh" do
+  owner "root"
+  group "root"
+  mode  0755
+
+  source "ssh_init.sh"
+end

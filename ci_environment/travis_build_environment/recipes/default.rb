@@ -24,6 +24,9 @@
 include_recipe "timezone"
 include_recipe "sysctl"
 
+# installs custom templates for sshd_config and ssh upstart script. MK.
+include_recipe "openssh"
+
 include_recipe "travis_build_environment::root"
 include_recipe "travis_build_environment::non_privileged_user"
 
@@ -73,6 +76,14 @@ template "/etc/apt/apt.conf.d/37timeouts" do
   mode 0644
 
   source "etc/apt/timeouts.erb"
+end
+
+cookbook_file "/etc/sudoers.d/env_keep" do
+  owner "root"
+  group "root"
+  mode 0440
+
+  source "etc/sudoers/env_keep"
 end
 
 include_recipe "iptables"

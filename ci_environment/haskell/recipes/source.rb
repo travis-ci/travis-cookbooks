@@ -1,6 +1,6 @@
 #
-# Cookbook Name:: sweeper
-# Recipe:: default
+# Cookbook Name:: haskell
+# Recipe:: source
 # Copyright 2012, Travis CI development team
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,13 +21,5 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-# This cookbook is supposed to be the last one on the run_list.
-# It cleans up unused apt packages and so on.
-
-execute "apt-get -y autoclean autoremove" do
-  action :run
-end
-
-execute "rm -rf /tmp/php*" do
-  action :run
-end
+include_recipe "haskell::ghc"
+include_recipe "haskell::platform"

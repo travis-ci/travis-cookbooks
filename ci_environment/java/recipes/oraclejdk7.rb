@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+node['java']['java_home'] = node.java.oraclejdk7.java_home
+
 # This recipe relies on a PPA package and is Ubuntu/Debian specific. Please
 # keep this in mind.
 

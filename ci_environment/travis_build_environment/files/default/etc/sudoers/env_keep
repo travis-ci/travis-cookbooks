@@ -1,0 +1,1 @@
+Defaults        env_keep += "DEBIAN_FRONTEND CI TRAVIS"

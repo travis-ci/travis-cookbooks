@@ -80,7 +80,6 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-export JAVA_HOME="/usr/lib/jvm/java-6-<%= node['java']['install_flavor'] %>"
 export DEBIAN_FRONTEND=noninteractive
 
 export CI=true

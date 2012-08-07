@@ -4,6 +4,7 @@
 # Attributes:: default
 #
 # Copyright 2010, Opscode, Inc.
+# Copyright 2011-2012, Travis CI Development Team.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,15 +18,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['java']['install_flavor'] = "openjdk"
-
 case platform
 when "centos","redhat","fedora"
   default['java']['version'] = "6u25"
   default['java']['arch'] = kernel['machine'] =~ /x86_64/ ? "amd64" : "i586"
   set['java']['java_home'] = "/usr/lib/jvm/java"
 else
-  set['java']['java_home'] = "/usr/lib/jvm/default-java"
+  arch = kernel['machine'] =~ /x86_64/ ? "amd64" : "i386"
+  default['java']['arch'] = arch
+  set['java']['java_home'] = "/usr/lib/jvm/java-7-openjdk-#{arch}/"
 end
 
 default[:java][:multi] = {

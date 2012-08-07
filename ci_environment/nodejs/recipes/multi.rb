@@ -21,6 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+include_recipe "build-essential"
 include_recipe "networking_basic"
 
 require "tmpdir"
@@ -70,4 +71,9 @@ node[:nodejs][:aliases].each do |existing_name, new_name|
     cwd  node.travis_build_environment.home
     code "#{nvm} alias #{new_name} v#{existing_name}"
   end
+end
+
+bash "clean up build artifacts & sources" do
+  user node.travis_build_environment.user
+  code "rm -rf #{File.join(node.travis_build_environment.home, '.nvm', 'src')}"
 end
