@@ -52,6 +52,8 @@ remote_file(local_tarball) do
   not_if "which clang"
 end
 
+tar_args = (ext =~ /gz/ ? 'zfx' : 'jfx')
+
 # 2. Extract it
 # 3. Copy to /usr/local/clang, update permissions
 bash "extract #{local_tarball}, move it to /usr/local" do
@@ -60,7 +62,7 @@ bash "extract #{local_tarball}, move it to /usr/local" do
 
   code <<-EOS
     rm -rf #{installation_dir}
-    tar jfx #{local_tarball}
+    tar #{tar_args} #{local_tarball}
     mv --force #{tarball_dir} #{installation_dir}
 
     chmod +x #{installation_dir}/bin/clang
