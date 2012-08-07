@@ -47,7 +47,7 @@ script "run lein self-install" do
 
   cwd        node.travis_build_environment.home
   user       node.travis_build_environment.user
-  environment({ "HOME" => node.travis_build_environment.home, "USER" => node.travis_build_environment.user, "LEIN_JVM_OPTS" => "-Xms16m -Xmx128m" })
+  environment({ "HOME" => node.travis_build_environment.home, "USER" => node.travis_build_environment.user, "LEIN_JVM_OPTS" => "-Xms16m -Xmx256m" })
 
   not_if "ls #{jar_file}"
 
