@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: couchdb
-# Recipe:: ppa
+# Recipe:: ubuntu-12.04
 #
 # Copyright 2012, Travis CI Development Team
 #
@@ -17,14 +17,17 @@
 # limitations under the License.
 #
 
-# This recipe relies on a PPA package and is Ubuntu/Debian specific. Please
+# This recipe relies on a PPA package and is Ubuntu 12.04 specific. Please
 # keep this in mind.
 
-case [node[:platform], node[:platform_version]]
-when ["ubuntu", "11.10"] then
-  include_recipe "couchdb::ubuntu1110_ppa"
-when ["ubuntu", "12.04"] then
-  include_recipe "couchdb::ubuntu1204_ppa"
+apt_repository "couchdb-ppa" do
+  uri          "http://ppa.launchpad.net/novacut/daily/ubuntu"
+  distribution node['lsb']['codename']
+  components   ["main"]
+  key          "BE4793F5"
+  keyserver    "keyserver.ubuntu.com"
+
+  action :add
 end
 
 package "couchdb" do
