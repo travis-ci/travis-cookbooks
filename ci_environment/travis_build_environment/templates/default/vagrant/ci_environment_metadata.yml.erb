@@ -1,0 +1,2 @@
+<%- require 'yaml' %>
+<%= {:timestamp => Time.now.to_i, :recipes => node.recipes}.to_yaml %>

@@ -49,6 +49,15 @@ template "#{node.travis_build_environment.home}/.bashrc" do
 end
 
 
+template "#{node.travis_build_environment.home}/.travis_ci_environment.yml" do
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
+  mode 0755
+
+  source "vagrant/ci_environment_metadata.yml.erb"
+end
+
+
 directory "#{node.travis_build_environment.home}/.ssh" do
   owner  node.travis_build_environment.user
   group  node.travis_build_environment.group
