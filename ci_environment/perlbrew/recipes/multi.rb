@@ -32,5 +32,10 @@ node.perlbrew.perls.each do |pl|
       code   "#{brew} use #{pl[:name]} && cpanm #{mod} --force --notest --mirror 'http://cpan.mirrors.travis-ci.org'"
     end    
   end
+
+  bash "cleaning cpanm metadata for #{pl[:version]}" do
+    setup.call(self)
+    code   "rm -rf ~/.cpanm"
+  end
 end
 
