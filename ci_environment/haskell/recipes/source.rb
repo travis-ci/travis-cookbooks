@@ -21,5 +21,5 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe "haskell::ghc"
-include_recipe "haskell::platform"
+include_recipe "haskell::ghc_source"
+include_recipe "haskell::platform_source"

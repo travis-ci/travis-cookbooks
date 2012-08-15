@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: haskell
-# Recipe:: default
+# Recipe:: platform::source
 # Copyright 2012, Travis CI development team
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,18 +21,47 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-cookbook_file "/etc/profile.d/cabal.sh" do
-  owner node.travis_build_environment.user
-  group node.travis_build_environment.group
-  mode 0755
-end
-
-case [node.platform, node.platform_version]
+case [node[:platform_name], node[:platform_version]]
 when ["ubuntu", "11.10"] then
-  include_recipe "haskell::ghc_source"
-  include_recipe "haskell::platform_source"
+  include_recipe "haskell::ghc::source"
 when ["ubuntu", "12.04"] then
-  include_recipe "haskell::ghc_package"
-  include_recipe "haskell::platform_package"
+  include_recipe "haskell::ghc::package"
 end
 
+require "tmpdir"
+
+td            = Dir.tmpdir
+local_tarball = File.join(td, "haskell-platform-#{node.haskell.platform.version}.tar.gz")
+
+remote_file(local_tarball) do
+  source "http://lambda.haskell.org/platform/download/#{node.haskell.platform.version}/haskell-platform-#{node.haskell.platform.version}.tar.gz"
+
+  not_if "test -f #{local_tarball}"
+end
+
+# 2. Extract it
+# 3. configure, make install
+bash "build and install Haskell Platform" do
+  user "root"
+  cwd  "/tmp"
+
+  code <<-EOS
+    tar zfx #{local_tarball}
+    cd `tar -tf #{local_tarball} | head -n 1`
+
+    which ghc
+    ghc --version
+
+    ./configure
+    make
+    make install
+    cd ../
+    rm -rf `tar -tf #{local_tarball} | head -n 1`
+    rm #{local_tarball}
+
+    cabal update
+    cabal install hunit c2hs
+  EOS
+
+  creates "/usr/local/bin/cabal"
+end

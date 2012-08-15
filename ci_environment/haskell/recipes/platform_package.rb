@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: haskell
-# Recipe:: ppa
+# Recipe:: platform_package
 # Copyright 2012, Travis CI development team
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,22 +20,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-
-case node['platform']
-when "ubuntu"
-  if node[:platform_version].to_f < 11.10
-    apt_repository "mbeloborodiy_haskell_platform" do
-      uri          "http://ppa.launchpad.net/mbeloborodiy/ppa/ubuntu/"
-      distribution node['lsb']['codename']
-      components   ['main']
-
-      key          "F6B6FC93"
-      keyserver    "keyserver.ubuntu.com"
-
-      action :add
-    end
-  end
-end
 
 script "initialize cabal" do
   interpreter "bash"
