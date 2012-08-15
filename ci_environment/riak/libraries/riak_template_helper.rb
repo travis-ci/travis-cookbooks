@@ -67,6 +67,7 @@ module RiakTemplateHelper
   RIAK_REMOVE_CONFIGS = ['package', 'erlang']
 
   RIAK_TRANSLATE_CONFIGS = {
+    'api' => 'riak_api',
     'core' => 'riak_core',
     'kv' => 'riak_kv',
     'search' => 'riak_search',
@@ -77,8 +78,9 @@ module RiakTemplateHelper
 
 
   def prepare_app_config(riak)
+
     #Each backend in multi-backend will be a keyless tuple, so add them to KEYLESS_ATTRIBUTES
-    riak[:kv].fetch(:multi_backend, {}).each_key { |k| KEYLESS_ATTRIBUTES.push(k) }
+    #riak[:kv][:multi_backend].each_key { |k| KEYLESS_ATTRIBUTES.push(k) }
 
 
     # Don't muck with the node attributes

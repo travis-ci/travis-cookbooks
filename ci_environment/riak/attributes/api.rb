@@ -1,8 +1,8 @@
 #
-# Author:: Benjamin Black (<b@b3k.us>) and Sean Cribbs (<sean@basho.com>)
+# Author:: Seth Thomas (<sthomas@basho.com>)
 # Cookbook Name:: riak
 #
-# Copyright (c) 2011 Basho Technologies, Inc.
+# Copyright (c) 2012 Basho Technologies, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,16 +17,5 @@
 # limitations under the License.
 #
 
-include_attribute "riak::package"
-include_attribute "riak::api"
-include_attribute "riak::core"
-include_attribute "riak::erlang"
-include_attribute "riak::kernel"
-include_attribute "riak::kv"
-include_attribute "riak::sasl"
-include_attribute "riak::err"
-include_attribute "riak::lager"
-include_attribute "riak::sysmon"
-include_attribute "riak::merge"
-include_attribute "riak::control"
-include_attribute "riak::search"
+default.riak.api.pb_ip = "127.0.0.1"
+default.riak.api.pb_port = 8087

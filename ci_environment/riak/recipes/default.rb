@@ -25,15 +25,19 @@ if node[:riak][:package][:url]
   package_file = package_uri.split("/").last
 else
   version_str = "#{node[:riak][:package][:version][:major]}.#{node[:riak][:package][:version][:minor]}"
-  base_uri = "http://downloads.basho.com/riak/riak-#{version_str}.#{node[:riak][:package][:version][:incremental]}/"
+  base_uri = "http://s3.amazonaws.com/downloads.basho.com/riak/#{version_str}/#{version_str}.#{node[:riak][:package][:version][:incremental]}"
   base_filename = "riak-#{version_str}.#{node[:riak][:package][:version][:incremental]}"
-
 
   case node[:platform]
   when "debian","ubuntu"
     machines = {"x86_64" => "amd64", "i386" => "i386", "i686" => "i386"}
+    base_uri = "#{base_uri}/#{node[:platform]}/#{node[:lsb][:codename]}/" 
   when "redhat","centos","scientific","fedora","suse"
     machines = {"x86_64" => "x86_64", "i386" => "i386", "i686" => "i686"}
+    base_uri = "#{base_uri}/rhel/#{node[:platform_version].to_i}/"
+  when "fedora"
+    machines = {"x86_64" => "x86_64", "i386" => "i386", "i686" => "i686"}
+    base_uri = "#{base_uri}/#{node[:platform]}/#{node[:platform_version].to_i}/"
   end
   package_file =  case node[:riak][:package][:type]
                   when "binary"
@@ -90,6 +94,10 @@ when "binary"
   package package_name do
     source "/tmp/riak_pkg/#{package_file}"
     action :install
+    options case node[:platform]
+            when "debian","ubuntu"
+              "--force-confnew"
+            end       
     provider value_for_platform(
       [ "ubuntu", "debian" ] => {"default" => Chef::Provider::Package::Dpkg},
       [ "redhat", "centos", "fedora", "suse" ] => {"default" => Chef::Provider::Package::Rpm}
