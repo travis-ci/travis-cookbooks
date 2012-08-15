@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: haskell
-# Recipe:: platform
+# Recipe:: platform_ppa
 # Copyright 2012, Travis CI development team
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,42 +21,48 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe "haskell::ghc"
+case node['platform']
+when "ubuntu"
+  if node[:platform_version].to_f < 11.10
+    apt_repository "mbeloborodiy_haskell_platform" do
+      uri          "http://ppa.launchpad.net/mbeloborodiy/ppa/ubuntu/"
+      distribution node['lsb']['codename']
+      components   ['main']
 
-require "tmpdir"
+      key          "F6B6FC93"
+      keyserver    "keyserver.ubuntu.com"
 
-td            = Dir.tmpdir
-local_tarball = File.join(td, "haskell-platform-#{node.haskell.platform.version}.tar.gz")
-
-remote_file(local_tarball) do
-  source "http://lambda.haskell.org/platform/download/#{node.haskell.platform.version}/haskell-platform-#{node.haskell.platform.version}.tar.gz"
-
-  not_if "test -f #{local_tarball}"
+      action :add
+    end
+  end
 end
 
-# 2. Extract it
-# 3. configure, make install
-bash "build and install Haskell Platform" do
-  user "root"
-  cwd  "/tmp"
+script "initialize cabal" do
+  interpreter "bash"
+  user node.travis_build_environment.user
+  cwd  node.travis_build_environment.home
 
-  code <<-EOS
-    tar zfx #{local_tarball}
-    cd `tar -tf #{local_tarball} | head -n 1`
+  environment Hash['HOME' => node.travis_build_environment.home]
 
-    which ghc
-    ghc --version
+  code <<-SH
+  cabal update
+  cabal install c2hs
+  SH
 
-    ./configure
-    make
-    make install
-    cd ../
-    rm -rf `tar -tf #{local_tarball} | head -n 1`
-    rm #{local_tarball}
+  # triggered by haskell-platform installation
+  action :nothing
+  # until http://haskell.1045720.n5.nabble.com/Cabal-install-fails-due-to-recent-HUnit-tt5715081.html#none is resolved :( MK.
+  ignore_failure true
+end
 
-    cabal update
-    cabal install hunit c2hs
-  EOS
+package "haskell-platform" do
+  action :install
 
-  creates "/usr/local/bin/cabal"
+  notifies :run, resources(:script => "initialize cabal")
+end
+
+cookbook_file "/etc/profile.d/cabal.sh" do
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
+  mode 0755
 end

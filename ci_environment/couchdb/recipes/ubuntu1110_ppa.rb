@@ -1,7 +1,3 @@
-#
-# Cookbook Name:: couchdb
-# Recipe:: ppa
-#
 # Copyright 2012, Travis CI Development Team
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,20 +13,15 @@
 # limitations under the License.
 #
 
-# This recipe relies on a PPA package and is Ubuntu/Debian specific. Please
+# This recipe relies on a PPA package and is Ubuntu 11.10 specific. Please
 # keep this in mind.
 
-case [node[:platform], node[:platform_version]]
-when ["ubuntu", "11.10"] then
-  include_recipe "couchdb::ubuntu1110_ppa"
-when ["ubuntu", "12.04"] then
-  include_recipe "couchdb::ubuntu1204_ppa"
-end
+apt_repository "couchdb-ppa" do
+  uri          "http://ppa.launchpad.net/randall-leeds/couchdb/ubuntu"
+  distribution node['lsb']['codename']
+  components   ["main"]
+  key          "59F5EA1A"
+  keyserver    "keyserver.ubuntu.com"
 
-package "couchdb" do
-  action :install
-end
-
-service "couchdb" do
-  action [:enable, :start]
+  action :add
 end
