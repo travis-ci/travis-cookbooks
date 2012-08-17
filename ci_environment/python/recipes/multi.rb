@@ -78,7 +78,6 @@ node.python.multi.pythons.each do |py|
     end
   end
 
-
   script "preinstall pip packages for virtualenv set 1 (#{py})" do
     interpreter "bash"
     user        node.travis_build_environment.user
