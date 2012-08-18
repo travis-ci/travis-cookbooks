@@ -29,7 +29,6 @@ include_recipe "git"
 
 include_recipe "mysql::client"
 include_recipe "postgresql::client"
-include_recipe "firebird"
 
 include_recipe "libxml"
 include_recipe "libssl"
