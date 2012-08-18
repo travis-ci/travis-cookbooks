@@ -5,3 +5,5 @@ default[:phpbuild][:phpunit_plugin][:git][:revision]   = "a6a5ce4a5126b90a02dd47
 
 default[:phpbuild][:custom][:php_ini][:memory_limit]  = "512M"
 default[:phpbuild][:custom][:php_ini][:timezone]      = "UTC"
+
+default[:phpbuild][:arch] = (kernel['machine'] =~ /x86_64/ ? "amd64" : "i386")
