@@ -2,7 +2,6 @@
 # Cookbook Name:: git
 # Recipe:: default
 #
-# Copyright 2008-2009, Opscode, Inc.
 # Copyright 2011, Travis Development Team
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,50 +16,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require "tmpdir"
-require "rbconfig"
-
-include_recipe "libssl"
-
-tmp = Dir.tmpdir
-case node[:platform]
-when "debian", "ubuntu"
-  package "libssl0.9.8"
-  package "libssl-dev"
-
-  # required by git-svn. MK.
-  package "libsvn1"
-  package "libsvn-perl"
-  package "liberror-perl"
-  package "perl-modules"
-  package "libwww-perl"
-  package "libterm-readkey-perl"
-
-  packages = if RbConfig::CONFIG['arch'] =~ /64/
-               %w(git_1.7.5.4-1+github5_amd64.deb)
-             else
-               %w(git_1.7.5.4-1+github5_i386.deb)
-             end
-
-  packages.each do |deb|
-    path = File.join(tmp, deb)
-
-    cookbook_file(path) do
-      owner node.travis_build_environment.user
-      group node.travis_build_environment.group
-    end
-
-    file(path) do
-      action :nothing
-    end
-
-    package(deb) do
-      action   :install
-      source   path
-      provider Chef::Provider::Package::Dpkg
-
-      notifies :delete, resources(:file => path)
-      not_if "which git"
-    end
-  end # each
-end # case
+# 11.10 and 12.04 no longer use git-core and provide a recent version. So we
+# can just use standard packages. MK.
+package "git" do
+  action :install
+end
