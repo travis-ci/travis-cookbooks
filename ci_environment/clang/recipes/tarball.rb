@@ -21,13 +21,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-arch = case node.clang.version
-       when "3.1" then
-         kernel['machine'] =~ /x86_64/ ? "x86_64" : "x86"
-       else
-         kernel['machine'] =~ /x86_64/ ? "x86_64" : "i386"
-       end
-
 platform_name, ext = case [node[:platform], node[:platform_version]]
                      when ["ubuntu", "11.10"]
                        ["#{node[:platform]}-#{node[:platform_version]}", "tar.bz2"]
@@ -35,7 +28,7 @@ platform_name, ext = case [node[:platform], node[:platform_version]]
                        ["#{node[:platform]}_#{node[:platform_version]}", "tar.gz"]
                      end
 
-filename = "clang+llvm-#{node.clang.version}-#{arch}-linux-#{platform_name}"
+filename = "clang+llvm-#{node.clang.version}-#{node.clang.arch}-linux-#{platform_name}"
 
 installation_dir = "/usr/local/clang"
 
