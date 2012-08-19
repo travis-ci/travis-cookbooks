@@ -10,7 +10,7 @@ pkgs = value_for_platform(
   "default" => ["openjdk-#{version}-jdk"])
 
 execute "update-java-alternatives" do
-  alternative = "java-1.#{version}.0-openjdk-i386"
+  alternative = "java-1.#{version}.0-openjdk-#{node.travis_build_environment.arch}"
 
   command "update-java-alternatives -s #{alternative}"
   returns [0,2]

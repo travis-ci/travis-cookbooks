@@ -1,7 +1,9 @@
+user = "vagrant"
+
 default[:travis_build_environment] = {
-  :user                 => "vagrant",
-  :group                => "vagrant",
-  :home                 => "/home/vagrant",
+  :user                 => user,
+  :group                => user,
+  :home                 => "/home/#{user}",
   :hosts                => Hash.new,
   :builds_volume_size   => "350m",
   :use_tmpfs_for_builds => true,
@@ -10,5 +12,7 @@ default[:travis_build_environment] = {
     # in seconds
     :timeout => 10,
     :retries => 2
-  }
+  },
+
+  :arch => (kernel['machine'] =~ /x86_64/ ? "amd64" : "i386")
 }
