@@ -54,7 +54,7 @@ when "ubuntu", "debian"
       action :install
     end
 
-    # on 11.10, we also have to symlink libjpeg and a bunch of other libraries
+    # on 11.10+, we also have to symlink libjpeg and a bunch of other libraries
     # because of the 32-bit/64-bit library directory separation. MK.
     link "/usr/lib/libjpeg.so" do
       to "/usr/lib/#{node.phpbuild.arch}-linux-gnu/libjpeg.so"
@@ -103,6 +103,7 @@ bash "install php-build plugins" do
   group  node.travis_build_environment.group
   code <<-EOF
   cp /tmp/php-build-plugin-phpunit/share/php-build/after-install.d/phpunit #{phpbuild_path}/share/php-build/after-install.d
+  rm -rf /tmp/php-build-plugin-phpunit
   EOF
   not_if "test -f #{phpbuild_path}/share/php-build/after-install.d/phpunit"
 end
