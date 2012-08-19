@@ -23,9 +23,9 @@
 
 arch = case node.clang.version
        when "3.1" then
-         "x86"
+         kernel['machine'] =~ /x86_64/ ? "x86_64" : "x86"
        else
-         "i386"
+         kernel['machine'] =~ /x86_64/ ? "x86_64" : "i386"
        end
 
 platform_name, ext = case [node[:platform], node[:platform_version]]
