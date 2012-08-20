@@ -26,8 +26,7 @@ when "debian", "ubuntu"
     action :install
   end
 
-  # this assumes 32-bit base box.
-  ["zeromq_2.1.10+fpm0_i386.deb"].each do |deb|
+  ["zeromq_2.1.10+fpm0_#{node.travis_build_environment.arch}.deb"].each do |deb|
     path = File.join(tmp, deb)
 
     remote_file(path) do
