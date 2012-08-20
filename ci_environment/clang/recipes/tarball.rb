@@ -21,11 +21,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-platform_name, ext = case [node[:platform], node[:platform_version]]
+platform_name, ext = case [node.platform, node.platform_version]
                      when ["ubuntu", "11.10"]
-                       ["#{node[:platform]}-#{node[:platform_version]}", "tar.bz2"]
+                       ["#{node.platform}-#{node.platform_version}", "tar.bz2"]
                      when ["ubuntu", "12.04"]
-                       ["#{node[:platform]}_#{node[:platform_version]}", "tar.gz"]
+                       ["#{node.platform}_#{node.platform_version}", "tar.gz"]
                      end
 
 filename = "clang+llvm-#{node.clang.version}-#{node.clang.arch}-linux-#{platform_name}"
