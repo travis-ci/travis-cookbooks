@@ -40,5 +40,8 @@ package "flex" do
   action :install
 end
 
-include_recipe "bison"
+package "bison" do
+  action :install
+end
+
 include_recipe "cmake"
