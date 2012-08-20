@@ -1,4 +1,14 @@
-node['java']['multi']['versions'].each do |java_version|
+include_recipe "timezone"
+
+case node.platform
+when "ubuntu", "debian"
+  bash "autoremove and autoclean packages" do
+    user "root"
+    code "apt-get -y autoclean autoremove && apt-get -f install"
+  end  
+end
+
+node.java.multi.versions.each do |java_version|
   Chef::Log.info("Installing Java #{java_version}.")
   include_recipe "java::#{java_version}"
 end

@@ -18,6 +18,7 @@
 #
 
 include_attribute "riak::package"
+include_attribute "riak::api"
 include_attribute "riak::core"
 include_attribute "riak::erlang"
 include_attribute "riak::kernel"

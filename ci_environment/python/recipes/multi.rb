@@ -78,7 +78,7 @@ node.python.multi.pythons.each do |py|
     end
   end
 
-  script "preinstall pip packages" do
+  script "preinstall pip packages for virtualenv set 1 (#{py})" do
     interpreter "bash"
     user        node.travis_build_environment.user
     group       node.travis_build_environment.group
@@ -93,9 +93,24 @@ node.python.multi.pythons.each do |py|
     action :nothing
   end
 
+  script "preinstall pip packages for virtualenv set 2 (#{py})" do
+    interpreter "bash"
+    user        node.travis_build_environment.user
+    group       node.travis_build_environment.group
 
-  log "Creating a new virtualenv for #{py}"
-  python_virtualenv node.travis_build_environment.home do
+    cwd node.travis_build_environment.home
+    code <<-EOH
+    #{installation_root}/#{py}_with_system_site_packages/bin/pip install --quiet #{node.python.pip.packages.join(' ')} --use-mirrors
+    EOH
+
+    environment({ "VIRTUAL_ENV_DISABLE_PROMPT" => "true" })
+
+    action :nothing
+  end
+
+
+  log "Creating a new virtualenv for #{py} w/o --system-site-packages"
+  python_virtualenv "python_#{py}" do
     owner       node.travis_build_environment.user
     group       node.travis_build_environment.group
     interpreter py
@@ -103,6 +118,19 @@ node.python.multi.pythons.each do |py|
 
     action :create
     # commented out until we find a workaround for Vagrant issue #516
-    notifies :run, resources(:script => "preinstall pip packages")
+    notifies :run, resources(:script => "preinstall pip packages for virtualenv set 1 (#{py})")
+  end
+
+  log "Creating a new virtualenv for #{py} with --system-site-packages"
+  python_virtualenv "python_#{py}_with_system_site_packages" do
+    owner       node.travis_build_environment.user
+    group       node.travis_build_environment.group
+    interpreter py
+    system_site_packages true
+    path        "#{installation_root}/#{py}_with_system_site_packages"
+
+    action :create
+    # commented out until we find a workaround for Vagrant issue #516
+    notifies :run, resources(:script => "preinstall pip packages for virtualenv set 2 (#{py})")
   end
 end

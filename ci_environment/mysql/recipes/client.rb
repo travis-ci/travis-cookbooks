@@ -57,5 +57,4 @@ else
     action :install
     options '--no-ri --no-rdoc'
   end
-
 end

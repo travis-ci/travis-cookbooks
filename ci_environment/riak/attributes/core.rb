@@ -34,6 +34,7 @@ end
 default.riak.core.http = [["0.0.0.0",8098]]
 default.riak.core.ring_state_dir = "/var/lib/riak/ring"
 default.riak.core.handoff_port = 8099
+default.riak.core.dtrace_support = false
 default.riak.core.cluster_name = "default"
 default.riak.core.platform_bin_dir = "/usr/sbin"
 default.riak.core.platform_etc_dir = "/etc/riak"

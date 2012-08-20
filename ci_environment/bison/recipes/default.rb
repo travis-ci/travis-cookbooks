@@ -1,8 +1,6 @@
 #
-# Cookbook Name:: zeromq
+# Cookbook Name:: bison
 # Recipe:: default
-#
-# Copyright 2011, Travis CI Development Team
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,28 +15,34 @@
 # limitations under the License.
 #
 
+#
+# Provides an older Bison version (2.4) to make it possible to build PHP 5.2
+# on Ubuntu 12.04. MK.
+#
+
 require "tmpdir"
 
 tmp = Dir.tmpdir
 case node[:platform]
 when "debian", "ubuntu"
-  package "uuid-dev" do
-    action :install
+  path = File.join(tmp, node.bison.filename)
+
+  remote_file(path) do
+    source node.bison.url
+
+    owner node.travis_build_environment.user
+    group node.travis_build_environment.group
   end
 
-  ["zeromq_2.1.10+fpm0_#{node.travis_build_environment.arch}.deb"].each do |deb|
-    path = File.join(tmp, deb)
+  file(path) do
+    action :nothing
+  end
 
-    remote_file(path) do
-      source node[:zeromq][:package][:url]
-      owner  node[:zeromq][:package][:user]
-      group  node[:zeromq][:package][:group]
-    end
+  package(path) do
+    action   :install
+    source   path
+    provider Chef::Provider::Package::Dpkg
 
-    package(deb) do
-      action   :install
-      source   path
-      provider Chef::Provider::Package::Dpkg
-    end
-  end # each
+    notifies :delete, resources(:file => path)
+  end
 end # case

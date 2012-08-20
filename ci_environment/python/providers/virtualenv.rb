@@ -25,7 +25,7 @@ include Chef::Mixin::ShellOut
 action :create do
   unless exists?
     Chef::Log.info("Creating virtualenv #{@new_resource} at #{@new_resource.path}")
-    execute "virtualenv --distribute --python=#{@new_resource.interpreter} #{@new_resource.path}" do
+    execute "virtualenv --distribute --python=#{py} #{@new_resource.path} #{maybe_system_site_packages}" do
       user new_resource.owner if new_resource.owner
       group new_resource.group if new_resource.group
 
@@ -56,7 +56,24 @@ def load_current_resource
 end
 
 private
+
 def exists?
   ::File.exist?(@current_resource.path) && ::File.directory?(@current_resource.path) \
     && ::File.exists?("#{@current_resource.path}/bin/activate")
+end
+
+def maybe_system_site_packages
+  if @new_resource.system_site_packages
+    '--system-site-packages'
+  else
+    ''
+  end
+end
+
+def py
+  if @new_resource.interpreter.to_s.downcase == "pypy"
+    ::File.join(node.pypy.tarball.installation_dir, "bin", "pypy")
+  else
+    @new_resource.interpreter
+  end
 end

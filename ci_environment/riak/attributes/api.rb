@@ -1,5 +1,8 @@
 #
-# Copyright 2012, Erik Frèrejean - erikfrerejean@phpbb.com
+# Author:: Seth Thomas (<sthomas@basho.com>)
+# Cookbook Name:: riak
+#
+# Copyright (c) 2012 Basho Technologies, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,14 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-maintainer        "Erik Frerejean"
-maintainer_email  "erikfrerejean@phpbb.com"
-license           "Apache 2.0"
-description       "Installs firebird"
-long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-recipe            "firebird", "Installs firebird"
 
-%w{ubuntu debian}.each do |os|
-  supports os
-end
-
+default.riak.api.pb_ip = "127.0.0.1"
+default.riak.api.pb_port = 8087

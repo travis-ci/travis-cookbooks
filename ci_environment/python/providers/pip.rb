@@ -108,7 +108,7 @@ def current_installed_version
     end
     p = shell_out!(version_check_cmd)
     p.stdout.split(delimeter)[1].strip
-  rescue Chef::Exceptions::ShellCommandFailed
+  rescue Chef::Exceptions::ShellCommandFailed, Mixlib::ShellOut::ShellCommandFailed
   end
 end
 

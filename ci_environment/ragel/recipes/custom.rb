@@ -1,7 +1,7 @@
 #
-# Cookbook Name:: Common Lisp
-# Recipe:: default
-# Copyright 2011, Travis CI development team
+# Cookbook Name:: ragel
+# Recipe:: custom
+# Copyright 2011-2012, Travis CI development team
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,36 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package "clisp" do
-  action :install
+require "tmpdir"
+require "rbconfig"
+
+tmp = Dir.tmpdir
+case node[:platform]
+when "debian", "ubuntu"
+  pkg = if RbConfig::CONFIG['arch'] =~ /64/
+              "ragel_6.7-1_amd64.deb"
+            else
+              "ragel_6.7-1_i386.deb"
+            end
+
+  path = File.join(tmp, pkg)
+
+  remote_file(path) do
+    source "http://files.travis-ci.org/packages/deb/ragel/#{pkg}"
+    owner node.travis_build_environment.user
+    group node.travis_build_environment.group
+  end
+
+  file(path) do
+    action :nothing
+  end
+
+  package(pkg) do
+    action   :install
+    source   path
+    provider Chef::Provider::Package::Dpkg
+
+    notifies :delete, resources(:file => path)
+    not_if "which ragel"
+  end
 end
