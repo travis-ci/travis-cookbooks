@@ -8,10 +8,18 @@
 #
 
 
-if ['debian','ubuntu'].member? node[:platform]
+case node.platform
+when ['debian','ubuntu']
   # Make sure it's installed. It would be a pretty broken system
   # that didn't have it.
-  package "tzdata"
+  if node.platform_version.to_f >= 12.04
+    package "tzdata" do
+      version "2012b-1"
+      options "--force-yes"
+    end
+  else
+    package "tzdata"
+  end
 
   template "/etc/timezone" do
     source "timezone.conf.erb"
