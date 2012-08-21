@@ -31,3 +31,11 @@ end
 execute "rm -rf /tmp/php*" do
   action :run
 end
+
+execute "rm -rf ~/*.iso" do
+  action :run
+end
+
+execute "rm -rf ~/postinstall.sh" do
+  action :run
+end
