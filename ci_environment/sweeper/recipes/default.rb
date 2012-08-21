@@ -32,10 +32,14 @@ execute "rm -rf /tmp/php*" do
   action :run
 end
 
-execute "rm -rf ~/*.iso" do
+execute "rm -rf /var/tmp/php*" do
   action :run
 end
 
-execute "rm -rf ~/postinstall.sh" do
+execute "rm -rf #{node.travis_build_environment.home}/*.iso" do
+  action :run
+end
+
+execute "rm -rf #{node.travis_build_environment.home}/postinstall.sh" do
   action :run
 end
