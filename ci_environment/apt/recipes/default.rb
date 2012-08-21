@@ -26,6 +26,8 @@ end
 template "/etc/apt/sources.list" do
   source "sources.list.erb"
 
+  mode   0644
+
   notifies :run, resources(:execute => "apt-get update"), :immediately
 
   # cleans up at the end of Chef run
