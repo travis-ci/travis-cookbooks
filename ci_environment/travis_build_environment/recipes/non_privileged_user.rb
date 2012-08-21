@@ -91,3 +91,11 @@ mount "#{node.travis_build_environment.home}/builds" do
   action   [:mount, :enable]
   only_if { node.travis_build_environment[:use_tmpfs_for_builds] }
 end
+
+
+link "/home/vagrant" do
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
+
+  to node.travis_build_environment.home
+end
