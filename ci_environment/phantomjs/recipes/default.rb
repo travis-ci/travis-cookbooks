@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: phantomjs
-# Recipe:: tarball
+# Recipe:: default
 # Copyright 2012, Travis CI development team
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,40 +21,4 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-# This recipe provides Phantom.js using official tarball for Linux.
-
-# 1. Download the tarball
-require "tmpdir"
-
-td          = Dir.tmpdir
-tmp         = File.join(td, "phantomjs-#{node.phantomjs.version}.tar.gz")
-tarball_dir = File.join(td, "phantomjs-#{node.phantomjs.version}-linux-#{node.phantomjs.arch}-dynamic")
-
-remote_file(tmp) do
-  source node.phantomjs.tarball.url
-
-  not_if "which phantomjs && [[ `phantomjs --version` == \"#{node.phantomjs.version}\" ]]"
-end
-
-# 2. Extract it
-# 3. Copy to /usr/local/phantomjs
-bash "extract #{tmp}, move it to /usr/local/phantomjs" do
-  user "root"
-  cwd  "/tmp"
-
-  code <<-EOS
-    rm -rf /usr/local/phantomjs
-    tar xfj #{tmp}
-    mv --force #{tarball_dir} /usr/local/phantomjs
-  EOS
-
-  creates "/usr/local/phantomjs/bin/phantomjs"
-end
-
-cookbook_file "/etc/profile.d/phantomjs.sh" do
-  owner "root"
-  group "root"
-  mode 0644
-
-  source "etc/profile.d/phantomjs.sh"
-end
+include_recipe "phantomjs::tarball"
