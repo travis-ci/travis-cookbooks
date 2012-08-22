@@ -25,3 +25,6 @@ export RACK_ENV=test
 # -Xcompile.invokedynamic=false disables invokedynamic which seemingly causes 32 bit OpenJDKs (6 and 7) to segfault
 export JRUBY_OPTS="--server -Xcext.enabled=false -Xcompile.invokedynamic=false -J-Xss2m -J-Xmx256m -J-XX:+TieredCompilation"
 export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=192m"
+
+# we ulimit -n, so you don't have to
+ulimit -n 30000
