@@ -27,7 +27,7 @@ cookbook_file "/etc/profile.d/travis_environment.sh" do
   group node.travis_build_environment.group
   mode 0755
 
-  source "travis/travis_environment.sh"
+  source "vagrant/travis_environment.sh"
 end
 
 
@@ -36,7 +36,7 @@ cookbook_file "#{node.travis_build_environment.home}/.gemrc" do
   group node.travis_build_environment.group
   mode 0755
 
-  source "travis/dot_gemrc.yml"
+  source "vagrant/dot_gemrc.yml"
 end
 
 
@@ -45,7 +45,7 @@ template "#{node.travis_build_environment.home}/.bashrc" do
   group node.travis_build_environment.group
   mode 0755
 
-  source "travis/dot_bashrc.sh"
+  source "vagrant/dot_bashrc.sh"
 end
 
 
@@ -72,7 +72,7 @@ cookbook_file "#{node.travis_build_environment.home}/.ssh/known_hosts" do
   group node.travis_build_environment.group
   mode  0600
 
-  source "travis/known_hosts"
+  source "vagrant/known_hosts"
 end
 
 

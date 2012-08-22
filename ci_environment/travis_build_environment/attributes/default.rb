@@ -1,4 +1,4 @@
-user = "travis"
+user = "vagrant"
 
 default[:travis_build_environment] = {
   :user                 => user,

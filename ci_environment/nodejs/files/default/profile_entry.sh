@@ -1,3 +1,3 @@
-export NVM_DIR=$HOME/.nvm
+export NVM_DIR=/home/vagrant/.nvm
 export PATH="./node_modules/.bin":$PATH
-. $HOME/.nvm/nvm.sh
+. /home/vagrant/.nvm/nvm.sh
