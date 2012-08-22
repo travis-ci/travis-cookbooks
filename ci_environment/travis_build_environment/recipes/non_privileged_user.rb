@@ -93,9 +93,11 @@ mount "#{node.travis_build_environment.home}/builds" do
 end
 
 
-link "/home/vagrant" do
-  owner node.travis_build_environment.user
-  group node.travis_build_environment.group
+if node.travis_build_environment.user != "vagrant"
+  link "/home/vagrant" do
+    owner node.travis_build_environment.user
+    group node.travis_build_environment.group
 
-  to node.travis_build_environment.home
+    to node.travis_build_environment.home
+  end
 end
