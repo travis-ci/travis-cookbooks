@@ -18,7 +18,10 @@ SET PASSWORD FOR 'root'@'localhost' = PASSWORD('<%= node['mysql']['server_root_p
 # CI user has all the privileges in the world, blank password and well-known hardcoded usernames.
 # This is certainly good enough because virtualbox VMs CI happens in are rolled back after each build.
 # For Travis needs, this is certainly a reasonable, intentional move. MK.
-CREATE USER 'travis'@'%' IDENTIFIED BY '';  GRANT ALL PRIVILEGES ON *.* TO 'travis'@'%';
-CREATE USER 'vagrant'@'%' IDENTIFIED BY ''; GRANT ALL PRIVILEGES ON *.* TO 'vagrant'@'%';
+CREATE USER 'travis'@'%' IDENTIFIED BY '';          GRANT ALL PRIVILEGES ON *.* TO 'travis'@'%';
+CREATE USER 'travis'@'localhost' IDENTIFIED BY '';  GRANT ALL PRIVILEGES ON *.* TO 'travis'@'localhost';
+CREATE USER 'travis'@'127.0.0.1' IDENTIFIED BY '';  GRANT ALL PRIVILEGES ON *.* TO 'travis'@'127.0.0.1';
 # Ruby on Rails test suite uses it, and so do other projects. MK, bai.
-CREATE USER 'rails'@'%' IDENTIFIED BY '';  GRANT ALL PRIVILEGES ON *.* TO 'rails'@'%';
+CREATE USER 'rails'@'%' IDENTIFIED BY '';          GRANT ALL PRIVILEGES ON *.* TO 'rails'@'%';
+CREATE USER 'rails'@'localhost' IDENTIFIED BY '';  GRANT ALL PRIVILEGES ON *.* TO 'rails'@'localhost';
+CREATE USER 'rails'@'127.0.0.1' IDENTIFIED BY '';  GRANT ALL PRIVILEGES ON *.* TO 'rails'@'127.0.0.1';

@@ -27,7 +27,7 @@ cookbook_file "/etc/profile.d/travis_environment.sh" do
   group node.travis_build_environment.group
   mode 0755
 
-  source "vagrant/travis_environment.sh"
+  source "travis/travis_environment.sh"
 end
 
 
@@ -36,7 +36,7 @@ cookbook_file "#{node.travis_build_environment.home}/.gemrc" do
   group node.travis_build_environment.group
   mode 0755
 
-  source "vagrant/dot_gemrc.yml"
+  source "travis/dot_gemrc.yml"
 end
 
 
@@ -45,7 +45,7 @@ template "#{node.travis_build_environment.home}/.bashrc" do
   group node.travis_build_environment.group
   mode 0755
 
-  source "vagrant/dot_bashrc.sh"
+  source "travis/dot_bashrc.sh"
 end
 
 
@@ -72,7 +72,7 @@ cookbook_file "#{node.travis_build_environment.home}/.ssh/known_hosts" do
   group node.travis_build_environment.group
   mode  0600
 
-  source "vagrant/known_hosts"
+  source "travis/known_hosts"
 end
 
 
@@ -90,4 +90,12 @@ mount "#{node.travis_build_environment.home}/builds" do
   options  "defaults,size=#{node.travis_build_environment.builds_volume_size},noatime"
   action   [:mount, :enable]
   only_if { node.travis_build_environment[:use_tmpfs_for_builds] }
+end
+
+
+link "/home/vagrant" do
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
+
+  to node.travis_build_environment.home
 end
