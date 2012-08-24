@@ -1,3 +1,3 @@
 default[:elasticsearch] = {
-  :version => "0.19.8"
+  :version => "0.19.9"
 }
