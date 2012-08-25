@@ -30,8 +30,6 @@ include_recipe "openssh"
 include_recipe "travis_build_environment::root"
 include_recipe "travis_build_environment::non_privileged_user"
 
-include_recipe "git"
-
 cookbook_file "/etc/default/locale" do
   owner "root"
   group "root"
