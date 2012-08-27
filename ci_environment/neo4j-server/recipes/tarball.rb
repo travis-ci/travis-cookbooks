@@ -91,27 +91,10 @@ end
 
 # 4. Symlink
 %w(neo4j neo4j-shell).each do |f|
-  # due to a Chef bug that prevents not_if for the link resource from doing the
-  # correct thing. MK.
-  bash "Remove the symlink to /usr/local/bin/#{f}" do
-    user "root"
-    cwd  "/tmp"
-
-    code <<-EOS
-      rm -f /usr/local/bin/#{f}
-    EOS
-  end
-
-  link "/usr/local/bin/#{f}" do
-    action :delete
-    only_if "test -L /usr/local/bin/#{f}"
-  end
-
   link "/usr/local/bin/#{f}" do
     owner node.neo4j.server.user
     group node.neo4j.server.user
     to    "#{node.neo4j.server.installation_dir}/bin/#{f}"
-    not_if  "test -L /usr/local/bin/#{f}"
   end
 end
 
