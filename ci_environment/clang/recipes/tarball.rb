@@ -67,21 +67,9 @@ end
 
 # 4. Symlink
 %w(clang clang++ llvm-ld llvm-link).each do |f|
-  # due to a Chef bug that prevents not_if for the link resource from doing the
-  # correct thing. MK.
-  bash "Remove the symlink to /usr/local/bin/#{f}" do
-    user "root"
-    cwd  "/tmp"
-
-    code <<-EOS
-      rm -f /usr/local/bin/#{f}
-    EOS
-  end
-
   link "/usr/local/bin/#{f}" do
     owner "root"
     group "root"
     to    "#{installation_dir}/bin/#{f}"
-    not_if  "test -L /usr/local/bin/#{f}"
   end
 end

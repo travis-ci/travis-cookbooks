@@ -116,17 +116,6 @@ end
 
 # 5. Symlink
 %w(cassandra cassandra-shell cassandra-cli).each do |f|
-  # due to a Chef bug that prevents not_if for the link resource from doing the
-  # correct thing. MK.
-  bash "Remove the symlink to /usr/local/bin/#{f}" do
-    user "root"
-    cwd  "/tmp"
-
-    code <<-EOS
-      rm -f /usr/local/bin/#{f}
-    EOS
-  end
-
   link "/usr/local/bin/#{f}" do
     owner node.cassandra.user
     group node.cassandra.user
