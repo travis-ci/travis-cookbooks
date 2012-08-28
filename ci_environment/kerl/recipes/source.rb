@@ -78,7 +78,7 @@ node.kerl.releases.each do |rel, build|
     environment(env)
 
     # make sure R14B02 won't cause R14B to be skipped. MK.
-    not_if "#{node.kerl.path} list builds | grep \"^#{rel}$\"", :user => node.travis_build_environment.user, :environment => env
+    not_if "#{node.kerl.path} list builds | grep \"#{rel}$\"", :user => node.travis_build_environment.user, :environment => env
   end
 
 
