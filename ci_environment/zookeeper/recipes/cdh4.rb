@@ -1,6 +1,6 @@
 #
-# Cookbook Name:: hbase::cdh4
-# Recipe:: tarball
+# Cookbook Name:: zookeeper
+# Recipe:: cdh4
 # Copyright 2012, Michael S. Klishin <michaelklishin@me.com>
 # Copyright 2012, Travis CI Development Team <contact@travis-ci.org>
 #
