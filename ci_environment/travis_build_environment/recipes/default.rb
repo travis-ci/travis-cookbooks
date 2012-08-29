@@ -28,7 +28,7 @@ include_recipe "sysctl"
 include_recipe "openssh"
 
 include_recipe "travis_build_environment::root"
-include_recipe "travis_build_environment::non_privileged_user"
+include_recipe "travis_build_environment::ci_user"
 
 cookbook_file "/etc/default/locale" do
   owner "root"

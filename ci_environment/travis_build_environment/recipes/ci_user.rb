@@ -27,7 +27,7 @@ cookbook_file "/etc/profile.d/travis_environment.sh" do
   group node.travis_build_environment.group
   mode 0755
 
-  source "vagrant/travis_environment.sh"
+  source "ci_user/travis_environment.sh"
 end
 
 
@@ -36,7 +36,7 @@ cookbook_file "#{node.travis_build_environment.home}/.gemrc" do
   group node.travis_build_environment.group
   mode 0755
 
-  source "vagrant/dot_gemrc.yml"
+  source "ci_user/dot_gemrc.yml"
 end
 
 
@@ -45,7 +45,7 @@ template "#{node.travis_build_environment.home}/.bashrc" do
   group node.travis_build_environment.group
   mode 0755
 
-  source "vagrant/dot_bashrc.sh"
+  source "ci_user/dot_bashrc.sh"
 end
 
 
@@ -54,7 +54,7 @@ template "#{node.travis_build_environment.home}/.travis_ci_environment.yml" do
   group node.travis_build_environment.group
   mode 0755
 
-  source "vagrant/ci_environment_metadata.yml.erb"
+  source "ci_user/ci_environment_metadata.yml.erb"
 end
 
 
@@ -72,7 +72,7 @@ cookbook_file "#{node.travis_build_environment.home}/.ssh/known_hosts" do
   group node.travis_build_environment.group
   mode  0600
 
-  source "vagrant/known_hosts"
+  source "ci_user/known_hosts"
 end
 
 
@@ -92,7 +92,8 @@ mount "#{node.travis_build_environment.home}/builds" do
   only_if { node.travis_build_environment[:use_tmpfs_for_builds] }
 end
 
-
+# link /home/vagrant for those poor projects that absolutely depend on that legacy
+# home directory to be present. MK.
 if node.travis_build_environment.user != "vagrant"
   link "/home/vagrant" do
     owner node.travis_build_environment.user
