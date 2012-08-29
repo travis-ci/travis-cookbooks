@@ -15,7 +15,6 @@ package "hbase" do
   action :install
 end
 
-# TODO: this currently fails because HBase user does not have set/propagated JAVA_HOME.
 package "hbase-master" do
   action :install
 end
