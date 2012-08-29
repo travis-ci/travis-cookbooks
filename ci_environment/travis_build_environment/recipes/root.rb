@@ -30,7 +30,6 @@ template "/root/.bashrc" do
   source "root/dot_bashrc.sh.erb"
 end
 
-
 cookbook_file "/usr/local/bin/recover_eth0.sh" do
   owner "root"
   group "root"

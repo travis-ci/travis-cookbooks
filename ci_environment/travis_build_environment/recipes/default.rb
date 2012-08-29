@@ -88,6 +88,15 @@ end
 
 include_recipe "iptables"
 
+template "/etc/environment" do
+  owner "root"
+  group "root"
+  mode 0644
+
+  source "etc/environment.sh.erb"
+end
+
+
 
 # wipe out apparmor on 11.04, it may be a useful thing for typical servers but
 # in our case it is a major annoyance and nothing else. MK.
