@@ -20,3 +20,11 @@
 #
 
 include_recipe "java::oraclejdk7"
+
+template "/etc/profile.d/java_home.sh" do
+  owner "root"
+  group "root"
+  mode 0644
+
+  source "etc/profile.d/java_home.sh.erb"
+end
