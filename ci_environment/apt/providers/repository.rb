@@ -41,6 +41,7 @@ action :add do
     # build our listing
     repository = "deb"
     repository = "deb-src" if new_resource.deb_src
+    repository += " [#{new_resource.options}]" if new_resource.options
     repository = "# Created by the Chef apt_repository LWRP\n" + repository
     repository += " #{new_resource.uri}"
     repository += " #{new_resource.distribution}"
