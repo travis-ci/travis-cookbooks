@@ -18,3 +18,8 @@ end
 package "hbase-master" do
   action :install
 end
+
+service "hbase-master" do
+  supports :start => true, :stop => true, :restart => true
+  action [:disable, :start]
+end
