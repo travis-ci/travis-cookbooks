@@ -67,6 +67,7 @@ bash "extract #{tmp}, move it to #{node.kestrel.installation_dir}" do
     rm -rf #{node.kestrel.installation_dir}
     unzip #{tmp}
     mv --force #{node.kestrel.tarball.directory} #{node.kestrel.installation_dir}
+    chown -R #{node.kestrel.user}:#{node.kestrel.group} #{node.kestrel.installation_dir}
   EOS
 
   creates "#{node.kestrel.installation_dir}/libs"
