@@ -99,6 +99,14 @@ template "/etc/environment" do
 end
 
 
+ruby_block "load pam_limits.so" do
+  block do
+    fe = Chef::Util::FileEdit.new("/etc/pam.d/su")
+    fe.search_file_replace_line(/# session    required   pam_limits.so/, "session    required   pam_limits.so")
+    fe.write_file
+  end
+end
+
 
 # wipe out apparmor, it may be a useful thing for typical servers but
 # in our case it is a major annoyance and nothing else. MK.
