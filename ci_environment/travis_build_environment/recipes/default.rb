@@ -27,6 +27,8 @@ include_recipe "sysctl"
 # installs custom templates for sshd_config and ssh upstart script. MK.
 include_recipe "openssh"
 
+include_recipe "unarchivers"
+
 include_recipe "travis_build_environment::root"
 include_recipe "travis_build_environment::ci_user"
 
@@ -98,7 +100,7 @@ end
 
 
 
-# wipe out apparmor on 11.04, it may be a useful thing for typical servers but
+# wipe out apparmor, it may be a useful thing for typical servers but
 # in our case it is a major annoyance and nothing else. MK.
 package "apparmor" do
   action :remove
