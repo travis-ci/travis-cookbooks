@@ -19,11 +19,13 @@ if [ -f /etc/sysconfig/network ]; then source /etc/sysconfig/network; fi
 
 NAME=kestrel
 KESTREL_USER="<%= node.kestrel.user %>"
+KESTREL_HOME=`getent passwd kestrel | awk -F ':' '{ print $6; }'`
 
-PIDFILE="/var/run/$NAME.pid"
+PID_FILE="$KESTREL_HOME/$NAME.pid"
 LOG_FILE="/var/log/kestrel/kestrel.log"
 
 FD_LIMIT=20000
+WAIT_FOR_START=3
 
 MAIN_CLASS="net.lag.kestrel.Kestrel"
 
@@ -101,8 +103,8 @@ classpath()
 CMD_PATT="kestrel.Kestrel"
 is_running()
 {
-    if [ -f $PIDFILE ]; then
-        pid=`cat $PIDFILE`
+    if [ -f $PID_FILE ]; then
+        pid=`cat $PID_FILE`
         grep -Eq "$CMD_PATT" "/proc/$pid/cmdline" 2>/dev/null && return 0
         return 1
     fi
@@ -124,13 +126,13 @@ do_start()
     ulimit -l unlimited
     ulimit -n "$FD_LIMIT"
 
-    cp=`classpath`
-    kestrel_home=`getent passwd <%= node.kestrel.user %> | awk -F ':' '{ print $6; }'`
-    cd /    # jsvc doesn't chdir() for us
+    CP=`classpath`
+    cd $KESTREL_HOME
 
     CONFIG_FILE=<%= File.join(node.kestrel.config_dir, 'kestrel.scala') %>
-    echo "Running Kestrel..."
-    su $KESTREL_USER -c "nohup $JAVA -cp $cp $JVM_OPTS $MAIN_CLASS -f \"$CONFIG_FILE\" >\"$LOG_FILE\" 2>\"$LOG_FILE\" & " echo $! > $PID_FILE
+
+    echo "Running Kestrel. Pid file: $PID_FILE"
+    su $KESTREL_USER -c "nohup $JAVA -cp $CP $JVM_OPTS $MAIN_CLASS -f \"$CONFIG_FILE\" >\"$LOG_FILE\" 2>\"$LOG_FILE\" & echo $! > $PID_FILE"
 
     is_running && return 0
     for tries in `seq $WAIT_FOR_START`; do
@@ -146,7 +148,7 @@ do_start()
 do_stop()
 {
     is_running || return 1
-    kill `cat $PIDFILE`
+    kill `cat $PID_FILE`
     sleep 1
     is_running && return 2 || return 0
 }

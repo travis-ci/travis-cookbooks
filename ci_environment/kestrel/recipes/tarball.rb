@@ -97,6 +97,13 @@ directory(node.kestrel.config_dir) do
   notifies :create, resources(:cookbook_file => "/etc/kestrel/kestrel.scala")
 end
 
+directory("/var/spool/kestrel") do
+  owner node.kestrel.user
+  group node.kestrel.group
+
+  action :create
+end
+
 # Know Your Limits
 template "/etc/security/limits.d/#{node.kestrel.user}.conf" do
   source "kestrel-limits.conf.erb"
