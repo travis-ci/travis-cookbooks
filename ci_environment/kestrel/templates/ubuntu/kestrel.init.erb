@@ -132,7 +132,7 @@ do_start()
     CONFIG_FILE=<%= File.join(node.kestrel.config_dir, 'kestrel.scala') %>
 
     echo "Running Kestrel. Pid file: $PID_FILE"
-    su $KESTREL_USER -c "nohup $JAVA -cp $CP $JVM_OPTS $MAIN_CLASS -f \"$CONFIG_FILE\" >\"$LOG_FILE\" 2>\"$LOG_FILE\" & echo $! > $PID_FILE"
+    su $KESTREL_USER -c "nohup $JAVA -cp $CP $JVM_OPTS $MAIN_CLASS -f \"$CONFIG_FILE\" >\"$LOG_FILE\" 2>\"$LOG_FILE\" & echo \$! > $PID_FILE"
 
     is_running && return 0
     for tries in `seq $WAIT_FOR_START`; do
@@ -150,7 +150,7 @@ do_stop()
     is_running || return 1
     kill `cat $PID_FILE`
     sleep 1
-    is_running && return 2 || return 0
+    is_running && return 2 || (sudo rm $PID_FILE && return 0)
 }
 
 case "$1" in
@@ -195,9 +195,9 @@ case "$1" in
     is_running
     stat=$?
     case "$stat" in
-      0) log_success_msg "$DESC is running" ;;
-      1) log_failure_msg "could not access pidfile for $DESC" ;;
-      *) log_success_msg "$DESC is not running" ;;
+      0) log_success_msg "$NAME is running" ;;
+      1) log_failure_msg "could not access pidfile for $NAME" ;;
+      *) log_success_msg "$NAME is not running" ;;
     esac
     exit "$stat"
     ;;
