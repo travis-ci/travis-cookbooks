@@ -105,7 +105,7 @@ is_running()
 {
     if [ -f $PID_FILE ]; then
         pid=`cat $PID_FILE`
-        grep -Eq "$CMD_PATT" "/proc/$pid/cmdline" >/dev/null 2>/dev/null && return 0
+        grep -Eq "$CMD_PATT" "/proc/$pid/cmdline" 2>/dev/null && return 0
         return 1
     fi
     return 3
