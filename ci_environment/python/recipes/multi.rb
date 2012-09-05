@@ -46,6 +46,20 @@ when "ubuntu"
   end
 end
 
+case node['platform']
+when "ubuntu"
+  apt_repository "python_dev" do
+    uri          "http://ppa.launchpad.net/python-dev/ppa/ubuntu"
+    distribution node['lsb']['codename']
+    components   ['main']
+
+    key          "D81367B9"
+    keyserver    "keyserver.ubuntu.com"
+
+    action :add
+  end
+end
+
 
 python_pkgs = value_for_platform(["debian","ubuntu"] => {
                                    "default" => node.python.multi.pythons
