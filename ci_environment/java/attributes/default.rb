@@ -36,3 +36,6 @@ default[:java][:multi] = {
 default[:java][:oraclejdk7] = {
   :java_home => "/usr/lib/jvm/java-7-oracle"
 }
+default[:java][:oraclejdk8] = {
+  :java_home => "/usr/lib/jvm/java-8-oracle"
+}
