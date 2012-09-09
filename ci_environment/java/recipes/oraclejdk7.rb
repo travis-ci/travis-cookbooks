@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: java
-# Recipe:: oracle
+# Recipe:: oraclejdk7
 #
 # Copyright 2012, Michael S. Klishin & Travis CI Development Team
 #
