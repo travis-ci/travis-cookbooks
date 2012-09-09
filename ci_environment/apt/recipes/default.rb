@@ -17,6 +17,11 @@
 # limitations under the License.
 #
 
+# for recipes that require preseeding, e.g. java::oraclejdk7, to work. MK.
+package "debconf-utils" do
+  action :install
+end
+
 execute "apt-get update" do
   action :run
 end
