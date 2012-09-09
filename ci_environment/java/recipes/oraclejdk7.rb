@@ -22,6 +22,11 @@ node['java']['java_home'] = node.java.oraclejdk7.java_home
 # This recipe relies on a PPA package and is Ubuntu/Debian specific. Please
 # keep this in mind.
 
+package "debconf-utils"
+
+# accept Oracle License v1.1, otherwise the package won't install
+execute "/bin/echo -e oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections"
+
 apt_repository "webupd8team-java-ppa" do
   uri          "http://ppa.launchpad.net/webupd8team/java/ubuntu"
   distribution node['lsb']['codename']
