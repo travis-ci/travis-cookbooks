@@ -27,10 +27,21 @@
   end
 end
 
-link "/usr/lib/libgmp.so.3" do
-  to "/usr/lib/libgmp.so"
+case [node.platform, node.platform_version]
+when ["ubuntu", "11.10"] then
+  link "/usr/lib/libgmp.so.3" do
+    to "/usr/lib/libgmp.so"
 
-  not_if "test -L /usr/lib/libgmp.so.3"
+    not_if "test -L /usr/lib/libgmp.so.3"
+  end
+when ["ubuntu", "12.04"] then
+  package "libgmp3c2"
+
+  link "/usr/lib/libgmp.so.3" do
+    to "/usr/lib/libgmp.so.3.5.2"
+
+    not_if "test -L /usr/lib/libgmp.so.3"
+  end
 end
 
 
