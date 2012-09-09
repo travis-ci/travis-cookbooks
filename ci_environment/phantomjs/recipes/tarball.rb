@@ -59,8 +59,8 @@ cookbook_file "/etc/profile.d/phantomjs.sh" do
   source "etc/profile.d/phantomjs.sh"
 end
 
-link "/usr/local/phantomjs/bin/phantomjs" do
-  to "/usr/local/bin/phantomjs"
+link "/usr/local/bin/phantomjs" do
+  to "/usr/local/phantomjs/bin/phantomjs"
 
   owner "root"
   group "root"
