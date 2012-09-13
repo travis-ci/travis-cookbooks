@@ -23,7 +23,7 @@ log "Default Go version will be #{node.golang.multi.default_version}"
 
 home = node.travis_build_environment.home
 gvm  = "source #{home}/.gvm/scripts/gvm && gvm"
-env  = { 'HOME' => home }
+env  = {'HOME' => home}
 user = node.travis_build_environment.user
 
 setup = lambda do |bash|
@@ -35,7 +35,7 @@ node.golang.multi.versions.each do |v|
   bash "golang::multi: installing #{v}" do
     setup.call(self)
     code "#{gvm} install #{v}"
-    not_if "#{gvm} list | grep #{v}"
+    not_if { File.exists?(File.join(home, ".gvm", "gos", v)) }
   end
 end
 
