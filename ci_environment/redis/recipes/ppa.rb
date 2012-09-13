@@ -34,3 +34,9 @@ end
 package "redis-server" do
   action :install
 end
+
+service "redis-server" do
+  supports :restart => true, :status => true, :reload => true
+  # intentionally disabled on boot. MK.
+  action [:disable, :start]
+end

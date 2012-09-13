@@ -32,5 +32,6 @@ package "couchdb" do
 end
 
 service "couchdb" do
-  action [:enable, :start]
+  # intentionally disabled on boot. MK.
+  action [:disable, :start]
 end

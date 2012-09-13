@@ -147,7 +147,8 @@ end
 if node[:riak][:package][:type].eql?("binary")
   service "riak" do
     supports :start => true, :stop => true, :restart => true
-    action [ :enable ]
+    # intentionally disabled on boot. MK.
+    action [:disable]
     subscribes :restart, resources(:template => [ "#{node[:riak][:package][:config_dir]}/app.config",
                                    "#{node[:riak][:package][:config_dir]}/vm.args" ])
   end

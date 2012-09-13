@@ -59,6 +59,7 @@ when "debian", "ubuntu"
 
   service "redis-server" do
     supports :restart => true, :status => true, :reload => true
-    action [:enable, :start]
+    # intentionally disabled on boot. MK.
+    action [:disable, :start]
   end
 end # case

@@ -36,7 +36,8 @@ end
 
 service "mongodb" do
   supports :start => true, :stop => true, "force-stop" => true, :restart => true, "force-reload" => true, :status => true
-  action [:enable, :start]
+  # intentionally disabled on boot. MK.
+  action [:disable, :start]
   subscribes :restart, resources(:template => node[:mongodb][:config])
   subscribes :restart, resources(:template => "/etc/init.d/mongodb") if node[:mongodb][:installed_from] == "src"
 end
