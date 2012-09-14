@@ -1,5 +1,6 @@
 include_recipe "phpenv"
 include_recipe "phpbuild"
+include_recipe "composer"
 
 phpbuild_path = "#{node.travis_build_environment.home}/.php-build"
 phpenv_path   = "#{node.travis_build_environment.home}/.phpenv"
