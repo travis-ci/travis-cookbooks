@@ -22,6 +22,11 @@ package "debconf-utils" do
   action :install
 end
 
+# for convenience of those who add various PPAs. MK.
+package "python-software-properties" do
+  action :install
+end
+
 execute "apt-get update" do
   action :run
 end
