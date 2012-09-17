@@ -48,12 +48,12 @@ end
 
 case node['platform']
 when "ubuntu"
-  apt_repository "python_dev" do
-    uri          "http://ppa.launchpad.net/python-dev/ppa/ubuntu"
+  apt_repository "travis_ci_python33" do
+    uri          "http://ppa.launchpad.net/travis-ci/python3.3/ubuntu"
     distribution node['lsb']['codename']
     components   ['main']
 
-    key          "D81367B9"
+    key          "75E9BCC5"
     keyserver    "keyserver.ubuntu.com"
 
     action :add
