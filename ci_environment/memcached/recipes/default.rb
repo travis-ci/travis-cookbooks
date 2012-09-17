@@ -42,7 +42,8 @@ template "/etc/memcached.conf" do
     :listen => node[:memcached][:listen],
     :user => node[:memcached][:user],
     :port => node[:memcached][:port],
-    :memory => node[:memcached][:memory]
+    :memory => node[:memcached][:memory],
+    :sasl   => node.memcached.sasl
   )
   notifies :restart, resources(:service => "memcached"), :immediately
 end

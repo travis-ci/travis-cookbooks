@@ -48,3 +48,7 @@ logfile /var/log/memcached.log
 
 # Maximize core file limit
 # -r
+
+<% if @sasl -%>
+-S
+<% end %>
