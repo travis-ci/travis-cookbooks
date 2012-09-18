@@ -67,10 +67,10 @@ cookbook_file "/etc/profile.d/rvm.sh" do
   mode 0755
 end
 
-cookbook_file "#{node.travis_build_environment.home}/.rvmrc" do
+template "#{node.travis_build_environment.home}/.rvmrc" do
   owner node.travis_build_environment.user
   group node.travis_build_environment.group
   mode  0755
 
-  source "dot_rvmrc.sh"
+  source "dot_rvmrc.sh.erb"
 end
