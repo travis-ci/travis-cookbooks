@@ -21,10 +21,11 @@ include_recipe "gvm"
 
 log "Default Go version will be #{node.golang.multi.default_version}"
 
-home = node.travis_build_environment.home
-gvm  = "source #{home}/.gvm/scripts/gvm && gvm"
-env  = {'HOME' => home}
-user = node.travis_build_environment.user
+home    = node.travis_build_environment.home
+gvm     = "source #{home}/.gvm/scripts/gvm && gvm"
+env     = {'HOME' => home}
+user    = node.travis_build_environment.user
+aliases = node.golang.multi.aliases || []
 
 setup = lambda do |bash|
   bash.user user
@@ -42,4 +43,13 @@ end
 bash "set #{node.golang.multi.default_version} to be the default Go runtime version" do
   setup.call(self)
   code "#{gvm} use #{node.golang.multi.default_version} --default"
+end
+
+aliases.each do |new_name, existing_name|
+  bash "alias #{existing_name} => #{new_name}" do
+    setup.call(self)
+    code "#{gvm} alias create #{new_name} #{existing_name}"
+
+    ignore_failure true # alias creation is not idempotent. @fd.
+  end
 end
