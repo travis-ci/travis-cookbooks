@@ -3,6 +3,9 @@ default[:golang] = {
   :version => "stable",
   :multi => {
     :versions => %w(go1.0.2),
-    :default_version  => "go1.0.2"
+    :default_version  => "go1.0.2",
+    :aliases => {
+      "go1" => "go1.0.2"
+    }
   }
 }
