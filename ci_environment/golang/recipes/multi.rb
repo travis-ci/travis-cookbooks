@@ -25,7 +25,7 @@ home    = node.travis_build_environment.home
 gvm     = "source #{home}/.gvm/scripts/gvm && gvm"
 env     = {'HOME' => home}
 user    = node.travis_build_environment.user
-aliases = node.golang.multi.aliases || []
+aliases = node.golang.multi.aliases || {}
 
 setup = lambda do |bash|
   bash.user user
