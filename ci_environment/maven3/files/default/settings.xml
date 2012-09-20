@@ -40,7 +40,7 @@
         </repository>
 
         <repository>
-          <id>sonatype</id>
+          <id>sonatype-apache</id>
           <name>Apache repo (releases)</name>
           <releases>
             <enabled>true</enabled>
