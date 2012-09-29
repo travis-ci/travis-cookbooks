@@ -42,9 +42,9 @@ cookbook_file "#{node.travis_build_environment.home}/.nvm/nvm.sh" do
   permissions_setup.call(self)
 end
 
-cookbook_file "/etc/profile.d/nvm.sh" do
+template "/etc/profile.d/nvm.sh" do
   permissions_setup.call(self)
-  source "profile_entry.sh"
+  source "nvm.sh.erb"
 end
 
 nvm = "source #{node.travis_build_environment.home}/.nvm/nvm.sh; nvm"
