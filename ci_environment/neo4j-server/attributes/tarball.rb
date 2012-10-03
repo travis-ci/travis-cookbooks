@@ -28,5 +28,13 @@ default[:neo4j][:server] = {
   },
   :https => {
     :enabled => true
+  },
+  :plugins => {
+    :spatial => {
+      :enabled => true,
+      :url => "https://github.com/downloads/goodwink/neo4j-server-chef-cookbook/neo4j-spatial-0.9-SNAPSHOT-server-plugin.zip",
+      :version => "0.9-SNAPSHOT",
+      :md5 => "65e6d30e856f191a20f3f6e78eaaf5a7"
+    }
   }
 }
