@@ -17,6 +17,13 @@
 # limitations under the License.
 #
 
+execute "apt-get update" do
+  action :run
+end
+execute "apt-get -y clean autoremove" do
+  action :nothing
+end
+
 # for recipes that require preseeding, e.g. java::oraclejdk7, to work. MK.
 package "debconf-utils" do
   action :install
@@ -27,12 +34,6 @@ package "python-software-properties" do
   action :install
 end
 
-execute "apt-get update" do
-  action :run
-end
-execute "apt-get -y autoclean autoremove" do
-  action :nothing
-end
 template "/etc/apt/sources.list" do
   source "sources.list.erb"
 
