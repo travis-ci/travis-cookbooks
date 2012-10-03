@@ -45,11 +45,18 @@ require "tmpdir"
 
 td          = Dir.tmpdir
 tmp         = File.join(td, "neo4j-community-#{node.neo4j.server.version}.tar.gz")
+tmp_spatial = File.join(td, "neo4j-spatial-#{node.neo4j.server.plugins.spatial.version}-server-plugin.zip")
 
 remote_file(tmp) do
   source node.neo4j.server.tarball.url
 
   not_if "which neo4j"
+end
+
+if node.neo4j.server.plugins.spatial.enabled
+  remote_file(tmp_spatial) do
+    source node.neo4j.server.plugins.spatial.url
+  end
 end
 
 # 2. Extract it
@@ -67,6 +74,19 @@ bash "extract #{tmp}, move it to #{node.neo4j.server.installation_dir}" do
   creates "#{node.neo4j.server.installation_dir}/bin/neo4j"
 end
 
+if node.neo4j.server.plugins.spatial.enabled
+  bash "extract #{tmp_spatial}, move it to #{node.neo4j.server.installation_dir}/plugins" do
+    user "root"
+    cwd "/tmp"
+
+    code <<-EOS
+      unzip #{tmp_spatial} -d #{node.neo4j.server.installation_dir}/plugins
+    EOS
+
+    creates "#{node.neo4j.server.installation_dir}/plugins/neo4j-spatial-#{node.neo4j.server.plugins.spatial.version}.jar"
+  end
+end
+
 [node.neo4j.server.conf_dir, node.neo4j.server.data_dir, File.join(node.neo4j.server.data_dir, "log")].each do |dir|
   directory dir do
     owner     node.neo4j.server.user
@@ -80,6 +100,7 @@ end
  node.neo4j.server.data_dir,
  File.join(node.neo4j.server.installation_dir, "data"),
  File.join(node.neo4j.server.installation_dir, "system"),
+ File.join(node.neo4j.server.installation_dir, "plugins"),
  node.neo4j.server.installation_dir].each do |dir|
   # Chef sets permissions only to leaf nodes, so we have to use a Bash script. MK.
   bash "chown -R #{node.neo4j.server.user}:#{node.neo4j.server.user} #{dir}" do
