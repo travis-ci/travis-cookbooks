@@ -149,6 +149,10 @@ end
 
 service "cassandra" do
   supports :start => true, :stop => true, :restart => true
-  # intentionally disabled on boot. MK.
-  action [:disable, :start]
+
+  if node.cassandra.service.enabled
+    action [:enable, :start]
+  else
+    action [:disable, :start]
+  end
 end
