@@ -6,3 +6,6 @@ default[:rabbitmq][:logdir] = nil
 default[:rabbitmq][:mnesiadir] = nil
 
 default[:rabbitmq][:high_memory_watermark]  = 0.04
+
+default[:rabbitmq][:service][:enabled]      = false
+

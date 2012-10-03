@@ -58,6 +58,10 @@ package "rabbitmq-server"
 
 service "rabbitmq-server" do
   supports :restart => true, :status => true, :reload => true
-  # intentionally disabled on boot. MK.
-  action [:disable, :start]
+
+  if node.rabbitmq.service.enabled
+    action [:enable, :start]
+  else
+    action [:disable, :start]
+  end
 end
