@@ -156,6 +156,9 @@ end
 
 service "neo4j" do
   supports :start => true, :stop => true, :restart => true
-  # disable on boot, intentionally. MK.
-  action [:disable]
+  if node.neo4j.server.service.enabled
+    action [:enable]
+  else
+    action [:disable]
+  end
 end

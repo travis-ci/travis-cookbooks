@@ -36,5 +36,8 @@ default[:neo4j][:server] = {
       :version => "0.9-SNAPSHOT",
       :md5 => "65e6d30e856f191a20f3f6e78eaaf5a7"
     }
+  },
+  :service => {
+    :enabled => false
   }
 }
