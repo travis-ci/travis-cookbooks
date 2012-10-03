@@ -41,7 +41,7 @@ template "/etc/apt/sources.list" do
   notifies :run, resources(:execute => "apt-get update"), :immediately
 
   # cleans up at the end of Chef run
-  notifies :run, resources(:execute => "apt-get -y autoclean autoremove")
+  notifies :run, resources(:execute => "apt-get -y clean autoremove")
 end
 
 %w{/var/cache/local /var/cache/local/preseeding}.each do |dirname|
