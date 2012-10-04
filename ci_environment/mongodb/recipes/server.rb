@@ -36,7 +36,7 @@ end
 
 service "mongodb" do
   supports :start => true, :stop => true, "force-stop" => true, :restart => true, "force-reload" => true, :status => true
-  if mongodb.service.enabled
+  if node.mongodb.service.enabled
     action [:enable, :start]
   else
     action [:disable, :start]
