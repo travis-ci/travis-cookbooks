@@ -28,7 +28,7 @@ require "tmpdir"
 
 td          = Dir.tmpdir
 tmp         = File.join(td, "phantomjs-#{node.phantomjs.version}.tar.gz")
-tarball_dir = File.join(td, "phantomjs-#{node.phantomjs.version}-linux-#{node.phantomjs.arch}-dynamic")
+tarball_dir = File.join(td, "phantomjs-#{node.phantomjs.version}-linux-#{node.phantomjs.arch}")
 
 remote_file(tmp) do
   source node.phantomjs.tarball.url
