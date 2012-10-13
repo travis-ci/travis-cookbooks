@@ -13,7 +13,8 @@ use_pear() {
         "$pear" channel-discover pear.symfony-project.com
         "$pear" channel-discover pear.phpunit.de
 
-        if [["$PHP_VERSION" == "5.2.17"]] then
+        if [[ "$PHP_VERSION" == "5.2.17" ]]
+        then
             echo "Installing PHPUnit 3.6.x for PHP 5.2..."
             "$pear" install "phpunit/PHPUnit-3.6.12"
         else
