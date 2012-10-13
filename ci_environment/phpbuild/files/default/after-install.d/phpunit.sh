@@ -2,6 +2,10 @@
 
 set -e
 
+if [ -n "$PHP_BUILD_DEBUG" ]; then
+    set -x
+fi
+
 pyrus="$PREFIX/bin/pyrus"
 pear="$PREFIX/bin/pear"
 
@@ -12,12 +16,12 @@ use_pear() {
     "$pear" channel-discover pear.symfony-project.com
     "$pear" channel-discover pear.phpunit.de
 
-    if [[ "$PHP_VERSION" == "5.2.17" ]]
-    then
-        echo "Installing PHPUnit 3.6.x for PHP 5.2..."
+    if "$PREFIX/bin/php" -v | grep "PHP 5.2"; then
+        "$pear" install "phpunit/File_Iterator-1.3.2"
+        "$pear" install "phpunit/Text_Template-1.1.2"
+        "$pear" install "phpunit/PHP_Timer-1.0.3"
         "$pear" install "phpunit/PHPUnit-3.6.12"
     else
-        echo "Installing latest PHPUnit..."
         "$pear" install "phpunit/PHPUnit"
     fi
 }
@@ -45,7 +49,7 @@ use_pyrus() {
 
 if [ -f "$pyrus" ]; then
     use_pyrus
-else 
+else
     if [ -f "$pear" ]; then
         use_pear
     else
