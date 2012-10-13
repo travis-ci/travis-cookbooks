@@ -16,7 +16,7 @@ action :create do
       cwd         "#{phpbuild_path}/bin"
       ini_suffix  = version < '5.3' ? 'dist' : 'development'
       code <<-EOF
-      ./php-build -i #{ini_suffix} #{pear_option} #{version} #{target_path}
+      PHP_VERSION=#{version} ./php-build -i #{ini_suffix} #{pear_option} #{version} #{target_path}
       EOF
     end
 

@@ -5,7 +5,6 @@ phpbuild_path = "#{node.travis_build_environment.home}/.php-build"
 phpenv_path   = "#{node.travis_build_environment.home}/.phpenv"
 
 node.php.multi.versions.each do |php_version|
-
   phpbuild_build "#{phpenv_path}/versions" do
     version php_version
     owner   node.travis_build_environment.user

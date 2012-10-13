@@ -98,14 +98,12 @@ directory "#{phpbuild_path}/tmp" do
   action :create
 end
 
-bash "install php-build plugins" do
-  user   node.travis_build_environment.user
+cookbook_file "#{phpbuild_path}/share/php-build/after-install.d/phpunit" do
+  owner  node.travis_build_environment.user
   group  node.travis_build_environment.group
-  code <<-EOF
-  cp /tmp/php-build-plugin-phpunit/share/php-build/after-install.d/phpunit #{phpbuild_path}/share/php-build/after-install.d
-  rm -rf /tmp/php-build-plugin-phpunit
-  EOF
-  not_if "test -f #{phpbuild_path}/share/php-build/after-install.d/phpunit"
+  mode   "0755"
+
+  source "after-install.d/phpunit.sh"
 end
 
 template "#{phpbuild_path}/share/php-build/default_configure_options" do
