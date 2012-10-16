@@ -1,5 +1,5 @@
 default[:sbt] = {
-  :version => "0.11.3",
+  :version => "0.12.1",
   :boot => {
     # 5 minutes to install sbt's own dependencies under ~/.sbt/boot. MK.
     :timeout => 300
