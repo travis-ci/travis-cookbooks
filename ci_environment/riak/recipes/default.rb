@@ -20,6 +20,11 @@
 
 include_recipe "riak::config"
 
+case node.platform
+when "ubuntu" then
+  include_recipe "libssl::098"
+end
+
 if node[:riak][:package][:url]
   package_uri = node[:riak][:package][:url]
   package_file = package_uri.split("/").last
@@ -31,7 +36,7 @@ else
   case node[:platform]
   when "debian","ubuntu"
     machines = {"x86_64" => "amd64", "i386" => "i386", "i686" => "i386"}
-    base_uri = "#{base_uri}/#{node[:platform]}/#{node[:lsb][:codename]}/" 
+    base_uri = "#{base_uri}/#{node[:platform]}/#{node[:lsb][:codename]}/"
   when "redhat","centos","scientific","fedora","suse"
     machines = {"x86_64" => "x86_64", "i386" => "i386", "i686" => "i686"}
     base_uri = "#{base_uri}/rhel/#{node[:platform_version].to_i}/"
@@ -43,7 +48,6 @@ else
                   when "binary"
                     case node[:platform]
                     when "debian","ubuntu"
-                      package "libssl0.9.8"
                       "#{base_filename.gsub(/\-/, '_')}-#{node[:riak][:package][:version][:build]}_#{machines[node[:kernel][:machine]]}.deb"
                     when "centos","redhat","suse"
                       if node[:platform_version].to_i == 6
@@ -97,7 +101,7 @@ when "binary"
     options case node[:platform]
             when "debian","ubuntu"
               "--force-confnew"
-            end       
+            end
     provider value_for_platform(
       [ "ubuntu", "debian" ] => {"default" => Chef::Provider::Package::Dpkg},
       [ "redhat", "centos", "fedora", "suse" ] => {"default" => Chef::Provider::Package::Rpm}
