@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-default.riak.package.type = "ubuntu"
+default.riak.package.type = "binary"
 if !(node.kernel.machine == "x86_64")
   # the only 32 bit package of 1.2.0. MK.
   default.riak.package.url  = "http://downloads.basho.com.s3-website-us-east-1.amazonaws.com/riak/CURRENT/ubuntu/lucid/riak_1.2.1-1_i386.deb"
