@@ -43,7 +43,7 @@ else
                   when "binary"
                     case node[:platform]
                     when "debian","ubuntu"
-                      package "libssl0.9.8" if node[:platform_version] >= "11.10"
+                      package "libssl0.9.8"
                       "#{base_filename.gsub(/\-/, '_')}-#{node[:riak][:package][:version][:build]}_#{machines[node[:kernel][:machine]]}.deb"
                     when "centos","redhat","suse"
                       if node[:platform_version].to_i == 6
