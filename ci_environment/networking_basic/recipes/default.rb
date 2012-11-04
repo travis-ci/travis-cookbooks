@@ -25,6 +25,9 @@ when "debian", "ubuntu"
               'curl',
               'wget',
               'rsync',
+              # libldap resolves dependency hell around libcurl4-openssl-dev. MK.
+              "libldap-2.4.2",
+              "libldap2-dev",
               "libcurl4-openssl-dev"
              ]
 
