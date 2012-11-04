@@ -20,12 +20,12 @@
 # limitations under the License.
 #
 
-node[:mongodb][:installed_from] = "apt"
+node.set[:mongodb][:installed_from] = "apt"
 # default settings from apt repo
-node[:mongodb][:datadir]     = "/var/lib/mongodb"
-node[:mongodb][:config]      = "/etc/mongodb.conf"
-node[:mongodb][:logfile]     = "/var/log/mongodb/mongodb.log"
-node[:mongodb][:pidfile]     = "/var/run/mongodb.pid"
+node.set[:mongodb][:datadir]     = "/var/lib/mongodb"
+node.set[:mongodb][:config]      = "/etc/mongodb.conf"
+node.set[:mongodb][:logfile]     = "/var/log/mongodb/mongodb.log"
+node.set[:mongodb][:pidfile]     = "/var/run/mongodb.pid"
 
 
 execute "apt-get update" do
