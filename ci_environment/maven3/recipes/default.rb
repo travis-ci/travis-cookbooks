@@ -38,7 +38,10 @@ end
 
 per_user_settings = File.join(node.travis_build_environment.home, ".m2", "settings.xml")
 cookbook_file(per_user_settings) do
-  mode 0644
+  owner  node.travis_build_environment.user
+  group  node.travis_build_environment.group
+
+  mode   0644
 
   action :nothing
 end
