@@ -1,0 +1,6 @@
+-XX:ReservedCodeCacheSize=96M
+-Xms512M
+-Xmx1536M
+-Xss6M
+-XX:+CMSClassUnloadingEnabled
+-XX:MaxPermSize=384M
