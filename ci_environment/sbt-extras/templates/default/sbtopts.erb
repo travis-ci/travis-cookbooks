@@ -2,6 +2,8 @@
 #  The SBT Configuration file.                     #
 # ------------------------------------------------ #
 
+# in Travis CI, never prompt!
+-batch
 
 # Disable ANSI color codes
 #
@@ -9,7 +11,7 @@
 
 # Starts sbt even if the current directory contains no sbt project.
 #
--sbt-create
+#-sbt-create
 
 # Path to global settings/plugins directory (default: ~/.sbt)
 #
