@@ -92,7 +92,7 @@ node.python.multi.pythons.each do |py|
     end
   end
 
-  packages = if py.to_s.downcase == "pypy"
+  packages = if ["python3.1", "3.1", "pypy"].include?(py.to_s.downcase)
                node.python.pip.packages.reject { |p| p =~ /numpy/ }
              else
                node.python.pip.packages
