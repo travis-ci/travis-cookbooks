@@ -22,47 +22,11 @@
 # THE SOFTWARE.
 
 # This recipe provides Phantom.js using official tarball for Linux.
+include_recipe "ark"
 
-# 1. Download the tarball
-require "tmpdir"
-
-td          = Dir.tmpdir
-tmp         = File.join(td, "phantomjs-#{node.phantomjs.version}.tar.gz")
-tarball_dir = File.join(td, "phantomjs-#{node.phantomjs.version}-linux-#{node.phantomjs.arch}")
-
-remote_file(tmp) do
-  source node.phantomjs.tarball.url
-
-  not_if "which phantomjs && [[ `phantomjs --version` == \"#{node.phantomjs.version}\" ]]"
-end
-
-# 2. Extract it
-# 3. Copy to /usr/local/phantomjs
-bash "extract #{tmp}, move it to /usr/local/phantomjs" do
-  user "root"
-  cwd  "/tmp"
-
-  code <<-EOS
-    rm -rf /usr/local/phantomjs
-    tar xfj #{tmp}
-    mv --force #{tarball_dir} /usr/local/phantomjs
-  EOS
-
-  creates "/usr/local/phantomjs/bin/phantomjs"
-end
-
-cookbook_file "/etc/profile.d/phantomjs.sh" do
-  owner "root"
-  group "root"
-  mode 0644
-
-  source "etc/profile.d/phantomjs.sh"
-end
-
-link "/usr/local/bin/phantomjs" do
-  to "/usr/local/phantomjs/bin/phantomjs"
-
-  owner "root"
-  group "root"
-  mode 0644
+ark "phantomjs" do
+  url node['phantomjs']['tarball']['url']
+  version node['phantomjs']['version']
+  has_binaries ['bin/phantomjs']
+  action :install
 end

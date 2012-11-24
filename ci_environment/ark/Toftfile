@@ -1,0 +1,15 @@
+require 'rubygems'
+require 'toft'
+
+include Toft
+
+n1 =  create_node "n1", {:ip => '192.168.20.2'}
+
+n1.start
+
+n1.run_chef [ "recipe[chef_handler]", "recipe[minitest-handler::recipes]", "recipe[ark::test]" ]
+
+n1.stop
+
+n1.destroy
+
