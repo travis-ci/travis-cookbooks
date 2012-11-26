@@ -12,4 +12,4 @@ conflicts        "typesafe-stack"
   supports os
 end
 
-recipe "sbt-extras", "Downloads and installs sbt-extras script"
+recipe "sbt", "Downloads and installs sbt-extras script"

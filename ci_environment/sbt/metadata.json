@@ -1,6 +1,6 @@
 {
   "recipes": {
-    "sbt-extras": "Downloads and installs sbt-extras script"
+    "sbt": "Downloads and installs sbt-extras script"
   },
   "attributes": {
   },
