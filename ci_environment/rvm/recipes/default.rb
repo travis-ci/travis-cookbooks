@@ -74,3 +74,25 @@ template "#{node.travis_build_environment.home}/.rvmrc" do
 
   source "dot_rvmrc.sh.erb"
 end
+
+
+bundler_settings = File.join(node.travis_build_environment.home, ".bundle", "config")
+template bundler_settings do
+  owner  node.travis_build_environment.user
+  group  node.travis_build_environment.group
+
+  mode   0644
+
+  source "bundler_config.yml.erb"
+  variables Hash[:suffix => node.travis_build_environment.installation_suffix]
+  action :nothing
+end
+
+
+directory(File.join(node.travis_build_environment.home, ".bundle")) do
+  owner  node.travis_build_environment.user
+  group  node.travis_build_environment.group
+
+  action :create
+  notifies :create, resources(:template => bundler_settings)
+end

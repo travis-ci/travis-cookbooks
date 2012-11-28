@@ -92,7 +92,8 @@ node.python.multi.pythons.each do |py|
     end
   end
 
-  packages = if py.to_s.downcase == "pypy"
+  packages = if ["python3.3", "3.3", "python3.2", "3.2", "pypy"].include?(py.to_s.downcase)
+               # some versions fail to install NumPy. MK.
                node.python.pip.packages.reject { |p| p =~ /numpy/ }
              else
                node.python.pip.packages

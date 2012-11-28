@@ -29,8 +29,6 @@ include_recipe "openssh"
 
 include_recipe "unarchivers"
 
-include_recipe "emacs"
-
 include_recipe "travis_build_environment::root"
 include_recipe "travis_build_environment::ci_user"
 

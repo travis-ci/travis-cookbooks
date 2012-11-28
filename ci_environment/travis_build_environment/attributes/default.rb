@@ -7,6 +7,8 @@ default[:travis_build_environment] = {
   :hosts                => Hash.new,
   :builds_volume_size   => "350m",
   :use_tmpfs_for_builds => true,
+  # "org" or "com"
+  :installation_suffix  => "org",
 
   :apt                  => {
     # in seconds
