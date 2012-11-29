@@ -48,6 +48,11 @@ include_recipe "mysql::server"
 log "['mysql']['data_dir'] = #{node['mysql']['data_dir']}"
 log "[:mysql][:data_dir] = #{node[:mysql][:data_dir]}"
 
+# stop mysql before copying the files over
+service "mysql" do
+  action :stop
+end
+
 bash "cp -R #{node['mysql']['data_dir']} #{node[:ramfs][:dir]}/mysql" do
   code "cp -R #{node['mysql']['data_dir']} #{node[:ramfs][:dir]}/mysql && chown -R mysql:mysql #{node[:ramfs][:dir]}/mysql"
 
