@@ -19,7 +19,7 @@
 
 include_recipe "ramfs"
 
-node[:postgresql][:data_dir] = "#{node[:ramfs][:dir]}/postgresql"
+node.set[:postgresql][:data_dir] = "#{node[:ramfs][:dir]}/postgresql"
 
 include_recipe "postgresql::server"
 

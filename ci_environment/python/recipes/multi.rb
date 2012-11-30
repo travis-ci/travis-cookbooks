@@ -92,6 +92,13 @@ node.python.multi.pythons.each do |py|
     end
   end
 
+  packages = if ["python3.3", "3.3", "python3.2", "3.2", "pypy"].include?(py.to_s.downcase)
+               # some versions fail to install NumPy. MK.
+               node.python.pip.packages.reject { |p| p =~ /numpy/ }
+             else
+               node.python.pip.packages
+             end
+
   script "preinstall pip packages for virtualenv set 1 (#{py})" do
     interpreter "bash"
     user        node.travis_build_environment.user
@@ -99,7 +106,7 @@ node.python.multi.pythons.each do |py|
 
     cwd node.travis_build_environment.home
     code <<-EOH
-    #{installation_root}/#{py}/bin/pip install --quiet #{node.python.pip.packages.join(' ')} --use-mirrors
+    #{installation_root}/#{py}/bin/pip install --quiet #{packages.join(' ')} --use-mirrors
     EOH
 
     environment({ "VIRTUAL_ENV_DISABLE_PROMPT" => "true" })
@@ -114,7 +121,7 @@ node.python.multi.pythons.each do |py|
 
     cwd node.travis_build_environment.home
     code <<-EOH
-    #{installation_root}/#{py}_with_system_site_packages/bin/pip install --quiet #{node.python.pip.packages.join(' ')} --use-mirrors
+    #{installation_root}/#{py}_with_system_site_packages/bin/pip install --quiet #{packages.join(' ')} --use-mirrors
     EOH
 
     environment({ "VIRTUAL_ENV_DISABLE_PROMPT" => "true" })

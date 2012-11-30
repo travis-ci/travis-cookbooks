@@ -1,69 +1,119 @@
 #
-# Cookbook Name:: sbt
+# Cookbook Name:: sbt-extras
 # Recipe:: default
 #
-# Copyright 2011-2012, Michael S. Klishin
-# Copyright 2011-2012, Travis CI Development Team
+# Copyright 2012, Gilles Cornu
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 
 include_recipe "java"
 
-require "tmpdir"
+script_absolute_path = File.join(node['sbt-extras']['setup_dir'], node['sbt-extras']['script_name'])
+tmp_project_dir = File.join(Chef::Config[:file_cache_path], 'setup-sbt-extras-tmp-project')
 
-include_recipe "libssl::098"
+# Create (or modify) the group of sbt-extras power users (allowed to install new versions of sbt)
+group node['sbt-extras']['group'] do
+  members node['sbt-extras']['group_new_members']
+  append true # add new members, if the group already exists
+end
 
-# This recipe uses homegrown .deb package built with sbt-installer-ubuntizer scripts
-# originally developed by Przemek Pokrywka.
-# See https://github.com/michaelklishin/sbt-installer-ubuntizer
+directory File.join(node['sbt-extras']['setup_dir'], '.lib') do
+  recursive true
+  owner node['sbt-extras']['owner']
+  group node['sbt-extras']['group']
+  mode '2775' # enable 'setgid' flag to force group ID inheritance on sub-elements
+end
 
-tmp = Dir.tmpdir
-case node[:platform]
-when "debian", "ubuntu"
-  ["sbt-#{node.sbt.version}.deb"].each do |deb|
-    path = File.join(tmp, deb)
+# Download sbt-extras script
+remote_file script_absolute_path do
+  source node['sbt-extras']['download_url']
+  backup false
+  mode   '0755'
+  owner  node['sbt-extras']['owner']
+  group  node['sbt-extras']['group']
+end
 
-    remote_file(path) do
-      v = node.sbt.version
+# Optionally create a symlink (typically to be part of default PATH, example: /usr/bin/sbt)
+link node['sbt-extras']['bin_symlink'] do
+  to     script_absolute_path
+  owner  node['sbt-extras']['owner']
+  group  node['sbt-extras']['group']
+  not_if { node['sbt-extras']['bin_symlink'].nil? }
+end
 
-      owner  node.travis_build_environment.user
-      group  node.travis_build_environment.group
-      source "http://files.travis-ci.org/packages/deb/sbt/#{deb}"
+# Install default config files
+directory node['sbt-extras']['config_dir'] do
+  owner node['sbt-extras']['owner']
+  group node['sbt-extras']['group']
+  mode '0755'
+end
+template File.join(node['sbt-extras']['config_dir'], node['sbt-extras']['sbtopts_filename'])  do
+  source "sbtopts.erb"
+  owner  node['sbt-extras']['owner']
+  group  node['sbt-extras']['group']
+  mode   '0664'
+  variables(
+    :arg_mem => node['sbt-extras']['sbtopts']['mem']
+  )
+end
+template File.join(node['sbt-extras']['config_dir'], node['sbt-extras']['jvmopts_filename']) do
+  source "jvmopts.erb"
+  owner  node['sbt-extras']['owner']
+  group  node['sbt-extras']['group']
+  mode   '0664'
+  not_if do 
+    node['sbt-extras']['jvmopts_filename'].empty?
+  end
+end
 
-      not_if "which sbt"
+# Start sbt, to force download and setup of default sbt-laucher
+unless File.directory?(File.join(node['sbt-extras']['setup_dir'], '.lib', node['sbt-extras']['default_sbt_version'])) 
+  directory tmp_project_dir do
+    # Create a very-temporary folder to store dummy project files, created by '-sbt-create' arg
+    mode '0777'
+  end
+  execute "Forcing sbt-extras to install its default sbt version" do
+    command "#{script_absolute_path} -mem #{node['sbt-extras']['sbtopts']['mem']} -batch -sbt-create"
+    user    node['sbt-extras']['owner']
+    group   node['sbt-extras']['group'] 
+    umask   '002' # grant write permission to group.
+    cwd     tmp_project_dir
+    timeout node['sbt-extras']['preinstall_cmd']['timeout']
+    # ATTENTION: chef-execute switch to user, but keep original environment variables (e.g.  HOME=/root)
+    environment ( { 'HOME' => tmp_project_dir } ) # .sbt/.ivy2 files won't be kept.
+  end
+  directory tmp_project_dir do
+    action :delete
+    recursive true
+  end
+end
+
+# Optionally download and pre-install libraries of sbt version-matrix in user own environment
+if node['sbt-extras']['preinstall_matrix']
+  node['sbt-extras']['preinstall_matrix'].keys.each do |sbt_user|
+    node['sbt-extras']['preinstall_matrix'][sbt_user].each do |sbt_version|
+      unless File.directory?(File.join(node['sbt-extras']['user_home_basedir'], sbt_user, '.sbt', sbt_version)) 
+        directory tmp_project_dir do
+          # Create a very-temporary folder to store dummy project files, created by '-sbt-create' arg
+          mode '0777'
+        end
+        execute "running sbt-extras as user #{sbt_user} to pre-install libraries of sbt #{sbt_version}" do
+
+          # ATTENTION: current command only supports sbt 0.11+. See Issues #9 and #10.
+          command "#{script_absolute_path} -mem #{node['sbt-extras']['sbtopts']['mem']} -batch -sbt-version #{sbt_version} -sbt-create"
+          user    sbt_user
+          group   node['sbt-extras']['group']
+          umask   '002'   # grant write permission to group.
+          cwd     tmp_project_dir
+          timeout node['sbt-extras']['preinstall_cmd']['timeout']
+
+          # ATTENTION: chef-execute switch to user, but keep original environment variables (e.g.  HOME=/root)
+          environment ( { 'HOME' => File.join(node['sbt-extras']['user_home_basedir'], sbt_user) } )          
+        end
+        directory tmp_project_dir do
+          action :delete
+          recursive true
+        end
+      end
     end
-
-    package(deb) do
-      action   :install
-      source   path
-      provider Chef::Provider::Package::Dpkg
-
-      not_if "which sbt"
-    end
-  end # each
-end # case
-
-
-node[:sbt][:scala][:versions].each do |version|
-  execute "force sbt to download its own dependencies (for scala #{version})" do
-    # we have to use "help" here because many other commands will cause
-    # sbt to start its interactive REPL session and that will block the entire
-    # chef run. We also must set cwd or the run will stall. MK.
-    command "sbt ++#{version} help compile < /dev/null"
-    user    node.travis_build_environment.user
-    cwd     node.travis_build_environment.home
-
-    timeout node[:sbt][:boot][:timeout]
-    action  :run
   end
 end

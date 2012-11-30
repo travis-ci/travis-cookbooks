@@ -6,9 +6,10 @@ phpenv_path   = "#{node.travis_build_environment.home}/.phpenv"
 
 node.php.multi.versions.each do |php_version|
   phpbuild_build "#{phpenv_path}/versions" do
-    version php_version
-    owner   node.travis_build_environment.user
-    group   node.travis_build_environment.group
+    version   php_version
+    with_pear !php_version.start_with?('5.5')
+    owner     node.travis_build_environment.user
+    group     node.travis_build_environment.group
 
     action  :create
   end

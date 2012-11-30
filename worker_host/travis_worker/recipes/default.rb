@@ -89,17 +89,37 @@ template "#{node[:travis][:worker][:home]}/config/worker.yml" do
 end
 
 bash "download VirtualBox images" do
-  code "#{node[:jruby][:bin]} ./bin/thor travis:vms:download 2>/dev/null"
+  if node[:travis][:worker][:box]
+    code "#{node[:jruby][:bin]} ./bin/thor travis:vms:download #{node[:travis][:worker][:box]} 2>/dev/null"
+    not_if {
+      File.exists?("#{node[:travis][:worker][:home]}/boxes/travis-#{node[:travis][:worker][:env]}-pro.box")
+    }
+  else
+    code "#{node[:jruby][:bin]} ./bin/thor travis:vms:download 2>/dev/null"
+    not_if {
+      File.exists?("#{node[:travis][:worker][:home]}/boxes/travis-#{node[:travis][:worker][:env]}.box")
+    }
+  end
+
+  user "travis"
+  group "travis"
+  cwd node[:travis][:worker][:home]
+  notifies :restart, resources(:service => 'travis-worker')
+  environment({"HOME" => home})
+end
+
+bash "copy box image" do
+  code "cp #{node[:travis][:worker][:home]}/boxes/travis-#{node[:travis][:worker][:env]}-pro.box #{node[:travis][:worker][:home]}/boxes/travis-#{node[:travis][:worker][:env]}.box"
   user "travis"
   group "travis"
   cwd node[:travis][:worker][:home]
   not_if {
     File.exists?("#{node[:travis][:worker][:home]}/boxes/travis-#{node[:travis][:worker][:env]}.box")
   }
-  notifies :restart, resources(:service => 'travis-worker')
-  environment({"HOME" => home})
+  only_if {
+    File.exists?("#{node[:travis][:worker][:home]}/boxes/travis-#{node[:travis][:worker][:env]}-pro.box")
+  }
 end
-
 
 bash "create VirtualBox images" do
   code "#{node[:jruby][:bin]} ./bin/thor travis:vms:create &>/tmp/vbox-create.log"
