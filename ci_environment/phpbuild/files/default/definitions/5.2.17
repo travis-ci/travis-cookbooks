@@ -5,6 +5,7 @@ configure_option "--with-mime-magic"
 configure_option "--with-libdir=lib"
 
 configure_option -D "--with-openssl"
+configure_option -D "--enable-fpm"
 
 configure_option -R "--with-mysql"
 configure_option -R "--with-mysqli"
