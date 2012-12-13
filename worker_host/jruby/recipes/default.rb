@@ -8,6 +8,7 @@ end
 
 remote_file "/var/tmp/#{node[:jruby][:deb]}" do
   source node[:jruby][:deb_url] 
+  action :create_if_missing
 end
 
 dpkg_package "/var/tmp/#{node[:jruby][:deb]}" do
