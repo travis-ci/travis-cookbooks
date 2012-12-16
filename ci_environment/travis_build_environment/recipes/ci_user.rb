@@ -89,7 +89,11 @@ mount "#{node.travis_build_environment.home}/builds" do
   device   "/dev/null" # http://tickets.opscode.com/browse/CHEF-1657, doesn't seem to be included in 0.10.0
   options  "defaults,size=#{node.travis_build_environment.builds_volume_size},noatime"
   action   [:mount, :enable]
-  only_if { node.travis_build_environment[:use_tmpfs_for_builds] }
+  only_if do 
+    tmpfs = node.travis_build_environment[:use_tmpfs_for_builds]
+    puts "node.travis_build_environment[:use_tmpfs_for_builds] = #{tmpfs}"
+    tmpfs
+  end
 end
 
 # link /home/vagrant for those poor projects that absolutely depend on that legacy
