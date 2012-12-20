@@ -35,7 +35,7 @@ when "debian", "ubuntu"
     remote_file(path) do
       owner  node.travis_build_environment.user
       group  node.travis_build_environment.group
-      source "https://github.com/downloads/elasticsearch/elasticsearch/#{deb}"
+      source "http://download.elasticsearch.org/elasticsearch/elasticsearch/#{deb}"
 
       not_if "which elasticsearch"
     end
