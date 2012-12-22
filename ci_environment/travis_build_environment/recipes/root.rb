@@ -42,3 +42,7 @@ end
 cron "make sure eth0 is up" do
   command "/usr/local/bin/recover_eth0.sh"
 end
+
+execute "/opt/ruby/bin/gem install chef" do
+  user "root"
+end
