@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # init.d script with LSB support.
 #
