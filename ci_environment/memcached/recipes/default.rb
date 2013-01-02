@@ -3,7 +3,7 @@
 # Recipe:: default
 #
 # Copyright 2009, Opscode, Inc.
-# Copyright 2011, Travis CI Development Team
+# Copyright 2011-2013, Travis CI Development Team <contact@travis-ci.org>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

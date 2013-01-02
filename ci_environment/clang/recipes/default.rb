@@ -1,7 +1,7 @@
 #
 # Cookbook Name:: clang
 # Recipe:: default
-# Copyright 2012, Travis CI development team
+# Copyright 2012-2013, Travis CI Development Team <contact@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal

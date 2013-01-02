@@ -1,7 +1,7 @@
 #
 # Cookbook Name:: libgdbm
 # Recipe:: default
-# Copyright 2011, Travis CI development team
+# Copyright 2011-2013, Travis CI Development Team <contact@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal

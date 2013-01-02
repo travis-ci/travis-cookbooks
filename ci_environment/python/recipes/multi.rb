@@ -1,7 +1,7 @@
 #
 # Cookbook Name:: python::dead_snakes_ppa
 # Recipe:: default
-# Copyright 2011, Michael S. Klishin & Travis CI development team
+# Copyright 2011, Michael S. Klishin & Travis CI Development Team
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
