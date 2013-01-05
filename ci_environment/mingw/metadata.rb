@@ -1,0 +1,5 @@
+maintainer       "Keno Fischer"
+maintainer_email "kfischer@college.harvard.edu"
+license          "MIT"
+description      "Install MinGW"
+version          "0.1"

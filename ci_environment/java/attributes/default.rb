@@ -39,3 +39,7 @@ default[:java][:oraclejdk7] = {
 default[:java][:oraclejdk8] = {
   :java_home => "/usr/lib/jvm/java-8-oracle"
 }
+
+default['java']['jdk']['7']['windows']['amd64']['url'] = 'http://javadl.sun.com/webapps/download/AutoDL?BundleId=64153'
+default['java']['jdk']['7']['windows']['i386']['url'] = 'http://javadl.sun.com/webapps/download/AutoDL?BundleId=64153'
+
