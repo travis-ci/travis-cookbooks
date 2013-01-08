@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: zeromq
-# Recipe:: 2.0.x
+# Recipe:: ppa
 #
 # Copyright 2011-2013, Travis CI Development Team <contact@travis-ci.org>
 #
@@ -17,17 +17,17 @@
 # limitations under the License.
 #
 
-apt_repository "zeromq PPA" do
-  uri "http://ppa.launchpad.net/chris-lea/zeromq/ubuntu"
-  distribution "natty"
-  components ["main"]
-  key "https://raw.github.com/gist/dc879e13ab46579f80bb/4b9afa5f31d34eaf29ae209f6c2b99891d9935f1/gistfile1.txt"
-  action :add
+case node['platform']
+when "ubuntu"
+  apt_repository "travis_ci_zeromq3" do
+    uri          "http://ppa.launchpad.net/travis-ci/zero-mq/ubuntu"
+    distribution node['lsb']['codename']
+    components   ['main']
+    key          "75E9BCC5"
+    keyserver    "keyserver.ubuntu.com"
+
+    action :add
+  end
 end
 
-package "libzmq-dev"
-package "libzmq1"
-
-# in case some test suites compile bindings like jzmq
-# from source, for whatever reason. MK.
-package "libtool"
+include_recipe "zeromq::default"
