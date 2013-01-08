@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: zeromq
-# Recipe:: default
+# Recipe:: ppa
 #
 # Copyright 2011-2013, Travis CI Development Team <contact@travis-ci.org>
 #
@@ -17,28 +17,11 @@
 # limitations under the License.
 #
 
-require "tmpdir"
-
-tmp = Dir.tmpdir
-case node[:platform]
-when "debian", "ubuntu"
-  package "uuid-dev" do
+case node['platform']
+when "ubuntu"
+  package "zeromq3" do
     action :install
   end
+end
 
-  ["zeromq_2.1.10+fpm0_#{node.travis_build_environment.arch}.deb"].each do |deb|
-    path = File.join(tmp, deb)
 
-    remote_file(path) do
-      source node[:zeromq][:package][:url]
-      owner  node[:zeromq][:package][:user]
-      group  node[:zeromq][:package][:group]
-    end
-
-    package(deb) do
-      action   :install
-      source   path
-      provider Chef::Provider::Package::Dpkg
-    end
-  end # each
-end # case
