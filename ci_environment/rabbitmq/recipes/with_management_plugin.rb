@@ -10,6 +10,4 @@ include_recipe "rabbitmq::default"
 bash "enable rabbitmq management plugin" do
   user "root"
   code "rabbitmq-plugins enable rabbitmq_management"
-
-  notifies :restart,  resources(:service => "rabbitmq-server"), :immediately
 end
