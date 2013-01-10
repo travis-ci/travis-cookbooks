@@ -1,4 +1,4 @@
-default[:rabbitmq][:nodename]  = node[:hostname]
+default[:rabbitmq][:nodename]  = nil # as suggested by the opscode cookbooks (http://bit.ly/10hiKhg)
 default[:rabbitmq][:address]  = nil
 default[:rabbitmq][:port]  = nil
 default[:rabbitmq][:config] = nil
