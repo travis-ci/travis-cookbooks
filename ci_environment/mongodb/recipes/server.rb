@@ -41,6 +41,4 @@ service "mongodb" do
   else
     action [:disable, :stop]
   end
-  subscribes :restart, resources(:template => node[:mongodb][:config])
-  subscribes :restart, resources(:template => "/etc/init.d/mongodb") if node[:mongodb][:installed_from] == "src"
 end
