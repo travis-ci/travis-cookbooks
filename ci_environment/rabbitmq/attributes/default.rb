@@ -1,4 +1,4 @@
-default[:rabbitmq][:nodename]  = "localhost" # the opscode cookbooks (http://bit.ly/10hiKhg) suggests nil, but then rabbit does not start, but localhost works fine
+default[:rabbitmq][:nodename]  = "rabbit@localhost" # the opscode cookbooks (http://bit.ly/10hiKhg) suggests nil, but then rabbit does not start, but localhost works fine
 default[:rabbitmq][:address]  = nil
 default[:rabbitmq][:port]  = nil
 default[:rabbitmq][:config] = nil
