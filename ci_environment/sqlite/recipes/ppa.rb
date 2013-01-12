@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: zeromq
+# Cookbook Name:: sqlite3
 # Recipe:: ppa
 #
-# Copyright 2011-2013, Travis CI Development Team <contact@travis-ci.org>
+# Copyright 2012-2013, Travis CI Development Team <contact@travis-ci.org>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,9 +19,16 @@
 
 case node['platform']
 when "ubuntu"
-  package "zeromq3" do
-    action :install
+  apt_repository "travis_ci_sqlite3" do
+    uri          "http://ppa.launchpad.net/travis-ci/sqlite3/ubuntu"
+    distribution node['lsb']['codename']
+    components   ['main']
+
+    key          "75E9BCC5"
+    keyserver    "keyserver.ubuntu.com"
+
+    action :add
   end
 end
 
-
+include_recipe "sqlite3::default"
