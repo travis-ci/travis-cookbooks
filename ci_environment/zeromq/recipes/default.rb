@@ -19,7 +19,7 @@
 
 case node['platform']
 when "ubuntu"
-  package "zeromq3" do
+  package "libzmq3" do
     action :install
   end
 end
