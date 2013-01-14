@@ -105,7 +105,7 @@ classpath()
 # process is not running but the pidfile exists (to match the exit codes for
 # the "status" command; see LSB core spec 3.1, section 20.2)
 #
-CMD_PATT="-user.cassandra.+CassandraDaemon"
+CMD_PATT="cassandra.+CassandraDaemon"
 is_running()
 {
     if [ -f $PIDFILE ]; then
@@ -130,23 +130,9 @@ do_start()
     ulimit -l unlimited
     ulimit -n "$FD_LIMIT"
 
-    cp=`classpath`
-    cassandra_home=`getent passwd cassandra | awk -F ':' '{ print $6; }'`
-    cd /    # jsvc doesn't chdir() for us
+    cd /
 
-    # echo "Classpath is $cp"
-    $JSVC \
-        -user cassandra \
-        -home $JAVA_HOME \
-        -pidfile $PIDFILE \
-        -errfile "&1" \
-        -outfile /var/log/$NAME/output.log \
-        -cp $cp \
-        -Dlog4j.configuration=log4j-server.properties \
-        -XX:HeapDumpPath="$cassandra_home/java_`date +%s`.hprof" \
-        -XX:ErrorFile="$cassandra_home/hs_err_`date +%s`.log" \
-        $JVM_OPTS \
-        org.apache.cassandra.thrift.CassandraDaemon
+    start_daemon -p $PIDFILE $CASSANDRA_HOME/bin/cassandra -p $PIDFILE
 
     is_running && return 0
     for tries in `seq $WAIT_FOR_START`; do
@@ -167,8 +153,9 @@ do_stop()
         #   2 if daemon could not be stopped
         #   other if a failure occurred
     is_running || return 1
-    $JSVC -stop -home $JAVA_HOME -pidfile $PIDFILE \
-            org.apache.cassandra.thrift.CassandraDaemon
+    
+    killproc -p $PID
+    
     is_running && return 2 || return 0
 }
 
