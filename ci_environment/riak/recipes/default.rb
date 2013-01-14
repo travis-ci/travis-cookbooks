@@ -156,7 +156,5 @@ if node[:riak][:package][:type].eql?("binary")
     else
       action [:disable]
     end
-    subscribes :restart, resources(:template => [ "#{node[:riak][:package][:config_dir]}/app.config",
-                                   "#{node[:riak][:package][:config_dir]}/vm.args" ])
   end
 end
