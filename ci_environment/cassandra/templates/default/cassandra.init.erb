@@ -130,9 +130,7 @@ do_start()
     ulimit -l unlimited
     ulimit -n "$FD_LIMIT"
 
-    cd /
-
-    start_daemon -p $PIDFILE $CASSANDRA_HOME/bin/cassandra -p $PIDFILE
+    start-stop-daemon --start --quiet --oknodo --chdir / --exec /bin/bash --oknodo --pidfile $PIDFILE -- -c "$CASSANDRA_HOME/bin/cassandra -p $PIDFILE 2>&1 > /dev/null"
 
     is_running && return 0
     for tries in `seq $WAIT_FOR_START`; do
