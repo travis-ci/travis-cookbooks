@@ -19,15 +19,11 @@ NAME=cassandra
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 CONFDIR=/etc/cassandra
-JSVC=/usr/bin/jsvc
 USER=<%= node.cassandra.user %>
 GROUP=<%= node.cassandra.user %>
 WAIT_FOR_START=10
 CASSANDRA_HOME=/usr/local/cassandra
 FD_LIMIT=100000
-
-# The first existing directory is used for JAVA_HOME if needed.
-JVM_SEARCH_DIRS="/usr/lib/jvm/java-6-openjdk /usr/lib/jvm/java-6-sun /usr/lib/jvm/java-7-openjdk /usr/lib/jvm/java-7-oracle"
 
 [ -e <%= node.cassandra.installation_dir || '/usr/local/cassandra' %>/lib/apache-cassandra-<%= node.cassandra.version %>.jar ] || exit 0
 [ -e /etc/cassandra/cassandra.yaml ] || exit 0
@@ -36,44 +32,6 @@ JVM_SEARCH_DIRS="/usr/lib/jvm/java-6-openjdk /usr/lib/jvm/java-6-sun /usr/lib/jv
 # Read configuration variable file if it is present
 [ -r /etc/default/$NAME ] && . /etc/default/$NAME
 
-# If JAVA_HOME has not been set, try to determine it.
-if [ -z "$JAVA_HOME" ]; then
-    # If java is in PATH, use a JAVA_HOME that corresponds to that. This is
-    # both consistent with how the upstream startup script works, and how
-    # Debian works (read: the use of alternatives to set a system JVM).
-    if [ -n "`which java`" ]; then
-        java=`which java`
-        # Dereference symlink(s)
-        while true; do
-            if [ -h "$java" ]; then
-                java=`readlink "$java"`
-                continue
-            fi
-            break
-        done
-        JAVA_HOME="`dirname $java`/../"
-    # No JAVA_HOME set and no java found in PATH, search for a JVM.
-    else
-        for jdir in $JVM_SEARCH_DIRS; do
-            if [ -x "$jdir/bin/java" ]; then
-                JAVA_HOME="$jdir"
-                break
-            fi
-        done
-    fi
-fi
-JAVA="$JAVA_HOME/bin/java"
-
-# Read Cassandra environment file.
-. /etc/cassandra/cassandra-env.sh
-
-
-
-if [ -z "$JVM_OPTS" ]; then
-    echo "Initialization failed; \$JVM_OPTS not set!" >&2
-    exit 3
-fi
-
 # Load the VERBOSE setting and other rcS variables
 . /lib/init/vars.sh
 
@@ -81,35 +39,9 @@ fi
 # Depend on lsb-base (>= 3.0-6) to ensure that this file is present.
 . /lib/lsb/init-functions
 
-#
-# Function that returns the applications classpath
-#
-classpath()
-{
-    cp="$EXTRA_CLASSPATH"
-    for j in <%= node.cassandra.lib_dir %>/*.jar; do
-        [ "x$cp" = "x" ] && cp=$j || cp=$cp:$j
-    done
-    for j in /usr/share/$NAME/*.jar; do
-        [ "x$cp" = "x" ] && cp=$j || cp=$cp:$j
-    done
-
-    # use JNA if installed in standard location
-    [ -r /usr/share/java/jna.jar ] && cp="$cp:/usr/share/java/jna.jar"
-
-    # Include the conf directory for purposes of log4j-server.properties, and
-    # commons-daemon in support of the daemonization class.
-    printf "$cp:$CONFDIR:/usr/share/java/commons-daemon.jar"
-}
-
-#
-# Function that returns 0 if process is running, or nonzero if not.
-#
-# The nonzero value is 3 if the process is simply not running, and 1 if the
-# process is not running but the pidfile exists (to match the exit codes for
-# the "status" command; see LSB core spec 3.1, section 20.2)
-#
-CMD_PATT="cassandra.+CassandraDaemon"
+# Return
+#   0 if daemon is running
+#   1 if daemon is not running
 is_running()
 {
     start-stop-daemon --status --pidfile $PIDFILE --user $USER && return 0
