@@ -18,16 +18,16 @@ DESC="Cassandra"
 NAME=cassandra
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
-CONFDIR=/etc/cassandra
+CASSANDRA_HOME=<%= node.cassandra.installation_dir %>
+CASSANDRA_CONF=<%= node.cassandra.conf_dir %>
 USER=<%= node.cassandra.user %>
 GROUP=<%= node.cassandra.user %>
 WAIT_FOR_START=10
-CASSANDRA_HOME=/usr/local/cassandra
 FD_LIMIT=100000
 
-[ -e <%= node.cassandra.installation_dir || '/usr/local/cassandra' %>/lib/apache-cassandra-<%= node.cassandra.version %>.jar ] || exit 0
-[ -e /etc/cassandra/cassandra.yaml ] || exit 0
-[ -e /etc/cassandra/cassandra-env.sh ] || exit 0
+[ -e $CASSANDRA_HOME/lib/apache-cassandra-<%= node.cassandra.version %>.jar ] || exit 0
+[ -e $CASSANDRA_CONF/cassandra.yaml ] || exit 0
+[ -e $CASSANDRA_CONF/cassandra-env.sh ] || exit 0
 
 # Read configuration variable file if it is present
 [ -r /etc/default/$NAME ] && . /etc/default/$NAME
