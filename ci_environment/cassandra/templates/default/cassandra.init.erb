@@ -108,12 +108,8 @@ classpath()
 CMD_PATT="cassandra.+CassandraDaemon"
 is_running()
 {
-    if [ -f $PIDFILE ]; then
-        pid=`cat $PIDFILE`
-        grep -Eq "$CMD_PATT" "/proc/$pid/cmdline" 2>/dev/null && return 0
-        return 1
-    fi
-    return 3
+    start-stop-daemon --status --pidfile $PIDFILE --user $USER && return 0
+    return 1
 }
 
 #
@@ -130,9 +126,17 @@ do_start()
     ulimit -l unlimited
     ulimit -n "$FD_LIMIT"
 
-    start-stop-daemon --start --quiet --oknodo --chdir / --exec /bin/bash --oknodo --pidfile $PIDFILE -- -c "$CASSANDRA_HOME/bin/cassandra -p $PIDFILE 2>&1 > /dev/null"
+    start-stop-daemon --start \
+        --quiet \
+        --oknodo \
+        --chdir / \
+        --oknodo \
+        --exec /bin/bash \
+        --pidfile $PIDFILE \
+        -- -c "$CASSANDRA_HOME/bin/cassandra -p $PIDFILE > /dev/null 2>&1"
 
     is_running && return 0
+
     for tries in `seq $WAIT_FOR_START`; do
         sleep 1
         is_running && return 0
@@ -151,10 +155,15 @@ do_stop()
         #   2 if daemon could not be stopped
         #   other if a failure occurred
     is_running || return 1
-    
-    killproc -p $PID
-    
-    is_running && return 2 || return 0
+
+    start-stop-daemon --stop \
+        --pidfile $PIDFILE \
+        --user $USER \
+        --retry TERM/30/KILL/5
+
+    is_running && return 2
+
+    return 0
 }
 
 case "$1" in
