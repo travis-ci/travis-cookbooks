@@ -43,7 +43,7 @@ FD_LIMIT=100000
 #   1 if daemon is not running
 is_running()
 {
-    start-stop-daemon --status --pidfile $PIDFILE --user $USER && return 0
+    [ -f $PIDFILE -a -d /proc/$(cat $PIDFILE) ] && return 0
     return 1
 }
 
