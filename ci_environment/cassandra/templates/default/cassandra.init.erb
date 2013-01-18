@@ -1,4 +1,5 @@
 #! /bin/sh
+
 ### BEGIN INIT INFO
 # Provides:          cassandra
 # Required-Start:    $remote_fs $network $named $time
@@ -48,15 +49,12 @@ is_running()
     return 1
 }
 
-#
-# Function that starts the daemon/service
-#
+# Return
+#   0 if daemon has been started
+#   1 if daemon was already running
+#   2 if daemon could not be started
 do_start()
 {
-    # Return
-    #   0 if daemon has been started
-    #   1 if daemon was already running
-    #   2 if daemon could not be started
     is_running && return 1
 
     ulimit -l unlimited
@@ -81,19 +79,17 @@ do_start()
         sleep 1
         is_running && return 0
     done
+
     return 2
 }
 
-#
-# Function that stops the daemon/service
-#
+# Returns
+#   0 if daemon has been stopped
+#   1 if daemon was already stopped
+#   2 if daemon could not be stopped
+#   other if a failure occurred
 do_stop()
 {
-        # Return
-        #   0 if daemon has been stopped
-        #   1 if daemon was already stopped
-        #   2 if daemon could not be stopped
-        #   other if a failure occurred
     is_running || return 1
 
     start-stop-daemon --stop \
@@ -107,7 +103,7 @@ do_stop()
 }
 
 case "$1" in
-  start)
+    start)
         echo "Starting $DESC"
         [ "$VERBOSE" != no ] && log_daemon_msg "Starting $DESC" "$NAME"
         do_start
@@ -116,7 +112,7 @@ case "$1" in
                 2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
         esac
         ;;
-  stop)
+    stop)
         echo "Stopping $DESC"
         [ "$VERBOSE" != no ] && log_daemon_msg "Stopping $DESC" "$NAME"
         do_stop
@@ -125,7 +121,7 @@ case "$1" in
                 2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
         esac
         ;;
-  restart|force-reload)
+    restart|force-reload)
         echo "Restarting $DESC"
         log_daemon_msg "Restarting $DESC" "$NAME"
         do_stop
@@ -144,17 +140,16 @@ case "$1" in
                 ;;
         esac
         ;;
-  status)
-    is_running
-    stat=$?
-    case "$stat" in
-      0) log_success_msg "$DESC is running" ;;
-      1) log_failure_msg "could not access pidfile for $DESC" ;;
-      *) log_success_msg "$DESC is not running" ;;
-    esac
-    exit "$stat"
-    ;;
-  *)
+    status)
+        is_running
+        stat=$?
+        case "$stat" in
+            0) log_success_msg "$DESC is running" ;;
+            *) log_success_msg "$DESC is not running" ;;
+        esac
+        exit "$stat"
+        ;;
+    *)
         echo "Usage: $SCRIPTNAME {start|stop|restart|force-reload|status}" >&2
         exit 3
         ;;
