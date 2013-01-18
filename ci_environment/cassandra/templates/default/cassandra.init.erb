@@ -20,6 +20,8 @@ PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 CONFDIR=/etc/cassandra
 JSVC=/usr/bin/jsvc
+USER=<%= node.cassandra.user %>
+GROUP=<%= node.cassandra.user %>
 WAIT_FOR_START=10
 CASSANDRA_HOME=/usr/local/cassandra
 FD_LIMIT=100000
@@ -64,6 +66,8 @@ JAVA="$JAVA_HOME/bin/java"
 
 # Read Cassandra environment file.
 . /etc/cassandra/cassandra-env.sh
+
+
 
 if [ -z "$JVM_OPTS" ]; then
     echo "Initialization failed; \$JVM_OPTS not set!" >&2
@@ -126,11 +130,15 @@ do_start()
     ulimit -l unlimited
     ulimit -n "$FD_LIMIT"
 
+    touch $PIDFILE
+    chown $USER:$GROUP $PIDFILE
+
     start-stop-daemon --start \
         --quiet \
         --oknodo \
         --chdir / \
         --oknodo \
+        --chuid $USER:$GROUP \
         --exec /bin/bash \
         --pidfile $PIDFILE \
         -- -c "$CASSANDRA_HOME/bin/cassandra -p $PIDFILE > /dev/null 2>&1"
