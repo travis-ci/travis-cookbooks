@@ -23,6 +23,7 @@ node.set[:java][:java_home] = node.java.oraclejdk7.java_home
 # keep this in mind.
 
 package "debconf-utils"
+package "curl"
 
 # accept Oracle License v1.1, otherwise the package won't install
 execute "/bin/echo -e oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections"
@@ -75,4 +76,8 @@ cookbook_file "/usr/lib/jvm/.java-7-oracle.jinfo" do
   source "oraclejdk7.jinfo"
   owner "root"
   mode 0644
+end
+
+if node.java.oraclejdk7.install_jce_unlimited
+  execute "curl -L --cookie 'ARU_LANG=US; s_cc=true; gpw_e24=http%3A%2F%2Fwww.oracle.com%2Ftechnetwork%2Fjava%2Fjavase%2Fdownloads%2Fjce-6-download-429243.html; s_sq=oracleotnlive%2Coracleglobal%3D%2526pid%253Dotn%25253Aen-us%25253A%25252Fjava%25252Fjavase%25252Fdownloads%25252Fjce-6-download-429243.html%2526pidt%253D1%2526oid%253Dhttp%25253A%25252F%25252Fwww.oracle.com%25252Ftechnetwork%25252Fjava%25252Fjavase%25252Fdownloads%25252Fjce-6-download-429243.html%2526ot%253DA'  http://download.oracle.com/otn-pub/java/jce/7/UnlimitedJCEPolicyJDK7.zip -o /tmp/policy.zip && sudo unzip -j -o /tmp/policy.zip *.jar -d #{node.java.oraclejdk7.java_home}/jre/lib/security && rm /tmp/policy.zip"
 end
