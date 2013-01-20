@@ -67,6 +67,14 @@ execute "erlang.releases.update" do
   subscribes :run, resources(:remote_file => node.kerl.path)
 end
 
+cookbook_file "#{node.travis_build_environment.home}/.erlang.cookie" do
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
+  mode 0755
+
+  source "erlang.cookie"
+end
+
 
 node.kerl.releases.each do |rel, build|
   execute "build Erlang #{rel}" do
