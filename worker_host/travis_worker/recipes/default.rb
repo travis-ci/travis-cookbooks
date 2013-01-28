@@ -127,7 +127,8 @@ runit_service "travis-worker" do
   options :jruby => node[:jruby][:bin],
           :worker_home => node[:travis][:worker][:home],
           :user => "travis",
-          :group => "travis"
+          :group => "travis",
+          :jruby_opts => node[:travis][:worker][:jruby_opts]
 end
 
 template "/etc/monit/conf.d/travis-worker.monitrc" do

@@ -1,4 +1,4 @@
 #!/bin/bash
 exec 2>&1
 cd <%= @options[:worker_home] %>
-exec chpst -u <%= @options[:user] %>:<%= @options[:group] %> <%= @option[:travis][:worker][:jruby_opts] %> <%= @options[:jruby] %> ./bin/thor travis:worker:boot
+exec chpst -u <%= @options[:user] %>:<%= @options[:group] %> <%= @option[:jruby_opts] %> <%= @options[:jruby] %> ./bin/thor travis:worker:boot
