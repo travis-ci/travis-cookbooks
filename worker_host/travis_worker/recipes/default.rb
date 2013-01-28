@@ -61,7 +61,7 @@ link "#{node[:travis][:worker][:home]}/.VirtualBox/VirtualBox.xml" do
 end
 
 bash "bundle gems" do
-  code "#{File.dirname(node[:jruby][:bin])}/bundle install --deployment --binstubs"
+  code "#{node[:travis][:worker][:jruby_opts]} #{File.dirname(node[:jruby][:bin])}/bundle install --deployment --binstubs"
   user "travis"
   group "travis"
   cwd node[:travis][:worker][:home]
