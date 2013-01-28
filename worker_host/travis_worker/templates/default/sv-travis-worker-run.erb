@@ -1,5 +1,5 @@
 #!/bin/bash
 exec 2>&1
 cd <%= @options[:worker_home] %>
-<%= @options[:jruby_opts] %>
+<%= "export JRUBY_OPTS=#{@options[:jruby_opts]}" if @options[:jruby_opts] %>
 exec chpst -u <%= @options[:user] %>:<%= @options[:group] %> <%= @options[:jruby] %> ./bin/thor travis:worker:boot
