@@ -60,11 +60,8 @@ link "#{node[:travis][:worker][:home]}/.VirtualBox/VirtualBox.xml" do
   }
 end
 
-jruby_opts = node[:travis][:worker][:jruby_opts]
-jruby_opts = "JRUBY_OPTS=#{node[:travis][:worker][:jruby_opts]} " if jruby_opts
-
 bash "bundle gems" do
-  code "#{jruby_opts}#{File.dirname(node[:jruby][:bin])}/bundle install --deployment --binstubs"
+  code "#{File.dirname(node[:jruby][:bin])}/bundle install --deployment --binstubs"
   user "travis"
   group "travis"
   cwd node[:travis][:worker][:home]
@@ -130,8 +127,7 @@ runit_service "travis-worker" do
   options :jruby => node[:jruby][:bin],
           :worker_home => node[:travis][:worker][:home],
           :user => "travis",
-          :group => "travis",
-          :jruby_opts => node[:travis][:worker][:jruby_opts]
+          :group => "travis"
 end
 
 template "/etc/monit/conf.d/travis-worker.monitrc" do
