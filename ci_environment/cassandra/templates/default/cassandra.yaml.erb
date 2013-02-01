@@ -274,6 +274,16 @@ listen_address: localhost
 # Leaving this blank will set it to the same value as listen_address
 # broadcast_address: 1.2.3.4
 
+
+# Whether to start the native transport server.
+# Currently, only the thrift server is started by default because the native
+# transport is considered beta.
+# Please note that the address on which the native transport is bound is the
+# same as the rpc_address. The port however is different and specified below.
+start_native_transport: true
+# port for the CQL native transport to listen for clients on
+native_transport_port: 9042
+
 # The address to bind the Thrift RPC service to -- clients connect
 # here. Unlike ListenAddress above, you *can* specify 0.0.0.0 here if
 # you want Thrift to listen on all interfaces.
