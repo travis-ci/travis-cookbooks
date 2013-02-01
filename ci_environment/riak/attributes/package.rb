@@ -20,7 +20,7 @@
 default.riak.package.type = "binary"
 if !(node.kernel.machine == "x86_64")
   # the only 32 bit package of 1.2.0. MK.
-  default.riak.package.url  = "http://downloads.basho.com.s3-website-us-east-1.amazonaws.com/riak/CURRENT/ubuntu/lucid/riak_1.2.1-1_i386.deb"
+  default.riak.package.url  = "http://s3.amazonaws.com/downloads.basho.com/riak/1.2/1.2.1/ubuntu/lucid/riak_1.2.1-1_i386.deb"
 end
 default.riak.package.version.major = "1"
 default.riak.package.version.minor = "2"
