@@ -1,7 +1,9 @@
--XX:ReservedCodeCacheSize=256M
+-server
 -Xms2048M
 -Xmx2048M
 -Xss6M
--XX:+CMSClassUnloadingEnabled
--XX:+UseConcMarkSweepGC
 -XX:MaxPermSize=512M
+-XX:ReservedCodeCacheSize=256M
+-XX:+UseConcMarkSweepGC
+-XX:+CMSClassUnloadingEnabled
+-XX:+TieredCompilation
