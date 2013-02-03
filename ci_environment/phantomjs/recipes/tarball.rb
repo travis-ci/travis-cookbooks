@@ -22,6 +22,7 @@
 # THE SOFTWARE.
 
 # This recipe provides Phantom.js using official tarball for Linux.
+package "libfontconfig1"
 
 # 1. Download the tarball
 require "tmpdir"

@@ -60,18 +60,8 @@ link "#{node[:travis][:worker][:home]}/.VirtualBox/VirtualBox.xml" do
   }
 end
 
-if not node[:travis][:worker][:post_checkout].empty?
-  bash "run post checkout hook (#{node[:travis][:worker][:post_checkout][:command]})" do
-    code node[:travis][:worker][:post_checkout][:command]
-    user "travis"
-    not_if "cd #{node[:travis][:worker][:home]} && #{node[:travis][:worker][:post_checkout][:condition]}"
-    cwd node[:travis][:worker][:home]
-    notifies :restart, resources(:service => 'travis-worker')
-  end
-end
-
 bash "bundle gems" do
-  code "#{File.dirname(node[:jruby][:bin])}/bundle install --path vendor/bundle --binstubs"
+  code "#{File.dirname(node[:jruby][:bin])}/bundle install --deployment --binstubs"
   user "travis"
   group "travis"
   cwd node[:travis][:worker][:home]
