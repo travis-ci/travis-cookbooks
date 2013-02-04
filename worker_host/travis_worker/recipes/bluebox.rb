@@ -59,9 +59,8 @@ end
     group "travis"
     mode "0600"
     variables :amqp => node[:travis][:worker][:amqp],
-              :worker => node[:travis][:worker].merge(
-                :hostname => worker_name
-              ),
+              :worker => node[:travis][:worker],
+              :hostname => worker_name,
               :bluebox => node[:bluebox],
               :librato => node[:collectd_librato]
 

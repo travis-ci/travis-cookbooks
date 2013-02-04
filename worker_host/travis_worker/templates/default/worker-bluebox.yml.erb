@@ -1,11 +1,11 @@
 env: <%= @worker[:env] %>
 linux:
-  host: <%= @worker[:hostname] %>
+  host: <%= @hostname %>
   log_level: <%= @worker[:log_level] %>
   amqp:
-    <% @amqp.each do |key, value| -%>
-      <%= key %>: <%= value %>
-    <% end -%>
+  <% @amqp.each do |key, value| -%>
+    <%= key %>: <%= value %>
+  <% end -%>
   vms:
     provider: <%= @worker[:provider] %>
     count: <%= @worker[:vms] %>
