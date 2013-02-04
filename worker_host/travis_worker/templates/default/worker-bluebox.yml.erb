@@ -3,11 +3,9 @@ linux:
   host: <%= @worker[:hostname] %>
   log_level: <%= @worker[:log_level] %>
   amqp:
-    host: <%= @amqp[:host] %>
-    virtual_host: <%= @amqp[:virtual_host] %>
-    port: <%= @amqp[:port] %>
-    username: <%= @amqp[:username] %>
-    password: <%= @amqp[:password] %>
+    <% @amqp.each do |key, value| -%>
+      <%= key %>: <%= value %>
+    <% end -%>
   vms:
     provider: <%= @worker[:provider] %>
     count: <%= @worker[:vms] %>
