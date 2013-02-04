@@ -1,0 +1,23 @@
+env: <%= @worker[:env] %>
+linux:
+  host: <%= @worker[:hostname] %>
+  log_level: <%= @worker[:log_level] %>
+  amqp:
+    host: <%= @amqp[:host] %>
+    virtual_host: <%= @amqp[:virtual_host] %>
+    port: <%= @amqp[:port] %>
+    username: <%= @amqp[:username] %>
+    password: <%= @amqp[:password] %>
+  vms:
+    provider: <%= @worker[:provider] %>
+    count: <%= @worker[:vms] %>
+  blue_box:
+    customer_id: <%= @bluebox[:customer_id] %>
+    api_key: <%= @bluebox[:api_key] %>
+    flavor_id: <%= @bluebox[:flavor_id] %>
+    location_id: <%= @bluebox[:location_id] %>
+  librato:
+    email: <%= @librato[:email] %>
+    token: <%= @librato[:token] %>
+  language_mappings:
+    haskell: jvm
