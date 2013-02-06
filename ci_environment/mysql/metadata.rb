@@ -12,7 +12,7 @@ recipe            "mysql::server", "Installs packages required for mysql servers
   supports os
 end
 
-depends "openssl"
+depends "openssl", "ramfs"
 
 attribute "mysql/server_root_password",
   :display_name => "MySQL Server Root Password",
