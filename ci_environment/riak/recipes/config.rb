@@ -51,14 +51,14 @@ case node.riak.kv.storage_backend
 when :riak_kv_bitcask_backend # bitcask.rb
   node.set['riak'].delete(:eleveldb)
   node.set['riak'].delete(:innostore)
-  node.riak.set['kv'].delete(:riak_kv_dets_backend_root)
+  node.set['riak'].kv.delete(:riak_kv_dets_backend_root)
   unless (node.riak.bitcask).to_hash["sync_strategy"].is_a?(Mash)
     node.riak.bitcask.sync_strategy = (node.riak.bitcask.sync_strategy).to_s.to_sym
   end
 when :riak_kv_eleveldb_backend # eleveldb.rb
   node.set['riak'].delete(:bitcask)
   node.set['riak'].delete(:innostore)
-  node.riak.set['kv'].delete(:riak_kv_dets_backend_root)
+  node.set['riak'].kv.delete(:riak_kv_dets_backend_root)
 when :riak_kv_dets_backend # dets.rb
   node.set['riak'].delete(:bitcask)
   node.set['riak'].delete(:eleveldb)
@@ -66,5 +66,5 @@ when :riak_kv_dets_backend # dets.rb
 when # innostore.rb
   node.set['riak'].delete(:bitcask)
   node.set['riak'].delete(:eleveldb)
-  node.riak.set['kv'].delete(:riak_kv_dets_backend_root)
+  node.set['riak'].kv.delete(:riak_kv_dets_backend_root)
 end
