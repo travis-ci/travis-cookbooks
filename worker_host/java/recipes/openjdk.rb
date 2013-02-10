@@ -21,6 +21,10 @@ pkgs = value_for_platform(
                           ["centos","redhat","fedora"] => {
                             "default" => ["java-1.6.0-openjdk","java-1.6.0-openjdk-devel"]
                           },
+                          ["ubuntu"] => {
+                            "12.04" => ["openjdk-7-jdk", "default-jdk"],
+                            "default" => ["openjdk-6-jdk","default-jdk"]
+                          },
                           "default" => ["openjdk-6-jdk","default-jdk"]
                           )
 
@@ -30,6 +34,8 @@ execute "update-java-alternatives" do
                   "java-6-openjdk"
                 when ["ubuntu", "11.10"] then
                   "java-1.6.0-openjdk"
+                when ["ubuntu", "12.04"] then
+                  "java-1.7.0-openjdk"
                 else
                   "java-1.6.0-openjdk"
                 end

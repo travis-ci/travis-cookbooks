@@ -30,23 +30,25 @@ template "/etc/monit/monitrc" do
   notifies :run, resources(:execute => "monit-reload")
 end
 
-template "/etc/monit/conf.d/alerts.monitrc" do
-  source "alerts.erb"
-  owner "root"
-  group "root"
-  mode "0600"
-  variables :alerts => node[:monit][:alerts]
-  notifies :run, resources(:execute => "monit-reload")
-end
-
-node[:monit][:checks][:enabled].each do |check|
-  data = node[:monit][:checks][check]
-  template "/etc/monit/conf.d/#{check}.monitrc" do
-    source "#{check}.erb"
-    mode "0644"
+if node[:monit][:checks][:enabled].any?
+  template "/etc/monit/conf.d/alerts.monitrc" do
+    source "alerts.erb"
     owner "root"
     group "root"
-    variables :data => data
+    mode "0600"
+    variables :alerts => node[:monit][:alerts]
     notifies :run, resources(:execute => "monit-reload")
+  end
+
+  node[:monit][:checks][:enabled].each do |check|
+    data = node[:monit][:checks][check]
+    template "/etc/monit/conf.d/#{check}.monitrc" do
+      source "#{check}.erb"
+      mode "0644"
+      owner "root"
+      group "root"
+      variables :data => data
+      notifies :run, resources(:execute => "monit-reload")
+    end
   end
 end
