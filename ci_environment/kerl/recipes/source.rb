@@ -70,7 +70,7 @@ end
 cookbook_file "#{node.travis_build_environment.home}/.erlang.cookie" do
   owner node.travis_build_environment.user
   group node.travis_build_environment.group
-  mode 0755
+  mode 0600
 
   source "erlang.cookie"
 end
