@@ -54,7 +54,7 @@ template "#{node.travis_build_environment.home}/.bashrc" do
   group node.travis_build_environment.group
   mode 0755
 
-  source "ci_user/dot_bashrc.sh"
+  source "ci_user/dot_bashrc.sh.erb"
 end
 
 
