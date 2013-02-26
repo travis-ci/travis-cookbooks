@@ -13,3 +13,8 @@ default[:travis][:worker][:env] = 'ruby'
 default[:travis][:worker][:hostname] = "#{node[:travis][:worker][:env]}.worker.travis-ci.com"
 default[:travis][:worker][:log_level] = 'info'
 default[:travis][:worker][:workers] = 1
+default[:papertrail][:watch_files] = {}
+
+1.upto(node[:travis][:worker][:workers]) do |num|
+  set[:papertrail][:watch_files]["/etc/sv/travis-worker-#{num}/log/main/current"] = 'travis-worker'
+end

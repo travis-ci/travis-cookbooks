@@ -9,3 +9,4 @@ collectd_plugin "cpu"
 collectd_plugin "interface" do
   options :interface => "lo", :ignore_selected => true
 end
+
