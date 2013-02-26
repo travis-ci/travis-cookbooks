@@ -1,1 +1,1 @@
-default[:apt][:mirror] = nil
+default[:apt][:mirror] = :de

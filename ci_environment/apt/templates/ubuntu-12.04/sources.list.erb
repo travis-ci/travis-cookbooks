@@ -1,4 +1,3 @@
-<% if node.apt.mirror %>
 deb http://<%= node.apt.mirror %>.archive.ubuntu.com/ubuntu/ precise main restricted
 deb-src http://<%= node.apt.mirror %>.archive.ubuntu.com/ubuntu/ precise main restricted
 
@@ -17,7 +16,6 @@ deb-src http://<%= node.apt.mirror %>.archive.ubuntu.com/ubuntu/ precise-updates
 
 deb http://<%= node.apt.mirror %>.archive.ubuntu.com/ubuntu/ precise-backports main restricted universe multiverse
 deb-src http://<%= node.apt.mirror %>.archive.ubuntu.com/ubuntu/ precise-backports main restricted universe multiverse
-<% end %>
 
 deb http://security.ubuntu.com/ubuntu precise-security main restricted
 deb-src http://security.ubuntu.com/ubuntu precise-security main restricted
