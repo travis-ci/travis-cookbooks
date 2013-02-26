@@ -7,7 +7,7 @@ end
 
 child_pid = nil
 
-%w{INT TERM CONT}.each do |signal|
+%w{INT TERM}.each do |signal|
   trap signal do
     puts "Terminating child"
     Process.kill(:TERM, child_pid)
