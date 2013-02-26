@@ -16,7 +16,7 @@ end
   app = "worker-#{worker}"
   worker_name = "#{app}.#{node[:fqdn]}"
   home = "#{node[:travis][:worker][:home]}/#{app}"
-  service_name = "travis-worker-#{app}"
+  service_name = "travis-worker-#{worker}"
 
   service service_name do
     action :nothing
@@ -25,7 +25,7 @@ end
   directory home do
     action :create
     recursive true
-    owner "travis"  
+    owner "travis"
     group "travis"
     mode "0755"
   end
@@ -67,7 +67,7 @@ end
     notifies :restart, resources(:service => service_name)
   end
 
-  runit_service "travis-worker-#{app}" do
+  runit_service "travis-worker-#{worker}" do
     options :jruby => node[:jruby][:bin],
             :worker_home => home,
             :user => "travis",
@@ -75,7 +75,7 @@ end
     template_name "travis-worker"
   end
 
-  template "/etc/monit/conf.d/travis-worker-#{app}.monitrc" do
+  template "/etc/monit/conf.d/travis-worker-#{worker}.monitrc" do
     source "travis-worker.monitrc.erb"
     owner "root"
     group "root"
