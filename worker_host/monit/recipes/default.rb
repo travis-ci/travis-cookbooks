@@ -31,13 +31,15 @@ template "/etc/monit/monitrc" do
 end
 
 if node[:monit][:checks][:enabled].any?
-  template "/etc/monit/conf.d/alerts.monitrc" do
-    source "alerts.erb"
-    owner "root"
-    group "root"
-    mode "0600"
-    variables :alerts => node[:monit][:alerts]
-    notifies :run, resources(:execute => "monit-reload")
+  if node[:monit][:alerts].any?
+    template "/etc/monit/conf.d/alerts.monitrc" do
+      source "alerts.erb"
+      owner "root"
+      group "root"
+      mode "0600"
+      variables :alerts => node[:monit][:alerts]
+      notifies :run, resources(:execute => "monit-reload")
+    end
   end
 
   node[:monit][:checks][:enabled].each do |check|
