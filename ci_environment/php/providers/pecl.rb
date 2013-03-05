@@ -32,7 +32,10 @@ action :install do
         fi
 
         pecl info #{extension}
-        if [ $? != 0 ]; then
+        return=$?
+        if [ $return = 0 ]; then
+          echo "Extension #{extension} was already installed for PHP #{php_version}."
+        elif [ $return = 1 ]; then
           result=$(pecl install #{extension} | tail -1)
           if [[ "$result" =~ ^ERROR: ]]; then
             echo "There was an error installing extension #{extension} for PHP #{php_version}:"
@@ -41,7 +44,8 @@ action :install do
           fi
           echo "Extension #{extension} successfully installed for PHP #{php_version}."
         else
-          echo "Extension #{extension} was already installed for PHP #{php_version}."
+          echo "There was an error installing extension #{extension} for PHP #{php_version}."
+          exit 1
         fi
       EOF
     end
