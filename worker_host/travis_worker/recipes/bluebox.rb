@@ -12,6 +12,17 @@ execute "monit-reload" do
   command "monit reload"
 end
 
+package "ruby1.9.3" do
+  action :install
+end
+
+cookbook_file "/usr/local/bin/signal_wrapper" do
+  source "signal_wrapper.rb"
+  mode "0755"
+  owner "root"
+  backup false
+end
+
 1.upto(node[:travis][:worker][:workers]) do |worker| 
   app = "worker-#{worker}"
   worker_name = "#{app}.#{node[:fqdn]}"

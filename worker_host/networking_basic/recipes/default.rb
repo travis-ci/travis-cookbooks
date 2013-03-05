@@ -10,21 +10,15 @@
 packages = [
   'lsof',
   'iptables',
-  'jwhois',
-  'whois',
   'curl',
   'wget',
   'rsync',
-  'jnettop',
   'nmap',
-  'traceroute',
   'ethtool',
   'iproute',
   'iputils-ping',
   'netcat-openbsd',
   'tcpdump',
-  'elinks',
-  'lynx',
   'bind9-host'
 ]
 
