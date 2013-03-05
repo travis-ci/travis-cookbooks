@@ -2,9 +2,14 @@ default[:php][:multi][:versions] = ["5.2.17", "5.3.3", "5.3.22", "5.4.12", "5.5.
 default[:php][:multi][:aliases]  = {"5.2" => "5.2.17", "5.3" => "5.3.22", "5.4" => "5.4.12", "5.5" => "5.5.0alpha4"}
 
 default[:php][:multi][:extensions] = {
-  'apc'       => {},
-  'memcache'  => {},
+  'apc'       => {
+    'versions' => default[:php][:multi][:versions].reject { |version| version.start_with?("5.5") }
+  },
+  'memcache'  => {
+    'versions' => default[:php][:multi][:versions].reject { |version| version.start_with?("5.5") }
+  },
   'memcached' => {
+    'versions' => default[:php][:multi][:versions].reject { |version| version.start_with?("5.5") },
     'before_packages' => %w(libevent-dev libcloog-ppl0),
     'before_script'   => <<-EOF
       wget https://launchpad.net/libmemcached/1.0/1.0.13/+download/libmemcached-1.0.13.tar.gz
@@ -13,8 +18,11 @@ default[:php][:multi][:extensions] = {
       ./configure && make && make install
     EOF
   },
-  'mongo'     => {},
+  'mongo'     => {
+    'versions' => default[:php][:multi][:versions].reject { |version| version.start_with?("5.5") }
+  },
   'amqp'      => {
+    'versions' => default[:php][:multi][:versions].reject { |version| version.start_with?("5.5") },
     'before_script'   => <<-EOF
       git clone git://github.com/alanxz/rabbitmq-c.git
       cd rabbitmq-c
@@ -24,6 +32,7 @@ default[:php][:multi][:extensions] = {
     EOF
   },
   'pear.zero.mq/zmq-beta' => {
+    'versions' => default[:php][:multi][:versions].reject { |version| version.start_with?("5.5") },
     'channel'         => 'pear.zero.mq',
     'before_packages' => %w(libzmq-dev)
   }
