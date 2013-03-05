@@ -12,9 +12,9 @@ default[:php][:multi][:extensions] = {
     'versions' => default[:php][:multi][:versions].reject { |version| version.start_with?("5.5") },
     'before_packages' => %w(libevent-dev libcloog-ppl0),
     'before_script'   => <<-EOF
-      wget https://launchpad.net/libmemcached/1.0/1.0.13/+download/libmemcached-1.0.13.tar.gz
-      tar xzf libmemcached-1.0.13.tar.gz
-      cd libmemcached-1.0.13
+      wget https://launchpad.net/libmemcached/1.0/1.0.16/+download/libmemcached-1.0.16.tar.gz
+      tar xzf libmemcached-1.0.16.tar.gz
+      cd libmemcached-1.0.16
       ./configure && make && make install
     EOF
   },
