@@ -3,6 +3,10 @@ action :install do
   extension    = new_resource.extension
   versions     = new_resource.versions
 
+  new_resource.before_recipes.each do |recipe|
+    @run_context.include_recipe recipe
+  end
+
   new_resource.before_packages.each do |pkg|
     package pkg do
       action :install

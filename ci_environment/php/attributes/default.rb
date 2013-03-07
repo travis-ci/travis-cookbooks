@@ -9,7 +9,7 @@ default[:php][:multi][:extensions] = {
     'versions' => default[:php][:multi][:versions].reject { |version| version.start_with?("5.5") }
   },
   'memcached' => {
-    'versions' => default[:php][:multi][:versions].reject { |version| version.start_with?("5.5") },
+    'versions'        => default[:php][:multi][:versions].reject { |version| version.start_with?("5.5") },
     'before_packages' => %w(libevent-dev libcloog-ppl0),
     'before_script'   => <<-EOF
       wget https://launchpad.net/libmemcached/1.0/1.0.16/+download/libmemcached-1.0.16.tar.gz
@@ -22,8 +22,8 @@ default[:php][:multi][:extensions] = {
     'versions' => default[:php][:multi][:versions].reject { |version| version.start_with?("5.5") }
   },
   'amqp'      => {
-    'versions' => default[:php][:multi][:versions].reject { |version| version.start_with?("5.5") },
-    'before_script'   => <<-EOF
+    'versions'      => default[:php][:multi][:versions].reject { |version| version.start_with?("5.5") },
+    'before_script' => <<-EOF
       git clone git://github.com/alanxz/rabbitmq-c.git
       cd rabbitmq-c
       git submodule init
@@ -32,8 +32,9 @@ default[:php][:multi][:extensions] = {
     EOF
   },
   'pear.zero.mq/zmq-beta' => {
-    'versions' => default[:php][:multi][:versions].reject { |version| version.start_with?("5.5") },
-    'channel'         => 'pear.zero.mq',
-    'before_packages' => %w(libzmq-dev)
+    'versions'        => default[:php][:multi][:versions].reject { |version| version.start_with?("5.5") },
+    'before_recipes'  => %w(zeromq::ppa),
+    'before_packages' => %w(libzmq3-dev),
+    'channel'         => 'pear.zero.mq'
   }
 }
