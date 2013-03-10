@@ -19,3 +19,7 @@
 #
 
 include_recipe "python::package"
+
+bash "link /dev/shm to /run/shm" do
+  code "sudo rm -rf /dev/shm && sudo ln -s /run/shm /dev/shm"
+end
