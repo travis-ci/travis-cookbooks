@@ -8,6 +8,7 @@ node.php.multi.extensions.each do |php_extension, options|
     before_recipes  options['before_recipes']
     before_packages options['before_packages']
     before_script   options['before_script']
+    script          options['script']
     owner           node.travis_build_environment.user
     group           node.travis_build_environment.group
 
