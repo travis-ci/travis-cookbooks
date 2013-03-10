@@ -99,6 +99,26 @@ node.python.multi.pythons.each do |py|
                node.python.pip.packages
              end
 
+  # https://github.com/denik/sslfix
+  # http://stackoverflow.com/questions/3241658/how-to-install-ssl-for-python-2-5-on-debian-linux
+  script "install libbluetooth-dev and sslfix" do
+    interpreter "bash"
+    user        node.travis_build_environment.user
+    group       node.travis_build_environment.group
+
+    cwd node.travis_build_environment.home
+    code <<-EOH
+    sudo apt-get install libbluetooth-dev
+    #{installation_root}/#{py}/bin/pip install --quiet sslfix --use-mirrors
+    EOH
+
+    environment({ "VIRTUAL_ENV_DISABLE_PROMPT" => "true" })
+    
+    not_if { !["python2.5", "2.5"].include?(py.to_s.downcase) }
+
+    action :nothing
+  end
+
   script "preinstall pip packages for virtualenv set 1 (#{py})" do
     interpreter "bash"
     user        node.travis_build_environment.user
