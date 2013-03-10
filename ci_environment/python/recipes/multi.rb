@@ -109,7 +109,7 @@ node.python.multi.pythons.each do |py|
     cwd node.travis_build_environment.home
     code <<-EOH
     sudo apt-get install libbluetooth-dev
-    #{installation_root}/#{py}/bin/pip install --quiet sslfix --use-mirrors
+    #{installation_root}/#{py}/bin/pip install --quiet sslfix --use-mirrors --insecure
     EOH
 
     environment({ "VIRTUAL_ENV_DISABLE_PROMPT" => "true" })
@@ -129,7 +129,7 @@ node.python.multi.pythons.each do |py|
     cwd node.travis_build_environment.home
     code <<-EOH
     sudo apt-get install libbluetooth-dev
-    #{installation_root}/#{py}_with_system_site_packages/bin/pip install --quiet sslfix --use-mirrors
+    #{installation_root}/#{py}_with_system_site_packages/bin/pip install --quiet sslfix --use-mirrors --insecure
     EOH
 
     environment({ "VIRTUAL_ENV_DISABLE_PROMPT" => "true" })
