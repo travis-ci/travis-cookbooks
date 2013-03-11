@@ -114,7 +114,7 @@ node.python.multi.pythons.each do |py|
 
     environment({ "VIRTUAL_ENV_DISABLE_PROMPT" => "true" })
     
-    not_if { !["python2.5", "2.5"].include?(py.to_s.downcase) }
+    only_if { ["python2.5", "2.5"].include?(py.to_s.downcase) }
 
     action :nothing
   end
@@ -134,7 +134,7 @@ node.python.multi.pythons.each do |py|
 
     environment({ "VIRTUAL_ENV_DISABLE_PROMPT" => "true" })
     
-    not_if { !["python2.5", "2.5"].include?(py.to_s.downcase) }
+    only_if { ["python2.5", "2.5"].include?(py.to_s.downcase) }
 
     action :nothing
   end
