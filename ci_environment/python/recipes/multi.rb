@@ -179,8 +179,8 @@ node.python.multi.pythons.each do |py|
 
     action :create
     # commented out until we find a workaround for Vagrant issue #516
-    notifies :run, resources(:script => "install libbluetooth-dev and sslfix set 1 (#{py})")
-    notifies :run, resources(:script => "preinstall pip packages for virtualenv set 1 (#{py})")
+    notifies :run, resources(:script => "install libbluetooth-dev and sslfix set 1 (#{py})"), :immediately
+    notifies :run, resources(:script => "preinstall pip packages for virtualenv set 1 (#{py})"), :immediately
   end
 
   log "Creating a new virtualenv for #{py} with --system-site-packages"
@@ -193,7 +193,7 @@ node.python.multi.pythons.each do |py|
 
     action :create
     # commented out until we find a workaround for Vagrant issue #516
-    notifies :run, resources(:script => "install libbluetooth-dev and sslfix set 2 (#{py})")
-    notifies :run, resources(:script => "preinstall pip packages for virtualenv set 2 (#{py})")
+    notifies :run, resources(:script => "install libbluetooth-dev and sslfix set 2 (#{py})"), :immediately
+    notifies :run, resources(:script => "preinstall pip packages for virtualenv set 2 (#{py})"), :immediately
   end
 end
