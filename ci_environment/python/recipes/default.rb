@@ -20,6 +20,11 @@
 
 include_recipe "python::package"
 
-bash "link /dev/shm to /run/shm" do
-  code "sudo rm -rf /dev/shm && sudo ln -s /run/shm /dev/shm"
+directory "/dev/shm" do
+  recursive true
+  action :delete
+end
+
+link "/dev/shm" do
+  to "/run/shm"
 end
