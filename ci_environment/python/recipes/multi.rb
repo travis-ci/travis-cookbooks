@@ -197,15 +197,3 @@ node.python.multi.pythons.each do |py|
     notifies :run, resources(:script => "preinstall pip packages for virtualenv set 2 (#{py})")
   end
 end
-
-# link /dev/shm to /run/shm
-directory "/dev/shm" do
-  recursive true
-  action :delete
-  not_if { File.symlink?("/dev/shm") }
-end
-
-link "/dev/shm" do
-  to "/run/shm"
-  not_if { File.symlink?("/dev/shm") }
-end
