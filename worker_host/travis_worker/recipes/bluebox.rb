@@ -71,7 +71,7 @@ end
     mode "0600"
     variables :amqp => node[:travis][:worker][:amqp],
               :worker => node[:travis][:worker],
-              :hostname => worker_name,
+              :hostname => node[:travis][:worker][:hostname],
               :bluebox => node[:bluebox],
               :librato => node[:collectd_librato]
 
