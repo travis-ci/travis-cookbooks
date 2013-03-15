@@ -28,6 +28,7 @@ end
   worker_name = "#{app}.#{node[:fqdn]}"
   home = "#{node[:travis][:worker][:home]}/#{app}"
   service_name = "travis-worker-#{worker}"
+  host_name = "#{worker}.#{node[:travis][:worker][:hostname]}"
 
   service service_name do
     action :nothing
@@ -71,7 +72,7 @@ end
     mode "0600"
     variables :amqp => node[:travis][:worker][:amqp],
               :worker => node[:travis][:worker],
-              :hostname => node[:travis][:worker][:hostname],
+              :hostname => host_name,
               :bluebox => node[:bluebox],
               :librato => node[:collectd_librato]
 
