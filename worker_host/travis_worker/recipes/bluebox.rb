@@ -28,7 +28,7 @@ end
   worker_name = "#{app}.#{node[:fqdn]}"
   home = "#{node[:travis][:worker][:home]}/#{app}"
   service_name = "travis-worker-#{worker}"
-  host_name = "#{worker}.#{node[:travis][:worker][:hostname]}"
+  host_name = "#{node[:travis][:worker][:hostname]}-#{worker}.#{node[:travis][:worker][:domain]}"
 
   service service_name do
     action :nothing
