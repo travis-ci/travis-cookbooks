@@ -1,5 +1,5 @@
-default[:php][:multi][:versions] = ["5.2.17", "5.3.3", "5.3.22", "5.4.12", "5.5.0alpha4"]
-default[:php][:multi][:aliases]  = {"5.2" => "5.2.17", "5.3" => "5.3.22", "5.4" => "5.4.12", "5.5" => "5.5.0alpha4"}
+default[:php][:multi][:versions] = ["5.2.17", "5.3.3", "5.3.23", "5.4.13", "5.5.0beta1"]
+default[:php][:multi][:aliases]  = {"5.2" => "5.2.17", "5.3" => "5.3.23", "5.4" => "5.4.13", "5.5" => "5.5.0beta1"}
 
 default[:php][:multi][:extensions] = {
   'apc'       => {
