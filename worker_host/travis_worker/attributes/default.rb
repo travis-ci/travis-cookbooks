@@ -10,7 +10,7 @@ default[:travis][:worker][:amqp] = {
 }
 default[:travis][:worker][:vms] = 20
 default[:travis][:worker][:env] = 'ruby'
-default[:travis][:worker][:hostname] = "#{node[:travis][:worker][:env]}.worker.travis-ci.com"
+default[:travis][:worker][:hostname] = "#{node[:hostname]}.bluebox.travis-ci.com"
 default[:travis][:worker][:log_level] = 'info'
 default[:travis][:worker][:workers] = 1
 default[:papertrail][:watch_files] = {}

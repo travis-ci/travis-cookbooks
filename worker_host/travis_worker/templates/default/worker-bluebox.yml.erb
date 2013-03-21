@@ -16,6 +16,10 @@ linux:
     location_id: <%= @bluebox[:location_id] %>
   librato:
     email: <%= @librato[:email] %>
-    token: <%= @librato[:token] %>
+    token: <%= @librato[:api_token] %>
   language_mappings:
     haskell: jvm
+    clojure: jvm
+    scala: jvm
+    groovy: jvm
+    java: jvm
