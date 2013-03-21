@@ -1,6 +1,6 @@
 default[:phpenv] = {
   :git => {
     :repository => "git://github.com/CHH/phpenv.git",
-    :revision   => "a3091e84de6dd2c61ea1bdb96cf3053c62740a3f"
+    :revision   => "01a2c1e25096f8ff10f2f781428a5d470e1ecaba"
   }
 }
