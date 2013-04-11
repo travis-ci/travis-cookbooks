@@ -1,0 +1,9 @@
+check process <%= @service_name %>
+  with pidfile /etc/sv/<%= @service_name %>/supervise/pid
+  alert ops@travis-ci.com on { restart }
+  group travis-worker
+  if changed pid then alert
+  if totalcpu > 95% for 5 cycles then alert
+  if totalcpu > 95% for 10 cycles then restart
+  stop program "/usr/bin/sv stop <%= @service_name %>"
+  start program "/usr/bin/sv start <%= @service_name %>"

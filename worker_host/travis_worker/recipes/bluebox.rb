@@ -88,11 +88,11 @@ end
   end
 
   template "/etc/monit/conf.d/travis-worker-#{worker}.monitrc" do
-    source "travis-worker.monitrc.erb"
+    source "travis-worker-bluebox.monitrc.erb"
     owner "root"
     group "root"
     mode "0644"
-    variables :home => home
+    variables :service_name => service_name
     notifies :run, resources(:execute => 'monit-reload')
   end
 end
