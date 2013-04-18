@@ -14,6 +14,9 @@ linux:
     api_key: <%= @bluebox[:api_key] %>
     flavor_id: <%= @bluebox[:flavor_id] %>
     location_id: <%= @bluebox[:location_id] %>
+<% if @bluebox[:ipv6_only] -%>
+    ipv6_only: <%= @bluebox[:ipv6_only] %>
+<% end -%>
   librato:
     email: <%= @librato[:email] %>
     token: <%= @librato[:api_token] %>
@@ -23,3 +26,6 @@ linux:
     scala: jvm
     groovy: jvm
     java: jvm
+<% if @worker[:template_override] -%>
+  template_override: <%= @worker[:template_override] %>
+<% end -%>
