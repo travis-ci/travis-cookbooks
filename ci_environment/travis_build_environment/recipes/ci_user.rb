@@ -40,6 +40,15 @@ cookbook_file "#{node.travis_build_environment.home}/.gemrc" do
 end
 
 
+cookbook_file "#{node.travis_build_environment.home}/.erlang.cookie" do
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
+  mode 0400
+
+  source "ci_user/dot_erlang_dot_cookie"
+end
+
+
 template "#{node.travis_build_environment.home}/.bashrc" do
   owner node.travis_build_environment.user
   group node.travis_build_environment.group

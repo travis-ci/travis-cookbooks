@@ -60,8 +60,8 @@ service "rabbitmq-server" do
   supports :restart => true, :status => true, :reload => true
 
   if node.rabbitmq.service.enabled
-    action [:enable, :start]
+    action [:enable, :stop]
   else
-    action [:disable, :start]
+    action [:disable, :stop]
   end
 end

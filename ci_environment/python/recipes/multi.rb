@@ -99,6 +99,36 @@ node.python.multi.pythons.each do |py|
                node.python.pip.packages
              end
 
+
+
+  log "Creating a new virtualenv for #{py} w/o --system-site-packages"
+  python_virtualenv "python_#{py}" do
+    owner       node.travis_build_environment.user
+    group       node.travis_build_environment.group
+    interpreter py
+    path        "#{installation_root}/#{py}"
+
+    action :create
+  end
+  
+  # https://github.com/denik/sslfix
+  # http://stackoverflow.com/questions/3241658/how-to-install-ssl-for-python-2-5-on-debian-linux
+  script "install libbluetooth-dev and sslfix set 1 (#{py})" do
+    interpreter "bash"
+    user        node.travis_build_environment.user
+    group       node.travis_build_environment.group
+
+    cwd node.travis_build_environment.home
+    code <<-EOH
+    sudo apt-get install libbluetooth-dev
+    #{installation_root}/#{py}/bin/pip install --quiet sslfix --use-mirrors --insecure
+    EOH
+
+    environment({ "VIRTUAL_ENV_DISABLE_PROMPT" => "true" })
+    
+    only_if { ["python2.5", "2.5"].include?(py.to_s.downcase) }
+  end
+
   script "preinstall pip packages for virtualenv set 1 (#{py})" do
     interpreter "bash"
     user        node.travis_build_environment.user
@@ -110,8 +140,37 @@ node.python.multi.pythons.each do |py|
     EOH
 
     environment({ "VIRTUAL_ENV_DISABLE_PROMPT" => "true" })
+  end
 
-    action :nothing
+
+
+  log "Creating a new virtualenv for #{py} with --system-site-packages"
+  python_virtualenv "python_#{py}_with_system_site_packages" do
+    owner       node.travis_build_environment.user
+    group       node.travis_build_environment.group
+    interpreter py
+    system_site_packages true
+    path        "#{installation_root}/#{py}_with_system_site_packages"
+
+    action :create
+  end
+
+  # https://github.com/denik/sslfix
+  # http://stackoverflow.com/questions/3241658/how-to-install-ssl-for-python-2-5-on-debian-linux
+  script "install libbluetooth-dev and sslfix set 2 (#{py})" do
+    interpreter "bash"
+    user        node.travis_build_environment.user
+    group       node.travis_build_environment.group
+
+    cwd node.travis_build_environment.home
+    code <<-EOH
+    sudo apt-get install libbluetooth-dev
+    #{installation_root}/#{py}_with_system_site_packages/bin/pip install --quiet sslfix --use-mirrors --insecure
+    EOH
+
+    environment({ "VIRTUAL_ENV_DISABLE_PROMPT" => "true" })
+    
+    only_if { ["python2.5", "2.5"].include?(py.to_s.downcase) }
   end
 
   script "preinstall pip packages for virtualenv set 2 (#{py})" do
@@ -125,33 +184,5 @@ node.python.multi.pythons.each do |py|
     EOH
 
     environment({ "VIRTUAL_ENV_DISABLE_PROMPT" => "true" })
-
-    action :nothing
-  end
-
-
-  log "Creating a new virtualenv for #{py} w/o --system-site-packages"
-  python_virtualenv "python_#{py}" do
-    owner       node.travis_build_environment.user
-    group       node.travis_build_environment.group
-    interpreter py
-    path        "#{installation_root}/#{py}"
-
-    action :create
-    # commented out until we find a workaround for Vagrant issue #516
-    notifies :run, resources(:script => "preinstall pip packages for virtualenv set 1 (#{py})")
-  end
-
-  log "Creating a new virtualenv for #{py} with --system-site-packages"
-  python_virtualenv "python_#{py}_with_system_site_packages" do
-    owner       node.travis_build_environment.user
-    group       node.travis_build_environment.group
-    interpreter py
-    system_site_packages true
-    path        "#{installation_root}/#{py}_with_system_site_packages"
-
-    action :create
-    # commented out until we find a workaround for Vagrant issue #516
-    notifies :run, resources(:script => "preinstall pip packages for virtualenv set 2 (#{py})")
   end
 end

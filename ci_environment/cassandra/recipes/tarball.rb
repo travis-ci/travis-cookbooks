@@ -151,8 +151,8 @@ service "cassandra" do
   supports :start => true, :stop => true, :restart => true
 
   if node.cassandra.service.enabled
-    action [:enable, :start]
+    action [:enable, :stop]
   else
-    action [:disable, :start]
+    action [:disable, :stop]
   end
 end

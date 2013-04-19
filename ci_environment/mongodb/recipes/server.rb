@@ -36,11 +36,9 @@ end
 
 service "mongodb" do
   supports :start => true, :stop => true, "force-stop" => true, :restart => true, "force-reload" => true, :status => true
-  if node.mongodb.service.enabled
-    action [:enable, :start]
+  if node[:mongodb][:service][:enabled]
+    action [:enable, :stop]
   else
-    action [:disable, :start]
+    action [:disable, :stop]
   end
-  subscribes :restart, resources(:template => node[:mongodb][:config])
-  subscribes :restart, resources(:template => "/etc/init.d/mongodb") if node[:mongodb][:installed_from] == "src"
 end

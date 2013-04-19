@@ -1,1 +1,1 @@
-default[:apt][:mirror] = :de
+default[:apt][:mirror] = :us

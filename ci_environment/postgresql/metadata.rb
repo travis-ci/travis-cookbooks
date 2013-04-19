@@ -11,3 +11,5 @@ recipe            "postgresql::server",        "Installs postgresql server packa
 %w{ubuntu debian}.each do |os|
   supports os
 end
+
+depends "ramfs"

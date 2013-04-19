@@ -14,6 +14,9 @@ export RAILS_ENV=test
 export MERB_ENV=test
 export RACK_ENV=test
 
+# http://getcomposer.org/doc/03-cli.md#composer-no-interaction
+export COMPOSER_NO_INTERACTION=1
+
 # --server for the server (C2) JVM JIT compiler
 # -Xcext.enabled=false to disable C extensions, running them in production
 #                      on JRuby is a bad idea but developers often have no
