@@ -60,9 +60,9 @@ template File.join(node['sbt-extras']['config_dir'], node['sbt-extras']['jvmopts
   owner  node['sbt-extras']['owner']
   group  node['sbt-extras']['group']
   mode   '0664'
-  not_if do 
-    node['sbt-extras']['jvmopts_filename'].empty?
-  end
+  variables(
+    :args_mem => node['sbt-extras']['javaopts']['mem']
+  )
 end
 
 # Start sbt, to force download and setup of default sbt-laucher

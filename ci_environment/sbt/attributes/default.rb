@@ -27,6 +27,7 @@ default['sbt-extras']['jvmopts_filename']  = 'jvmopts'
 
 # Following Parameters will be used during recipe execution and also when installing /etc/sbt/sbtopts template
 default['sbt-extras']['sbtopts']['mem']    = 1024 # in megabytes, Tuning of JVM -Xmx and -Xms
+default['sbt-extras']['javaopts']['mem']    = 1024
 
 default['sbt-extras']['preinstall_cmd']['timeout']  = 300 # A maximum of 5 minutes is allowed to download dependencies of a specific scala version.
 

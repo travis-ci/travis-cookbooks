@@ -1,6 +1,8 @@
 -XX:ReservedCodeCacheSize=256M
--Xms2048M
--Xmx2048M
+<% if @arg_mem %>
+-Xms<%= @arg_mem %>M
+-Xmx<%= @arg_mem %>M
+<% end %>
 -Xss6M
 -XX:+CMSClassUnloadingEnabled
 -XX:+UseConcMarkSweepGC
