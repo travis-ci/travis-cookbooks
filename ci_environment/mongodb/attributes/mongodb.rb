@@ -17,7 +17,7 @@ default[:mongodb][:bind_ip] = '127.0.0.1'
 
 ### EXTRA
 default[:mongodb][:log_cpu_io]  = false
-default[:mongodb][:auth]        = false
+default[:mongodb][:auth]        = true
 default[:mongodb][:username]    = ""
 default[:mongodb][:password]    = ""
 default[:mongodb][:verbose]     = false
