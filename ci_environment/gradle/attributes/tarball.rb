@@ -1,4 +1,4 @@
-gradle_version = "1.5"
+gradle_version = "1.6"
 
 default[:gradle] = {
   :version          => gradle_version,
