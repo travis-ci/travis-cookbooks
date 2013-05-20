@@ -1,4 +1,4 @@
-require_recipe 'users'
+include_recipe 'users'
 
 package "sudo" do
   action :upgrade
