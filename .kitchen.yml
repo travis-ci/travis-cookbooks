@@ -1,0 +1,223 @@
+---
+driver_plugin: vagrant #TODO: try out 'bluebox' driver (https://github.com/blueboxgroup/kitchen-bluebox)
+
+platforms:
+
+#######################  VALIDATED   ########################
+
+- name: canonical-ubuntu-1204-64
+  attributes:
+    travis_build_environment:
+      user: vagrant
+  driver_config:
+    box: canonical-ubuntu-1204-64
+    box_url: http://cloud-images.ubuntu.com/vagrant/precise/current/precise-server-cloudimg-amd64-vagrant-disk1.box
+    customize:
+      memory:    1024
+    use_vagrant_provision: false
+    use_vagrant_berkshelf_plugin: false
+    require_chef_omnibus: 10.26.0
+
+- name: travis-ubuntu-1204-64
+  # attributes:
+  #   travis_build_environment:
+  #     user: travis
+  driver_config:
+    box: travis-precise64
+    box_url: http://files.travis-ci.org/boxes/bases/precise64_base_v2.box  # with Chef 10.16.2 preinstalled
+    customize:
+      memory:    1536
+      #cpus:      2
+      #ioapic:    on
+      #nictype1:  'Am79C973'
+    username: travis
+    #ssh_key: travis boxes are packaged with insecure vagrant keys (see https://github.com/travis-ci/travis-worker/tree/master/keys)
+    use_vagrant_provision: false
+    use_vagrant_berkshelf_plugin: false
+
+- name: travis-ubuntu-1204-32
+  # attributes:
+  #   travis_build_environment:
+  #     user: travis
+  driver_config:
+    box: travis-precise32
+    box_url: http://files.travis-ci.org/boxes/bases/precise32_base_v2.box # with Chef 10.16.2 preinstalled
+    customize:
+      memory:    1536
+    username: travis
+    #ssh_key: travis boxes are packaged with insecure vagrant keys (see https://github.com/travis-ci/travis-worker/tree/master/keys)
+    use_vagrant_provision: false
+    use_vagrant_berkshelf_plugin: false
+
+
+##################### NOT OK (yet) #####################
+
+
+# # Virtualbox additions missing, 'kitchen create' (a.k.a. vagrant up --no-provision) fails to finish
+# # Same problem with 13.04 (http://cloud-images.ubuntu.com/vagrant/raring/current/raring-server-cloudimg-amd64-vagrant-disk1.box)
+# - name: canonical-ubuntu-1310-64
+#   attributes:
+#     travis_build_environment:
+#       user: vagrant
+#   driver_config:
+#     box: canonical-ubuntu-1310-64
+#     box_url: http://cloud-images.ubuntu.com/vagrant/saucy/current/saucy-server-cloudimg-amd64-vagrant-disk1.box
+#     customize:
+#       memory:    1024
+#     use_vagrant_provision: false
+#     use_vagrant_berkshelf_plugin: false
+#     require_chef_omnibus: 10.26.0
+
+# # Travis cookbooks are not yet ready for Chef 11.4.4 (compilation errors,...)
+# - name: canonical-ubuntu-1204-64-chef-11
+#   attributes:
+#     travis_build_environment:
+#       user: vagrant
+#   driver_config:
+#     box: canonical-ubuntu-1204-64
+#     box_url: http://cloud-images.ubuntu.com/vagrant/precise/current/precise-server-cloudimg-amd64-vagrant-disk1.box
+#     customize:
+#       memory:   1024
+#     use_vagrant_provision: false
+#     use_vagrant_berkshelf_plugin: false
+#     require_chef_omnibus: 11.4.4 # (or use 'latest' or true to install latest chef version)
+
+suites:
+
+- name: default
+  run_list:
+
+    #
+    # copied from https://github.com/travis-ci/travis-boxes/blob/more_separation/config/worker.standard.yml
+    # TODO: create a small tool to auto-import travis-boxes definitions into .kitchen.yml (.kitchen.local.yml?) suites.
+    #       Note: Josh K. plans to reorganize travis-boxes. To be discussed before going further...
+    #
+
+    - recipe[travis_build_environment]
+    - recipe[apt]
+    - recipe[build-essential]
+    - recipe[clang::tarball]
+    - recipe[golang::multi]
+    - recipe[networking_basic]
+    - recipe[openssl]
+    - recipe[sysctl]
+    - recipe[git::ppa]
+    - recipe[mercurial]
+    - recipe[bazaar]
+    - recipe[subversion]
+    - recipe[scons]
+    - recipe[unarchivers]
+      #
+      # additional libraries needed to run headless WebKit,
+      # build parsers, for ossp-uuid to work and so on
+      #
+    - recipe[libqt4]
+    - recipe[libgdbm]
+    - recipe[libncurses]
+    - recipe[libossp-uuid]
+    - recipe[libffi]
+    - recipe[ragel]
+    - recipe[imagemagick]
+    - recipe[mingw32]
+      #
+      # JDK and related build toolchain
+      #
+    - recipe[java]
+    - recipe[ant]
+    - recipe[maven3]
+    - recipe[leiningen]
+#[wip] have to tweak /etc/jvmopts template to require less than 2-3GB of vRAM
+#    - recipe[sbt]
+    - recipe[gradle::tarball]
+      #
+      # Needs to be installed before RVM
+      #
+    - recipe[sqlite]
+      #
+      # Ruby via RVM (default Debian installations are secure at the cost of
+      # being unusable without PATH tweaking, for our VMs we can just go with RVM.
+      # This includes rubygems, bundler and rake.
+      #
+    - recipe[rvm]
+#[wip] recipe multi interrupts because of missing apt packages, and RVM autolibs mode '2' fails to run apt-get install (not investigated yet)
+#    - recipe[rvm::multi]
+      #
+      # Python and pip
+      #
+    - recipe[python]
+    - recipe[python::devshm]
+    - recipe[python::pip]
+      #
+      # Node.js
+      #
+    - recipe[nodejs::multi]
+      #
+      # Data stores
+      #
+    - recipe[postgresql::client]
+    - recipe[mysql::client]
+    - recipe[mysql::server_on_ramfs]
+    - recipe[postgresql::server_on_ramfs]
+    - recipe[redis::ppa]
+    - recipe[riak]
+    - recipe[mongodb]
+    - recipe[couchdb::ppa]
+    - recipe[memcached]
+    - recipe[neo4j-server::tarball]
+    - recipe[cassandra::tarball]
+      #
+      # Messaging
+      #
+    - recipe[rabbitmq::with_management_plugin]
+    - recipe[zeromq::ppa]
+      #
+      # Search
+      #
+    - recipe[elasticsearch]
+    - recipe[sphinx::all]
+      #
+      # Headless WebKit, browsers, Selenium toolchain, etc
+      #
+    - recipe[xserver]
+    - recipe[firefox]
+    - recipe[chromium]
+    - recipe[phantomjs::tarball]
+      #
+      # Debugging & support
+      #
+    - recipe[emacs::nox]
+    - recipe[vim]
+    - recipe[sweeper]
+
+  attributes:
+
+#
+# Attributes to customize for your integration environment
+#
+
+    apt:
+      mirror: 'ch'
+
+#
+# Attributes below are copied from standard worker run_list, and should not be modified:
+# https://github.com/travis-ci/travis-boxes/blob/more_separation/config/worker.standard.yml
+#
+
+    travis_build_environment:
+      use_tmpfs_for_builds: false
+    rvm:
+      default: ruby-1.9.3-p327
+      rubies:
+        - name: ruby-1.9.3-p327
+      aliases:
+        "1.9.3": ruby-1.9.3-p327
+      gems:
+        - bundler
+        - rake
+        - chef
+    mysql:
+      server_root_password: ""
+    postgresql:
+      max_connections: 256
+
+
