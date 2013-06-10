@@ -1,5 +1,5 @@
-require_recipe 'runit'
-require_recipe 'jruby'
+include_recipe 'runit'
+include_recipe 'jruby'
 
 users = if Chef::Config[:solo]
           node[:users]

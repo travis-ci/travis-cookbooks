@@ -1,4 +1,4 @@
-require_recipe 'collectd'
+include_recipe 'collectd'
 
 collectd_plugin "load"
 

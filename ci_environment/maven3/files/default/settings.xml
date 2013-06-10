@@ -90,7 +90,8 @@
     </profile>
   </profiles>
 
-  <mirrors>
+  <!-- remove the mirrors for now as VMs are based in the US -->
+  <!-- <mirrors>
     <mirror>
       <id>travis-ci-central</id>
       <name>Travis CI Central mirror</name>
@@ -132,5 +133,5 @@
       <url>http://maven.mirrors.travis-ci.org/nexus/content/repositories/codehaus-snapshots/</url>
       <mirrorOf>codehaus-snapshots</mirrorOf>
     </mirror>
-  </mirrors>
+  </mirrors> -->
 </settings>

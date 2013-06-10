@@ -1,5 +1,8 @@
 env: <%= @worker[:env] %>
 linux:
+<% if @worker[:logging_channel] -%>
+  logging_channel: <%= @worker[:logging_channel] %>
+<% end -%>
   host: <%= @hostname %>
   log_level: <%= @worker[:log_level] %>
   amqp:
