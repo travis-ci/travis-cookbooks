@@ -8,7 +8,7 @@ end
 mount node[:ramfs][:dir] do
   fstype   "tmpfs"
   device   "/dev/null" # http://tickets.opscode.com/browse/CHEF-1657
-  options  "defaults,size=256m,noatime"
+  options  "defaults,size=512m,noatime"
   action   [:mount, :enable]
 end
 
