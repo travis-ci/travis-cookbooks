@@ -64,9 +64,9 @@ else
 end
 
 # in pages
-default[:sysctl][:kernel_shmall] = 32768
+default[:sysctl][:kernel_shmall] = 268435456
 # in bytes
-default[:sysctl][:kernel_shmmax] = 134217728
+default[:sysctl][:kernel_shmmax] = 268435456
 
 default[:postgresql][:max_connections] = 512
 
