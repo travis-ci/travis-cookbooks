@@ -29,7 +29,9 @@ node.perlbrew.perls.each do |pl|
   node.perlbrew.modules.each do |mod|
     bash "preinstall #{mod} via cpanm" do
       setup.call(self)
-      code   "#{brew} use #{pl[:name]} && cpanm #{mod} --force --notest --mirror 'http://cpan.mirrors.travis-ci.org'"
+      # remove the mirror for now as VMs are based in the US
+      # --mirror 'http://cpan.mirrors.travis-ci.org'
+      code   "#{brew} use #{pl[:name]} && cpanm #{mod} --force --notest"
     end    
   end
 
