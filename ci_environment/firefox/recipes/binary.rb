@@ -21,27 +21,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-firefox_version = node[:firefox][:version]
-firefox_dir = "/usr/local/firefox/#{firefox_version}"
+ark 'firefox' do
+  url     node['firefox']['download_url']
+  version node['firefox']['version']
+  owner   node['travis_build_environment']['user']
+  group   node['travis_build_environment']['group']
 
-directory firefox_dir do
-  owner  node.travis_build_environment.user
-  group  node.travis_build_environment.group
-  mode   0755
-  action :create
-end
-
-remote_file "/tmp/firefox.tar.bz2" do
-  source "http://ftp.mozilla.org/pub/firefox/releases/#{firefox_version}/linux-x86_64/en-US/firefox-#{firefox_version}.tar.bz2"
-end
-
-bash "untar firefox" do
-  user node.travis_build_environment.user
-  cwd  "/usr/local/firefox/#{firefox_version}"
-  code "tar xf /tmp/firefox.tar.bz2"
-end
-
-link "/usr/local/firefox/#{firefox_version}/firefox/firefox" do
-  to "/usr/local/bin/firefox"
+  has_binaries %w(firefox firefox-bin)
 end
 
