@@ -1,3 +1,3 @@
-default[:config] = {
+default[:composer] = {
   :github_oauth_token => nil
 }

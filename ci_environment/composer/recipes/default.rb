@@ -31,6 +31,6 @@ node[:php][:multi][:versions].each do |php_version|
     owner  node.travis_build_environment.user
     group  node.travis_build_environment.group
     source "config.json.erb"
-    variables(:github_oauth_token => node[:config][:github_oauth_token])
+    variables(:github_oauth_token => node[:composer][:github_oauth_token])
   end
 end
