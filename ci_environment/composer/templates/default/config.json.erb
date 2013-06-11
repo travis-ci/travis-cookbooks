@@ -1,0 +1,9 @@
+{
+    "config": {
+        <% if @github_oauth_token -%>
+        "github-oauth": {
+            "github.com": "<%= @github_oauth_token %>"
+        }
+        <% end -%>
+    }
+}
