@@ -21,6 +21,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+node['firefox']['package_dependencies'].each do |dep|
+ package dep 
+end
+
 ark 'firefox' do
   url     node['firefox']['download_url']
   version node['firefox']['version']
