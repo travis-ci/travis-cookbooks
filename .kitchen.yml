@@ -84,6 +84,14 @@ platforms:
 
 suites:
 
+# Easily validate small portion of the cookbooks
+- name: firefox-pr193
+  run_list:
+    - recipe[travis_build_environment]
+    - recipe[apt]
+    - recipe[firefox::tarball] 
+
+# More complete example corresponding to common cookbooks of all travis workers (work in progress)
 - name: default
   run_list:
 
