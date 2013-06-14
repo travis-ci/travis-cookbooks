@@ -1,10 +1,13 @@
+name             "android-sdk"
 maintainer       "Travis CI Development Team"
 maintainer_email "contact@travis-ci.org"
 license          "Apache 2.0"
 description      "Installs Google Android SDK"
-version          "0.1.0"
+version          "0.0.0" # draft mode
 
-depends          "java"
+%w{ java ark }.each do |dep|
+  depends dep
+end
 
 %w{ ubuntu debian centos redhat fedora scientific suse }.each do |os|
   supports os
