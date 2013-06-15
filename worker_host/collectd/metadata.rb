@@ -12,4 +12,4 @@ recipe "collectd::server", "Installs collectd server"
 recipe "collectd::collectd_web", "Installs collectd web interface"
 
 # Required for collectd_web recipe
-recommends "apache2"
+depends "apache2"

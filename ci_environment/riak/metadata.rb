@@ -22,11 +22,16 @@ maintainer_email  "riak@basho.com"
 license           "Apache 2.0"
 description       "Installs and configures Riak distributed data store"
 version           "1.2.0"
-recipe            "riak", "Installs Riak"
-recipe            "riak::autoconf", "Automatically configure nodes from chef-server information."
-recipe            "riak::innostore", "Install and configure the Innostore backend."
-recipe            "riak::iptables", "Automatically configure iptables rules for Riak."
 
 %w{ubuntu debian centos redhat suse fedora}.each do |os|
   supports os
 end
+
+%w{ iptables libssl }.each do |cb|
+  depends cb
+end
+
+recipe            "riak", "Installs Riak"
+recipe            "riak::autoconf", "Automatically configure nodes from chef-server information."
+recipe            "riak::innostore", "Install and configure the Innostore backend."
+recipe            "riak::iptables", "Automatically configure iptables rules for Riak."
