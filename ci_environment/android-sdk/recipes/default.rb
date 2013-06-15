@@ -41,7 +41,10 @@ end
 execute 'Install Android SDK platforms and tools' do
   environment   ({'ANDROID_HOME' => android_home})
   path          [ File.join(android_home, 'tools') ]
-  command       "#{android_bin} update sdk --no-ui --filter platform,system-image,tool,platform-tool,add-on,extra"
+  #TODO: verify what would be the optimal components to preinstall:
+  #TODO: use --force or not?
+  #command       "#{android_bin} update sdk --no-ui --filter platform,system-image,tool,platform-tool,add-on,extra"
+  command       "#{android_bin} update sdk --no-ui"
   user          node['android-sdk']['owner']
   group         node['android-sdk']['group']
 end
