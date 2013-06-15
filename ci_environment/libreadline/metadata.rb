@@ -1,3 +1,6 @@
 maintainer       "Travis CI Development Team"
 license          "Apache v2.0"
-description      "Installs/Configures libreadline"
+name             "libreadline"
+version          "1.0.0"
+description      "libreadline"
+long_description "Installs/Configures libreadline"

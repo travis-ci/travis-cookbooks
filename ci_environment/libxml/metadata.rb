@@ -1,3 +1,6 @@
 maintainer       "Travis CI Development Team"
 license          "Apache v2.0"
-description      "Installs/Configures libxml"
+name             "libxml"
+version          "1.0.0"
+description      "libxml"
+long_description "Installs/Configures libxml"

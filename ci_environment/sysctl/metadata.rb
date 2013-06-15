@@ -1,3 +1,6 @@
 maintainer       "Travis CI Development Team"
 license          "Apache v2.0"
-description      "Installs/Configures sysctl"
+name             "sysctl"
+version          "1.0.0"
+description      "sysctl"
+long_description "Installs/Configures sysctl"

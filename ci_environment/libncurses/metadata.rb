@@ -1,3 +1,6 @@
 maintainer       "Travis CI Development Team"
 license          "Apache v2.0"
-description      "Installs/Configures libncurses"
+name             "libncurses"
+version          "1.0.0"
+description      "libncurses"
+long_description "Installs/Configures libncurses"
