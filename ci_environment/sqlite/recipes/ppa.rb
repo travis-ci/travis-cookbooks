@@ -31,4 +31,4 @@ when "ubuntu"
   end
 end
 
-include_recipe "sqlite3::default"
+include_recipe "sqlite::default"
