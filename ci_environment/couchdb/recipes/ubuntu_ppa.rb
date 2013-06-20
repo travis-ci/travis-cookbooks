@@ -1,7 +1,3 @@
-#
-# Cookbook Name:: couchdb
-# Recipe:: ubuntu-12.04
-#
 # Copyright 2012-2013, Travis CI Development Team <contact@travis-ci.org>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,23 +13,14 @@
 # limitations under the License.
 #
 
-# This recipe relies on a PPA package and is Ubuntu 12.04 specific. Please
-# keep this in mind.
+# https://launchpad.net/~nilya/+archive/couchdb-1.3
 
 apt_repository "couchdb-ppa" do
-  uri          "http://ppa.launchpad.net/novacut/daily/ubuntu"
+  uri          "http://ppa.launchpad.net/nilya/couchdb-1.3/ubuntu"
   distribution node['lsb']['codename']
   components   ["main"]
-  key          "BE4793F5"
+  key          "A6D3315B"
   keyserver    "keyserver.ubuntu.com"
 
   action :add
-end
-
-package "couchdb" do
-  action :install
-end
-
-service "couchdb" do
-  action [:enable, :start]
 end
