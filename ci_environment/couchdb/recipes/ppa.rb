@@ -20,11 +20,9 @@
 # This recipe relies on a PPA package and is Ubuntu/Debian specific. Please
 # keep this in mind.
 
-case [node[:platform], node[:platform_version]]
-when ["ubuntu", "11.10"] then
-  include_recipe "couchdb::ubuntu1110_ppa"
-when ["ubuntu", "12.04"] then
-  include_recipe "couchdb::ubuntu1204_ppa"
+case node[:platform]
+when "ubuntu" then
+  include_recipe "couchdb::ubuntu_ppa"
 end
 
 package "couchdb" do
