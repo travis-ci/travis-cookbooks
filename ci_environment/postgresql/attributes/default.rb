@@ -30,7 +30,7 @@ when "ubuntu"
   default[:postgresql][:version] = if platform_version.to_f <= 9.04
                                      "8.3"
                                    elsif platform_version.to_f >= 11.10
-                                     "9.1"
+                                     "9.2"
                                    else
                                      "8.4"
                                    end
