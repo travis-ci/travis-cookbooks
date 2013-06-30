@@ -27,7 +27,7 @@ cookbook_file "/etc/profile.d/cabal.sh" do
   mode 0755
 end
 
-if node.ghc.version == "7.6.3" and node.haskell.platform == "2013.2.0.0" then
+if node.ghc.version.to_s.to_f >= 7.6 and node.haskell.platform.to_s.to_f >= 2013.2 then
   include_recipe "haskell::ghc_source"
   include_recipe "haskell::platform_source"
 else
