@@ -74,7 +74,7 @@ end
 
 bash "update all rubies to the latest RubyGems" do
   setup.call(self)
-  code   "#{bin_rvm} all do gem update --system"
+  code   "#{bin_rvm} all --verbose do gem update --system"
 end
 
 aliases.each do |new_name, existing_name|
