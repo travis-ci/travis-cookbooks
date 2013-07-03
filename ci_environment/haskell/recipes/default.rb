@@ -27,12 +27,17 @@ cookbook_file "/etc/profile.d/cabal.sh" do
   mode 0755
 end
 
-case [node.platform, node.platform_version]
-when ["ubuntu", "11.10"] then
+if node.ghc.version.to_s.to_f >= 7.6 and node.haskell.platform.to_s.to_f >= 2013.2 then
   include_recipe "haskell::ghc_source"
   include_recipe "haskell::platform_source"
-when ["ubuntu", "12.04"] then
-  include_recipe "haskell::ghc_package"
-  include_recipe "haskell::platform_package"
+else
+  case [node.platform, node.platform_version]
+  when ["ubuntu", "11.10"] then
+    include_recipe "haskell::ghc_source"
+    include_recipe "haskell::platform_source"
+  when ["ubuntu", "12.04"] then
+    include_recipe "haskell::ghc_package"
+    include_recipe "haskell::platform_package"
+  end
 end
 
