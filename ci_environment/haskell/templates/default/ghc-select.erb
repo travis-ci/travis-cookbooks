@@ -16,15 +16,16 @@ function list_versions() {
 }
 
 function switch_to() {
-  ghc_version=$1
+  ghc_version_input=$1
 
-  if [[ -z "$(list_versions | grep ${ghc_version})" ]]; then
-    echo "Error: switch_to, no such version ${ghc_version}"
+  if [[ -z "${ghc_version_input}" ]]; then
+    echo "Error: switch_to, ghc_version undefined"
     return 1;
   fi
 
+  ghc_version=$(list_versions | grep ${ghc_version_input} | head -n 1)
   if [[ -z "${ghc_version}" ]]; then
-    echo "Error: switch_to, ghc_version undefined"
+    echo "Error: switch_to, no such version ${ghc_version}"
     return 1;
   fi
 
@@ -32,7 +33,6 @@ function switch_to() {
     sudo ln -sf ${BIN_DIR}/${binary}-${ghc_version} ${GLOBAL_BIN}/${binary} -v
   done
 }
-
 
 function main () {
   args=$@
