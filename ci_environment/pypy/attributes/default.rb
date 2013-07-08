@@ -1,4 +1,4 @@
-version = "1.9"
+version = "2.0.2"
 arch = kernel['machine'] =~ /x86_64/ ? "amd64" : "i386"
 
 default[:pypy] = {
