@@ -1,0 +1,54 @@
+#!/bin/bash
+
+BIN_DIR=<%=@bin_dir%>
+GLOBAL_BIN=<%=@global_bin%>
+GHC_BINARIES="<%=@ghc_binaries.join(" ")%>"
+
+function usage() {
+  echo -e "Usage:"
+  echo -e " $0 \t\t\t\t\t Show this usage information"
+  echo -e " $0 list \t\t\t\t List available ghc versions"
+  echo -e " $0 set <version> \t\t\t Set symbolic links to current version"
+}
+
+function list_versions() {
+  find -L ${BIN_DIR} -xtype l | grep -o -P "(?<=ghc-)[0-9\.]+" | sort | uniq
+}
+
+function switch_to() {
+  ghc_version_input=$1
+
+  if [[ -z "${ghc_version_input}" ]]; then
+    echo "Error: switch_to, ghc_version undefined"
+    return 1;
+  fi
+
+  ghc_version=$(list_versions | grep ${ghc_version_input} | head -n 1)
+  if [[ -z "${ghc_version}" ]]; then
+    echo "Error: switch_to, no such version ${ghc_version}"
+    return 1;
+  fi
+
+  for binary in ${GHC_BINARIES}; do
+    sudo ln -sf ${BIN_DIR}/${binary}-${ghc_version} ${GLOBAL_BIN}/${binary} -v
+  done
+}
+
+function main () {
+  args=$@
+  case $args in
+  list)
+    list_versions
+    ;;
+  set*)
+    switch_to "${args#set }"
+    ;;
+  *)
+    usage
+    ;;
+  esac
+  return $?
+}
+
+main $@
+
