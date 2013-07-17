@@ -33,8 +33,9 @@ linux:
   template_override: <%= @worker[:template_override] %>
 <% end -%>
 <% if @worker[:timeouts] -%>
+  timeouts:
   <% @worker[:timeouts].each do |timeout, value| -%>
-  <%= timeout -%>: <%= value %>
+    <%= timeout -%>: <%= value %>
   <% end -%>
 <% end -%>
 <% if @worker[:shutdown_timeout] -%>
