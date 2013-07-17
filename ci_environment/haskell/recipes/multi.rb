@@ -1,12 +1,13 @@
 require 'tmpdir'
 
 ghc_versions = node.haskell.multi.ghcs
-linux_platform = 'unknown-linux'
-arch = node.ghc.arch
 
 installation_root = File.join(node.travis_build_environment.home, "ghc-multi")
-installation_bin = File.join(installation_root, 'bin')
+installation_bin = File.join(installation_root, "bin")
+bin_path = "/usr/local/bin/"
+ghc_binaries = ["ghc","ghc-pkg","haddock-ghc","ghci"]
 
+# create necessary dirs
 [installation_root, installation_bin].each do |d|
   directory d do
     owner node.travis_build_environment.user
@@ -16,10 +17,11 @@ installation_bin = File.join(installation_root, 'bin')
   end
 end
 
+# download, unpack, build and install each ghc compiler and relater platform from sources
 ghc_tmp_dir = Dir.tmpdir
 ghc_versions.each_pair do |ghc_version, settings|
   platform_version = settings[:platform_version]
-  ghc_tarball_name = "ghc-#{ghc_version}-#{arch}-#{linux_platform}.tar.bz2"
+  ghc_tarball_name = "ghc-#{ghc_version}-#{node.ghc.arch}-unknown-linux.tar.bz2"
   ghc_local_tarball = File.join(ghc_tmp_dir, ghc_tarball_name)
   ghc_dir = File.join(installation_root, ghc_version)
 
@@ -38,7 +40,7 @@ ghc_versions.each_pair do |ghc_version, settings|
       sudo make install
       rm -rf ghc-#{ghc_version}
       rm -v #{ghc_local_tarball}
-      ln -sf #{ghc_dir}/bin/ghc /usr/local/bin/ghc
+      ln -sf #{ghc_dir}/bin/ghc #{bin_path}/ghc
       cd ../
     EOS
   end
@@ -69,11 +71,11 @@ ghc_versions.each_pair do |ghc_version, settings|
 
       cabal update
       cabal install hunit c2hs
-      rm /usr/local/bin/ghc -v
+      rm #{bin_path}/ghc -v
     EOS
   end
 
-  ["ghc","ghc-pkg","haddock-ghc"].each do |ghc_binary|
+  ghc_binaries.each do |ghc_binary|
     binary_file = "#{ghc_binary}-#{ghc_version}"
     link File.join(installation_bin, binary_file) do
       to File.join(ghc_dir, "bin", binary_file)
@@ -81,9 +83,22 @@ ghc_versions.each_pair do |ghc_version, settings|
   end
 end
 
+# link all ghc binaries to bin_path
 default_ghc = ghc_versions.select { |_,v| v.has_key?(:default) and v[:default] }.keys.first
-["ghc","ghc-pkg","haddock-ghc"].each do |ghc_binary|
-  link "/usr/local/bin/#{ghc_binary}" do
+ghc_binaries.each do |ghc_binary|
+  link File.join(bin_path, ghc_binary) do
     to File.join(installation_bin, "#{ghc_binary}-#{default_ghc}")
   end
+end
+
+template File.join(installation_root, "ghc-select") do
+  source "ghc-select.erb"
+  mode 0755
+  owner "root"
+  group "root"
+  variables({
+     :bin_dir => installation_bin,
+     :global_bin => bin_path,
+     :ghc_binaries => ghc_binaries,
+  })
 end
