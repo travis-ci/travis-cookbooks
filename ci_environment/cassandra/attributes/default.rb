@@ -1,10 +1,10 @@
-cassandra_version = "1.2.6"
+cassandra_version = "1.2.7"
 
 default[:cassandra] = {
   :version => cassandra_version,
   :tarball => {
     :url => "http://www.apache.org/dist/cassandra/#{cassandra_version}/apache-cassandra-#{cassandra_version}-bin.tar.gz",
-    :md5 => "40f49dc7dbcd49e2e18e2dead7dd074a"
+    :md5 => "b897254c99c6ba5df0d7376571a00806"
   },
   :user => "cassandra",
   :jvm  => {
