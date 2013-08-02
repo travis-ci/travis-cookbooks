@@ -27,6 +27,7 @@ cookbook_file "/etc/profile.d/virtualenv_settings.sh" do
 end
 
 
-python_pip "virtualenv", :version => '1.9.1' do
+python_pip "virtualenv" do
+  version '1.9.1'
   action :install
 end
