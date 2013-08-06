@@ -40,11 +40,22 @@ cookbook_file "/etc/default/locale" do
   source "etc/default/locale.sh"
 end
 
+
+bits     = (node.kernel.machine =~ /x86_64/ ? 64 : 32)
+hostname = case [node[:platform], node[:platform_version]]
+           when ["ubuntu", "11.04"] then
+             "natty#{bits}"
+           when ["ubuntu", "11.10"] then
+             "oneiric#{bits}"
+           when ["ubuntu", "12.04"] then
+             "precise#{bits}"
+           end
+
 template "/etc/hosts" do
   owner "root"
   group "root"
   mode 0644
-
+  variables(:hostname => hostname)
   source "etc/hosts.erb"
 end
 
@@ -52,9 +63,14 @@ template "/etc/hostname" do
   owner "root"
   group "root"
   mode 0644
-
+  variables(:hostname => hostname)
   source "etc/hostname.erb"
 end
+
+execute "hostname #{hostname}" do
+  user "root"
+end
+
 
 template "/etc/security/limits.conf" do
   owner "root"

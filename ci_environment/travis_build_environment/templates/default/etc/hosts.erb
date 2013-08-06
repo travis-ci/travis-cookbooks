@@ -1,17 +1,5 @@
-<%
-bits            = (node.kernel.machine =~ /x86_64/ ? 64 : 32)
-hostname_to_set = case [node[:platform], node[:platform_version]]
-                  when ["ubuntu", "11.04"] then
-                    "natty#{bits}"
-                  when ["ubuntu", "11.10"] then
-                    "oneiric#{bits}"
-                  when ["ubuntu", "12.04"] then
-                    "precise#{bits}"
-                  end
-%>
-
 127.0.0.1       localhost
-127.0.1.1       <%= hostname_to_set %>
+127.0.1.1       <%= @hostname %>
 # host on which base box was built. Erlang services that use Mnesia
 # (like RabbitMQ) may create DB directories with this hostname in the name
 # during provisioning and if we change hostname later, they will have all
@@ -23,7 +11,7 @@ hostname_to_set = case [node[:platform], node[:platform_version]]
 127.0.0.1       vagrant
 
 # The following lines are desirable for IPv6 capable hosts
-::1     localhost ip6-localhost ip6-loopback <%= hostname_to_set %> travis vagrant nettuno
+::1     localhost ip6-localhost ip6-loopback <%= @hostname %> travis vagrant nettuno
 fe00::0 ip6-localnet
 ff00::0 ip6-mcastprefix
 ff02::1 ip6-allnodes
