@@ -41,7 +41,7 @@ bash "install RVM" do
   environment Hash['HOME' => node.travis_build_environment.home, 'rvm_user_install_flag' => '1']
   code        <<-SH
   curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer -o /tmp/rvm-installer &&
-  bash /tmp/rvm-installer #{node.rvm.version}
+  bash /tmp/rvm-installer #{node.rvm.version} --auto-dotfiles
   rm   /tmp/rvm-installer
   ~/.rvm/bin/rvm version
   SH
@@ -59,12 +59,6 @@ remote_directory "#{node.travis_build_environment.home}/.rvm/gemsets" do
   mode        0755
 
   source      "gemsets"
-end
-
-cookbook_file "/etc/profile.d/rvm.sh" do
-  owner node.travis_build_environment.user
-  group node.travis_build_environment.group
-  mode 0755
 end
 
 template "#{node.travis_build_environment.home}/.rvmrc" do
