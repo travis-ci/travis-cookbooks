@@ -50,7 +50,7 @@ end
 
 bash "update RVM to latest stable minor" do
   setup.call(self)
-  code   "#{bin_rvm} get latest-minor --auto-dotfiles"
+  code   "#{bin_rvm} get latest-minor"
 end
 
 # make sure default Ruby is installed first
