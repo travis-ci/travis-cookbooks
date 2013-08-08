@@ -1,0 +1,33 @@
+{
+  "name": "android-sdk",
+  "description": "Installs Google Android SDK",
+  "long_description": "",
+  "maintainer": "Gilles Cornu",
+  "maintainer_email": "foss@gilles.cornu.name",
+  "license": "Apache 2.0",
+  "platforms": {
+    "ubuntu": ">= 0.0.0"
+  },
+  "dependencies": {
+    "java": ">= 0.0.0",
+    "ark": ">= 0.0.0"
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+  },
+  "groupings": {
+  },
+  "recipes": {
+    "android-sdk": "Install and update Google Android SDK"
+  },
+  "version": "0.0.0"
+}

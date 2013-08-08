@@ -25,26 +25,68 @@
 
 include_recipe "java"
 
-Chef::Application.fatal!("This 'Android SDK' cookbook only supports linux/i686 architecture, but this node is a #{node['os']}/#{node['kernel']['machine']} box.") if !(node['os'] == 'linux' && node['kernel']['machine'] == 'i686')
-
-android_home     = File.join(node['ark']['prefix_home'], node['android-sdk']['name'])
+setup_root       = node['android-sdk']['setup_root'].to_s.empty? ? node['ark']['prefix_home'] : node['android-sdk']['setup_root']
+android_home     = File.join(setup_root, node['android-sdk']['name'])
 android_bin      = File.join(android_home, 'tools', 'android')
 
+#
+# Install required libraries
+#
+if (node['platform'] == 'ubuntu')
+  package 'libgl1-mesa-dev'
+end
+
+#
+# Install required 32-bit libraries on 64-bit platforms
+#
+if (node['os'] == 'linux' && node['kernel']['machine'] != 'i686')
+  if (node['platform'] == 'ubuntu')
+    #TODO should check it is an ubuntu 11.10+
+    package 'libstdc++6:i386'
+    package 'lib32z1'
+  else
+    Chef::Application.fatal!("This 'Android SDK' cookbook currently only supports ubuntu 64-bit and other linux 32-bit platforms, but this node is a #{node['platform']}/#{node['kernel']['machine']} box.")
+  end
+end
+
+#
+# Download and setup android-sdk tarball package
+#
 ark node['android-sdk']['name'] do
-  url       node['android-sdk']['download_url']
-  checksum  node['android-sdk']['checksum']
-  version   node['android-sdk']['version']
-  owner     node['android-sdk']['owner']
-  group     node['android-sdk']['group']
+  url         node['android-sdk']['download_url']
+  checksum    node['android-sdk']['checksum']
+  version     node['android-sdk']['version']
+  prefix_root node['android-sdk']['setup_root']
+  prefix_home node['android-sdk']['setup_root']
+  owner       node['android-sdk']['owner']
+  group       node['android-sdk']['group']
+end
+
+#
+# Fix non-friendly 0750 permissions in order to make android-sdk available to all system users
+#
+%w{ add-ons platforms tools }.each do |subfolder|
+  directory File.join(android_home, subfolder) do
+    mode 0755
+  end
+end
+# TODO find a way to handle 'chmod stuff' below with own chef resource (idempotence stuff...)
+execute 'Grant all users to read android files' do
+  command       "chmod -R a+r #{android_home}/*"
+  user          node['android-sdk']['owner']
+  group         node['android-sdk']['group']
+end
+execute 'Grant all users to execute android tools' do
+  command       "chmod -R a+X #{File.join(android_home, 'tools')}/*"
+  user          node['android-sdk']['owner']
+  group         node['android-sdk']['group']
 end
 
 execute 'Install Android SDK platforms and tools' do
-  environment   ({'ANDROID_HOME' => android_home})
-  path          [ File.join(android_home, 'tools') ]
-  #TODO: verify what would be the optimal components to preinstall:
+  environment   ({ 'ANDROID_HOME' => android_home })
+  path          [File.join(android_home, 'tools')]
   #TODO: use --force or not?
-  #command       "#{android_bin} update sdk --no-ui --filter platform,system-image,tool,platform-tool,add-on,extra"
-  command       "#{android_bin} update sdk --no-ui"
+  command       "echo y | #{android_bin} update sdk --no-ui --filter #{node['android-sdk']['components'].join(',')}"
   user          node['android-sdk']['owner']
   group         node['android-sdk']['group']
 end
@@ -58,4 +100,3 @@ template "/etc/profile.d/#{node['android-sdk']['name']}.sh"  do
     :android_home => android_home
   )
 end
-
