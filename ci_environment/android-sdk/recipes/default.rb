@@ -82,15 +82,9 @@ execute 'Grant all users to execute android tools' do
   group         node['android-sdk']['group']
 end
 
-execute 'Install Android SDK platforms and tools' do
-  environment   ({ 'ANDROID_HOME' => android_home })
-  path          [File.join(android_home, 'tools')]
-  #TODO: use --force or not?
-  command       "echo y | #{android_bin} update sdk --no-ui --filter #{node['android-sdk']['components'].join(',')}"
-  user          node['android-sdk']['owner']
-  group         node['android-sdk']['group']
-end
-
+#
+# Configure environment variables (ANDROID_HOME and PATH)
+#
 template "/etc/profile.d/#{node['android-sdk']['name']}.sh"  do
   source "android-sdk.sh.erb"
   mode   0644
@@ -99,4 +93,16 @@ template "/etc/profile.d/#{node['android-sdk']['name']}.sh"  do
   variables(
     :android_home => android_home
   )
+end
+
+#
+# Update and Install Android components
+#
+execute 'Install Android SDK platforms and tools' do
+  environment   ({ 'ANDROID_HOME' => android_home })
+  path          [File.join(android_home, 'tools')]
+  #TODO: use --force or not?
+  command       "echo y | #{android_bin} update sdk --no-ui --filter #{node['android-sdk']['components'].join(',')}"
+  user          node['android-sdk']['owner']
+  group         node['android-sdk']['group']
 end
