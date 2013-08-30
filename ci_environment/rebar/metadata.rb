@@ -1,3 +1,4 @@
+name             "rebar"
 maintainer       "Ward Bekker"
 maintainer_email "ward@equanimity.nl"
 license          "Apache 2.0"

@@ -1,3 +1,4 @@
+name              "perlbrew"
 maintainer        "Magnus Holm"
 maintainer_email  "judofyr@gmail.com"
 license           "MIT"

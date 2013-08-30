@@ -1,3 +1,4 @@
+name              "sphinx"
 maintainer        'Pat Allan'
 maintainer_email  'pat@freelancing-gods.com'
 license           'MIT'

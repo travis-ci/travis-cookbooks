@@ -1,3 +1,4 @@
+name              "postgresql"
 maintainer        "Travis CI Team"
 maintainer_email  "michaelklishin@me.com"
 license           "Apache 2.0"

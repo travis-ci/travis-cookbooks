@@ -1,3 +1,4 @@
+name             "collectd"
 maintainer       "Noan Kantrowitz"
 maintainer_email "nkantrowitz@crypticstudios.com"
 license          "Apache 2.0"

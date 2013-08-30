@@ -1,3 +1,4 @@
+name              "clang"
 maintainer        "Michael S. Klishin, Travis CI Development Team"
 maintainer_email  "michael@defprotocol.org"
 license           "Apache 2.0"

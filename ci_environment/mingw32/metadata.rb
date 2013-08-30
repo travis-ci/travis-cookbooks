@@ -1,3 +1,4 @@
+name              "mingw32"
 maintainer        "Scott J. Goldman"
 maintainer_email  "scottjgo@gmail.com"
 license           "Apache 2.0"

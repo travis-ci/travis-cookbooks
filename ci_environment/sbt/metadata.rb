@@ -1,3 +1,4 @@
+name             "sbt-extras"
 maintainer       "Gilles Cornu"
 maintainer_email "git@gilles.cornu.name"
 license          "Apache 2.0"

@@ -1,3 +1,4 @@
+name             "collectd-librato"
 maintainer       "Librato, Inc."
 maintainer_email "mike@librato.com"
 license          "Apache 2.0"

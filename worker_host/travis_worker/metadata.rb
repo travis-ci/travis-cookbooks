@@ -1,3 +1,4 @@
+name             "travis_worker"
 maintainer       "Travis CI"
 maintainer_email "mathias@travis-ci.org"
 license          "Apache 2.0"

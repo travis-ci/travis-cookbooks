@@ -1,3 +1,4 @@
+name             "networking_basic"
 maintainer       "fredz"
 maintainer_email "fred@frederico-araujo.com"
 license          "Apache 2.0"

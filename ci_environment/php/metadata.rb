@@ -1,3 +1,4 @@
+name              "php"
 maintainer        "Loïc Frering"
 maintainer_email  "loic.frering@gmail.com"
 license           "Apache 2.0"

@@ -1,3 +1,4 @@
+name             "virtualbox"
 maintainer       "The Travis CI Team"
 maintainer_email "mathias@travis-ci.org"
 license          "Apache 2.0"

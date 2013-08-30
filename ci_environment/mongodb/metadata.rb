@@ -1,3 +1,4 @@
+name              "mongodb"
 maintainer        "Michael Strüder"
 maintainer_email  "mikezter@gmail.com"
 license           "Apache 2.0"

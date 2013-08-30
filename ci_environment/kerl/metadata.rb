@@ -1,3 +1,4 @@
+name             "kerl"
 maintainer       "Michael S. Klishin"
 maintainer_email "michael.s.klishin@gmail.com"
 license          "Apache 2.0"

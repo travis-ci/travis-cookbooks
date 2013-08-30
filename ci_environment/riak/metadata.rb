@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+name              "riak"
 maintainer        "Basho Technologies, Inc."
 maintainer_email  "riak@basho.com"
 license           "Apache 2.0"
