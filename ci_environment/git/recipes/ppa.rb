@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: maven3
+# Cookbook Name:: git
 # Recipe:: ppa
 #
 # Copyright 2011-2013, Travis CI Development Team <contact@travis-ci.org>
