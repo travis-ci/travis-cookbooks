@@ -27,7 +27,7 @@ when "debian","ubuntu"
   when "11.04" then
     package "libreadline5-dev"
     package "libreadline5"
-  when "11.10" then
+  else  
     package "libreadline-dev"
     package "libreadline6"
   end
