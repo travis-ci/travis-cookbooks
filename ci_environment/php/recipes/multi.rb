@@ -1,3 +1,6 @@
+include_recipe "bison"
+include_recipe "libreadline"
+
 include_recipe "phpenv"
 include_recipe "phpbuild"
 
