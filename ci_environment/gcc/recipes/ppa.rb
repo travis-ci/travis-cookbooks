@@ -30,7 +30,7 @@ apt_repository "ubuntu-toolchain-r-test" do
   action       :add
 end
 
-include_recipe 'gcc::dependencies'
+include_recipe 'gcc::suggested'
 package "g++-#{node['gcc']['ppa']['version']}"
 
 %w(gcc g++).each do |alt_name|
