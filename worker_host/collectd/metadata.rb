@@ -10,7 +10,10 @@ supports         "ubuntu"
 recipe "collectd", "Installs collectd standalone"
 recipe "collectd::client", "Installs collectd client"
 recipe "collectd::server", "Installs collectd server"
-recipe "collectd::collectd_web", "Installs collectd web interface"
-
+# 
+# recipe "collectd::collectd_web", "Installs collectd web interface", 
+# 'collected_web' disabled as workaround to Chef11 CookbookNotFound exception 
+# when provisioning without cookbook dependency management (Librarian/Berkshelf)
+#
 # Required for collectd_web recipe
-recommends "apache2"
+# depends "apache2"
