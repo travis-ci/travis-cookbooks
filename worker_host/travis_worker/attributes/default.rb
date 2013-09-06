@@ -13,6 +13,7 @@ default[:travis][:worker][:env] = 'ruby'
 default[:travis][:worker][:hostname] = "#{node[:hostname]}.bluebox.travis-ci.com"
 default[:travis][:worker][:log_level] = 'info'
 default[:travis][:worker][:workers] = 1
+default[:travis][:worker][:hosts] = {}
 default[:papertrail][:watch_files] = {}
 
 1.upto(node[:travis][:worker][:workers]) do |num|
