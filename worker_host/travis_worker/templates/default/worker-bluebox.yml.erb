@@ -45,4 +45,5 @@ linux:
   hosts:
   <% @worker[:hosts].each do |name, host| %>
     <%= name -%>: <%= host %>
+  <% end %>
 <% end %>
