@@ -8,8 +8,12 @@ else # usual base directory on unix systems:
 end
 override['sbt-extras']['user_home_basedir'] = node['travis_build_environment']['home'].split("/#{node['travis_build_environment']['user']}").first
 
-default['sbt-extras']['download_url']      = 'https://raw.github.com/gildegoma/sbt-extras/travis-ci/sbt'
-# Refer to this forked 'travis-ci' branch, waiting for https://github.com/paulp/sbt-extras/pull/36 to be accepted and merged into master project.
+default['sbt-extras']['download_url']      = 'https://raw.github.com/gildegoma/sbt-extras/5d8bc0dc460adf08d6c43ba75312bffce339e79b/sbt'
+# ATTENTION: Safely refer to this specific commit, 
+# because 'travis-ci' branch head is now focused on upcoming changes, 
+# that are not backward compatible (e.g. /etc/jvmopts would not be effective)
+# (see details in https://github.com/travis-ci/travis-cookbooks/pull/220)
+
 default['sbt-extras']['default_sbt_version']   = '0.12.2' # ATTENTION: It must match with effective default sbt of installed script.
 # Note: ideally, the default sbt version should be 'found' in downloaded script content (see issue #7)
 
