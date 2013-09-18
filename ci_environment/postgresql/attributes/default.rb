@@ -1,74 +1,24 @@
-#
-# Cookbook Name:: postgresql
-# Attributes:: postgresql
-#
-# Copyright 2008-2009, Opscode, Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-case platform
-when "debian"
-  default[:postgresql][:version] = if platform_version.to_f == 5.0
-                                     "8.3"
-                                   elsif platform_version =~ /.*sid/
-                                     "8.4"
-                                   end
+default['postgresql']['default_version']     = '9.1'
+default['postgresql']['alternate_versions']  = %w(9.2 9.3)
 
-  set[:postgresql][:dir] = "/etc/postgresql/#{node[:postgresql][:version]}/main"
-  set[:postgresql][:data_dir] = "/var/lib/postgresql/#{node[:postgresql][:version]}/main"
-when "ubuntu"
-  default[:postgresql][:version] = if platform_version.to_f <= 9.04
-                                     "8.3"
-                                   elsif platform_version.to_f >= 11.10
-                                     "9.1"
-                                   else
-                                     "8.4"
-                                   end
+default['postgresql']['enabled']             = true
+default['postgresql']['port']                = 5432
+default['postgresql']['ssl']                 = true
+default['postgresql']['max_connections']     = 255
+default['postgresql']['fsync']               = 'off'   # disabled for CI purpose
+default['postgresql']['full_page_writes']    = 'off'   # disabled for CI purpose
+default['postgresql']['client_min_messages'] = 'error' # suppress warning output from build clients
 
-  default[:postgresql][:ssl] = (default[:postgresql][:version].to_f >= 8.4)
 
-  set[:postgresql][:dir] = "/etc/postgresql/#{node[:postgresql][:version]}/main"
-  set[:postgresql][:data_dir] = "/var/lib/postgresql/#{node[:postgresql][:version]}/main"
-when "fedora"
-  default[:postgresql][:version] = if platform_version.to_f <= 12
-                                     "8.3"
-                                   else
-                                     "8.4"
-                                   end
+default['postgresql']['data_on_ramfs']       = true   # enabled for CI purpose
 
-  set[:postgresql][:dir] = "/var/lib/pgsql/data"
-when "redhat","centos"
-  default[:postgresql][:version] = "8.4"
-  set[:postgresql][:dir] = "/var/lib/pgsql/data"
-when "suse"
-  default[:postgresql][:version] = if platform_version.to_f <= 11.1
-                                     "8.3"
-                                   else
-                                     "8.4"
-                                   end
-
-  set[:postgresql][:dir] = "/var/lib/pgsql/data"
+if node['postgresql']['data_on_ramfs']
+  include_attribute 'ramfs::default'
+  default['postgresql']['data_dir']          = "#{node['ramfs']['dir']}/postgresql"
 else
-  default[:postgresql][:version] = "8.4"
-  set[:postgresql][:dir]            = "/etc/postgresql/#{node[:postgresql][:version]}/main"
+  default['postgresql']['data_dir']          = '/var/lib/postgresql'
 end
 
-# in pages
-default[:sysctl][:kernel_shmall] = 268435456
-# in bytes
-default[:sysctl][:kernel_shmmax] = 268435456
+default['postgresql']['client_packages']     = %w(postgresql-client libpq-dev)
 
-default[:postgresql][:max_connections] = 512
-
-# suppress warning output from build clients
-default[:postgresql][:client_min_messages] = "error"
+default['postgresql']['postgis_version']     = '2.1'
