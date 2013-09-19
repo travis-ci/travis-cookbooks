@@ -8,4 +8,6 @@ tmp/*
 /Gemfile.lock
 /.rvmrc
 /.bundle
+.kitchen/
+.kitchen.local.yml
 
