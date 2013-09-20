@@ -46,6 +46,16 @@ if [ -n "$1" ] && [ $1 != 'status' ] && [ $1 != 'stop' ] && [ -n "$running_versi
    exit 13
 fi
 
+<% if node['postgresql']['data_on_ramfs'] %>
+# Copy initial databases to RAMFS
+if [ ! -d <%= node['postgresql']['data_dir'] %> ]; then
+  mkdir <%= node['postgresql']['data_dir'] %>
+  for v in /var/lib/postgresql/*; do
+    cp -rp $v <%= node['postgresql']['data_dir'] %>/
+  done
+fi
+<% end %>
+
 case "$1" in
     start|stop|restart|reload)
 	if [ -z "`pg_lsclusters -h`" ]; then

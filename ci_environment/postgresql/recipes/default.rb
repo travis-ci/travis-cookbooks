@@ -44,18 +44,6 @@ node['postgresql']['client_packages'].each do |p|
 end
 
 #
-# Create base directory on RAMFS
-#
-if node['postgresql']['data_on_ramfs']
-  include_recipe "ramfs"
-  directory node['postgresql']['data_dir'] do
-    owner  'postgres'
-    group  'postgres'
-    mode   0755
-  end
-end
-
-#
 # PostgreSQL Servers
 #
 ([node['postgresql']['default_version']] + node['postgresql']['alternate_versions']).each do |pg_version|
@@ -89,13 +77,6 @@ end
 
     # reload notification disabled in multi-mode (service is stopped during setup)
     #notifies :restart, 'service[postgresql]'
-  end
-
-  if node['postgresql']['data_on_ramfs']
-    execute "Copy #{pg_version} data to RAMFS storage" do
-      command "cp -rp /var/lib/postgresql/#{pg_version} #{node['postgresql']['data_dir']}/#{pg_version}"
-      not_if { File.directory?("#{node['postgresql']['data_dir']}/#{pg_version}") }
-    end
   end
 
 end
