@@ -1,13 +1,32 @@
+
 # ------------------------------------------------ #
 #  The SBT Configuration file.                     #
+#  Run 'sbt -h' to list all available options      #
 # ------------------------------------------------ #
 
-# in Travis CI, never prompt!
+# Enable verbose runner
+#
+<% if node['sbt-extras']['sbtopts']['verbose'] %>
+-v
+<% else %>
+#-v
+<% end %>
+
+# Disable interactive mode
+#
+<% if node['sbt-extras']['sbtopts']['batch'] %>
 -batch
+<% else %>
+#-batch
+<% end %>
 
 # Disable ANSI color codes
 #
+<% if node['sbt-extras']['sbtopts']['no-colors'] %>
+-no-colors
+<% else %>
 #-no-colors
+<% end %>
 
 # Starts sbt even if the current directory contains no sbt project.
 #
@@ -24,14 +43,6 @@
 # Path to local Ivy repository (default: ~/.ivy2)
 #
 #-ivy ~/.ivy2
-
-# set memory options
-#
-#-mem   <integer>
-
-<% if @arg_mem %>
--mem <%= @arg_mem %>
-<% end %>
 
 # Use local caches for projects, no sharing.
 #

@@ -2,39 +2,43 @@ include_attribute 'travis_build_environment'
 
 case platform
 when 'mac_os_x'
-  set['sbt-extras']['user_home_basedir']    = '/Users'
+  set['sbt-extras']['user_home_basedir']       = '/Users'
 else # usual base directory on unix systems:
-  set['sbt-extras']['user_home_basedir']    = '/home'
+  set['sbt-extras']['user_home_basedir']       = '/home'
 end
-override['sbt-extras']['user_home_basedir'] = node['travis_build_environment']['home'].split("/#{node['travis_build_environment']['user']}").first
 
-default['sbt-extras']['download_url']      = 'https://raw.github.com/gildegoma/sbt-extras/5d8bc0dc460adf08d6c43ba75312bffce339e79b/sbt'
-# ATTENTION: Safely refer to this specific commit, 
-# because 'travis-ci' branch head is now focused on upcoming changes, 
-# that are not backward compatible (e.g. /etc/jvmopts would not be effective)
-# (see details in https://github.com/travis-ci/travis-cookbooks/pull/220)
+default['sbt-extras']['download_url']          = 'https://raw.github.com/gildegoma/sbt-extras/travis-ci/sbt'
+                                                 # https://raw.github.com/paulp/sbt-extras/master/sbt
+                                                 # is still pending on https://github.com/paulp/sbt-extras/pull/62
 
-default['sbt-extras']['default_sbt_version']   = '0.12.2' # ATTENTION: It must match with effective default sbt of installed script.
-# Note: ideally, the default sbt version should be 'found' in downloaded script content (see issue #7)
+default['sbt-extras']['setup_dir']             = '/usr/local/bin'
+default['sbt-extras']['script_name']           = 'sbt'
+default['sbt-extras']['owner']                 = 'root'
+default['sbt-extras']['group']                 = node['travis_build_environment']['group'] 
 
-default['sbt-extras']['setup_dir']         = '/opt/sbt-extras'
-default['sbt-extras']['script_name']       = 'sbt'
-default['sbt-extras']['owner']             = node['travis_build_environment']['user']
-default['sbt-extras']['group']             = node['travis_build_environment']['group']
-default['sbt-extras']['group_new_members'] = []
-default['sbt-extras']['bin_symlink']       = '/usr/bin/sbt'
+default['sbt-extras']['config_dir']            = '/etc/sbt'
 
-default['sbt-extras']['config_dir']        = '/etc/sbt'
-#Template installation is disabled if filename is an empty string:
-default['sbt-extras']['sbtopts_filename']  = 'sbtopts'
-default['sbt-extras']['jvmopts_filename']  = 'jvmopts'
 
-# Following Parameters will be used during recipe execution and also when installing /etc/sbt/sbtopts template
-default['sbt-extras']['sbtopts']['mem']    = 1024 # in megabytes, Tuning of JVM -Xmx and -Xms
+#
+# Template installation is disabled if attribute below is nil or an empty string:
+#
 
-default['sbt-extras']['preinstall_cmd']['timeout']  = 300 # A maximum of 5 minutes is allowed to download dependencies of a specific scala version.
+default['sbt-extras']['sbtopts']['filename']          = 'sbtopts'
+default['sbt-extras']['sbtopts']['verbose']           = true      # in Travis CI: helpful to show how sbt-extras is working
+default['sbt-extras']['sbtopts']['batch']             = true      # in Travis CI: never prompt!
+default['sbt-extras']['sbtopts']['no-colors']         = false     # As for other languages, colored output looks nice in Travis CI Web UI, but
+                                                                  # some users may prefer to disable colors for easier log parsing 
+                                                                  # (see for instance https://github.com/travis-ci/travis-ci/issues/1230)
 
-# Optionally pre-install dependant libraries of requested sbt versions in user own environment
-default['sbt-extras']['preinstall_matrix'][node['travis_build_environment']['user']] = %w{ 0.12.3 0.12.2 0.12.1 0.12.0 0.11.3 0.11.2 0.11.1 }
-  # Known Problem: sbt 'boot' libraries are correclty installed since 0.11+
-  # (see https://github.com/gildegoma/chef-sbt-extras/issues/5#issuecomment-10576361)
+default['sbt-extras']['jvmopts']['filename']          = 'jvmopts'
+# in Travis CI: these attributes are not in use, since 'jvmopts' content is hard-tuned (but it might change...)
+#default['sbt-extras']['jvmopts']['total_memory']      = 3072      # in megabytes, total memory available (used to define options like -Xmx, -Xms and so on)
+#default['sbt-extras']['jvmopts']['thread_stack_size'] = 6         # in megabytes, used to defined -Xss option
+
+#
+# Pre-install scala/sbt base dependencies in user home (~/.sbt/boot/..., ~/.ivy2/cache/...)
+#
+
+default['sbt-extras']['user_setup'][node['travis_build_environment']['user']]['sbt']   = %w{ 0.13.0 0.12.4 0.12.3 0.12.2 0.11.3 0.11.2 }
+default['sbt-extras']['user_setup'][node['travis_build_environment']['user']]['scala'] = %w{ 2.11.0-M5 2.10.3-RC1 2.10.2 2.10.1 2.10.0 2.9.3 2.9.2 }
+
