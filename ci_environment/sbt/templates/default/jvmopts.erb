@@ -1,7 +1,8 @@
--XX:ReservedCodeCacheSize=256M
+# Tweaking for VM equipped with 3GB of RAM
+# See also 'default_jvm_opts' defined in /usr/loca/bin/sbt
+
 -Xms2048M
 -Xmx2048M
 -Xss6M
--XX:+CMSClassUnloadingEnabled
--XX:+UseConcMarkSweepGC
 -XX:MaxPermSize=512M
+
