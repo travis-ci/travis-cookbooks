@@ -41,9 +41,19 @@ linux:
 <% if @worker[:shutdown_timeout] -%>
   shutdown_timeout: <%= @worker[:shutdown_timeout] %>
 <% end -%>
-<% if @worker[:hosts] -%>
+<% if @worker[:hosts] && @worker[:hosts].any? -%>
   hosts:
   <% @worker[:hosts].each do |name, host| %>
-    <%= name -%>: <%= host %>
+    <%= name -%>: "<%= host %>"
   <% end %>
 <% end %>
+<% if @worker[:cache_options] && @worker[:cache_options][:s3].any? -%>
+  cache_options:
+    type: s3
+    s3:
+      bucket: <%= @worker[:cache_options][:s3][:bucket] %>
+      access_key_id: <%= @worker[:cache_options][:s3][:access_key_id] %>
+      secret_access_key: <%= @worker[:cache_options][:s3][:secret_access_key] %>
+    fetch_timeout: <%= 1200 %>
+    push_timeout: <%= 1200 + @worker[:timeous][:hard_limit] %>
+<% end -%>
