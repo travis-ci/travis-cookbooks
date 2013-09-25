@@ -1,7 +1,8 @@
 default['postgresql']['default_version']     = '9.1'
 default['postgresql']['alternate_versions']  = %w(9.2 9.3)
 
-default['postgresql']['enabled']             = true
+default['postgresql']['enabled']             = true    # is default instance started on machine boot?
+
 default['postgresql']['port']                = 5432
 default['postgresql']['ssl']                 = true
 default['postgresql']['max_connections']     = 255
