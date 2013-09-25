@@ -5,8 +5,8 @@ default['postgresql']['enabled']             = true
 default['postgresql']['port']                = 5432
 default['postgresql']['ssl']                 = true
 default['postgresql']['max_connections']     = 255
-default['postgresql']['fsync']               = 'off'   # disabled for CI purpose
-default['postgresql']['full_page_writes']    = 'off'   # disabled for CI purpose
+default['postgresql']['fsync']               = false   # disabled for CI purpose
+default['postgresql']['full_page_writes']    = false   # disabled for CI purpose
 default['postgresql']['client_min_messages'] = 'error' # suppress warning output from build clients
 
 
