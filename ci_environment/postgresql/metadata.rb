@@ -10,4 +10,5 @@ recipe            "postgresql::postgis",       "Install PostGIS extension"
 
 supports 'ubuntu', '= 12.04'
 
+depends  'apt'
 depends  'ramfs'
