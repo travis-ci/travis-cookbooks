@@ -72,10 +72,12 @@ if node['sbt-extras']['user_setup']
       node['sbt-extras']['user_setup'][sbt_user]['scala'].each do |scala_version|
         directory File.join(tmp_project_dir, 'project') do
           recursive true
+          owner     sbt_user
         end
         # Workaround to new behavior of '-sbt-create' that always considers the project to be based on current sbt release
         file File.join(tmp_project_dir, 'project', 'build.properties') do
           content "sbt.version=#{sbt_version}"
+          owner   sbt_user
         end
         execute "running sbt-extras as user #{sbt_user} to pre-install scala #{scala_version} with sbt #{sbt_version}" do
 
@@ -85,7 +87,6 @@ if node['sbt-extras']['user_setup']
           cwd     tmp_project_dir
 
           # ATTENTION: chef-execute switch to user, but keep original environment variables (e.g. HOME=/root)
-          # TODO: is it still the same with Chef 11?
           environment ({ 'HOME' => File.join(node['sbt-extras']['user_home_basedir'], sbt_user) })
         end
         directory tmp_project_dir do
