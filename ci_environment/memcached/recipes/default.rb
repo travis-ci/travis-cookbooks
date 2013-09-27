@@ -29,8 +29,12 @@ end
 end
 
 service "memcached" do
-  action :nothing
   supports :status => true, :start => true, :stop => true, :restart => true
+  if node[:memcached][:enabled]
+    action [:enable, :start]
+  else
+    action [:disable, :start]
+  end
 end
 
 template "/etc/memcached.conf" do

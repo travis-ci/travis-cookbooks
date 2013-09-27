@@ -8,4 +8,5 @@ tmp/*
 /Gemfile.lock
 /.rvmrc
 /.bundle
+/.rspec
 
