@@ -17,8 +17,9 @@
 # limitations under the License.
 #
 
+default['mysql']['enabled']                   = true
 default['mysql']['bind_address']              = "0.0.0.0"
-default['mysql']['data_dir']                   = "/var/lib/mysql"
+default['mysql']['data_dir']                  = "/var/lib/mysql"
 
 case node["platform"]
 when "centos", "redhat", "fedora", "suse"
