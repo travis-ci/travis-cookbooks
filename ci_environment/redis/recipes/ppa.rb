@@ -36,7 +36,12 @@ package "redis-server" do
 end
 
 service "redis-server" do
+  provider Chef::Provider::Service::Upstart
   supports :restart => true, :status => true, :reload => true
-  # intentionally disabled on boot. MK.
-  action [:disable, :start]
+  if node.redis.service.enabled
+    action [:enable, :start]
+  else
+    action [:disable, :start]
+  end
 end
+

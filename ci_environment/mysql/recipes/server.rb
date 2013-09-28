@@ -75,9 +75,13 @@ service "mysql" do
 
   if (platform?("ubuntu") && node.platform_version.to_f >= 11.04)
     provider Chef::Provider::Service::Upstart
- end
+  end
   supports :status => true, :restart => true, :reload => true
-  action :nothing
+  if node['mysql']['enabled']
+    action :enable
+  else
+    action :disable
+  end
 end
 
 template "#{node['mysql']['conf_dir']}/my.cnf" do
@@ -85,7 +89,7 @@ template "#{node['mysql']['conf_dir']}/my.cnf" do
   owner "root"
   group "root"
   mode "0644"
- notifies :restart, resources(:service => "mysql"), :immediately
+  notifies :restart, "service[mysql]", :immediately
 end
 
 
