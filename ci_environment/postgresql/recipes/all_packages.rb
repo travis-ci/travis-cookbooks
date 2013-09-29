@@ -9,7 +9,7 @@ include_recipe 'postgresql::client'
 #
 # Install PostgreSQL Server Packages
 #
-[node['postgresql']['default_version']] + node['postgresql']['alternate_versions'].each do |pg_version|
+([node['postgresql']['default_version']] + node['postgresql']['alternate_versions']).each do |pg_version|
   package "postgresql-#{pg_version}"
 end
 

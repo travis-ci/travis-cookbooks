@@ -26,7 +26,7 @@ include_recipe "ramfs" if node['postgresql']['data_on_ramfs']
 #
 # Tune PostgreSQL settings
 #
-[node['postgresql']['default_version']] + node['postgresql']['alternate_versions'].each do |pg_version|
+([node['postgresql']['default_version']] + node['postgresql']['alternate_versions']).each do |pg_version|
 
   # postgresql.conf template is specific to PostgreSQL version installed
   template "/etc/postgresql/#{pg_version}/main/postgresql.conf" do
