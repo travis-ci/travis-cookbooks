@@ -26,12 +26,12 @@ end
 #
 # Install required packages (from different apt repositories)
 #
-include_recipe 'postgresql::packages'
+include_recipe 'postgresql::all_packages'
 
 #
-# Customize for Continuous Integration purposes
+# Customize Server configurations for Continuous Integration purposes
 #
-include_recipe 'postgresql::ci_servers'
+include_recipe 'postgresql::ci_server'
 
 #
 # Switch on/off service autostart on boot, and restart now!
