@@ -11,6 +11,7 @@ include_recipe 'postgresql::client'
 #
 ([node['postgresql']['default_version']] + node['postgresql']['alternate_versions']).each do |pg_version|
   package "postgresql-#{pg_version}"
+  package "postgresql-contrib-#{pg_version}" if node['postgresql']['contrib_modules']
 end
 
 #

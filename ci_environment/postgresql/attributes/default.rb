@@ -18,6 +18,9 @@ else
   default['postgresql']['data_dir']          = '/var/lib/postgresql'
 end
 
+default['postgresql']['contrib_modules']     = true    # enabled to install additional modules, like `hstore` 
+                                                       # (see full list at http://www.postgresql.org/docs/devel/static/contrib.html)
+
 default['postgresql']['client_packages']     = %w(postgresql-client libpq-dev)
 
 default['postgresql']['postgis_version']     = '2.1'
