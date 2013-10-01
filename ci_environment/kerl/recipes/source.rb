@@ -75,6 +75,14 @@ cookbook_file "#{node.travis_build_environment.home}/.erlang.cookie" do
   source "erlang.cookie"
 end
 
+cookbook_file "#{node.travis_build_environment.home}/.build_plt" do
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
+  mode 0700
+
+  source "build_plt"
+end
+
 
 node.kerl.releases.each do |rel, build|
   execute "build Erlang #{rel}" do
@@ -92,7 +100,7 @@ node.kerl.releases.each do |rel, build|
 
   execute "install Erlang #{rel}" do
     # cleanup is available starting with https://github.com/spawngrid/kerl/pull/28
-    command "#{node.kerl.path} install #{rel} #{installation_root}/#{rel} && #{node.kerl.path} cleanup #{rel} && rm -rf #{node.travis_build_environment.home}/.kerl/archives/*"
+    command "#{node.kerl.path} install #{rel} #{installation_root}/#{rel} && #{node.kerl.path} cleanup #{rel} && rm -rf #{node.travis_build_environment.home}/.kerl/archives/* && ~/.build_plt #{installation_rot}/#{rel} #{installation_root}/#{rel}/lib"
 
     user    node.travis_build_environment.user
     group   node.travis_build_environment.group
