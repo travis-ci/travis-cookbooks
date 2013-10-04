@@ -18,7 +18,7 @@ require 'spec_helper'
 #  { :cookbook => 'riak',          :recipe => 'default',                :name => 'riak',            :provider => :default,  :autostart => false },
 
   { :cookbook => 'memcached',     :recipe => 'default',                :name => 'memcached',       :provider => :default,  :autostart => false },
-  { :cookbook => 'redis',         :recipe => 'ppa',                    :name => 'redis-server',    :provider => :upstart,  :autostart => false },
+  { :cookbook => 'redis',         :recipe => 'default',                :name => 'redis-server',    :provider => :upstart,  :autostart => false },
   { :cookbook => 'cassandra',     :recipe => 'tarball',                :name => 'cassandra',       :provider => :default,  :autostart => false },
   { :cookbook => 'neo4j-server',  :recipe => 'tarball',                :name => 'neo4j',           :provider => :default,  :autostart => false },
   { :cookbook => 'elasticsearch', :recipe => 'default',                :name => 'elasticsearch',   :provider => :default,  :autostart => false },

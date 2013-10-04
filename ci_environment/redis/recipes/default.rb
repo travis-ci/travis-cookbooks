@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: redis
-# Recipe:: ppa
+# Recipe:: default
 # Copyright 2012-2013, Travis CI Development Team <contact@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
