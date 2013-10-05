@@ -48,7 +48,7 @@ via `node[:neo4j][:server][:version]` or `node.neo4j.server.version` and so on.
 
 ## Dependencies
 
-Either JDK 7 (OpenJDK 7 or Oracle JDK 7) or JDK 6 (OpenJDK 6 or Sun JDK 6)
+Either JDK 7 (OpenJDK 7 or Oracle JDK 7). Neo4J Server 1.9+ requires JDK 7.
 
 
 ## Copyright & License
