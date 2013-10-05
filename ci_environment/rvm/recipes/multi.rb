@@ -27,7 +27,9 @@ include_recipe "rvm"
 # For rvm::multi we assume it's OK to enforce JDK and assume JRuby will be
 # provided. MK.
 include_recipe "java"
-include_recipe "ant"
+include_recipe "maven" # JRuby head is now built with Maven
+include_recipe "ant"   # Previous versions of JRuby are built with Ant
+
 
 log "Using Ruby #{RUBY_VERSION}..."
 
