@@ -1,3 +1,4 @@
+name              'neo4j-server'
 maintainer        'Michael Klishin'
 maintainer_email  'michael@defprotocol.org'
 license           'MIT'
