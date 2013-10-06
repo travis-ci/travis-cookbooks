@@ -27,4 +27,3 @@ export COMPOSER_NO_INTERACTION=1
 #                          to improve startup time, especially on JDK 7+)
 # -Xcompile.invokedynamic=false disables invokedynamic which seemingly causes 32 bit OpenJDKs (6 and 7) to segfault
 export JRUBY_OPTS="--server -Xcext.enabled=false -Xcompile.invokedynamic=false -J-Xss2m -J-Xmx256m -J-XX:+TieredCompilation"
-export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=192m"

@@ -101,6 +101,23 @@ mount "#{node.travis_build_environment.home}/builds" do
   only_if { node.travis_build_environment[:use_tmpfs_for_builds] }
 end
 
+
+directory(File.join(node.travis_build_environment.home, ".m2")) do
+  owner  node.travis_build_environment.user
+  group  node.travis_build_environment.group
+  mode   0755
+end
+
+maven_user_settings = File.join(node.travis_build_environment.home, ".m2", "settings.xml")
+cookbook_file(maven_user_settings) do
+  owner  node.travis_build_environment.user
+  group  node.travis_build_environment.group
+  mode   0644
+
+  source "ci_user/maven_user_settings.xml"
+end
+
+
 # link /home/vagrant for those poor projects that absolutely depend on that legacy
 # home directory to be present. MK.
 if node.travis_build_environment.user != "vagrant"

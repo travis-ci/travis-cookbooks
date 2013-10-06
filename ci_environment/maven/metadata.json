@@ -1,0 +1,36 @@
+{
+  "name": "maven",
+  "version": "1.0.0",
+  "description": "Installs maven 2 or 3 and includes a maven resource.",
+  "long_description": "maven Cookbook\n==============\nInstall and configure maven2 and maven3 from the binaries provided by the maven project.\n\nProvides the `maven` LWRP for pulling a maven artifact from a mave repository and placing it in an arbitrary location.\n\n\nRequirements\n------------\n### Platforms\n- Debian\n- Ubuntu\n- CentOS\n- Red Hat\n- Fedora\n\nThe following Opscode cookbooks are dependencies:\n- java - this cookbook not only depends on the java virtual machine but it also depends on the java_ark LWRP present in the java cookbooks\n- ark - used to unpack the maven tarball\n\n\nAttributes\n----------\n* `node['maven']['version']` - defaults to 3, specifies the major version of maven to install.\n* `node['maven']['m2_home']` - defaults to  '/usr/local/maven/'\n* `node['maven']['2']['url']` - the download url for maven2\n* `node['maven']['2']['checksum']` - the checksum, which you will have to recalculate if you change the download url using shasum -a 256 <file>\n* `node['maven']['3']['url']` - download url for maven3\n* `node['maven']['3']['checksum']` - the checksum, which you will have to recalculate if you change the download url using shasum -a 256 <file>\n* `node['maven']['repositories']` - an array of maven repositories to use; must be specified as an array. Used in the maven LWRP.\n* `node['maven']['setup_bin']` - Whether or not to put mvn on your system path, defaults to false\n* `node['maven']['mavenrc']['opts']` - Value of `MAVEN_OPTS` environment variable exported via `/etc/mavenrc` template, defaults to `-Dmaven.repo.local=$HOME/.m2/repository -Xmx384m -XX:MaxPermSize=192m`\n\n\nRecipes\n-------\n### default\nIncludes the java recipe, and then installs maven according to the version specified by the `node['maven']['version']` attribute.\n\n### test\n**For testing only**. From the development repository, use test-kitchen to test that the LWRP is operating with this recipe. Also contains example usage of the LWRP.\n\n\nUsage\n-----\nSimply include the recipe where you want Apache Maven installed.\n\nThe maven lwrp has two actions, `:install` and `:put`. They are essentially the same accept that the install action will name the the downloaded file `artifact_id-version.packaging`. For example, the mysql jar would be named mysql-5.1.19.jar.\n\nUse the put action when you want to explicitly control the name of the downloaded file. This is useful when you download an artifact and then want to have Chef resources act on files within that the artifact. The put action will creat a file named `name.packaging` where name corresponds to the name attribute.\n\n\nProviders/Resources\n-------------------\n### maven\n- `artifact_id` - if this is not specified, the resource's name is used\n- `group_id` - group_id for the artifact\n- `version` - version of the artifact\n- `dest` - the destination folder for the jar and its dependencies\n- `packaging` - defaults to 'jar'\n- `classifier` - distinguishes artifacts that were built from the same POM but differ in context\n- `repositories` - array of maven repositories to use, defaults to [\"http://repo1.maven.apache.org/maven2\"]\n- `owner` - the owner of the resulting file, default is root\n- `mode` - integer value for file permissions, default is 0644\n- `transitive` - whether to resolve dependencies transitively, defaults to false. Please note: Event true will only place one artifact in dest. All others are downloaded to the local repository.\n\n#### Examples\n\n```ruby\nmaven 'mysql-connector-java' do\n  group_id 'mysql'\n  version  '5.1.19'\n  dest     '/usr/local/tomcat/lib/'\nend\n# The artifact will be downloaded to /usr/local/tomcat/lib/mysql-connector-java-5.1.19.jar\n\nmaven 'solr' do\n  group_id  'org.apache.solr'\n  version   '3.6.1'\n  packaging 'war'\n  dest      '/usr/local/tomcat/webapps/'\n  action    :put\nend\n# The artifact will be downloaded to /usr/local/tomcat/webapps/solr.war\n\nmaven 'custom-application' do\n  group_id   'com.company.name'\n  version    '2.0.0'\n  dest       '/usr/local/tomcat/lib'\n  classifier 'client'\n  action     :put\nend\n# The artifact will be downloaded to /usr/local/tomcat/lib/custom-application-2.0.0-client.jar\n```\n\n\nLicense & Authors\n-----------------\n- Author:: Seth Chisamore (<schisamo@opscode.com>)\n- Author:: Bryan W. Berry (<bryan.berry@gmail.com>)\n- Author:: Leif Madsen (<lmadsen@thinkingphones.com>)\n\n```text\nCopyright 2010-2013, Opscode, Inc.\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.\n```\n",
+  "maintainer": "Opscode, Inc.",
+  "maintainer_email": "cookbooks@opscode.com",
+  "license": "Apache 2.0",
+  "platforms": {
+    "centos": ">= 0.0.0",
+    "debian": ">= 0.0.0",
+    "fedora": ">= 0.0.0",
+    "redhat": ">= 0.0.0",
+    "ubuntu": ">= 0.0.0"
+  },
+  "dependencies": {
+    "ark": "~> 0.4",
+    "java": "~> 1.13"
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+  },
+  "groupings": {
+  },
+  "recipes": {
+  }
+}
