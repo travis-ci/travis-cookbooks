@@ -14,7 +14,7 @@ org.neo4j.server.database.location=<%= node.neo4j.server.data_dir %>
 # is localhost (only accept local connections). Uncomment to allow
 # any connection. Please see the security section in the neo4j 
 # manual before modifying this.
-#org.neo4j.server.webserver.address=0.0.0.0
+org.neo4j.server.webserver.address=<%= node.neo4j.server.http.host %>
 
 #
 # HTTP Connector
