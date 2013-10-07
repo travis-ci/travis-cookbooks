@@ -7,7 +7,7 @@ default[:golang] = {
     :aliases => {
       "go1"   => "go1.0.3",
       "go1.0" => "go1.0.3",
-      "go1.1" => "go1.1.1"
+      "go1.1" => "go1.1.2"
     }
   }
 }
