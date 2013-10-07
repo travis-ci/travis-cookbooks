@@ -1,11 +1,8 @@
-neo4j_version = "1.8"
-
 default[:neo4j][:server] = {
-  :version => neo4j_version,
+  :version => "1.9.4",
   :installation_dir => "/usr/local/neo4j-server",
   :tarball => {
-    :url => "http://dist.neo4j.org/neo4j-community-#{neo4j_version}-unix.tar.gz",
-    :md5 => "7a76a75bac1a32c5291e8e7b238f7ca2"
+    :url => nil, # This can be manually set by the user.
   },
   :user => "neo4j",
   :jvm  => {
@@ -24,6 +21,7 @@ default[:neo4j][:server] = {
   :lock_path => "/var/run/neo4j-server.lock",
   :pid_path  => "/var/run/neo4j-server.pid",
   :http => {
+    :host     => "0.0.0.0",
     :port     => 7474
   },
   :https => {
@@ -37,7 +35,8 @@ default[:neo4j][:server] = {
       :md5 => "65e6d30e856f191a20f3f6e78eaaf5a7"
     }
   },
-  :service => {
-    :enabled => false
+  :node_auto_indexing => {
+    :enabled => false,
+    :keys_indexable => ''
   }
 }
