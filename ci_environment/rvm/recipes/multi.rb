@@ -42,7 +42,7 @@ log "Default Ruby will be #{default_ruby}"
 home = node.travis_build_environment.home
 rvm  = "source #{home}/.rvm/scripts/rvm && rvm"
 bin_rvm  = "#{home}/.rvm/bin/rvm"
-env  = { 'HOME' => home, 'rvm_user_install_flag' => '1' }
+env  = { 'HOME' => home, 'rvm_user_install_flag' => '1', 'rvm_verify_downloads_flag' => 1 }
 user = node.travis_build_environment.user
 
 setup = lambda do |bash|
