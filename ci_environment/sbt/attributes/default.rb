@@ -33,6 +33,11 @@ default['sbt-extras']['jvmopts']['filename']          = 'jvmopts'
 #default['sbt-extras']['jvmopts']['total_memory']      = 3072      # in megabytes, total memory available (used to define options like -Xmx, -Xms and so on)
 #default['sbt-extras']['jvmopts']['thread_stack_size'] = 6         # in megabytes, used to defined -Xss option
 
+default['sbt-extras']['system_wide_defaults']         = false     # if enabled, SBT_OPTS and JVM_OPTS will be exported via /etc/profile.d mechanism
+                                                                  # in Travis CI: JVM_OPTS can conflict with other JVM software.
+                                                                  #               These variables are thus managed by travis-build.
+                                                                  #               (see travis-ci/travis-cookbooks#234)
+
 #
 # Pre-install scala/sbt base dependencies in user home (~/.sbt/boot/..., ~/.ivy2/cache/...)
 #

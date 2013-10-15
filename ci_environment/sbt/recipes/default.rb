@@ -58,7 +58,7 @@ template "#{File.join('/etc/profile.d', node['sbt-extras']['script_name'])}.sh" 
     :sbtopts => sbtopts_path
   })
   only_if do
-    File.exists?(jvmopts_path) || File.exists?(sbtopts_path)
+    node['sbt-extras']['system_wide_defaults'] && (File.exists?(jvmopts_path) || File.exists?(sbtopts_path))
   end
 end
 
