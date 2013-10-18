@@ -5,6 +5,7 @@ default[:travis_build_environment][:user] = user
 default[:travis_build_environment][:group] = node.travis_build_environment.user
 default[:travis_build_environment][:home] = "/home/#{node.travis_build_environment.user}"
 default[:travis_build_environment][:hosts] = Hash.new
+default[:travis_build_environment][:update_hosts] = true
 default[:travis_build_environment][:builds_volume_size] = "350m"
 default[:travis_build_environment][:use_tmpfs_for_builds] = true
 default[:travis_build_environment][:installation_suffix] = "org"
