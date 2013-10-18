@@ -17,26 +17,12 @@
 # limitations under the License.
 #
 
+include_recipe 'java::webupd8'
+
 node.set[:java][:java_home] = node.java.oraclejdk7.java_home
-
-# This recipe relies on a PPA package and is Ubuntu/Debian specific. Please
-# keep this in mind.
-
-package "debconf-utils"
-package "curl"
 
 # accept Oracle License v1.1, otherwise the package won't install
 execute "/bin/echo -e oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections"
-
-apt_repository "webupd8team-java-ppa" do
-  uri          "http://ppa.launchpad.net/webupd8team/java/ubuntu"
-  distribution node['lsb']['codename']
-  components   ["main"]
-  key          "EEA14886"
-  keyserver    "keyserver.ubuntu.com"
-
-  action :add
-end
 
 require "tmpdir"
 

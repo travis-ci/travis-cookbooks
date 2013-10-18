@@ -30,7 +30,7 @@ else
 end
 
 default[:java][:multi] = {
-  :versions => ["openjdk6", "openjdk7", "oraclejdk7"]
+  :versions => ["openjdk6", "openjdk7", "oraclejdk7", "oraclejdk8"]
 }
 
 default[:java][:oraclejdk7] = {
