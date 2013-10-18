@@ -1,19 +1,23 @@
 name=java-7-oracle
 alias=java-7-oracle
-priority=1065
-section=main
+priority=1
+section=non-free
 
-hl java /usr/lib/jvm/java-7-oracle/jre/bin/java
-hl keytool /usr/lib/jvm/java-7-oracle/jre/bin/keytool
-hl pack200 /usr/lib/jvm/java-7-oracle/jre/bin/pack200
-hl rmid /usr/lib/jvm/java-7-oracle/jre/bin/rmid
-hl rmiregistry /usr/lib/jvm/java-7-oracle/jre/bin/rmiregistry
-hl unpack200 /usr/lib/jvm/java-7-oracle/jre/bin/unpack200
-hl orbd /usr/lib/jvm/java-7-oracle/jre/bin/orbd
-hl servertool /usr/lib/jvm/java-7-oracle/jre/bin/servertool
-hl tnameserv /usr/lib/jvm/java-7-oracle/jre/bin/tnameserv
-hl jexec /usr/lib/jvm/java-7-oracle/jre/lib/jexec
+jre ControlPanel /usr/lib/jvm/java-7-oracle/jre/bin/ControlPanel
+jre java /usr/lib/jvm/java-7-oracle/jre/bin/java
+jre java_vm /usr/lib/jvm/java-7-oracle/jre/bin/java_vm
+jre javaws /usr/lib/jvm/java-7-oracle/jre/bin/javaws
+jre jcontrol /usr/lib/jvm/java-7-oracle/jre/bin/jcontrol
+jre keytool /usr/lib/jvm/java-7-oracle/jre/bin/keytool
+jre orbd /usr/lib/jvm/java-7-oracle/jre/bin/orbd
+jre pack200 /usr/lib/jvm/java-7-oracle/jre/bin/pack200
 jre policytool /usr/lib/jvm/java-7-oracle/jre/bin/policytool
+jre rmid /usr/lib/jvm/java-7-oracle/jre/bin/rmid
+jre rmiregistry /usr/lib/jvm/java-7-oracle/jre/bin/rmiregistry
+jre servertool /usr/lib/jvm/java-7-oracle/jre/bin/servertool
+jre tnameserv /usr/lib/jvm/java-7-oracle/jre/bin/tnameserv
+jre unpack200 /usr/lib/jvm/java-7-oracle/jre/bin/unpack200
+jre jexec /usr/lib/jvm/java-7-oracle/jre/lib/jexec
 jdk appletviewer /usr/lib/jvm/java-7-oracle/bin/appletviewer
 jdk apt /usr/lib/jvm/java-7-oracle/bin/apt
 jdk extcheck /usr/lib/jvm/java-7-oracle/bin/extcheck
@@ -22,8 +26,10 @@ jdk jar /usr/lib/jvm/java-7-oracle/bin/jar
 jdk jarsigner /usr/lib/jvm/java-7-oracle/bin/jarsigner
 jdk javac /usr/lib/jvm/java-7-oracle/bin/javac
 jdk javadoc /usr/lib/jvm/java-7-oracle/bin/javadoc
+jdk javafxpackager /usr/lib/jvm/java-7-oracle/bin/javafxpackager
 jdk javah /usr/lib/jvm/java-7-oracle/bin/javah
 jdk javap /usr/lib/jvm/java-7-oracle/bin/javap
+jdk jcmd /usr/lib/jvm/java-7-oracle/bin/jcmd
 jdk jconsole /usr/lib/jvm/java-7-oracle/bin/jconsole
 jdk jdb /usr/lib/jvm/java-7-oracle/bin/jdb
 jdk jhat /usr/lib/jvm/java-7-oracle/bin/jhat
@@ -35,6 +41,7 @@ jdk jsadebugd /usr/lib/jvm/java-7-oracle/bin/jsadebugd
 jdk jstack /usr/lib/jvm/java-7-oracle/bin/jstack
 jdk jstat /usr/lib/jvm/java-7-oracle/bin/jstat
 jdk jstatd /usr/lib/jvm/java-7-oracle/bin/jstatd
+jdk jvisualvm /usr/lib/jvm/java-7-oracle/bin/jvisualvm
 jdk native2ascii /usr/lib/jvm/java-7-oracle/bin/native2ascii
 jdk rmic /usr/lib/jvm/java-7-oracle/bin/rmic
 jdk schemagen /usr/lib/jvm/java-7-oracle/bin/schemagen
@@ -42,3 +49,4 @@ jdk serialver /usr/lib/jvm/java-7-oracle/bin/serialver
 jdk wsgen /usr/lib/jvm/java-7-oracle/bin/wsgen
 jdk wsimport /usr/lib/jvm/java-7-oracle/bin/wsimport
 jdk xjc /usr/lib/jvm/java-7-oracle/bin/xjc
+plugin mozilla-javaplugin.so /usr/lib/jvm/java-7-oracle/jre/lib/amd64/libnpjp2.so
