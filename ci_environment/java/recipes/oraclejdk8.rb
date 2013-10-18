@@ -19,10 +19,12 @@
 
 include_recipe 'java::webupd8'
 
-# Note that the installation of StartSSL CA certificate is intentionally not done yet. This will be addressed later...
 
 # accept Oracle License v1.1, otherwise the package won't install
 execute "/bin/echo -e oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections"
 
 package "oracle-java8-installer"
 
+link "#{node[:java][:oraclejdk8][:java_home]}/jre/lib/security/cacerts" do
+  to '/etc/ssl/certs/java/cacerts'
+end
