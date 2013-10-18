@@ -26,8 +26,3 @@ execute "/bin/echo -e oracle-java8-installer shared/accepted-oracle-license-v1-1
 
 package "oracle-java8-installer"
 
-cookbook_file "/usr/lib/jvm/.java-8-oracle.jinfo" do
-  source "oraclejdk8.jinfo"
-  owner "root"
-  mode 0644
-end
