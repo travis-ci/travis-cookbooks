@@ -18,14 +18,12 @@ node['java']['alternate_versions'].each do |java_version|
 end
 
 # provision jdk_switcher
-remote_file(File.join(node['travis_build_environment']['home'], ".jdk_switcher_rc")) do
+template(File.join(node['travis_build_environment']['home'], ".jdk_switcher_rc")) do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode 0644
 
-  # TODO: Nice to have, include it as a template in travis cookbook
-  #       and make 'default' option coherent with cookbook default version.
-  source "https://raw.github.com/michaelklishin/jdk_switcher/master/jdk_switcher.sh"
+  source "jdk_switcher.sh.erb"
 end
 
 cookbook_file "/etc/profile.d/load_jdk_switcher.sh" do
