@@ -22,3 +22,4 @@ package 'tzdata-java'
 
 package 'openjdk-6-jre-headless'
 package 'openjdk-6-jdk'
+package 'icedtea-6-plugin'
