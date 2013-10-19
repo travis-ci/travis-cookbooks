@@ -3,7 +3,7 @@ maintainer        "Travis CI Team"
 maintainer_email  "contact@travis-ci.org"
 license           "Apache 2.0"
 description       "Installs different Java Development Kits (JDK)"
-version           "2.0"
+version           "2.0.0"
 
 supports 'ubuntu', '>= 12.04'
 
@@ -11,7 +11,7 @@ supports 'ubuntu', '>= 12.04'
   depends cb
 end
 
-#TODO recipe list will be described when refactoring is finished:
-#recipe "java", "Installs Java runtime"
-#recipe "java::openjdk", "Installs the OpenJDK flavor of Java"
-#recipe "java::sun", "Installs the Sun flavor of Java"
+recipe "java::default", "Installs a default JDK"
+
+# 'multi' is part of 'default' recipe, and should no *more* be included directly.
+recipe "java::multi",   "Installs a alternative JDK versions"
