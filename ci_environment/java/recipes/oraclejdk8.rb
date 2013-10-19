@@ -25,6 +25,8 @@ execute "/bin/echo -e oracle-java8-installer shared/accepted-oracle-license-v1-1
 
 package "oracle-java8-installer"
 
-link "#{node[:java][:oraclejdk8][:java_home]}/jre/lib/security/cacerts" do
+oraclejdk8_home = File.join(node['java']['jvm_base_dir'], node['java']['oraclejdk8']['jvm_name'])
+
+link "#{oraclejdk8_home}/jre/lib/security/cacerts" do
   to '/etc/ssl/certs/java/cacerts'
 end
