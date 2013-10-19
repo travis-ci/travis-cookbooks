@@ -1,7 +1,3 @@
-#
-# This recipe and related oraclejdk<V> recipes rely on a PPA package and is Ubuntu/Debian specific.
-# Please keep this in mind.
-#
 
 package "debconf-utils"
 package "curl"

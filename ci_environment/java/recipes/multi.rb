@@ -1,11 +1,15 @@
+#
+# On Ubuntu 12.04, there are some package conflicts between 'tzdata', 'tzdata-java' and opendjdk packages.
+# Workaround consists in forcing re-installation of "compatible" versions of tzdata and tzdata-java...
+# See also 'java::openjdk6' recipe and 'timezone' cookbook.
+#
 include_recipe "timezone"
-
 case node.platform
 when "ubuntu", "debian"
   bash "autoremove and autoclean packages" do
     user "root"
     code "apt-get -y autoclean autoremove && apt-get -f install"
-  end  
+  end
 end
 
 node.java.multi.versions.each do |java_version|

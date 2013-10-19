@@ -19,6 +19,12 @@
 # limitations under the License.
 #
 
+#
+# WARNING:
+# All recipes of this cookbook are (currently) specifically designed for Ubuntu
+# Please keep this in mind.
+#
+
 include_recipe "java::oraclejdk7"
 
 template "/etc/profile.d/java_home.sh" do
