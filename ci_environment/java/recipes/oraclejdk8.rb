@@ -30,3 +30,14 @@ oraclejdk8_home = File.join(node['java']['jvm_base_dir'], node['java']['oraclejd
 link "#{oraclejdk8_home}/jre/lib/security/cacerts" do
   to '/etc/ssl/certs/java/cacerts'
 end
+
+# Note about JCE unlimited: There is currently no JCE Unlimited Strength package for JDK8, as it still in 'Developer Preview' phase.
+# Projects interested in Java8-EA integrate should thus be aware of this current limitation...
+#
+# See also:
+# - https://www.java.net//forum/topic/jdk/java-se-snapshots-project-feedback/jdk-8-missing-jce
+# - http://openjdk.java.net/projects/jdk8/
+#
+# if node.java.oraclejdk8.install_jce_unlimited
+#   execute "curl -L ..."
+# end
