@@ -1,4 +1,37 @@
 #
+# Create additional superuser accounts for CI purpose
+#
+# Attention: this configuration step will only occur during the first provision run!
+#            (unless the sql script is removed from cache folder. Please don't to that...)
+#
+#            It is quite tricky to deal with it after /etc/init.d/postgresql script
+#            has been modified. This restriction should not be a problem for Travis CI usage.
+#
+create_superusers_script = File.join(Chef::Config[:file_cache_path], 'postgresql_create_superusers.sql')
+if not node['postgresql']['superusers'].to_a.empty? and not File.exists?(create_superusers_script)
+
+  #
+  # Following steps require that all PostgreSQL instances are running at the same time.
+  #
+  service 'postgresql' do
+    action :start
+  end
+
+  template create_superusers_script do
+    source "create_superusers.sql.erb"
+    owner  'postgres'
+  end
+
+  Range.new(node['postgresql']['port'], node['postgresql']['port'] + node['postgresql']['alternate_versions'].length).each do |pg_port|
+    execute "Execute SQL script to create additional superusers" do
+      command "psql --port=#{pg_port} --file=#{create_superusers_script}"
+      user    'postgres'
+    end
+  end
+
+end
+
+#
 # Following steps must absolutely be executed on cold systems!
 #
 service 'postgresql' do
@@ -45,3 +78,5 @@ include_recipe "ramfs" if node['postgresql']['data_on_ramfs']
   end
 
 end
+
+
