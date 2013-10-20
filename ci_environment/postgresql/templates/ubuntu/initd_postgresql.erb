@@ -2,14 +2,14 @@
 set -e
 
 ### BEGIN INIT INFO
-# Provides:		postgresql
-# Required-Start:	$local_fs $remote_fs $network $time
-# Required-Stop:	$local_fs $remote_fs $network $time
-# Should-Start:		$syslog
-# Should-Stop:		$syslog
-# Default-Start:	2 3 4 5
-# Default-Stop:		0 1 6
-# Short-Description:	PostgreSQL RDBMS server
+# Provides:             postgresql
+# Required-Start:       $local_fs $remote_fs $network $time
+# Required-Stop:        $local_fs $remote_fs $network $time
+# Should-Start:         $syslog
+# Should-Stop:          $syslog
+# Default-Start:        2 3 4 5
+# Default-Stop:         0 1 6
+# Short-Description:    PostgreSQL RDBMS server
 ### END INIT INFO
 
 # Setting environment variables for the postmaster here does not work; please
@@ -42,41 +42,41 @@ else
 fi
 
 if [ -n "$1" ] && [ $1 != 'status' ] && [ $1 != 'stop' ] && [ -n "$running_version" ] && [ "$versions" != "$running_version" ]; then
-   echo "Refused to $1 PostgreSQL $versions, because PostgreSQL $running_version is currently running! You should first stop $running_version instance..."
-   exit 13
+    echo "Refused to $1 PostgreSQL $versions, because PostgreSQL $running_version is currently running! You should first stop $running_version instance..."
+    exit 13
 fi
 
 <% if node['postgresql']['data_on_ramfs'] %>
 # Copy initial databases to RAMFS
 if [ ! -d <%= node['postgresql']['data_dir'] %> ]; then
-  mkdir <%= node['postgresql']['data_dir'] %>
-  for v in /var/lib/postgresql/*; do
-    cp -rp $v <%= node['postgresql']['data_dir'] %>/
-  done
+    mkdir <%= node['postgresql']['data_dir'] %>
+    for v in /var/lib/postgresql/*; do
+        cp -rp $v <%= node['postgresql']['data_dir'] %>/
+    done
 fi
 <% end %>
 
 case "$1" in
     start|stop|restart|reload)
-	if [ -z "`pg_lsclusters -h`" ]; then
-	    log_warning_msg 'No PostgreSQL clusters exist; see "man pg_createcluster"'
-	    exit 0
-	fi
-  for v in $versions; do
-	    $1 $v || EXIT=$?
-  done
-  exit ${EXIT:-0}
+        if [ -z "`pg_lsclusters -h`" ]; then
+            log_warning_msg 'No PostgreSQL clusters exist; see "man pg_createcluster"'
+            exit 0
+        fi
+        for v in $versions; do
+            $1 $v || EXIT=$?
+        done
+        exit ${EXIT:-0}
         ;;
     status)
-	LS=`pg_lsclusters -h`
-	# no clusters -> unknown status
-	[ -n "$LS" ] || exit 4
-	echo "$LS" | awk 'BEGIN {rc=0} {if (match($4, "down")) rc=3; printf ("%s/%s (port %s): %s\n", $1, $2, $3, $4)}; END {exit rc}'
-	;;
+        LS=`pg_lsclusters -h`
+        # no clusters -> unknown status
+        [ -n "$LS" ] || exit 4
+        echo "$LS" | awk 'BEGIN {rc=0} {if (match($4, "down")) rc=3; printf ("%s/%s (port %s): %s\n", $1, $2, $3, $4)}; END {exit rc}'
+        ;;
     force-reload)
-	for v in $versions; do
-	    reload $v
-	done
+        for v in $versions; do
+            reload $v
+        done
         ;;
     *)
         echo "Usage: $0 {start|stop|restart|reload|force-reload|status} [version ..]"
