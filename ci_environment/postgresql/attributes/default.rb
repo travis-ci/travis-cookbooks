@@ -26,4 +26,4 @@ default['postgresql']['client_packages']     = %w(postgresql-client libpq-dev)
 
 default['postgresql']['postgis_version']     = '2.1'
 
-default['postgresql']['superusers']          = [ node['travis_build_environment']['user'], 'rails' ]
+default['postgresql']['superusers']          = [ 'travis', 'rails' ]
