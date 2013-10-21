@@ -41,9 +41,15 @@ else
     versions="<%= node['postgresql']['default_version'] %>"
 fi
 
-if [ -n "$1" ] && [ $1 != 'status' ] && [ $1 != 'stop' ] && [ -n "$running_version" ] && [ "$versions" != "$running_version" ]; then
-    echo "Refused to $1 PostgreSQL $versions, because PostgreSQL $running_version is currently running! You should first stop $running_version instance..."
-    exit 13
+if [ -n "$1" ] && [ $1 != 'stop' ] && [ $1 != 'status' ]; then
+    if [ -n "$running_version" ] && [ "$versions" != "$running_version" ]; then
+        echo "Refused to $1 PostgreSQL $versions, because PostgreSQL $running_version is currently running! You should first stop $running_version instance..."
+        exit 13
+    fi
+    if [ ! -d "/etc/postgresql/$versions" ]; then
+        echo "PostgreSQL $versions is not installed!"
+        exit 31
+    fi
 fi
 
 <% if node['postgresql']['data_on_ramfs'] %>
