@@ -1,0 +1,6 @@
+\set ON_ERROR_STOP true
+
+<% node.postgresql.superusers.each do |superuser| %>
+DROP USER IF EXISTS <%= superuser %>;
+CREATE USER <%= superuser %> PASSWORD NULL SUPERUSER CREATEDB CREATEROLE REPLICATION INHERIT LOGIN;
+<% end %>

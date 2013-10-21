@@ -8,6 +8,7 @@ The **default** recipe of this Chef cookbook will:
 * Add PGDG apt repository
 * Install a default PostgreSQL version from PGDG repository (e.g. 9.1)
 * Install alternate PostgreSQL versions from PGDG repository (e.g. 9.2 and 9.3). Note that all PostgreSQL instances are configured to listen on the same tcp port. (optional)
+* Create additional superusers in all available PostgreSQL instances (optional)
 * Override `/etc/init.d/postgresql` script to ensure that only one instance is running at the same time
 * Use RAMFS storage to reduce I/O impact (optional)
 * Tune some `postgresql.conf` parameters for performance optimization in a CI context (e.g. disable `fsync` data safety) (optional)

@@ -4,7 +4,7 @@ maintainer_email  "contact@travis-ci.org"
 license           "Apache 2.0"
 description       "Installs PostgreSQL instance(s) for Continuation Integration purposes"
 long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version           "2.0.0"
+version           "2.0.1"
 
 recipe            "postgresql::default",      "Install all PostgreSQL components for a CI environment"
 
@@ -16,7 +16,7 @@ recipe            "postgresql::ci_server",    "Customize PostgreSQL server(s), o
 recipe            "postgresql::postgis",      "Install PostGIS extension"
 recipe            "postgresql::pgdg",         "Configure 'PostgreSQL Development Group' Apt Repostitory"
 
-supports 'ubuntu', '= 12.04'
+supports          'ubuntu', '= 12.04'
 
-depends  'apt'
-depends  'ramfs'
+depends           'apt'
+depends           'ramfs'
