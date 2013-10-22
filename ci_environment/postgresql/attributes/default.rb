@@ -1,3 +1,5 @@
+include_attribute 'travis_build_environment'
+
 default['postgresql']['default_version']     = '9.1'
 default['postgresql']['alternate_versions']  = %w(9.2 9.3)
 
@@ -26,4 +28,5 @@ default['postgresql']['client_packages']     = %w(postgresql-client libpq-dev)
 
 default['postgresql']['postgis_version']     = '2.1'
 
-default['postgresql']['superusers']          = [ 'travis', 'rails' ]
+default['postgresql']['superusers']          = [ node['travis_build_environment']['user'], 'rails' ]
+
