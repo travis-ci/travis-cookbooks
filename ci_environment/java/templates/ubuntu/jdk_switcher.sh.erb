@@ -90,11 +90,11 @@ print_home_of_oraclejdk8 () {
 }
 
 warn_sunjdk6_eol () {
-    echo "Sun/Oracle JDK 6 is EOL since November 2012, and thus no more supported. Please consider upgrading..." >&2
+    echo "Sun/Oracle JDK 6 is EOL since November 2012, and is no longer supported. Please consider upgrading..." >&2
 }
 
-warn_jdk_not_found () {
-    echo "Sorry, but JDK '$1' is not known here." >&2
+warn_jdk_not_known () {
+    echo "Sorry, but JDK '$1' is not known." >&2
 }
 
 warn_gcj_user () {
@@ -128,7 +128,7 @@ switch_jdk()
             switch_to_<%= node.java.default_version %>
             ;;
         *)
-            warn_jdk_not_found "$1"
+            warn_jdk_not_known "$1"
             false
             ;;
     esac
@@ -163,7 +163,7 @@ print_java_home()
             print_home_of_openjdk7
             ;;
         *)
-            warn_jdk_not_found "$JDK"
+            warn_jdk_not_known "$JDK"
             ;;
     esac
 }
