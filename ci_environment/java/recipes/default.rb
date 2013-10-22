@@ -19,12 +19,45 @@
 # limitations under the License.
 #
 
-include_recipe "java::oraclejdk7"
+#
+# WARNING:
+# All recipes of this cookbook are (currently) specifically designed for Ubuntu
+# Please keep this in mind.
+#
 
+
+#
+# Install the default JDK
+#
+Chef::Log.info("Installing Java #{node['java']['default_version']}.")
+include_recipe "java::#{node['java']['default_version']}"
+default_jvm = node['java'][node['java']['default_version']]['jvm_name']
+
+#
+# Install more JDKs, if requested.
+#
+if not node['java']['alternate_versions'].to_a.empty?
+  # Note: 'multi' recipe is conditionally included to avoid the execution of
+  #       openjdk6/tzdata workaround in single-jdk mode.
+  #       This might change...
+  include_recipe "java::multi"
+end
+
+#
+# Ensure that default JDK is configured as default
+#
+execute "Set #{default_jvm} as default alternative" do
+  command "update-java-alternatives -s #{default_jvm}"
+end
 template "/etc/profile.d/java_home.sh" do
   owner "root"
   group "root"
   mode 0644
 
   source "etc/profile.d/java_home.sh.erb"
+
+  # Could be changed to following, if node.java.java_home attribute is removed one day...
+  # variables({
+  #   :java_home => File.join(node['java']['jvm_base_dir'], default_jvm)
+  # })
 end

@@ -1,19 +1,17 @@
 name              "java"
-maintainer        "Opscode, Inc."
-maintainer_email  "cookbooks@opscode.com"
+maintainer        "Travis CI Team"
+maintainer_email  "contact@travis-ci.org"
 license           "Apache 2.0"
-description       "Installs Java runtime."
-long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version           "1.1"
+description       "Installs different Java Development Kits (JDK)"
+version           "2.0.0"
 
-%w{ debian ubuntu centos redhat fedora }.each do |os|
-  supports os
-end
+supports 'ubuntu', '>= 12.04'
 
 %w{ apt timezone }.each do |cb|
   depends cb
 end
 
-recipe "java", "Installs Java runtime"
-recipe "java::openjdk", "Installs the OpenJDK flavor of Java"
-recipe "java::sun", "Installs the Sun flavor of Java"
+recipe "java::default", "Installs a default JDK"
+
+# 'multi' is part of 'default' recipe, and should no *more* be included directly.
+recipe "java::multi",   "Installs a alternative JDK versions"

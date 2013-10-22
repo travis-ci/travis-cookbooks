@@ -17,55 +17,27 @@
 # limitations under the License.
 #
 
-node['java']['java_home'] = node.java.oraclejdk8.java_home
+include_recipe 'java::webupd8'
 
-# This recipe relies on a PPA package and is Ubuntu/Debian specific. Please
-# keep this in mind.
-
-package "debconf-utils"
 
 # accept Oracle License v1.1, otherwise the package won't install
 execute "/bin/echo -e oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections"
 
-apt_repository "webupd8team-java-ppa" do
-  uri          "http://ppa.launchpad.net/webupd8team/java/ubuntu"
-  distribution node['lsb']['codename']
-  components   ["main"]
-  key          "EEA14886"
-  keyserver    "keyserver.ubuntu.com"
+package "oracle-java8-installer"
 
-  action :add
+oraclejdk8_home = File.join(node['java']['jvm_base_dir'], node['java']['oraclejdk8']['jvm_name'])
+
+link "#{oraclejdk8_home}/jre/lib/security/cacerts" do
+  to '/etc/ssl/certs/java/cacerts'
 end
 
-require "tmpdir"
-
-ca_installer_location = File.join(Dir.tmpdir, "install_startssl_certificates.sh")
-
-cookbook_file(ca_installer_location) do
-  source "startssl_root_ca_installer.sh"
-  owner  "root"
-  mode   0755
-end
-
-execute "install StarSSL CA certificate for Oracle JDK 8" do
-  user    "root"
-  command "/bin/sh #{ca_installer_location} && rm #{ca_installer_location}"
-
-  timeout 15
-  action  :nothing
-  
-  environment  Hash["JAVA_HOME" => node.java.oraclejdk8.java_home]
-end
-
-package "oracle-java8-installer" do
-  action :install
-
-  notifies :run, resources(:execute => "install StarSSL CA certificate for Oracle JDK 8")
-end
-
-
-cookbook_file "/usr/lib/jvm/.java-8-oracle.jinfo" do
-  source "oraclejdk8.jinfo"
-  owner "root"
-  mode 0644
-end
+# Note about JCE unlimited: There is currently no JCE Unlimited Strength package for JDK8, as it still in 'Developer Preview' phase.
+# Projects interested in Java8-EA integrate should thus be aware of this current limitation...
+#
+# See also:
+# - https://www.java.net//forum/topic/jdk/java-se-snapshots-project-feedback/jdk-8-missing-jce
+# - http://openjdk.java.net/projects/jdk8/
+#
+# if node.java.oraclejdk8.install_jce_unlimited
+#   execute "curl -L ..."
+# end
