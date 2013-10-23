@@ -1,4 +1,4 @@
-version = "1.9.1"
+version = "1.9.2"
 arch    = kernel['machine'] =~ /x86_64/ ? "x86_64" : "i686"
 
 default[:phantomjs] = {
