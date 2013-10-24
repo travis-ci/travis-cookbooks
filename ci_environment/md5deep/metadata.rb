@@ -1,0 +1,6 @@
+maintainer       "Travis CI Development Team"
+license          "Apache v2.0"
+name             "md5deep"
+version          "1.0.0"
+description      "md5deep"
+long_description "Installs md5deep"
