@@ -1,4 +1,4 @@
-default[:rvm][:version] = "latest-1.22"
+default[:rvm][:version] = "latest-1.23"
 
 case node[:platform]
 when "debian", "ubuntu"
