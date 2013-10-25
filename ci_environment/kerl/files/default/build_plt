@@ -2,4 +2,4 @@
 
 . "$1/activate"
 
-dialyzer --output-plt "${REBAR_PLT_DIR}/dialyzer.plt" --built-plt --apps `ls "$2" | sed 's/-.*//' | grep -v jinterface | grep -v erl_interface`
+dialyzer --output_plt "${REBAR_PLT_DIR}/dialyzer.plt" --built-plt --apps `ls "$2" | sed 's/-.*//' | grep -v jinterface | grep -v erl_interface`
