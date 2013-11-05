@@ -12,11 +12,7 @@ require 'spec_helper'
   { :cookbook => 'mongodb',       :recipe => 'default',                :name => 'mongodb',         :provider => :default,  :autostart => false },
   { :cookbook => 'couchdb',       :recipe => 'ppa',                    :name => 'couchdb',         :provider => :default,  :autostart => false },
   { :cookbook => 'rabbitmq',      :recipe => 'with_management_plugin', :name => 'rabbitmq-server', :provider => :default,  :autostart => false },
-
-# FIXME: Temporarily disable Riak validation because of Chef Template compilation error with Chef11 and ChefSpec
-# See https://github.com/travis-ci/travis-ci/issues/1090 and https://github.com/basho/riak-chef-cookbook/issues/36
-#  { :cookbook => 'riak',          :recipe => 'default',                :name => 'riak',            :provider => :default,  :autostart => false },
-
+  { :cookbook => 'riak',          :recipe => 'default',                :name => 'riak',            :provider => :default,  :autostart => false },
   { :cookbook => 'memcached',     :recipe => 'default',                :name => 'memcached',       :provider => :default,  :autostart => false },
   { :cookbook => 'redis',         :recipe => 'default',                :name => 'redis-server',    :provider => :upstart,  :autostart => false },
   { :cookbook => 'cassandra',     :recipe => 'tarball',                :name => 'cassandra',       :provider => :default,  :autostart => false },
@@ -35,7 +31,7 @@ require 'spec_helper'
       chef_run = create_chefspec_runner
       chef_run.converge "#{service.cookbook}::#{service.recipe}"
     }
-    
+
     if service.provider == :upstart
       it "controls service #{service.name} with Upstart init mechanism" do
         expect(chef_run.service(service.name).provider).to eq(Chef::Provider::Service::Upstart)
