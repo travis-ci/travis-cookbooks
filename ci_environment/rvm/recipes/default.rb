@@ -21,8 +21,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_attribute "travis_build_environment::default"
-
 # Make sure that the package list is up to date on Ubuntu/Debian.
 include_recipe "apt" if ['debian', 'ubuntu'].member? node[:platform]
 

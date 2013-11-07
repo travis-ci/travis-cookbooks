@@ -1,3 +1,5 @@
+include_attribute "travis_build_environment::default"
+
 default[:rvm][:version] = "latest-1.23"
 
 case node[:platform]
