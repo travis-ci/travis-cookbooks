@@ -24,7 +24,7 @@
 # This cookbook is supposed to be the last one on the run_list.
 # It cleans up unused apt packages and so on.
 
-include_attribute "travis_build_environment"
+include_attribute "travis_build_environment::default"
 
 execute "apt-get -y clean autoremove" do
   action :run
