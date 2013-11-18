@@ -1,21 +1,14 @@
 version = "2.2"
-arch = kernel['machine'] =~ /x86_64/ ? "amd64" : "i386"
+arch    = kernel['machine'] =~ /x86_64/ ? "amd64" : "i386"
+linux_arch = arch == 'amd64' ? 'linux64' : 'linux'
 
 default[:pypy] = {
   :tarball => {
     :version => version,
     :arch    => arch,
-    :url     => if arch == "i386"
-                  "https://bitbucket.org/pypy/pypy/downloads/pypy-#{version}-linux.tar.bz2"
-                else
-                  "https://bitbucket.org/pypy/pypy/downloads/pypy-#{version}-linux64.tar.bz2"
-                end,
-    :filename     => if arch == "i386"
-                       "pypy-#{version}-linux.tar.bz2"
-                     else
-                       "pypy-#{version}-linux64.tar.bz2"
-                     end,
-    :dirname          => "pypy-#{version}",
+    :url      => "https://bitbucket.org/pypy/pypy/downloads/pypy-#{version}-#{linux_arch}.tar.bz2",
+    :filename => "pypy-#{version}-#{linux_arch}.tar.bz2",
+    :dirname          => "pypy-#{version}-#{linux_arch}",
     :installation_dir => "/usr/local/pypy"
   }
 }
