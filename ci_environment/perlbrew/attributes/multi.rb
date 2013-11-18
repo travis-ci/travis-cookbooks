@@ -7,5 +7,5 @@ default[:perlbrew] = {
                { :name => "5.12", :version => "perl-5.12.5" },
                { :name => "5.10", :version => "perl-5.10.1" },
                { :name => "5.8",  :version => "perl-5.8.9"  }],
-  :modules => %w(Dist::Zilla Moose Test::Pod Test::Pod::Coverage Test::Exception Test::Kwalitee LWP Module::Install Test::Most)
+  :modules => %w(Dist::Zilla Moose Test::Pod Test::Pod::Coverage Test::Exception Test::Kwalitee Dist::Zilla::Plugin::Bootstrap::lib LWP Module::Install Test::Most)
 }
