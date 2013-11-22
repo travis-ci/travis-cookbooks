@@ -32,20 +32,21 @@ android_bin      = File.join(android_home, 'tools', 'android')
 #
 # Install required libraries
 #
-if (node['platform'] == 'ubuntu')
+if node['platform'] == 'ubuntu'
   package 'libgl1-mesa-dev'
-end
 
-#
-# Install required 32-bit libraries on 64-bit platforms
-#
-if (node['os'] == 'linux' && node['kernel']['machine'] != 'i686')
-  if (node['platform'] == 'ubuntu')
-    #TODO should check it is an ubuntu 11.10+
-    package 'libstdc++6:i386'
+  #
+  # Install required 32-bit libraries on 64-bit platforms
+  #
+  if node['kernel']['machine'] != 'i686'
+    # http://askubuntu.com/questions/147400/problems-with-eclipse-and-android-sdk
+    if Chef::VersionConstraint.new(">= 13.04").include?(node['platform_version'])
+      package 'lib32stdc++6'
+    elsif Chef::VersionConstraint.new(">= 11.10").include?(node['platform_version'])
+      package 'libstdc++6:i386'
+    end
+
     package 'lib32z1'
-  else
-    Chef::Application.fatal!("This 'Android SDK' cookbook currently only supports ubuntu 64-bit and other linux 32-bit platforms, but this node is a #{node['platform']}/#{node['kernel']['machine']} box.")
   end
 end
 
@@ -95,14 +96,27 @@ template "/etc/profile.d/#{node['android-sdk']['name']}.sh"  do
   )
 end
 
+package 'expect'
+
 #
 # Update and Install Android components
 #
-execute 'Install Android SDK platforms and tools' do
+script 'Install Android SDK platforms and tools' do
+  interpreter   'expect'
   environment   ({ 'ANDROID_HOME' => android_home })
   path          [File.join(android_home, 'tools')]
-  #TODO: use --force or not?
-  command       "echo y | #{android_bin} update sdk --no-ui --filter #{node['android-sdk']['components'].join(',')}"
   user          node['android-sdk']['owner']
   group         node['android-sdk']['group']
+  #TODO: use --force or not?
+  code <<-EOF
+    spawn #{android_bin} update sdk --no-ui --filter #{node['android-sdk']['components'].join(',')}
+    set timeout 1800
+    expect {
+      "Do you accept the license" {
+            exp_send "y\r"
+            exp_continue
+      }
+      eof
+    }
+  EOF
 end

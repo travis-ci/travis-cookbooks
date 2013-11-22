@@ -1,16 +1,15 @@
 # CHANGELOG for Android-SDK cookbook
 
-## 0.1.0 (not release yet)
+## 0.2.0 (not released yet)
 
-*Initial release* created for Travis CI needs (see travis-ci/travis-workeri#56)
+* 'Feature Complete' for Travis CI needs (see travis-ci/travis-cookbooks#153)
 
-## 0.0.1
+## 0.1.0 (not released yet)
 
-*Dummy release* to learn how to use kitchen-community plugin
+- GH-3: Accept SDK licenses with expect
+- GH-1: Support for Ubuntu 12.04+ (32bit and 64bit) 
 
 ## 0.0.0
 
 *First Draft*
-
-* GH-1: example of closed issue / release item
 

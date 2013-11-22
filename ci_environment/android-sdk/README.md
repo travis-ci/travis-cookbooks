@@ -14,7 +14,7 @@ Requirements
 ------------
 
 * Depends on **opscode/ark** and **opscode/java** cookbooks
-* This cookbook currently supports Linux/i386 platforms, but only Ubuntu/x86_64 since Ubuntu 11.10 (because of MultiArch dependency). See https://github.com/travis-ci/travis-worker/issues/56 for more details. Support of other Linux distributions with 64-bit architecture is planned.
+* This cookbook currently supports Ubuntu 12.04+, but more Linux distributions are welcome (depending on community interests)
 
 Attributes
 ----------

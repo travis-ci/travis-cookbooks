@@ -3,15 +3,14 @@ maintainer       "Gilles Cornu"
 maintainer_email "foss@gilles.cornu.name"
 license          "Apache 2.0"
 description      "Installs Google Android SDK"
-version          "0.0.1" # draft mode, will be set to 0.1.0 when ready for integration into Travis CI
+version          "0.1.0" # upcoming
 
 %w{ java ark }.each do |dep|
   depends dep
 end
 
-#TODO: pending distros to validate/adapt for (RPM-x86_64/i686 ia32libs issu): debian centos redhat fedora scientific suse
-%w{ ubuntu }.each do |os|
-  supports os
-end
+supports 'ubuntu', '>= 12.04'
+# Support for more platforms is on the road (e.g. Debian, CentOS,...). 
+# Watch https://github.com/gildegoma/chef-android-sdk/issues/5
 
 recipe "android-sdk", "Install and update Google Android SDK"
