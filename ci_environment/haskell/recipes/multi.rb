@@ -1,6 +1,6 @@
 require 'tmpdir'
 
-ghc_versions = node.haskell.multi.ghcs
+ghc_versions = node[:haskell][:multi][:ghcs]
 
 installation_root = File.join(node.travis_build_environment.home, "ghc-multi")
 installation_bin = File.join(installation_root, "bin")
