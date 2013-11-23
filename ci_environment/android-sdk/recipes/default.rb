@@ -109,7 +109,7 @@ script 'Install Android SDK platforms and tools' do
   group         node['android-sdk']['group']
   #TODO: use --force or not?
   code <<-EOF
-    spawn #{android_bin} update sdk --no-ui --filter #{node['android-sdk']['components'].join(',')}
+    spawn #{android_bin} update sdk --all --no-ui --filter #{node['android-sdk']['components'].join(',')}
     set timeout 1800
     expect {
       "Do you accept the license" {
