@@ -7,6 +7,18 @@ installation_bin = File.join(installation_root, "bin")
 bin_path = "/usr/local/bin/"
 ghc_binaries = ["ghc","ghc-pkg","haddock-ghc","ghci"]
 
+# install some deps
+["libgmp3-dev", "freeglut3", "freeglut3-dev"].each do |p|
+  package p do
+    action :install
+  end
+end
+
+link "link to libqmp.so.3" do
+  target_file "/usr/lib/x86_64-linux-gnu/libgmp.so.10"
+  to "/usr/lib/libgmp.so.3"
+end
+
 # create necessary dirs
 [installation_root, installation_bin].each do |d|
   directory d do
@@ -38,6 +50,7 @@ ghc_versions.each_pair do |ghc_version, settings|
       cd ghc-#{ghc_version}
       ./configure --prefix=#{ghc_dir}
       sudo make install
+      cd ..
       rm -rf ghc-#{ghc_version}
       rm -v #{ghc_local_tarball}
       ln -sf #{ghc_dir}/bin/ghc #{bin_path}/ghc
