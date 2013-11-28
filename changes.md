@@ -1,5 +1,7 @@
 Current:
 
+- Update Leiningen to 2.3.4 (Michael Klishin)
+
 - Update Ruby 1.9.3-p484 and 2.0.0-p353 (Josh Kalderimis)
 
 - Update Node.js 0.11 branch to 0.11.9 (Josh Kalderimis)
