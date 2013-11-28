@@ -86,8 +86,8 @@ ghc_binaries.each do |ghc_binary|
 end
 
 # install cabal
-apt_repository "cabal-install" do
-  uri          "http://ppa.launchpad.net/typeful/ppa/ubuntu"
+apt_repository "cabal-install-ppa" do
+  uri          "http://ppa.launchpad.net/typeful/cabal-install/ubuntu"
   distribution node['lsb']['codename']
   components   ["main"]
   key          "9DF71E85"
