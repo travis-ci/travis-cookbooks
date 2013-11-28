@@ -15,8 +15,8 @@ ghc_binaries = ["ghc","ghc-pkg","haddock-ghc","ghci"]
 end
 
 link "link to libqmp.so.3" do
-  target_file "/usr/lib/x86_64-linux-gnu/libgmp.so.10"
-  to "/usr/lib/libgmp.so.3"
+  target_file "/usr/lib/libgmp.so.3"
+  to "/usr/lib/x86_64-linux-gnu/libgmp.so.10"
 end
 
 # create necessary dirs
