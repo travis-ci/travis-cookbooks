@@ -32,7 +32,6 @@ end
 # download, unpack, build and install each ghc compiler and relater platform from sources
 ghc_tmp_dir = Dir.tmpdir
 ghc_versions.each_pair do |ghc_version, settings|
-  platform_version = settings[:platform_version]
   ghc_tarball_name = "ghc-#{ghc_version}-#{node.ghc.arch}-unknown-linux.tar.bz2"
   ghc_local_tarball = File.join(ghc_tmp_dir, ghc_tarball_name)
   ghc_dir = File.join(installation_root, ghc_version)
@@ -55,36 +54,6 @@ ghc_versions.each_pair do |ghc_version, settings|
       rm -v #{ghc_local_tarball}
       ln -sf #{ghc_dir}/bin/ghc #{bin_path}/ghc
       cd ../
-    EOS
-  end
-
-  platform_tarball_name = "haskell-platform-#{platform_version}.tar.gz"
-  platform_local_tarball = File.join(ghc_tmp_dir, platform_tarball_name)
-
-  remote_file platform_local_tarball do
-    source "http://lambda.haskell.org/platform/download/#{platform_version}/#{platform_tarball_name}"
-    not_if "test -f #{platform_local_tarball}"
-  end
-
-  bash "build and install Haskell Platform" do
-    user "root"
-    cwd  "/tmp"
-    code <<-EOS
-      tar zfx #{platform_local_tarball}
-      cd `tar -tf #{platform_local_tarball} | head -n 1`
-
-      which ghc
-      ghc --version
-
-      ./configure --prefix=#{ghc_dir}
-      sudo make && sudo make install
-      cd ../
-      rm -rf `tar -tf #{platform_local_tarball} | head -n 1`
-      rm #{platform_local_tarball}
-
-      cabal update
-      cabal install hunit c2hs
-      rm #{bin_path}/ghc -v
     EOS
   end
 
