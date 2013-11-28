@@ -1,5 +1,7 @@
 Current:
 
+- Update Cassandra to 2.0.3 (Josh Kalderimis)
+
 - Update Gradle to 1.9 (Michael Klishin)
 
 - Update Cassandra configurations for 2.0.2 (#242, Mathias Meyer)
