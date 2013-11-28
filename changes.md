@@ -1,5 +1,9 @@
 Current:
 
+- Update RVM to 1.24.5 (Josh Kalderimis)
+  This will include updated checksums for Ruby 1.9.3 (p484) and changes to
+  how RBX is selected.
+
 - Update Leiningen to 2.3.4 (Michael Klishin)
 
 - Update Ruby 1.9.3-p484 and 2.0.0-p353 (Josh Kalderimis)
