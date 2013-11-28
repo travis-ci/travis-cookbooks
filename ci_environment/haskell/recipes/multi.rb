@@ -2,7 +2,7 @@ require 'tmpdir'
 
 ghc_versions = node[:haskell][:multi][:ghcs]
 
-installation_root = File.join(node.travis_build_environment.home, "ghc-multi")
+installation_root = File.join(node.travis_build_environment.home, ".ghc-multi")
 installation_bin = File.join(installation_root, "bin")
 bin_path = "/usr/local/bin/"
 ghc_binaries = ["ghc","ghc-pkg","haddock-ghc","ghci"]
@@ -85,6 +85,22 @@ ghc_binaries.each do |ghc_binary|
   end
 end
 
+# install cabal
+apt_repository "cabal-install" do
+  uri          "http://ppa.launchpad.net/typeful/ppa/ubuntu"
+  distribution node['lsb']['codename']
+  components   ["main"]
+  key          "9DF71E85"
+  keyserver    "keyserver.ubuntu.com"
+
+  action :add
+end
+
+package "cabal-install" do
+  action :install
+end
+
+# install the ghc-select script
 template File.join(installation_root, "ghc-select") do
   source "ghc-select.erb"
   mode 0755
