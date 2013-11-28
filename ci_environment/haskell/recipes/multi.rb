@@ -100,6 +100,14 @@ package "cabal-install" do
   action :install
 end
 
+script "run cabal update" do
+  interpreter "bash"
+  code        "/usr/bin/cabal update"
+
+  cwd        node.travis_build_environment.home
+  user       node.travis_build_environment.user
+end
+
 # install the ghc-select script
 template File.join(installation_root, "ghc-select") do
   source "ghc-select.erb"
