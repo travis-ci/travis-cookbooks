@@ -108,6 +108,12 @@ script "run cabal update" do
   user       node.travis_build_environment.user
 end
 
+cookbook_file "/etc/profile.d/cabal.sh" do
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
+  mode 0755
+end
+
 # install the ghc-select script
 template File.join(installation_root, "ghc-select") do
   source "ghc-select.erb"
