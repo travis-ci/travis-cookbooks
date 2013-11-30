@@ -19,18 +19,18 @@ node[:php][:multi][:versions].each do |php_version|
     source "composer.erb"
     variables(:phpbin_path => bin_path)
   end
+end
 
-  directory composer_path do
-    owner  node.travis_build_environment.user
-    group  node.travis_build_environment.group
-    mode 0755
-    action :create
-  end
+directory composer_path do
+  owner  node.travis_build_environment.user
+  group  node.travis_build_environment.group
+  mode 0755
+  action :create
+end
 
-  template "#{composer_path}/config.json" do
-    owner  node.travis_build_environment.user
-    group  node.travis_build_environment.group
-    source "config.json.erb"
-    variables(:github_oauth_token => node[:composer][:github_oauth_token])
-  end
+template "#{composer_path}/config.json" do
+  owner  node.travis_build_environment.user
+  group  node.travis_build_environment.group
+  source "config.json.erb"
+  variables(:github_oauth_token => node[:composer][:github_oauth_token])
 end
