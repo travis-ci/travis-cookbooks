@@ -3,7 +3,7 @@ include_recipe "php::multi"
 phpenv_path   = File.join(node.travis_build_environment.home, ".phpenv")
 composer_path = File.join(node.travis_build_environment.home, ".composer")
 
-node[:php][:multi][:versions].each do |php_version|
+(node[:php][:multi][:versions] + ["hhvm"]).each do |php_version|
   bin_path = "#{phpenv_path}/versions/#{php_version}/bin"
   remote_file "#{bin_path}/composer.phar" do
     source "http://getcomposer.org/composer.phar"
