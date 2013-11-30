@@ -1,7 +1,7 @@
 include_recipe "hhvm"
 
 phpenv_path = "#{node.travis_build_environment.home}/.phpenv"
-hhvm_path   = "#{phpenv_path}/versions/hhvm"
+hhvm_path   = "#{phpenv_path}/versions/hhvm-#{node["hhvm"]["package"]["version"]}"
 
 directory hhvm_path do
   owner     node.travis_build_environment.user
@@ -23,6 +23,11 @@ file "#{hhvm_path}/bin/php" do
 #!/usr/bin/env bash
 hhvm "$@"
   CONTENT
+end
+
+# Alias
+link "#{phpenv_path}/versions/hhvm" do
+  to hhvm_path
 end
 
 # Install composer
