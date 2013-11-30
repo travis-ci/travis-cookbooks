@@ -35,9 +35,7 @@ end
 
 # download, unpack, build and install each ghc compiler and relater platform from sources
 ghc_tmp_dir = Dir.tmpdir
-node[:haskell][:multi][:ghcs].each_pair do |ghc_version, used|
-  next if not used
-
+node[:haskell][:multi][:ghcs].each do |ghc_version|
   ghc_tarball_name = "ghc-#{ghc_version}-#{node.ghc.arch}-unknown-linux.tar.bz2"
   ghc_local_tarball = File.join(ghc_tmp_dir, ghc_tarball_name)
   ghc_version_dir = File.join(ghc_dir, ghc_version)
@@ -89,4 +87,21 @@ cookbook_file "/etc/profile.d/cabal.sh" do
   owner node.travis_build_environment.user
   group node.travis_build_environment.group
   mode 0755
+end
+
+finder_path = File.join(node.travis_build_environment.home, ".ghc_finder.sh")
+template finder_path do
+  source "ghc_finder.sh.erb"
+  mode 0755
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
+  variables({
+    :versions => node[:haskell][:multi][:ghcs].sort.reverse,
+    :default => node[:haskell][:multi][:default],
+  })
+end
+
+bash "sourse finder" do
+  user node.travis_build_environment.user
+  code ". #{finder_path}"
 end

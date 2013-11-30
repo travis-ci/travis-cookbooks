@@ -1,0 +1,12 @@
+function ghc_find() {
+  if [[ "$1" == "" ]]; then
+    echo "<%=@default%>"
+  else
+    for v in <%=@versions.join(" ")%>; do
+      if [[ "$v" == *"$1"* ]]; then
+        echo "$v"
+        break
+      fi
+    done
+  fi
+}
