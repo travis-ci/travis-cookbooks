@@ -1,5 +1,7 @@
 Current:
 
+- Download Cassandra from Apache archive (Michael Klishin)
+
 - Update RVM to 1.24.5 (Josh Kalderimis)
   This will include updated checksums for Ruby 1.9.3 (p484) and changes to
   how RBX is selected.
