@@ -11,7 +11,7 @@ default[:phpbuild] = {
   },
   :custom => {
     :php_ini => {
-      :memory_limit => "512M",
+      :memory_limit => "1G",
       :timezone     => "UTC"
     }
   },
