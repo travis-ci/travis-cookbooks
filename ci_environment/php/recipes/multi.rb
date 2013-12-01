@@ -25,4 +25,5 @@ node.php.multi.aliases.each do |short_version, target_version|
 end
 
 include_recipe "php::extensions"
+include_recipe "php::hhvm"
 include_recipe "composer"
