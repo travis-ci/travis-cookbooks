@@ -3,7 +3,7 @@ function ghc_find() {
     echo "<%=@default%>"
   else
     for v in <%=@versions.join(" ")%>; do
-      if [[ "$v" == *"$1"* ]]; then
+      if [[ "$v" == "$1"* ]]; then
         echo "$v"
         break
       fi
