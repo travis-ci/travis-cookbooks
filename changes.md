@@ -1,5 +1,7 @@
 Current:
 
+- Add Go 1.2 to preinstalled versions (Mathias Meyer)
+
 - Download Cassandra from Apache archive (Michael Klishin)
 
 Production .org and .com 29.11.2013:
