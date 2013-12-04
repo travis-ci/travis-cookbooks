@@ -15,3 +15,5 @@ depends "libreadline"     # required to build PHP from C/C++ source
 depends "composer"
 depends "phpbuild"
 depends "phpenv"
+
+depends "hhvm"
