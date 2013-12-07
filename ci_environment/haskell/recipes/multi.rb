@@ -1,12 +1,5 @@
 require 'tmpdir'
 
-ghc_versions = node[:haskell][:multi][:ghcs]
-
-installation_root = File.join(node.travis_build_environment.home, ".ghc-multi")
-installation_bin = File.join(installation_root, "bin")
-bin_path = "/usr/local/bin/"
-ghc_binaries = ["ghc","ghc-pkg","haddock-ghc","ghci"]
-
 # install some deps
 %w(libgmp3-dev freeglut3 freeglut3-dev).each do |pkg|
   package(pkg) do
@@ -31,22 +24,28 @@ when ["ubuntu", "12.04"] then
   end
 end
 
-# create necessary dirs
-[installation_root, installation_bin].each do |d|
-  directory d do
-    owner node.travis_build_environment.user
-    group node.travis_build_environment.group
-    mode "0755"
-    action :create
-  end
+ghc_dir = "/usr/local/ghc"
+
+directory ghc_dir do
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
+  mode 0755
+  action :create
 end
 
 # download, unpack, build and install each ghc compiler and relater platform from sources
 ghc_tmp_dir = Dir.tmpdir
-ghc_versions.each_pair do |ghc_version, settings|
+node[:haskell][:multi][:ghcs].each do |ghc_version|
   ghc_tarball_name = "ghc-#{ghc_version}-#{node.ghc.arch}-unknown-linux.tar.bz2"
   ghc_local_tarball = File.join(ghc_tmp_dir, ghc_tarball_name)
-  ghc_dir = File.join(installation_root, ghc_version)
+  ghc_version_dir = File.join(ghc_dir, ghc_version)
+
+  directory ghc_version_dir do
+    owner node.travis_build_environment.user
+    group node.travis_build_environment.group
+    mode 0755
+    action :create
+  end
 
   remote_file ghc_local_tarball  do
     source "http://www.haskell.org/ghc/dist/#{ghc_version}/#{ghc_tarball_name}"
@@ -59,29 +58,12 @@ ghc_versions.each_pair do |ghc_version, settings|
     code <<-EOS
       tar jfx #{ghc_local_tarball}
       cd ghc-#{ghc_version}
-      ./configure --prefix=#{ghc_dir}
-      sudo make install
+      ./configure --prefix=#{ghc_version_dir}
+      make install
       cd ..
       rm -rf ghc-#{ghc_version}
       rm -v #{ghc_local_tarball}
-      ln -sf #{ghc_dir}/bin/ghc #{bin_path}/ghc
-      cd ../
     EOS
-  end
-
-  ghc_binaries.each do |ghc_binary|
-    binary_file = "#{ghc_binary}-#{ghc_version}"
-    link File.join(installation_bin, binary_file) do
-      to File.join(ghc_dir, "bin", binary_file)
-    end
-  end
-end
-
-# link all ghc binaries to bin_path
-default_ghc = ghc_versions.select { |_,v| v.has_key?(:default) and v[:default] }.keys.first
-ghc_binaries.each do |ghc_binary|
-  link File.join(bin_path, ghc_binary) do
-    to File.join(installation_bin, "#{ghc_binary}-#{default_ghc}")
   end
 end
 
@@ -92,20 +74,13 @@ apt_repository "cabal-install-ppa" do
   components   ["main"]
   key          "9DF71E85"
   keyserver    "keyserver.ubuntu.com"
-
   action :add
 end
 
-package "cabal-install" do
-  action :install
-end
-
-script "run cabal update" do
-  interpreter "bash"
-  code        "/usr/bin/cabal update"
-
-  cwd        node.travis_build_environment.home
-  user       node.travis_build_environment.user
+%w(cabal-install alex happy).each do |p|
+  package p do
+    action :install
+  end
 end
 
 cookbook_file "/etc/profile.d/cabal.sh" do
@@ -114,15 +89,19 @@ cookbook_file "/etc/profile.d/cabal.sh" do
   mode 0755
 end
 
-# install the ghc-select script
-template File.join(installation_root, "ghc-select") do
-  source "ghc-select.erb"
+finder_path = File.join(node.travis_build_environment.home, ".ghc_finder.sh")
+template finder_path do
+  source "ghc_finder.sh.erb"
   mode 0755
-  owner "root"
-  group "root"
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
   variables({
-     :bin_dir => installation_bin,
-     :global_bin => bin_path,
-     :ghc_binaries => ghc_binaries,
+    :versions => node[:haskell][:multi][:ghcs].sort.reverse,
+    :default => node[:haskell][:multi][:default],
   })
+end
+
+bash "sourse finder" do
+  user node.travis_build_environment.user
+  code ". #{finder_path}"
 end
