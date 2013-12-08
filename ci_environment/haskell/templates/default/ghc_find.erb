@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [[ "$1" == "" ]]; then
+  echo "<%=@default%>"
+else
+  for v in <%=@versions.join(" ")%>; do
+    if [[ "$v" == "$1"* ]]; then
+      echo "$v"
+      exit 0
+    fi
+  done
+  echo "ghc_find: error, no such version $1" >&2
+  exit 1
+fi

@@ -89,19 +89,13 @@ cookbook_file "/etc/profile.d/cabal.sh" do
   mode 0755
 end
 
-finder_path = File.join(node.travis_build_environment.home, ".ghc_finder.sh")
-template finder_path do
-  source "ghc_finder.sh.erb"
+template "/usr/local/bin/ghc_find" do
+  source "ghc_find.erb"
   mode 0755
-  owner node.travis_build_environment.user
+  owner "root"
   group node.travis_build_environment.group
   variables({
     :versions => node[:haskell][:multi][:ghcs].sort.reverse,
     :default => node[:haskell][:multi][:default],
   })
-end
-
-bash "sourse finder" do
-  user node.travis_build_environment.user
-  code ". #{finder_path}"
 end
