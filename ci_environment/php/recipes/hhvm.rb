@@ -1,4 +1,5 @@
 include_recipe "hhvm"
+include_recipe "phpenv"
 
 phpenv_path = "#{node.travis_build_environment.home}/.phpenv"
 hhvm_path   = "#{phpenv_path}/versions/hhvm-#{node["hhvm"]["package"]["version"]}"
