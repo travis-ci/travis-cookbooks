@@ -2,7 +2,7 @@ Production .org 10.12.2013
 
 - Fix rvm warning that a Ruby version can't be found even though it's available (Josh Kalderimis)
 
-- Update Redis to 2.8.1 (currently only on the Ruby, PHP and JVM images) (Josh Kalderimis)
+- Update Redis to 2.8.2 (currently only on the Ruby, PHP and JVM images) (Josh Kalderimis)
 
 - Raise PHP memory limit to 1GB (Loïc Frering)
 
