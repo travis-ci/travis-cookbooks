@@ -6,7 +6,7 @@ apt_repository "hhvm-repository" do
   action :add
 end
 
-package "hhvm" do
+package node["hhvm"]["package"]["name"] do
   action  :install
   version node["hhvm"]["package"]["version"]
   options "--force-yes"
