@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 name              "mongodb"
 maintainer        "Michael Strüder"
 maintainer_email  "mikezter@gmail.com"

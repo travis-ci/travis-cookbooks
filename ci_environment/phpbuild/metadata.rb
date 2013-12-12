@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 name              "phpbuild"
 maintainer        "Loïc Frering"
 maintainer_email  "loic.frering@gmail.com"
