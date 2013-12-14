@@ -16,14 +16,8 @@ directory "#{hhvm_path}/bin" do
   action    :create
 end
 
-file "#{hhvm_path}/bin/php" do
-  owner  node.travis_build_environment.user
-  group  node.travis_build_environment.group
-  mode   00755
-  content <<-CONTENT
-#!/usr/bin/env bash
-hhvm "$@"
-  CONTENT
+link "#{hhvm_path}/bin/php" do
+  to "/usr/bin/hhvm"
 end
 
 # Alias
@@ -44,7 +38,7 @@ file "#{hhvm_path}/bin/composer" do
   mode   00755
   content <<-CONTENT
 #!/usr/bin/env bash
-hhvm "#{hhvm_path}/bin/composer.phar" "$@"
+php "#{hhvm_path}/bin/composer.phar" "$@"
   CONTENT
 end
 
@@ -61,6 +55,6 @@ file "#{hhvm_path}/bin/phpunit" do
   mode   00755
   content <<-CONTENT
 #!/usr/bin/env bash
-hhvm "#{hhvm_path}/bin/phpunit.phar" "$@"
+php "#{hhvm_path}/bin/phpunit.phar" "$@"
   CONTENT
 end
