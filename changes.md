@@ -1,3 +1,7 @@
+Current:
+
+- Update Perl versions to 5.17.11, 5.18.1 and 5.19.6 (Henrik Hodne)
+
 Production .org 10.12.2013
 
 - Fix rvm warning that a Ruby version can't be found even though it's available (Josh Kalderimis)
