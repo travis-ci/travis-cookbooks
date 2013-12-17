@@ -22,7 +22,7 @@ node.perlbrew.perls.each do |pl|
 
   bash "installing #{pl[:version]} as #{pl[:name]} with Perlbrew arguments: #{args}" do
     setup.call(self)
-    code   "#{brew} install #{pl[:version]} --as #{pl[:name]} #{args}"
+    code   "#{brew} install #{pl[:version]} --as #{pl[:name]} #{args} -Duseshrplib"
     not_if "ls #{home}/perl5/perlbrew/perls | grep #{pl[:name]}"
   end
 
@@ -32,7 +32,7 @@ node.perlbrew.perls.each do |pl|
       # remove the mirror for now as VMs are based in the US
       # --mirror 'http://cpan.mirrors.travis-ci.org'
       code   "#{brew} use #{pl[:name]} && cpanm #{mod} --force --notest"
-    end    
+    end
   end
 
   bash "cleaning cpanm metadata for #{pl[:version]}" do
