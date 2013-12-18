@@ -11,3 +11,9 @@ package node["hhvm"]["package"]["name"] do
   version node["hhvm"]["package"]["version"]
   options "--force-yes"
 end
+
+cookbook_file "/etc/hhvm/php.ini" do
+  owner "root"
+  group "root"
+  mode 0644
+end
