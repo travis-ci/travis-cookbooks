@@ -1,5 +1,6 @@
 Current:
 
+- Update Gradle to 1.10 (Michael Klishin)
 - Update Perl versions to 5.17.11, 5.18.1 and 5.19.6 (Henrik Hodne)
 
 Production .org 10.12.2013
