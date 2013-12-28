@@ -2,7 +2,7 @@ apt_repository "hhvm-repository" do
   uri          "http://dl.hhvm.com/ubuntu"
   distribution node["lsb"]["codename"]
   components   ["main"]
-
+  key          "http://http://dl.hhvm.com/conf/hhvm.gpg.key"
   action :add
 end
 
