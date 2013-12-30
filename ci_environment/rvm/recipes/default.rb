@@ -45,7 +45,7 @@ bash "install RVM" do
   environment Hash['HOME' => node.travis_build_environment.home, 'rvm_user_install_flag' => '1']
   code        <<-SH
   curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer -o /tmp/rvm-installer &&
-  bash /tmp/rvm-installer #{node.rvm.version} --without-gems=rubygems-bundler
+  bash /tmp/rvm-installer #{node.rvm.version}
   rm   /tmp/rvm-installer
   ~/.rvm/bin/rvm version
   SH
