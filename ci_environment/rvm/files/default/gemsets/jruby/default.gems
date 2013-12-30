@@ -1,4 +1,4 @@
 jruby-openssl
 jruby-launcher
-rake -v0.9.6
-bundler -v "~>1.5.1"
+rake -v~>10.1.1
+bundler -v~>1.5.1
