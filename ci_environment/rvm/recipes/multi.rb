@@ -91,5 +91,5 @@ end
 bash "clean up RVM sources, log files, etc" do
   setup.call(self)
   # gemset empty is needed only till https://github.com/rubinius/rubinius/pull/1759 gets fixed. @mpapis
-  code "#{rvm} cleanup all && #{rvm} all do rvm --force gemset empty || true"
+  code "#{rvm} cleanup all || true"
 end
