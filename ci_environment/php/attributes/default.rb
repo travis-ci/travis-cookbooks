@@ -36,5 +36,6 @@ default[:php][:multi][:extensions] = {
     'before_recipes'  => %w(zeromq::ppa),
     'before_packages' => %w(libzmq3-dev),
     'channel'         => 'pear.zero.mq'
-  }
+  },
+  'redis' => {}
 }
