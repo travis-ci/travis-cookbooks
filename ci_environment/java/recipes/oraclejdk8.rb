@@ -32,7 +32,7 @@ link "#{oraclejdk8_home}/jre/lib/security/cacerts" do
 end
 
 directory '/var/cache/oracle-jdk8-installer' do
-  action :remove
+  action :delete
   ignore_failure true
 end
 

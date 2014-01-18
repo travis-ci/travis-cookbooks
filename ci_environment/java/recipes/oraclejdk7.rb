@@ -35,6 +35,6 @@ if node.java.oraclejdk7.install_jce_unlimited
 end
 
 directory '/var/cache/oracle-jdk7-installer' do
-  action :remove
+  action :delete
   ignore_failure true
 end
