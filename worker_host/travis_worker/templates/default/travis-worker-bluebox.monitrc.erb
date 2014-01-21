@@ -2,6 +2,7 @@ check process <%= @service_name %>
   with pidfile /etc/sv/<%= @service_name %>/supervise/pid
   group travis-worker
   if changed pid then alert
+  if does not exist then exec "/bin/true"
   if totalcpu > 3% for 5 cycles then alert
   if totalcpu > 3% for 10 cycles then restart
   stop program "/usr/bin/sv stop <%= @service_name %>"

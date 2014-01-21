@@ -1,6 +1,7 @@
 Current:
 
-- Update Clang to 3.4 (Jack Pappas)
+- Cassandra 2.0.4 (Michael Klishin)
+- ElasticSearch 0.9.10 (Ray Ward)
 - Update Gradle to 1.10 (Michael Klishin)
 - Update Perl versions to 5.17.11, 5.18.1 and 5.19.6 (Henrik Hodne)
 
