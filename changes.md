@@ -1,5 +1,6 @@
 Current:
 
+- Added Erlang R16B03 (Michael Klishin)
 - Cassandra 2.0.4 (Michael Klishin)
 - ElasticSearch 0.9.10 (Ray Ward)
 - Update Gradle to 1.10 (Michael Klishin)
