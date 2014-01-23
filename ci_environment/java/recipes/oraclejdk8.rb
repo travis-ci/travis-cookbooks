@@ -31,6 +31,11 @@ link "#{oraclejdk8_home}/jre/lib/security/cacerts" do
   to '/etc/ssl/certs/java/cacerts'
 end
 
+directory '/var/cache/oracle-jdk8-installer' do
+  action :delete
+  ignore_failure true
+end
+
 # Note about JCE unlimited: There is currently no JCE Unlimited Strength package for JDK8, as it still in 'Developer Preview' phase.
 # Projects interested in Java8-EA integrate should thus be aware of this current limitation...
 #
