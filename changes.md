@@ -1,10 +1,27 @@
 Current:
 
-- Added Erlang R16B03 (Michael Klishin)
-- Cassandra 2.0.4 (Michael Klishin)
-- ElasticSearch 0.9.10 (Ray Ward)
-- Update Gradle to 1.10 (Michael Klishin)
+- Updated Phantom Js to 1.9.7
+
+
+Production .org 03.01.2014
+
 - Update Perl versions to 5.17.11, 5.18.1 and 5.19.6 (Henrik Hodne)
+
+- Added Erlang R16B03, R16B03-1 and 17.0-rc1 (Michael Klishin and José Valim)
+
+- Updated Cassandra to 2.0.4 (Michael Klishin)
+
+- Updated ElasticSearch to 0.9.10 (Ray Ward)
+
+- Update Gradle to 1.10 (Michael Klishin)
+ 
+- Updated Node.js to 0.10.25 and 0.11.11 (Josh Kalderimis)
+
+- Updated PHP to 5.4.24 and 5.5.8 (Loïc Frering)
+
+- Updated HHVM to 2.4.0 (Loïc Frering)
+
+- Upgraded Virtualenv to 1.11.1 (Alex Gaynor)
 
 Production .org 10.12.2013
 
