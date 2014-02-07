@@ -30,6 +30,11 @@ end
   service_name = "travis-worker-#{worker}"
   host_name = "#{node[:travis][:worker][:hostname]}-#{worker}.#{node[:travis][:worker][:domain]}"
 
+  if node[:travis][:worker][:custom_config] && custom_config = node[:travis][:worker][:custom_config][app]
+    vms = custom_config[:vms]
+    queue = custom_config[:queue]
+  end
+
   service service_name do
     action :nothing
   end
@@ -74,7 +79,9 @@ end
               :worker => node[:travis][:worker],
               :hostname => host_name,
               :bluebox => node[:bluebox],
-              :librato => node[:collectd_librato]
+              :librato => node[:collectd_librato],
+              :queue => queue,
+              :vms => vms
 
     notifies :restart, resources(:service => service_name)
   end
