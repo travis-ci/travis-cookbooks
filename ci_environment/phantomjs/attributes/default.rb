@@ -5,6 +5,6 @@ default[:phantomjs] = {
   :version => version,
   :arch    => arch,
   :tarball => {
-    :url => "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-#{version}-linux-#{arch}.tar.bz2
+    :url => "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-#{version}-linux-#{arch}.tar.bz2"
   }
 }
