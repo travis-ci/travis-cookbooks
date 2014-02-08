@@ -1,9 +1,9 @@
-default[:php][:multi][:versions] = ["5.2.17", "5.3.3", "5.3.27", "5.4.25", "5.5.9"]
-default[:php][:multi][:aliases]  = {"5.2" => "5.2.17", "5.3" => "5.3.27", "5.4" => "5.4.25", "5.5" => "5.5.9"}
+default[:php][:multi][:versions] = ["5.2.17", "5.3.3", "5.3.27", "5.4.25", "5.5.9", "5.6.0alpha1"]
+default[:php][:multi][:aliases]  = {"5.2" => "5.2.17", "5.3" => "5.3.27", "5.4" => "5.4.25", "5.5" => "5.5.9", "5.6" => "5.6.0alpha1"}
 
 default[:php][:multi][:extensions] = {
   'apc'       => {
-    'versions' => default[:php][:multi][:versions].reject { |version| version.start_with?("5.5") }
+    'versions' => default[:php][:multi][:versions].reject { |version| version.start_with?("5.5", "5.6") }
   },
   'memcache'  => {},
   'memcached' => {
