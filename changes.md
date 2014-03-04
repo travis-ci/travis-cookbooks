@@ -1,7 +1,7 @@
 Current:
 
 - Updated Phantom Js to 1.9.7
-- Updated Rebar download location (Michael Klishin)
+- Updated Rebar download location (Chase James, Michael Klishin)
 
 
 Production .org 03.01.2014
