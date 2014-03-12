@@ -1,5 +1,5 @@
 default[:elasticsearch] = {
-  :version => "0.90.10",
+  :version => "1.0.1",
   :service => {
     :enabled => false
   }
