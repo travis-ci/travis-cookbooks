@@ -17,6 +17,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-default['python']['multi']['pythons'] = %w(python2.6 python2.7 python3.2 python3.3 pypy)
-default['python']['pip']['packages']  = %w(nose pytest mock numpy)
+default['python']['pyenv']['revision'] = "cf89abaacff804b7b2047e3ee2ff6df5651b1ce5"
+default['python']['pyenv']['pythons'] = [
+    "2.6.9",
+    "2.7.6",
+    "3.2.5",
+    "3.3.5",
+    "3.4.0",
+]
+default['python']['pyenv']['aliases'] = {
+    "2.6.9" => ["2.6"],
+    "2.7.6" => ["2.7"],
+    "3.2.5" => ["3.2"],
+    "3.3.5" => ["3.3"],
+    "3.4.0" => ["3.4"],
+}
+default['python']['pip']['packages'] = {
+    "default" => ["nose", "pytest", "mock", "numpy"],
+}
