@@ -65,8 +65,8 @@ node.python.pyenv.pythons.each do |py|
   end
 
   # Install all of the pre-installed packages we want
-  execute "install packages #{py}_with_system_site_packages" do
-    command "#{virtualenv_root}/#{py}_with_system_site_packages/bin/pip install --upgrade #{packages.join(' ')}"
+  execute "install packages #{py}" do
+    command "#{virtualenv_root}/#{py}/bin/pip install --upgrade #{packages.join(' ')}"
     user    node.travis_build_environment.user
     group   node.travis_build_environment.group
   end
