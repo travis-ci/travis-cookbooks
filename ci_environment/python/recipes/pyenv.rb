@@ -3,6 +3,15 @@ virtualenv_root = File.join(node.travis_build_environment.home, "virtualenv")
 # Install virtualenv and pip
 include_recipe "python::virtualenv"
 
+# Install the things we need to properly build Python
+[
+  "make", "build-essential", "libssl-dev", "zlib1g-dev", "libbz2-dev",
+  "libreadline-dev", "libsqlite3-dev wget", "curl", "llvm", "liblzma-dev",
+  "libncurses-dev", "tk-dev",
+].each do |pkg|
+  package pkg
+end
+
 # Get pyenv which we'll use to install the various Pythons we wish to support
 git "/opt/pyenv" do
   repository "git://github.com/yyuu/pyenv.git"
