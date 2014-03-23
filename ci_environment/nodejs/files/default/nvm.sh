@@ -26,7 +26,7 @@ if [ ! `which curl` ]; then
         }
     else
         echo 'Need curl or wget to proceed. Terminating.'
-        exit 1
+        return 1
     fi
 fi
 
