@@ -1,6 +1,9 @@
 Current:
 
+- Added JCE Unlimited Strength Jurisdiction Policy Files to Oracle JDK 8 (Gilles Cornu)
+
 - Updated Phantom Js to 1.9.7
+
 - Updated Rebar download location (Chase James, Michael Klishin)
 
 
