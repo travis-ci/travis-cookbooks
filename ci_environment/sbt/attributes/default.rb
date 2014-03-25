@@ -43,5 +43,5 @@ default['sbt-extras']['system_wide_defaults']         = false     # if enabled, 
 #
 
 default['sbt-extras']['user_setup'][node['travis_build_environment']['user']]['sbt']   = %w{ 0.13.1 0.13.0 0.12.4 0.12.3 0.12.2 0.11.3 0.11.2 }
-default['sbt-extras']['user_setup'][node['travis_build_environment']['user']]['scala'] = %w{ 2.10.3 2.10.2 2.10.1 2.10.0 2.9.3 2.9.2 }
+default['sbt-extras']['user_setup'][node['travis_build_environment']['user']]['scala'] = %w{ 2.10.4 2.10.3 2.10.2 2.9.3 2.9.2 }
 
