@@ -6,7 +6,7 @@ include_recipe "python::virtualenv"
 # Install the things we need to properly build Python
 [
   "make", "build-essential", "libssl-dev", "zlib1g-dev", "libbz2-dev",
-  "libreadline-dev", "libsqlite3-dev wget", "curl", "llvm", "liblzma-dev",
+  "libreadline-dev", "libsqlite3-dev", "wget", "curl", "llvm", "liblzma-dev",
   "libncurses-dev", "tk-dev",
 ].each do |pkg|
   package pkg
