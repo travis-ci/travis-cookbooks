@@ -43,6 +43,13 @@ end
 
 # Install the baked in versions of Python we are offering
 node.python.pyenv.pythons.each do |py|
+  # Get our on disk name for this python
+  if /^\d+\.\d+(?:\.\d+)?(?:-dev)?$/ =~ py
+    pyname = "python#{py}"
+  else
+    pyname = py
+  end
+
   # Actually do the installation/building to the full version python
   execute "python-build #{py} /opt/python/#{py}" do
     creates "/opt/python/#{py}"
@@ -54,15 +61,21 @@ node.python.pyenv.pythons.each do |py|
     owner       node.travis_build_environment.user
     group       node.travis_build_environment.group
     interpreter "/opt/python/#{py}/bin/python"
-    path        "#{virtualenv_root}/#{py}"
+    path        "#{virtualenv_root}/#{pyname}"
 
     action :create
   end
 
   # Add any aliases that exist for this Python version
   node.python.pyenv.aliases.fetch(py, []).each do |pyalias|
-    link "#{virtualenv_root}/#{pyalias}" do
-      to    "#{virtualenv_root}/#{py}"
+    if /^\d+\.\d+(?:\.\d+)?(?:-dev)?$/ =~ py
+      pyaliasname = "python#{pyalias}"
+    else
+      pyaliasname = pyalias
+    end
+
+    link "#{virtualenv_root}/#{pyaliasname}" do
+      to    "#{virtualenv_root}/#{pyname}"
       owner node.travis_build_environment.user
       group node.travis_build_environment.group
     end
@@ -76,7 +89,7 @@ node.python.pyenv.pythons.each do |py|
 
   # Install all of the pre-installed packages we want
   execute "install packages #{py}" do
-    command "#{virtualenv_root}/#{py}/bin/pip install --upgrade #{packages.join(' ')}"
+    command "#{virtualenv_root}/#{pyname}/bin/pip install --upgrade #{packages.join(' ')}"
     user    node.travis_build_environment.user
     group   node.travis_build_environment.group
   end

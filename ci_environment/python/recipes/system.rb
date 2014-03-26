@@ -15,11 +15,11 @@ end
 
 # We assume these are Python 2.7 and Python 3.2, this will need changed on a
 # new OS version
-["2.7", "3.2"].each do |py|
-  python_virtualenv "python_#{py}_with_system_site_packages" do
+["python2.7", "python3.2"].each do |py|
+  python_virtualenv "#{py}_with_system_site_packages" do
     owner                node.travis_build_environment.user
     group                node.travis_build_environment.group
-    interpreter          "python#{py}"
+    interpreter          py
     path                 "#{virtualenv_root}/#{py}_with_system_site_packages"
     system_site_packages true
 
