@@ -1,0 +1,6 @@
+knife test: bundle exec knife cookbook test $COOKBOOK
+foodcritic: bundle exec foodcritic -f any $SANDBOX/$COOKBOOK
+rubocop: bundle exec rubocop $COOKBOOK
+# These might come in useful later, but most cookbooks don't have the necessary files
+# chefspec:   bundle exec rspec --color
+# kitchen:    bundle exec kitchen test

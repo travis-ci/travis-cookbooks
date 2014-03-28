@@ -1,0 +1,19 @@
+---
+driver:
+  name: vagrant
+driver_config:
+  customize:
+    cpus: 2
+    memory: 1024
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: ubuntu-12.04
+
+suites:
+  # based on https://github.com/travis-ci/travis-images/tree/master/templates, should find a way to link the projects
+  - name: worker_python
+    run_list:
+      - role[worker_python]
