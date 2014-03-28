@@ -40,10 +40,3 @@ task :fool_strainer do
   FileUtils.cp_r Dir['worker_host/*'], 'cookbooks'
   FileUtils.cp_r Dir['ci_environment/*'], 'cookbooks'
 end
-
-begin
-  require 'kitchen/rake_tasks'
-  Kitchen::RakeTasks.new
-rescue LoadError
-  puts ">>>>> Kitchen gem not loaded, omitting tasks" unless ENV['CI']
-end
