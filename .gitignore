@@ -9,4 +9,6 @@ tmp/*
 /.rvmrc
 /.bundle
 /.rspec
-
+.kitchen/
+.kitchen.local.yml
+cookbooks/
