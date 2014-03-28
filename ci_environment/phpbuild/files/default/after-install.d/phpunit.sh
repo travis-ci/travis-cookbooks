@@ -17,10 +17,23 @@ use_pear() {
     "$pear" channel-discover pear.phpunit.de
 
     if "$PREFIX/bin/php" -v | grep "PHP 5.2"; then
+        "$pear" install "symfony/YAML-1.0.2"
         "$pear" install "phpunit/File_Iterator-1.3.2"
         "$pear" install "phpunit/Text_Template-1.1.2"
         "$pear" install "phpunit/PHP_Timer-1.0.3"
+        "$pear" install "phpunit/PHP_TokenStream-1.1.4"
+        "$pear" install "phpunit/PHP_CodeCoverage-1.1.4"
+        "$pear" install "phpunit/PHPUnit_MockObject-1.1.1"
         "$pear" install "phpunit/PHPUnit-3.6.12"
+    elif "$PREFIX/bin/php" -v | grep "PHP 5.3"; then
+        "$pear" install "symfony/Yaml-2.3.11"
+        "$pear" install "phpunit/File_Iterator-1.3.4"
+        "$pear" install "phpunit/Text_Template-1.2.0"
+        "$pear" install "phpunit/PHP_Timer-1.0.5"
+        "$pear" install "phpunit/PHP_TokenStream-1.2.2"
+        "$pear" install "phpunit/PHP_CodeCoverage-1.2.16"
+        "$pear" install "phpunit/PHPUnit_MockObject-1.2.3"
+        "$pear" install "phpunit/PHPUnit-3.7.32"
     else
         "$pear" install "phpunit/PHPUnit"
     fi
