@@ -1,15 +1,18 @@
-# CHANGELOG for Android-SDK cookbook
+CHANGELOG for Android-SDK cookbook
+==================================
 
-## 0.2.0 (not released yet)
 
-* 'Feature Complete' for Travis CI needs (see travis-ci/travis-cookbooks#153)
+v0.1.0 (2014-03-31)
+-------------------
 
-## 0.1.0 (not released yet)
+- Accept or Reject some SDK licenses with expect [GH-11]
+- Add a basic idempotent guard [GH-10]
+- Accept all SDK licenses with expect [GH-3]
+- Support for Ubuntu 12.04+ (32bit and 64bit) [GH-1]
+- Integrate by default with Android SDK 22.6.2
 
-- GH-3: Accept SDK licenses with expect
-- GH-1: Support for Ubuntu 12.04+ (32bit and 64bit) 
-
-## 0.0.0
+v0.0.0 (2013-08-08)
+-------------------
 
 *First Draft*
 

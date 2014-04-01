@@ -3,7 +3,7 @@ maintainer       "Gilles Cornu"
 maintainer_email "foss@gilles.cornu.name"
 license          "Apache 2.0"
 description      "Installs Google Android SDK"
-version          "0.1.0" # upcoming
+version          "0.1.0"
 
 %w{ java ark }.each do |dep|
   depends dep

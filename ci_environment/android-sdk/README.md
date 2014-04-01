@@ -39,24 +39,27 @@ This Cookbook is being _tasted_ by Travis CI: [![Build Status](https://secure.tr
 
 Automated validations are following:
   * Static Analysis of Ruby code with [tailor](https://github.com/turboladen/tailor#readme) lint tool
-  * Static Analysis of Chef Cookbooks with [foodcritic](http://acrmp.github.com/foodcritic/) lint tool 
+  * Static Analysis of Chef Cookbooks with [foodcritic](http://acrmp.github.com/foodcritic/) lint tool
   * `knife cookbook test` in a very basic sandbox
   * _PENDING:_ Expectations described with RSpec examples with [ChefSpec](https://github.com/acrmp/chefspec)
+  * _PENDING:_ [ServerSpec](http://serverspec.org/) integration testing
   * _PENDING:_ Run true chef (matrix) on travis VM!
 
 ### Development and Testing
 
 During development, this cookbook is locally tested in following environments:
- * Development with *recent* versions of Chef-Solo and Ubuntu (with great help of Berkshelf, Vagrant and Virtualbox and other tools provided by the Chef community). 
- * Integration with great help of Opscode [test-kitchen](https://github.com/opscode/test-kitchen) 
+ * Development with *recent* versions of Chef-Solo and Ubuntu (with great help of Berkshelf, Vagrant and Virtualbox and other tools provided by the Chef community).
+ * Integration with great help of Opscode [test-kitchen](https://github.com/opscode/test-kitchen)
 
 License and Credits
 -------------------
 
+* Thanks to:: [All Contributors](https://github.com/gildegoma/chef-android-sdk/graphs/contributors)
 * Thanks to:: [Ralf Kistner](https://github.com/rkistner), for all relevant information to create original cookbook
+* Thanks to:: [Andrew Rosa](https://github.com/andrewhr), for all relevant information to improve this cookbook
 * Thanks to:: [Travis CI Project](http://github.com/travis-ci/travis-cookbooks), for motivating the creation of this cookbook
 
-* Copyright:: 2013, Gilles Cornu
+* Copyright:: 2013-2014, Gilles Cornu
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
