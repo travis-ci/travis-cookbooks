@@ -12,8 +12,9 @@ pear="$PREFIX/bin/pear"
 use_pear() {
     "$pear" upgrade pear
 
-    "$pear" channel-discover components.ez.no
+    #"$pear" channel-discover components.ez.no
     "$pear" channel-discover pear.symfony-project.com
+    "$pear" channel-discover pear.symfony.com
     "$pear" channel-discover pear.phpunit.de
 
     if "$PREFIX/bin/php" -v | grep "PHP 5.2"; then
@@ -38,11 +39,12 @@ use_pyrus() {
     }
 
     # Set up the required channels
-    "$pyrus" channel-discover "components.ez.no"
+    #"$pyrus" channel-discover "components.ez.no"
     "$pyrus" channel-discover "pear.symfony-project.com"
     "$pyrus" channel-discover "pear.phpunit.de"
+    "$pyrus" channel-discover "pear.phpunit.de" > /dev/null
 
-    _ezcomponents_hack
+    #_ezcomponents_hack
 
     "$pyrus" install "phpunit/PHPUnit"
 }
