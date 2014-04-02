@@ -1,6 +1,6 @@
 default['android-sdk']['name']           = 'android-sdk'
-default['android-sdk']['owner']          = 'root'
-default['android-sdk']['group']          = 'root'
+default['android-sdk']['owner']          = node['travis_build_environment']['user']
+default['android-sdk']['group']          = node['travis_build_environment']['group']
 default['android-sdk']['setup_root']     = nil  # ark defaults (/usr/local) is used if this attribute is not defined
 
 default['android-sdk']['version']        = '22.6.2'
@@ -35,6 +35,6 @@ default['android-sdk']['components']     = %w(platform-tools
                                               extra-google-m2repository
                                               extra-android-m2repository)
 
-default['android-sdk']['license']['white_list']     = %w(android-sdk-license-.+ intel-.+)
-default['android-sdk']['license']['black_list']     = []    # e.g. ['mips-.+', 'android-wear-sdk-license-.+']
+default['android-sdk']['license']['white_list']     = %w(android-sdk-license-.+)
+default['android-sdk']['license']['black_list']     = []    # e.g. ['intel-.+', 'mips-.+', 'android-wear-sdk-license-.+']
 default['android-sdk']['license']['default_answer'] = 'n'   # 'y' or 'n' ('yes' or 'no')
