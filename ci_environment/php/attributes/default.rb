@@ -15,7 +15,7 @@ default[:php][:multi][:extensions] = {
       ./configure && make && make install
     EOF
     'script'   => <<-EOF
-      pecl download memcached
+      pecl download memcached-2.1.0
       tar zxvf memcached*.tgz && cd memcached*
       make clean
       phpize
