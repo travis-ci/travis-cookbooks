@@ -1,3 +1,5 @@
+include_attribute 'travis_build_environment'
+
 default['android-sdk']['name']           = 'android-sdk'
 default['android-sdk']['owner']          = node['travis_build_environment']['user']
 default['android-sdk']['group']          = node['travis_build_environment']['group']
