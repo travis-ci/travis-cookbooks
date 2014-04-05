@@ -139,3 +139,16 @@ unless File.exist?("#{setup_root}/#{node['android-sdk']['name']}-#{node['android
     end
   end
 end
+
+
+#
+# Deploy additional scripts into Android-SDK tools directory
+#
+%w(android-update-sdk android-accept-licenses).each do |android_helper_script|
+  cookbook_file File.join(android_home, 'tools', android_helper_script) do
+    source android_helper_script
+    owner  node['android-sdk']['owner']
+    group  node['android-sdk']['group']
+    mode   0775
+  end
+end

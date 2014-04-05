@@ -1,6 +1,17 @@
 CHANGELOG for Android-SDK cookbook
 ==================================
 
+v0.2.0 (upcoming)
+-------------------
+
+- Deploy scripts for non-interactive SDK setup/updates [GH-13]
+
+v0.1.1 (2014-04-01)
+-------------------
+
+- No code changes compared to v0.1.0
+- Fixed community packaging (Stove included ~ backup files in v0.1.0 tarball)
+- Minor fixes (typo and lint errors)
 
 v0.1.0 (2014-03-31)
 -------------------

@@ -2,7 +2,7 @@ Current:
 
 - Updated Maven to 3.2.1 (Gilles Cornu)
 
-- Integrated new cookbook: android-sdk v0.1.0 (Gilles Cornu)
+- Integrated new cookbook: android-sdk v0.2.0 (Gilles Cornu)
 
 - Updated sbt-extras to 60b6f267d47e8dd915a3baaef3b0b63fef37e5dd (Gilles Cornu)
 
