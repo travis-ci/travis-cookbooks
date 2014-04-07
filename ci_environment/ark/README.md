@@ -1,14 +1,17 @@
-# <a name="title"></a> chef-ark [![Build Status](https://secure.travis-ci.org/bryanwb/chef-ark.png?branch=master)](http://travis-ci.org/bryanwb/chef-ark)
+# <a name="title"></a> chef-ark [![Build Status](https://secure.travis-ci.org/opscode-cookbooks/ark.png?branch=master)](https://travis-ci.org/opscode-cookbooks/ark)
 
 Overview
 ========
 
-An ''ark'' is like an archive but ''Kewler''
+This cookbook provides `ark`, a resource for managing software
+archives. It manages the fetch-unpack-configure-build-install process
+common to installing software from source, or from binary
+distributions that are not fully fledged OS packages.
 
-Does the fetch-unpack-configure-build-install dance. This is a
-modified  verion of Infochimps awesome install_from cookbook
- [http://github.com/infochimps-cookbooks/install_from]. It has been
- heavily refactored and extended to meet different use cases.
+This is a modified verion of Infochimp's awesome
+[install_from cookbook](http://github.com/infochimps-cookbooks/install_from).
+It has been heavily refactored and extended to meet different use
+cases.
 
 Given a simple project archive available at a url:
 
@@ -16,19 +19,34 @@ Given a simple project archive available at a url:
       url 'http://apache.org/pig/pig-0.8.0.tar.gz'
     end
 
-this provider will
+The provider will:
 
-* fetch  it to to `/var/cache/chef/`
+* fetch it to to `/var/cache/chef/`
 * unpack it to the default path  (`/usr/local/pig-0.8.0`)
 * create a symlink for `:home_dir` (`/usr/local/pig`) pointing to path
 * add specified binary commands to the enviroment `PATH` variable
 
-By default, the ark will not run again if the `:path` is not
-empty. Ark provides many actions to accommodate different use cases,
-such as `:dump`, `:cherry_pick`, `:put`, and `:install_with_make`.
+By default, the ark will not run again if the `:path` is not empty.
+Ark provides many actions to accommodate different use cases, such as
+`:dump`, `:cherry_pick`, `:put`, and `:install_with_make`.
 
 At this time ark only handles files available from URLs. It does not
 handle local files.
+
+Requirements
+============
+
+This cookbook requires Chef 11 for the provider, as it uses the
+`use_inline_resources` method.
+
+More about
+[use_inline_resources](http://docs.opscode.com/lwrp_common_inline_compile.html)
+in the Chef documentation.
+
+Should work on common Unix/Linux systems with typical userland
+utilities like tar, gzip, etc. May require the installation of build
+tools for compiling from source, but that installation is outside the
+scope of this cookbook.
 
 Attributes
 ==========
@@ -36,14 +54,16 @@ Attributes
 Customize the attributes to suit site specific conventions and
 defaults.
 
-* `node['ark']['apache_mirror']` - if the URL is an apache mirror, use
-  the attribute as the default.
-* `node['ark']['prefix_root']` - default base location if the `prefix_root`
-  is not passed into the resource.
+* `node['ark']['apache_mirror']` - if the URL is an apache mirror,
+  use the attribute as the default.
+* `node['ark']['prefix_root']` - default base location if the
+  `prefix_root` is not passed into the resource.
 * `node['ark']['prefix_bin']` - default binary location if the
   `prefix_bin` is not passed into the resource.
 * `node['ark']['prefix_home']` - default home location if the
   `prefix_home` is not passed into the resource.
+* `node['ark']['package_dependencies']` - prerequisite system
+  packages that need to be installed to support ark.
 
 Resources/Providers
 ===================
@@ -56,8 +76,9 @@ Actions
 - `:install`: extracts the file and creates a 'friendly' symbolic link
   to the extracted directory path
 - `:configure`: configure ahead of the install action
-- `:install_with_make`: extracts the archive to a path, runs `make`, and
-  `make install`. It does _not_ run the configure step at this time
+- `:install_with_make`: extracts the archive to a path, runs `make`,
+  and `make install`. It does _not_ run the configure step at this
+  time
 - `:dump`: strips all directories from the archive and dumps the
   contained files into a specified path
 - `:cherry_pick`: extract a specified file from an archive and places
@@ -67,26 +88,22 @@ Actions
 - `:remove`: removes the extracted directory and related symlink #TODO
 - `:setup_py_build`: runs the command "python setup.py build" in the
   extracted directory
-- `:setup_py_install`:  runs the comand "python setup.py install" in the
-  extracted directory
+- `:setup_py_install`: runs the comand "python setup.py install" in
+  the extracted directory
 
-## :put
+## :cherry_pick
 
-Extract the archive to a specified path, does not create any symbolic links.
+Extract a specified file from an archive and places in specified path.
 
-### Attribute Parameters for :put
+### Relevant Attribute Parameters for :cherry_pick
 
-- `path`: path to extract to.
-  - Default: `/usr/local`
-- `has_binaries`: array of binary commands to symlink into `/usr/local/bin/`,
-  you must specify the relative path.
-  - Example: `[ 'bin/java', 'bin/javaws' ]`
-- `append_env_path`: boolean, if true, append the `./bin` directory of the
-  extracted directory to the global `PATH` variable for all users.
+- `path`: directory to place file in.
+- `creates`: specific file to cherry-pick.
 
 ## :dump
 
-Strips all directories from the archive and dumps the contained files into a specified path.
+Strips all directories from the archive and dumps the contained files
+into a specified path.
 
 NOTE: This currently only works for zip archives
 
@@ -101,14 +118,20 @@ NOTE: This currently only works for zip archives
   indicates the ark has previously been extracted and does not need to
   be extracted again.
 
-## :cherry_pick
+## :put
 
-Extract a specified file from an archive and places in specified path.
+Extract the archive to a specified path, does not create any symbolic
+links.
 
-### Relevant Attribute Parameters for :cherry_pick
+### Attribute Parameters for :put
 
-- `path`: directory to place file in.
-- `creates`: specific file to cherry-pick.
+- `path`: path to extract to.
+  - Default: `/usr/local`
+- `has_binaries`: array of binary commands to symlink into
+  `/usr/local/bin/`, you must specify the relative path.
+  - Example: `[ 'bin/java', 'bin/javaws' ]`
+- `append_env_path`: boolean, if true, append the `./bin` directory of
+  the extracted directory to the global `PATH` variable for all users.
 
 Attribute Parameters
 --------------------
@@ -149,9 +172,9 @@ Attribute Parameters
   - Example: `mvn`, `java`, `javac`, etc.
 - `environment`: hash of environment variables to pass to invoked
   shell commands like `tar`, `unzip`, `configure`, and `make`.
-- `strip_leading_dir`: by default, ark strips the leading directory
-  from an archive, which is the default for both `unzip` and `tar`
-  commands
+- `strip_components`: number of components in path to strip when extracting archive.
+  With default value of `1`, ark strips the leading directory from an archive, 
+  which is the default for both `unzip` and `tar` commands.
 - `autoconf_opts`: an array of command line options for use with the
   GNU `autoconf` script.
   - Example: `[ '--include=/opt/local/include', '--force' ]`
@@ -162,6 +185,11 @@ Attribute Parameters
 
 ### Examples
 
+This example copies `ivy.tar.gz` to
+`/var/cache/chef/ivy-2.2.0.tar.gz`, unpacks its contents to
+`/usr/local/ivy-2.2.0/` -- stripping the leading directory, and
+symlinks `/usr/local/ivy` to `/usr/local/ivy-2.2.0`
+
      # install Apache Ivy dependency resolution tool
      ark "ivy" do
        url 'http://someurl.example.com/ivy.tar.gz'
@@ -170,10 +198,12 @@ Attribute Parameters
        action :install
      end
 
-This example copies `ivy.tar.gz` to
-`/var/cache/chef/ivy-2.2.0.tar.gz`, unpacks its contents to
-`/usr/local/ivy-2.2.0/` -- stripping the leading directory, and
-symlinks `/usr/local/ivy` to `/usr/local/ivy-2.2.0`
+This example copies `jdk-7u2-linux-x64.tar.gz` to
+`/var/cache/chef/jdk-7.2.tar.gz`, unpacks its contents to
+`/usr/local/jvm/jdk-7.2/` -- stripping the leading directory, symlinks
+`/usr/local/jvm/default` to `/usr/local/jvm/jdk-7.2`, and adds
+`/usr/local/jvm/jdk-7.2/bin/` to the global `PATH` for all users. The
+user 'foobar' is the owner of the `/usr/local/jvm/jdk-7.2` directory:
 
      ark 'jdk' do
        url 'http://download.example.com/jdk-7u2-linux-x64.tar.gz'
@@ -185,17 +215,9 @@ symlinks `/usr/local/ivy` to `/usr/local/ivy-2.2.0`
        owner 'foobar'
      end
 
-This example copies `jdk-7u2-linux-x64.tar.gz` to
-`/var/cache/chef/jdk-7.2.tar.gz`, unpacks its contents to
-`/usr/local/jvm/jdk-7.2/` -- stripping the leading directory, symlinks
-`/usr/local/jvm/default` to `/usr/local/jvm/jdk-7.2`, and adds
-`/usr/local/jvm/jdk-7.2/bin/` to the global `PATH` for all users. The
-user 'foobar' is the owner of the `/usr/local/jvm/jdk-7.2` directory
-
-     # install Apache Ivy dependency resolution tool
-     # in <path>/resource_name in this case
-     # /usr/local/ivy, no symlink created
-     # it strips any leading directory if one exists in the tarball
+Install Apache Ivy dependency resolution tool in <path>/resource_name in this case
+`/usr/local/ivy`, do not symlink, and strip any leading directory if one
+exists in the tarball:
 
      ark "ivy" do
         url 'http://someurl.example.com/ivy.tar.gz'
@@ -203,9 +225,8 @@ user 'foobar' is the owner of the `/usr/local/jvm/jdk-7.2` directory
         action :put
      end
 
-     # install Apache Ivy dependency resolution tool
-     # in /home/foobar/ivy
-     # it does strip any leading directory if one exists
+Install Apache Ivy dependency resolution tool in /home/foobar/ivy, strip any
+leading directory if one exists:
 
      ark "ivy" do
        path "/home/foobar
@@ -214,10 +235,9 @@ user 'foobar' is the owner of the `/usr/local/jvm/jdk-7.2` directory
        action :put
      end
 
-    # strip all directories and dump files into path specified by
-     # the path attribute, you must specify the `creates` attribute
-     # in order to keep the extraction from running every time
-     # the directory path will be created if it doesn't already exist
+ Strip all directories and dump files into path specified by the path attribute.
+ You must specify the `creates` attribute in order to keep the extraction from
+ running every time. The directory path will be created if it doesn't already exist:
 
      ark "my_jars" do
        url  "http://example.com/bunch_of_jars.zip"
@@ -227,8 +247,7 @@ user 'foobar' is the owner of the `/usr/local/jvm/jdk-7.2` directory
        action :dump
      end
 
-     # extract specific files from a tarball, currently only handles
-     # one named file
+Extract specific files from a tarball (currently only handles one named file):
 
      ark 'mysql-connector-java' do
        url 'http://oracle.com/mysql-connector.zip'
@@ -237,8 +256,7 @@ user 'foobar' is the owner of the `/usr/local/jvm/jdk-7.2` directory
        action :cherry_pick
      end
 
-     # build and install haproxy and use alternave values for
-     # prefix_root, prefix_home, and prefix_bin
+Build and install haproxy and use alternave values for `prefix_root`, `prefix_home`, and `prefix_bin`:
 
      ark "haproxy" do
        url  "http://haproxy.1wt.eu/download/1.5/src/snapshot/haproxy-ss-20120403.tar.gz"
@@ -251,21 +269,13 @@ user 'foobar' is the owner of the `/usr/local/jvm/jdk-7.2` directory
        action :install_with_make
      end
 
-     # you can also pass multiple actions to ark and supply the file extension
-     # in case the file extension can not be determined by the URL
+You can also pass multiple actions to ark and supply the file extension in case
+the file extension can not be determined by the URL:
 
      ark "test_autogen" do
        url 'https://github.com/zeromq/libzmq/tarball/master'
        extension "tar.gz"
-       action [ :configure, :build_with_make ]
-     end
-
-     # you can also pass multiple actions to ark and supply the file extension
-     # in case the file extension can not be determined by the URL
-     ark "test_autogen" do
-       url 'https://github.com/zeromq/libzmq/tarball/master'
-       extension "tar.gz"
-       action [ :configure, :build_with_make ]
+       action [ :configure, :install_with_make ]
      end
 
 License and Author
@@ -274,9 +284,11 @@ License and Author
 - Author: Philip (flip) Kromer - Infochimps, Inc(<coders@infochimps.com>)
 - Author: Bryan W. Berry (<bryan.berry@gmail.com>)
 - Author: Denis Barishev (<denis.barishev@gmail.com>)
+- Author: Sean OMeara (<someara@opscode.com>)
 - Copyright: 2011, Philip (flip) Kromer - Infochimps, Inc
 - Copyright: 2012, Bryan W. Berry
 - Copyright: 2012, Denis Barishev
+- Copyright: 2013, Opscode, Inc
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

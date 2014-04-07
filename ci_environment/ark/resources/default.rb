@@ -18,10 +18,10 @@
 # limitations under the License.
 #
 
-def initialize(name, run_context=nil)
+def initialize(name, run_context = nil)
   super
   @resource_name = :ark
-  @allowed_actions.push(:install, :dump, :cherry_pick, :put, :install_with_make, :configure, :setup_py_build, :setup_py_install, :setup_py)
+  @allowed_actions.push(:install, :dump, :cherry_pick, :put, :install_with_make, :configure, :setup_py_build, :setup_py_install, :setup_py, :unzip)
   @action = :install
   @provider = Chef::Provider::Ark
 end
@@ -38,7 +38,8 @@ attribute :checksum, :regex => /^[a-zA-Z0-9]{64}$/, :default => nil
 attribute :has_binaries, :kind_of => Array, :default => []
 attribute :creates, :kind_of => String, :default => nil
 attribute :release_file, :kind_of => String, :default => ''
-attribute :strip_leading_dir, :kind_of => [TrueClass, FalseClass], :default => true
+attribute :strip_leading_dir, :kind_of => [TrueClass, FalseClass, NilClass]
+attribute :strip_components, :kind_of => Integer, :default => 1
 attribute :mode, :kind_of => Fixnum, :default => 0755
 attribute :prefix_root, :kind_of => String, :default => nil
 attribute :prefix_home, :kind_of => String, :default => nil
@@ -51,4 +52,3 @@ attribute :make_opts, :kind_of => Array, :default => []
 attribute :home_dir, :kind_of => String, :default => nil
 attribute :autoconf_opts, :kind_of => Array, :default => []
 attribute :extension, :kind_of => String
-

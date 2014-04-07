@@ -1,13 +1,13 @@
-name             "ark"
-maintainer       "Bryan W. Berry"
-maintainer_email "bryan.berry@gmail.com"
-license          "Apache 2.0"
-description      "Installs/Configures ark"
+name             'ark'
+maintainer       'Bryan W. Berry'
+maintainer_email 'bryan.berry@gmail.com'
+license          'Apache 2.0'
+description      'Installs/Configures ark'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "0.1.0"
+version          '0.7.3'
 
-%w{ debian ubuntu centos redhat fedora }.each do |os|
+%w( debian ubuntu centos redhat fedora ).each do |os|
   supports os
 end
 
-recipe "ark::default", "Installs and configures ark"
+recipe 'ark::default', 'Installs and configures ark'
