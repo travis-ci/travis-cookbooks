@@ -12,6 +12,13 @@ Current:
 
 - Updated Rebar download location (Chase James, Michael Klishin)
 
+- Updated PHP to 5.4.27 and 5.5.11 (Graham Campbell and Loïc Frering)
+
+- Support for PHP 5.6 with 5.6.0alpha3 (Loïc Frering)
+
+- Updated HHVM to 3.0.1 (Graham Campbell and Loïc Frering)
+
+- Support for HHVM nightly (Loïc Frering)
 
 Production .org 03.01.2014
 
