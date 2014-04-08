@@ -1,5 +1,9 @@
 Current:
 
+- Updated Clang to 3.4 (Gilles Cornu)
+
+- Updated ark cookbook to v0.7.2 with additional patch [COOK-2771] for support of XZ compression (Gilles Cornu)
+
 - Updated Maven to 3.2.1 (Gilles Cornu)
 
 - Integrated new cookbook: android-sdk v0.2.0 (Gilles Cornu)
