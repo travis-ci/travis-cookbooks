@@ -1,10 +1,12 @@
-Current:
+Future (not part of next VM update):
 
 - Updated Clang to 3.4 (Gilles Cornu)
 
 - Updated ark cookbook to v0.7.2 with additional patch [COOK-2771] for support of XZ compression (Gilles Cornu)
 
 - Updated ElasticSearch to 1.1.0 (Gilles Cornu)
+
+Current (to be reviewed by Josh Kalderimis, e.g. ElasticSearch 1.0.1 is missing):
 
 - Updated Maven to 3.2.1 (Gilles Cornu)
 
