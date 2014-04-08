@@ -4,6 +4,8 @@ Current:
 
 - Updated ark cookbook to v0.7.2 with additional patch [COOK-2771] for support of XZ compression (Gilles Cornu)
 
+- Updated ElasticSearch to 1.1.0 (Gilles Cornu)
+
 - Updated Maven to 3.2.1 (Gilles Cornu)
 
 - Integrated new cookbook: android-sdk v0.2.0 (Gilles Cornu)
