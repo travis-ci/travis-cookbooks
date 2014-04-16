@@ -53,7 +53,10 @@ node.python.pyenv.pythons.each do |py|
   # Actually do the installation/building to the full version python
   execute "python-build #{py} /opt/python/#{py}" do
     creates "/opt/python/#{py}"
-    environment ({"PYTHON_CONFIGURE_OPTS" => "--enable-unicode=ucs4", "CFLAGS" => "-g -O2"})
+    environment ({
+      "PYTHON_CONFIGURE_OPTS" => "--enable-unicode=ucs4 --with-wide-unicode",
+      "CFLAGS" => "-g -O2",
+    })
   end
 
   # Create our virtualenvs for this python
