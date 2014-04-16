@@ -100,7 +100,7 @@ node.kerl.releases.each do |rel, build|
 
   execute "install Erlang #{rel}" do
     # cleanup is available starting with https://github.com/spawngrid/kerl/pull/28
-    command "#{node.kerl.path} install #{rel} #{installation_root}/#{rel} && #{node.kerl.path} cleanup #{rel} && rm -rf #{node.travis_build_environment.home}/.kerl/archives/*" # && ~/.build_plt #{installation_root}/#{rel} #{installation_root}/#{rel}/lib"
+    command "#{node.kerl.path} install #{rel} #{installation_root}/#{rel} && #{node.kerl.path} cleanup #{rel} && rm -rf #{node.travis_build_environment.home}/.kerl/archives/*"
 
     user    node.travis_build_environment.user
     group   node.travis_build_environment.group
@@ -108,5 +108,17 @@ node.kerl.releases.each do |rel, build|
     environment(env)
 
     not_if "#{node.kerl.path} list installations | grep #{rel}", :user => node.travis_build_environment.user, :environment => env
+  end
+
+
+  execute "generate Erlang #{rel} Dialyzer PLT" do
+    command "~/.build_plt #{installation_root}/#{rel} #{installation_root}/#{rel}/lib"
+
+    user    node.travis_build_environment.user
+    group   node.travis_build_environment.group
+
+    environment(env)
+
+    not_if "#{node.kerl.path} list installations | grep #{rel} && test -f #{installation_root}/#{rel}/dialyzer.plt", :user => node.travis_build_environment.user, :environment => env
   end
 end
