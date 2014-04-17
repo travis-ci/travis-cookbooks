@@ -119,6 +119,7 @@ node.kerl.releases.each do |rel, build|
 
     environment(env)
 
+    only_if { node.kerl.build_plt }
     not_if "#{node.kerl.path} list installations | grep #{rel} && test -f #{installation_root}/#{rel}/dialyzer.plt", :user => node.travis_build_environment.user, :environment => env
   end
 end
