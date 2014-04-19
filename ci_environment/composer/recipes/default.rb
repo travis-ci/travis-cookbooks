@@ -5,19 +5,12 @@ composer_path = File.join(node.travis_build_environment.home, ".composer")
 
 node[:php][:multi][:versions].each do |php_version|
   bin_path = "#{phpenv_path}/versions/#{php_version}/bin"
-  remote_file "#{bin_path}/composer.phar" do
+  remote_file "#{bin_path}/composer" do
     source "http://getcomposer.org/composer.phar"
     owner  node.travis_build_environment.user
     group  node.travis_build_environment.group
-    mode   "0644"
-  end
-
-  template "#{bin_path}/composer" do
-    owner  node.travis_build_environment.user
-    group  node.travis_build_environment.group
-    mode   "0755"
-    source "composer.erb"
-    variables(:phpbin_path => bin_path)
+    mode   0755
+    not_if { php_version.start_with?("5.2") }
   end
 end
 
