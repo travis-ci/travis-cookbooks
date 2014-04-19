@@ -30,4 +30,5 @@ end
 include_recipe "php::extensions"
 include_recipe "php::hhvm"
 include_recipe "php::hhvm-nightly"
+include_recipe "phpunit"
 include_recipe "composer"
