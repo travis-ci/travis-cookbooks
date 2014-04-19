@@ -20,7 +20,7 @@ Current:
 
 - Updated PHP to 5.4.27 and 5.5.11 (Graham Campbell and Loïc Frering)
 
-- Support for PHP 5.6 with 5.6.0alpha3 (Loïc Frering)
+- Support for PHP 5.6 with 5.6.0beta1 (Graham Campbell and Loïc Frering)
 
 - Updated HHVM to 3.0.1 (Graham Campbell and Loïc Frering)
 
@@ -37,7 +37,7 @@ Production .org 03.01.2014
 - Updated ElasticSearch to 0.9.10 (Ray Ward)
 
 - Update Gradle to 1.10 (Michael Klishin)
- 
+
 - Updated Node.js to 0.10.25 and 0.11.11 (Josh Kalderimis)
 
 - Updated PHP to 5.4.24 and 5.5.8 (Loïc Frering)
