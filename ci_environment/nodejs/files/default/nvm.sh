@@ -77,7 +77,7 @@ nvm_normalize_version() {
 nvm_format_version() {
   echo "$1" | sed -e 's/^\([0-9]\)/v\1/g'
 }
-  
+
 nvm_binary_available() {
   # binaries started with node 0.8.6
   local MINIMAL="0.8.6"
@@ -205,10 +205,10 @@ nvm() {
       echo "Usage:"
       echo "    nvm help                    Show this message"
       echo "    nvm --version               Print out the latest released version of nvm"
-      echo "    nvm install [-s] <version>  Download and install a <version>, [-s] from source"
+      echo "    nvm install [-s] <version>  Download and install a <version>, [-s] from source. Uses .nvmrc if available"
       echo "    nvm uninstall <version>     Uninstall a version"
-      echo "    nvm use <version>           Modify PATH to use <version>"
-      echo "    nvm run <version> [<args>]  Run <version> with <args> as arguments"
+      echo "    nvm use <version>           Modify PATH to use <version>. Uses .nvmrc if available"
+      echo "    nvm run <version> [<args>]  Run <version> with <args> as arguments. Uses .nvmrc if available for <version>"
       echo "    nvm current                 Display currently activated version"
       echo "    nvm ls                      List installed versions"
       echo "    nvm ls <version>            List versions matching a given description"
@@ -238,6 +238,8 @@ nvm() {
       local sum
       local tarball
       local nobinary
+      local version_not_provided=0
+      local provided_version
 
       if ! nvm_has "curl"; then
         echo 'NVM Needs curl to proceed.' >&2;
@@ -245,8 +247,12 @@ nvm() {
       fi
 
       if [ $# -lt 2 ]; then
-        nvm help
-        return
+        version_not_provided=1
+        nvm_rc_version
+        if [ -z "$NVM_RC_VERSION" ]; then
+          nvm help
+          return
+        fi
       fi
 
       shift
@@ -261,9 +267,16 @@ nvm() {
         nobinary=1
       fi
 
-      [ -d "$NVM_DIR/$1" ] && echo "$1 is already installed." && return
+      provided_version=$1
+      if [ -z "$provided_version" ]; then
+        if [ $version_not_provided -ne 1 ]; then
+          nvm_rc_version
+        fi
+        provided_version="$NVM_RC_VERSION"
+      fi
+      [ -d "$NVM_DIR/$provided_version" ] && echo "$provided_version is already installed." && return
 
-      VERSION=`nvm_remote_version $1`
+      VERSION=`nvm_remote_version $provided_version`
       ADDITIONAL_PARAMETERS=''
 
       shift
@@ -458,12 +471,37 @@ nvm() {
       echo "Now using node $VERSION"
     ;;
     "run" )
+      local provided_version
+      local has_checked_nvmrc=0
       # run given version of node
-      if [ $# -lt 2 ]; then
-        nvm help
-        return
+      shift
+      if [ $# -lt 1 ]; then
+        nvm_rc_version && has_checked_nvmrc=1
+        if [ -n "$NVM_RC_VERSION" ]; then
+          VERSION=`nvm_version $NVM_RC_VERSION`
+        else
+          VERSION='N/A'
+        fi
+        if [ $VERSION = "N/A" ]; then
+          nvm help
+          return
+        fi
       fi
-      VERSION=`nvm_version $2`
+
+      provided_version=$1
+      if [ -n "$provided_version" ]; then
+        VERSION=`nvm_version $provided_version`
+        if [ $VERSION = "N/A" ]; then
+          provided_version=''
+          if [ $has_checked_nvmrc -ne 1 ]; then
+            nvm_rc_version && has_checked_nvmrc=1
+          fi
+          VERSION=`nvm_version $NVM_RC_VERSION`
+        else
+          shift
+        fi
+      fi
+
       if [ ! -d "$NVM_DIR/$VERSION" ]; then
         echo "$VERSION version is not installed yet"
         return;
@@ -474,7 +512,7 @@ nvm() {
         RUN_NODE_PATH="$NVM_DIR/$VERSION/lib/node_modules:$NODE_PATH"
       fi
       echo "Running node $VERSION"
-      NODE_PATH=$RUN_NODE_PATH $NVM_DIR/$VERSION/bin/node "${@:3}"
+      NODE_PATH=$RUN_NODE_PATH $NVM_DIR/$VERSION/bin/node "$@"
     ;;
     "ls" | "list" )
       nvm_print_versions "`nvm_ls $2`"
@@ -554,7 +592,7 @@ nvm() {
         nvm_version $2
     ;;
     "--version" )
-        echo "nvm v0.3.0"
+        echo "nvm v0.5.0"
     ;;
     * )
       nvm help
@@ -563,3 +601,4 @@ nvm() {
 }
 
 nvm ls default >/dev/null && nvm use default >/dev/null || true
+
