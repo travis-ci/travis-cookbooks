@@ -1,5 +1,7 @@
 Current:
 
+- Updated Gradle to 1.11 (Gilles Cornu)
+
 - Updated Clang to 3.4 (Gilles Cornu)
 
 - Updated ark cookbook to v0.7.2 with additional patch [COOK-2771] for support of XZ compression (Gilles Cornu)
