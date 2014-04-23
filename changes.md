@@ -1,5 +1,7 @@
 Current:
 
+- Pre-install Scala 2.11.0 and sbt 0.13.2 (Gilles Cornu)
+
 - Updated Gradle to 1.11 (Gilles Cornu)
 
 - Updated Clang to 3.4 (Gilles Cornu)
