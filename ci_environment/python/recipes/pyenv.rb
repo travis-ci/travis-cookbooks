@@ -32,15 +32,6 @@ directory "/opt/python" do
   action :create
 end
 
-# Create a directory to store our "flattened" bins in
-directory "/opt/python/bin" do
-  owner "root"
-  group "root"
-  mode  "755"
-
-  action :create
-end
-
 # Create a directory to store our virtualenvs in
 directory virtualenv_root do
   owner node.travis_build_environment.user
@@ -50,16 +41,8 @@ directory virtualenv_root do
   action :create
 end
 
-# Create a profile script that adds our Python bins to the $PATH
-file "/etc/profile.d/pyenv.sh" do
-  owner node.travis_build_environment.user
-  group node.travis_build_environment.group
-  mode  "0755"
-
-  content "export PATH=/opt/python/bin:$PATH"
-
-  action :create
-end
+# Store a list of all of our bin dirs
+bindirs = Array.new
 
 # Install the baked in versions of Python we are offering
 node.python.pyenv.pythons.each do |py|
@@ -79,12 +62,16 @@ node.python.pyenv.pythons.each do |py|
     })
   end
 
-  # Add a symlink to /usr/local/bin
-  link "/opt/python/bin/#{pyname}" do
+  # Add a nonstandard pythonX.Y.Z command in order to support multiple installs
+  # of the exact same X.Y release.
+  link "/opt/python/#{py}/bin/#{pyname}" do
     to    "/opt/python/#{py}/bin/python"
     owner node.travis_build_environment.user
     group node.travis_build_environment.group
   end
+
+  # Record our bindir
+  bindirs << "/opt/python/#{py}/bin"
 
   # Create our virtualenvs for this python
   python_virtualenv "python_#{py}" do
@@ -102,13 +89,6 @@ node.python.pyenv.pythons.each do |py|
       pyaliasname = "python#{pyalias}"
     else
       pyaliasname = pyalias
-    end
-
-    # Add an alias link in our /opt/python/bin directory
-    link "/opt/python/bin/#{pyaliasname}" do
-      to    "/opt/python/#{py}/bin/python"
-      owner node.travis_build_environment.user
-      group node.travis_build_environment.group
     end
 
     link "#{virtualenv_root}/#{pyaliasname}" do
@@ -130,4 +110,18 @@ node.python.pyenv.pythons.each do |py|
     user    node.travis_build_environment.user
     group   node.travis_build_environment.group
   end
+end
+
+# Create a profile script that adds our Python bins to the $PATH
+template "/etc/profile.d/pyenv.sh" do
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
+  mode 0755
+
+  variables({
+    :bindirs => bindirs,
+  })
+
+  source "pyenv.sh.erb"
+  backup false
 end
