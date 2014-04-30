@@ -19,7 +19,7 @@ end
   python_virtualenv "#{py}_with_system_site_packages" do
     owner                node.travis_build_environment.user
     group                node.travis_build_environment.group
-    interpreter          py
+    interpreter          "/usr/bin/#{py}"
     path                 "#{virtualenv_root}/#{py}_with_system_site_packages"
     system_site_packages true
 
