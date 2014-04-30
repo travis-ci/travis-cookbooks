@@ -62,6 +62,14 @@ node.python.pyenv.pythons.each do |py|
     })
   end
 
+  # Add a nonstandard pythonX.Y.Z command in order to support multiple installs
+  # of the exact same X.Y release.
+  link "/opt/python/#{py}/bin/#{pyname}" do
+    to    "/opt/python/#{py}/bin/python"
+    owner node.travis_build_environment.user
+    group node.travis_build_environment.group
+  end
+
   # Record our bindir
   bindirs << "/opt/python/#{py}/bin"
 
