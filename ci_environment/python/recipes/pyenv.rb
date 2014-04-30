@@ -32,11 +32,31 @@ directory "/opt/python" do
   action :create
 end
 
+# Create a directory to store our "flattened" bins in
+directory "/opt/python/bin" do
+  owner "root"
+  group "root"
+  mode  "755"
+
+  action :create
+end
+
 # Create a directory to store our virtualenvs in
 directory virtualenv_root do
   owner node.travis_build_environment.user
   group node.travis_build_environment.group
   mode  "0755"
+
+  action :create
+end
+
+# Create a profile script that adds our Python bins to the $PATH
+file "/etc/profile.d/pyenv.sh" do
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
+  mode  "0755"
+
+  content "export PATH=/opt/python/bin:$PATH"
 
   action :create
 end
@@ -59,6 +79,13 @@ node.python.pyenv.pythons.each do |py|
     })
   end
 
+  # Add a symlink to /usr/local/bin
+  link "/opt/python/bin/#{pyname}" do
+    to    "/opt/python/#{py}/bin/python"
+    owner node.travis_build_environment.user
+    group node.travis_build_environment.group
+  end
+
   # Create our virtualenvs for this python
   python_virtualenv "python_#{py}" do
     owner       node.travis_build_environment.user
@@ -75,6 +102,13 @@ node.python.pyenv.pythons.each do |py|
       pyaliasname = "python#{pyalias}"
     else
       pyaliasname = pyalias
+    end
+
+    # Add an alias link in our /opt/python/bin directory
+    link "/opt/python/bin/#{pyaliasname}" do
+      to    "/opt/python/#{py}/bin/python"
+      owner node.travis_build_environment.user
+      group node.travis_build_environment.group
     end
 
     link "#{virtualenv_root}/#{pyaliasname}" do
