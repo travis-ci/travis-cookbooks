@@ -15,12 +15,14 @@ end
 
 # We assume these are Python 2.7 and Python 3.2, this will need changed on a
 # new OS version
-["python2.7", "python3.2"].each do |py|
-  python_virtualenv "#{py}_with_system_site_packages" do
+["2.7", "3.2"].each do |py|
+  pyname = "python#{py}"
+
+  python_virtualenv "#{pyname}_with_system_site_packages" do
     owner                node.travis_build_environment.user
     group                node.travis_build_environment.group
-    interpreter          "/usr/bin/#{py}"
-    path                 "#{virtualenv_root}/#{py}_with_system_site_packages"
+    interpreter          "/usr/bin/#{pyname}"
+    path                 "#{virtualenv_root}/#{pyname}_with_system_site_packages"
     system_site_packages true
 
     action :create
@@ -33,8 +35,8 @@ end
   end
 
   # Install all of the pre-installed packages we want
-  execute "install packages #{py}_with_system_site_packages" do
-    command "#{virtualenv_root}/#{py}_with_system_site_packages/bin/pip install --upgrade #{packages.join(' ')}"
+  execute "install packages #{pyname}_with_system_site_packages" do
+    command "#{virtualenv_root}/#{pyname}_with_system_site_packages/bin/pip install --upgrade #{packages.join(' ')}"
     user    node.travis_build_environment.user
     group   node.travis_build_environment.group
   end
