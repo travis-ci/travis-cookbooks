@@ -1,0 +1,5 @@
+#!/bin/sh
+
+export PATH=$PATH:<%= @travis_home %>/.phpenv/bin
+eval "$(phpenv init -)"
+phpenv rehash 2>/dev/null

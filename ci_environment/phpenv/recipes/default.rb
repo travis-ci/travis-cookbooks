@@ -26,8 +26,11 @@ directory "#{phpenv_path}/versions" do
   action :create
 end
 
-cookbook_file "/etc/profile.d/phpenv.sh" do
-  owner node.travis_build_environment.user
-  group node.travis_build_environment.group
-  mode 0755
+template "/etc/profile.d/phpenv.sh" do
+  owner  node.travis_build_environment.user
+  group  node.travis_build_environment.group
+  source "phpenv.sh.erb"
+  variables(
+    :travis_home => "/home/#{node.travis_build_environment.user}"
+  )
 end
