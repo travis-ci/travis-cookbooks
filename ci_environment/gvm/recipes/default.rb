@@ -30,7 +30,7 @@ bash "install GVM" do
   cwd         node.travis_build_environment.home
   environment Hash['HOME' => node.travis_build_environment.home, 'gvm_user_install_flag' => '1']
   code        <<-SH
-  curl -s https://raw.github.com/moovweb/gvm/master/binscripts/gvm-installer -o /tmp/gvm-installer &&
+  curl -s https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer -o /tmp/gvm-installer &&
   bash /tmp/gvm-installer
   rm   /tmp/gvm-installer
   SH
