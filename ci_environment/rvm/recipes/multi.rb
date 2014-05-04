@@ -50,10 +50,12 @@ setup = lambda do |bash|
   bash.environment env
 end
 
-# bash "update RVM to latest stable minor" do
-#   setup.call(self)
-#   code   "#{bin_rvm} get latest-minor"
-# end
+if node[:rvm][:latest_minor]
+  bash "update RVM to latest stable minor" do
+    setup.call(self)
+    code   "#{bin_rvm} get latest-minor"
+  end
+end
 
 # make sure default Ruby is installed first
 bash "installing #{default_ruby} with RVM arguments #{default_ruby_arguments}" do
