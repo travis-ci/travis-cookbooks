@@ -11,7 +11,7 @@ bash "install Perlbrew" do
   cwd         node.travis_build_environment.home
   environment Hash['HOME' => node.travis_build_environment.home]
   code        <<-SH
-  curl -s https://raw.github.com/gugod/App-perlbrew/master/perlbrew-install -o /tmp/perlbrew-installer
+  curl -s https://raw.githubusercontent.com/gugod/App-perlbrew/master/perlbrew-install -o /tmp/perlbrew-installer
   chmod +x /tmp/perlbrew-installer
   /tmp/perlbrew-installer
   SH

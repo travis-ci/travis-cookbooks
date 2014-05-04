@@ -34,7 +34,7 @@ directory(installation_root) do
 end
 
 remote_file(node.kerl.path) do
-  source "https://raw.github.com/spawngrid/kerl/master/kerl"
+  source "https://raw.githubusercontent.com/spawngrid/kerl/master/kerl"
   mode "0755"
 end
 
