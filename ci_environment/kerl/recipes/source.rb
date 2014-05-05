@@ -24,6 +24,10 @@ package "curl" do
   action :install
 end
 
+package "unixodbc-dev" do
+  action :install
+end
+
 installation_root = "/home/#{node.travis_build_environment.user}/otp"
 
 directory(installation_root) do
