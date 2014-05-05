@@ -1,9 +1,15 @@
-### Current:
+### Upcoming:
 
-- ...
+- Updated ark cookbook to v0.8.2 (Gilles Cornu)
+  [not committed yet, just here as an example]
 
 
-### Production .org 30.04.2014 (Release 7.4.0)
+### Production .org ??.05.2014
+
+- Removed older versions of sbt and Scala (Gilles Cornu)
+
+
+### Production .org 30.04.2014
 
 - Updated virtualenv to 1.11.4 (Donald Stufft)
 
@@ -48,7 +54,7 @@
 - Support for HHVM nightly (Loïc Frering)
 
 
-### Production .org 03.01.2014 (Release 7.3.0)
+### Production .org 03.01.2014
 
 - Update Perl versions to 5.17.11, 5.18.1 and 5.19.6 (Henrik Hodne)
 
@@ -69,7 +75,7 @@
 - Upgraded Virtualenv to 1.11.1 (Alex Gaynor)
 
 
-### Production .org 10.12.2013 (Release 7.2.0)
+### Production .org 10.12.2013
 
 - Fix rvm warning that a Ruby version can't be found even though it's available (Josh Kalderimis)
 
@@ -82,7 +88,7 @@
 - Download Cassandra from Apache archive (Michael Klishin)
 
 
-### Production .org and .com 29.11.2013 (Release 7.1.0):
+### Production .org and .com 29.11.2013
 
 - Update RVM to 1.24.5 (Josh Kalderimis)
   This will include updated checksums for Ruby 1.9.3 (p484) and changes to
