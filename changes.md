@@ -1,5 +1,7 @@
 ### Upcoming:
 
+- Erlang has ODBC support enabled (Mathias Meyer)
+
 - Updated ark cookbook to v0.8.2 (Gilles Cornu)
   [not committed yet, just here as an example]
 
