@@ -31,6 +31,6 @@ template "/etc/profile.d/phpenv.sh" do
   group  node.travis_build_environment.group
   source "phpenv.sh.erb"
   variables(
-    :travis_home => "/home/#{node.travis_build_environment.user}"
+    :phpenv_path => phpenv_path
   )
 end

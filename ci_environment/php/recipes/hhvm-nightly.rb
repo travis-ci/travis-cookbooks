@@ -12,8 +12,11 @@ directory "#{phpenv_path}/rbenv.d/exec" do
   recursive true
 end
 
-cookbook_file "hhvm-switcher.bash" do
-  owner node.travis_build_environment.user
-  group node.travis_build_environment.group
-  path  "#{phpenv_path}/rbenv.d/exec/hhvm-switcher.bash"
+template "#{phpenv_path}/rbenv.d/exec/hhvm-switcher.bash" do
+  owner  node.travis_build_environment.user
+  group  node.travis_build_environment.group
+  source "hhvm-switcher.bash.erb"
+  variables(
+    :phpenv_path => phpenv_path
+  )
 end
