@@ -25,6 +25,8 @@
 
 - Updated Erlang to 17.0 (Jose Valim)
 
+- Update Firefox to 24.0 (Mathias Meyer)
+
 - Pre-install Scala 2.11.0 and sbt 0.13.2 (Gilles Cornu)
 
 - Updated Gradle to 1.11 (Gilles Cornu)
