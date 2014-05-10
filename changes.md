@@ -1,15 +1,22 @@
 ### Upcoming:
 
+- Update ElasticSearch to 1.1.1 (Mathias Meyer)
+
+- Update nvm to 0.7.0 (Jordan Harband)
+  Enables auto-`use` when running `nvm install` to easily install and
+  select not installed versions of Node.js and support for `.nvmrc`
+
+- Update PyPy to 2.3.0, make it the new default (Alex Gaynor)
+
+- Update preinstalled Firefox to 24.5.0est (Mathias Meyer)
+
 - Erlang has ODBC support enabled (Mathias Meyer)
 
 - Updated ark cookbook to v0.8.2 (Gilles Cornu)
   [not committed yet, just here as an example]
 
-
-### Production .org ??.05.2014
-
 - Removed older versions of sbt and Scala (Gilles Cornu)
-
+  This removes Scala 2.10.3, 2.10.2, 2.9.2 and sbt 0.13.0, 0.12.3, 0.12.2, 0.11.3 and 0.11.2
 
 ### Production .org 30.04.2014
 
