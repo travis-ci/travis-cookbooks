@@ -2,13 +2,15 @@ ark Cookbook CHANGELOG
 ======================
 This file is used to list changes made in each version of the ark cookbook.
 
-v0.7.3 (unreleased)
--------------------
 
-ADDITIONAL PATCHES:
+v0.8.2 (2014-04-23)
 -------------------
-- [COOK-2771] - Add support for xz compressed archives
-                still pending on https://github.com/opscode-cookbooks/ark/pull/53
+- [COOK-4514] - Support for SLES with the Ark cookbook
+
+
+v0.8.0 (2014-04-10)
+-------------------
+- [COOK-2771] - Add support for XZ compression
 
 
 v0.7.2 (2014-03-28)

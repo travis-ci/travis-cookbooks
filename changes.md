@@ -13,7 +13,6 @@
 - Erlang has ODBC support enabled (Mathias Meyer)
 
 - Updated ark cookbook to v0.8.2 (Gilles Cornu)
-  [not committed yet, just here as an example]
 
 - Removed older versions of sbt and Scala (Gilles Cornu)
   This removes Scala 2.10.3, 2.10.2, 2.9.2 and sbt 0.13.0, 0.12.3, 0.12.2, 0.11.3 and 0.11.2
