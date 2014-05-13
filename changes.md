@@ -1,5 +1,7 @@
 ### Upcoming:
 
+- Don't install Android SDK build-tools-x.y.z components (Gilles Cornu)
+
 - Update ElasticSearch to 1.1.1 (Mathias Meyer)
 
 - Update nvm to 0.7.0 (Jordan Harband)
