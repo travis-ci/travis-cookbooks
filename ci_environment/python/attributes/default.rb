@@ -30,7 +30,7 @@ default['python']['pyenv']['pythons'] = [
     "3.3.5",
     "3.2.5",
     "pypy-2.2.1",
-    "pypy-2.3.0",
+    "pypy-2.3",
 ]
 
 default['python']['pyenv']['aliases'] = {
@@ -39,7 +39,7 @@ default['python']['pyenv']['aliases'] = {
     "3.2.5" => ["3.2"],
     "3.3.5" => ["3.3"],
     "3.4.0" => ["3.4"],
-    "pypy-2.3.0" => ["pypy"],
+    "pypy-2.3" => ["pypy"],
 }
 
 default['python']['pip']['packages'] = {
