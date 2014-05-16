@@ -6,7 +6,9 @@
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
+<% if node.has_key?('java') %>
 export JAVA_HOME=<%= node.java.java_home %>
+<% end %>
 
 
 # If not running interactively, don't do anything

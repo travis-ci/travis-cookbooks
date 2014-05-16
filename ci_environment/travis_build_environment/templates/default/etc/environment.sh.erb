@@ -1,11 +1,13 @@
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-JAVA_HOME="<%= node.java.java_home %>"
+<% if node.has_key?('java') %>
+JAVA_HOME=<%= node.java.java_home %>
+<% end %>
 
 DEBIAN_FRONTEND=noninteractive
 
 TRAVIS=true
 CI=true
-CONTINUOUS_INTEGRATION=true 
+CONTINUOUS_INTEGRATION=true
 
 LC_CTYPE=en_US.UTF-8
 LC_ALL=en_US.UTF-8
