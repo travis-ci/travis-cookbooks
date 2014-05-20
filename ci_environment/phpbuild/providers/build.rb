@@ -48,9 +48,8 @@ end
 
 private
 def exists?
-  phpbuild_path = "#{node.travis_build_environment.home}/.php-build"
-  target_path   = "#{@new_resource.path}/#{@new_resource.version}"
+  target_path = "#{@new_resource.path}/#{@new_resource.version}"
 
   ::File.exist?(target_path) && ::File.directory?(target_path) \
-    && ::File.exists?("#{target_path}/bin/php") && ::File.exists?("#{target_path}/bin/phpunit")
+    && ::File.exists?("#{target_path}/bin/php")
 end

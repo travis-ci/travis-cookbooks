@@ -1,4 +1,4 @@
-default['firefox']['tarball']['version']              = "19.0"
+default['firefox']['tarball']['version']              = "24.5.0esr"
 default['firefox']['tarball']['download_url']         = "http://ftp.mozilla.org/pub/firefox/releases/#{node['firefox']['tarball']['version']}/linux-#{kernel['machine']}/en-US/firefox-#{node['firefox']['tarball']['version']}.tar.bz2"
 
 # Required distro packages, preconfigured for Ubuntu 12.04

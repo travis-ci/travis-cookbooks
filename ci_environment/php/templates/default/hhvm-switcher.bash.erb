@@ -2,7 +2,7 @@
 
 set -e
 
-PHP_VERSION=$(phpenv version-name)
+PHP_VERSION=$(<%= @phpenv_path %>/bin/phpenv version-name)
 
 switch_hhvm() {
   HHVM_PACKAGE=$1

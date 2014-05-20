@@ -20,7 +20,6 @@ default['android-sdk']['download_url']   = "http://dl.google.com/android/android
 # without having to adapt 'version' and 'checksum' attributes of this cookbook.
 # Note that it will require (waste) some extra download effort.
 default['android-sdk']['components']     = %w(platform-tools
-                                              build-tools-19.0.3
                                               android-19
                                               sysimg-19
                                               android-18

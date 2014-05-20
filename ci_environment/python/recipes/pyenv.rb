@@ -41,6 +41,16 @@ directory virtualenv_root do
   action :create
 end
 
+# Store a list of all of our bin dirs
+bindirs = Array.new
+
+# python-build environment variables
+build_environment = {
+  # Adapted from Ubuntu 14.04's python3.4 package
+  "PYTHON_CONFIGURE_OPTS" => "--enable-unicode=ucs4 --with-wide-unicode --enable-shared --enable-ipv6 --enable-loadable-sqlite-extensions --with-computed-gotos",
+  "PYTHON_CFLAGS" => "-g -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security",
+}
+
 # Install the baked in versions of Python we are offering
 node.python.pyenv.pythons.each do |py|
   # Get our on disk name for this python
@@ -53,11 +63,19 @@ node.python.pyenv.pythons.each do |py|
   # Actually do the installation/building to the full version python
   execute "python-build #{py} /opt/python/#{py}" do
     creates "/opt/python/#{py}"
-    environment ({
-      "PYTHON_CONFIGURE_OPTS" => "--enable-unicode=ucs4 --with-wide-unicode",
-      "CFLAGS" => "-g -O2",
-    })
+    environment build_environment
   end
+
+  # Add a nonstandard pythonX.Y.Z command in order to support multiple installs
+  # of the exact same X.Y release.
+  link "/opt/python/#{py}/bin/#{pyname}" do
+    to    "/opt/python/#{py}/bin/python"
+    owner node.travis_build_environment.user
+    group node.travis_build_environment.group
+  end
+
+  # Record our bindir
+  bindirs << "/opt/python/#{py}/bin"
 
   # Create our virtualenvs for this python
   python_virtualenv "python_#{py}" do
@@ -96,4 +114,19 @@ node.python.pyenv.pythons.each do |py|
     user    node.travis_build_environment.user
     group   node.travis_build_environment.group
   end
+end
+
+# Create a profile script that adds our Python bins to the $PATH
+template "/etc/profile.d/pyenv.sh" do
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
+  mode 0755
+
+  variables({
+    :bindirs => bindirs,
+    :build_environment => build_environment,
+  })
+
+  source "pyenv.sh.erb"
+  backup false
 end

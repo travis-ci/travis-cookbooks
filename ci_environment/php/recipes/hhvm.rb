@@ -26,35 +26,17 @@ link "#{phpenv_path}/versions/hhvm" do
 end
 
 # Install composer
-remote_file "#{hhvm_path}/bin/composer.phar" do
+remote_file "#{hhvm_path}/bin/composer" do
   source "http://getcomposer.org/composer.phar"
   owner  node.travis_build_environment.user
   group  node.travis_build_environment.group
-end
-
-file "#{hhvm_path}/bin/composer" do
-  owner  node.travis_build_environment.user
-  group  node.travis_build_environment.group
-  mode   00755
-  content <<-CONTENT
-#!/usr/bin/env bash
-php "#{hhvm_path}/bin/composer.phar" "$@"
-  CONTENT
+  mode   0755
 end
 
 # Install phpunit
-remote_file "#{hhvm_path}/bin/phpunit.phar" do
+remote_file "#{hhvm_path}/bin/phpunit" do
   source "https://phar.phpunit.de/phpunit.phar"
   owner  node.travis_build_environment.user
   group  node.travis_build_environment.group
-end
-
-file "#{hhvm_path}/bin/phpunit" do
-  owner  node.travis_build_environment.user
-  group  node.travis_build_environment.group
-  mode   00755
-  content <<-CONTENT
-#!/usr/bin/env bash
-php "#{hhvm_path}/bin/phpunit.phar" "$@"
-  CONTENT
+  mode   0755
 end
