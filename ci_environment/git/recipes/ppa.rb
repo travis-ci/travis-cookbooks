@@ -24,7 +24,7 @@ apt_repository "git-ppa" do
   uri          "http://ppa.launchpad.net/git-core/ppa/ubuntu"
   distribution node['lsb']['codename']
   components   ["main"]
-  key          "4CBEDD5A"
+  key          "E1DF1F24"
   keyserver    "keyserver.ubuntu.com"
 
   action :add

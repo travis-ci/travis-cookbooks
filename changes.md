@@ -1,5 +1,7 @@
 ### Upcoming:
 
+- Install Git from git-core/ppa instead of pdoes/ppa (Josh Kalderimis)
+
 - Don't install Android SDK build-tools-x.y.z components (Gilles Cornu)
 
 - Update ElasticSearch to 1.1.1 (Mathias Meyer)
