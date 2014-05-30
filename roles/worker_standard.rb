@@ -1,3 +1,6 @@
+#
+# Role defintion based on https://github.com/travis-ci/travis-images/blob/master/templates/worker.standard.yml
+#
 name 'worker_standard'
 description 'Travis Standard Worker for Linux'
 default_attributes(
@@ -19,7 +22,6 @@ default_attributes(
     {
       'use_tmpfs_for_builds' => false,
       'user' => 'vagrant',      # Note - vagrant only!
-      'home' => '/home/vagrant' # Note - vagrant only!
     }
 )
 run_list(
