@@ -12,3 +12,5 @@ berks-cookbooks/
 /.bundle
 /.rspec
 .kitchen/
+.kitchen.local.yml
+cookbooks/
