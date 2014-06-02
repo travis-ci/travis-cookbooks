@@ -5,6 +5,9 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # You'll need the vagrant-berkshelf plugin
+  # Or not... I had trouble with it, so I'm going to manually berks verndor
+  # config.berkshelf.enabled = true
 
   # In general, it is a good idea to use latest release of Chef 11.x,
   # but please keep in mind that Travis team is provisioning with the version defined at
@@ -57,15 +60,24 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     win.vm.provider "virtualbox" do |v|
       v.gui = true # not necessary, but I like spying on Windows while I'm getting things figured out
     end
+
+    win.vm.provision "chef_solo" do |chef|
+      chef.log_level      = :debug
+      chef.cookbooks_path = %w(ci_environment berks-cookbooks)
+
+      # Role-based Provisioning:
+      chef.roles_path = "roles"
+      chef.add_role "worker_windows"
+    end
   end
 
-  config.vm.provision "chef_solo" do |chef|
-    chef.log_level      = :info
-    chef.cookbooks_path = "ci_environment"
+  # config.vm.provision "chef_solo" do |chef|
+    # chef.log_level      = :info
+    # chef.cookbooks_path = "ci_environment"
 
     # Role-based Provisioning:
-    chef.roles_path = "roles"
-    chef.add_role "worker_standard"
+    # chef.roles_path = "roles"
+    # chef.add_role "worker_standard"
 
     # Alternatively, you can disable `chef.add_role` above and specify a smaller run list:
     # chef.add_recipe "apt"
@@ -82,6 +94,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #   },
     # }
 
-  end
+  # end
 
 end
