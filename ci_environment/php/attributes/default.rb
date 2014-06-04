@@ -1,5 +1,5 @@
-default[:php][:multi][:versions] = ["5.2.17", "5.3.3", "5.3.27", "5.4.26", "5.5.10", "5.6.0alpha3"]
-default[:php][:multi][:aliases]  = {"5.2" => "5.2.17", "5.3" => "5.3.27", "5.4" => "5.4.26", "5.5" => "5.5.10", "5.6" => "5.6.0alpha3"}
+default[:php][:multi][:versions] = ["5.2.17", "5.3.3", "5.3.27", "5.4.28", "5.5.12", "5.6.0beta2"]
+default[:php][:multi][:aliases]  = {"5.2" => "5.2.17", "5.3" => "5.3.27", "5.4" => "5.4.28", "5.5" => "5.5.12", "5.6" => "5.6.0beta2"}
 
 default[:php][:multi][:extensions] = {
   'apc'       => {
@@ -15,7 +15,7 @@ default[:php][:multi][:extensions] = {
       ./configure && make && make install
     EOF
     'script'   => <<-EOF
-      pecl download memcached
+      pecl download memcached-2.1.0
       tar zxvf memcached*.tgz && cd memcached*
       make clean
       phpize

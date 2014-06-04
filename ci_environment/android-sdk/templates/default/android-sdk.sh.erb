@@ -1,0 +1,8 @@
+# trailing slash added to force (or help) potential symbolic link to be considered 
+# as a directory.
+# Motivation: this trick solves an issue with android-maven-plugin (v3.6.0),
+# which could not find Android SDK path through ANDROID_HOME variable without
+# this work around.
+
+export ANDROID_HOME=<%= @android_home %>/
+export PATH="${PATH}:${ANDROID_HOME}tools:${ANDROID_HOME}platform-tools"

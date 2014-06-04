@@ -6,6 +6,8 @@ tmp/*
 #~
 ~*
 /Gemfile.lock
+/Berksfile.lock
+berks-cookbooks/
 /.rvmrc
 /.bundle
 /.rspec
