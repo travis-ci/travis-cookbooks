@@ -1,0 +1,46 @@
+Vagrant.configure('2') do |c|
+  c.vm.box = '<%= config[:box] %>'
+  c.vm.box_url = '<%= config[:box_url] %>'
+  c.omnibus.chef_version = :latest
+
+  c.vm.hostname = '<%= config[:vm_hostname] %>'
+  c.vm.guest = :windows
+  c.vm.communicator = "winrm"
+  c.winrm.username = 'vagrant'
+  c.winrm.password = 'vagrant'
+
+  # Needed for WinRM
+  c.vm.network(:forwarded_port, guest: 5985, host: 5985)
+<% Array(config[:network]).each do |opts| %>
+  c.vm.network(:<%= opts[0] %>, <%= opts[1..-1].join(", ") %>)
+<% end %>
+
+  c.vm.synced_folder '.', '/vagrant', disabled: true
+<% config[:synced_folders].each do |source, destination, options|
+     l_source = source.gsub("%{instance_name}", instance.name)
+     l_destination = destination.gsub("%{instance_name}", instance.name)
+     opt = (options.nil? ? '' : ", #{options}")
+%>
+  c.vm.synced_folder '<%= l_source %>', '<%= l_destination %>'<%= opt %>
+<% end %>
+
+  c.vm.provider :virtualbox do |p|
+    p.gui = true
+    p.customize ["modifyvm", :id, '--memory', '2048']
+  end
+
+  # c.berkshelf.berksfile_path = '<%= File.join(Dir.pwd, 'Berksfile') %>'
+  # c.berkshelf.enabled = true
+
+  c.vm.provision :chef_solo do |chef|
+    chef.cookbooks_path = "<%= File.join(Dir.pwd, 'berks-cookbooks') %>"
+    chef.roles_path = "<%= File.join(Dir.pwd, 'roles') %>"
+    # chef.json = JSON.load(<%= instance.provisioner[:attributes].to_json.inspect %>)
+    chef.json = <%= instance.provisioner[:attributes].to_hash.inspect %>
+  <% instance.provisioner[:run_list].each do |recipe| %>
+    <% type, name = recipe.match(/(\w+)\[(.*)\]/).captures %>
+    <% raise "Invalid run_list item: #{recipe}" if type.nil? or name.nil? %>
+    chef.add_<%= type %> '<%= name %>'
+  <% end %>
+  end
+end

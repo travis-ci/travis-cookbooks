@@ -2,18 +2,45 @@
 driver:
   name: vagrant
 driver_config:
+  require_chef_omnibus: true
   customize:
     cpus: 2
     memory: 1024
 
+# Disabled at top level... see workaround on win8
 provisioner:
   name: chef_solo
 
 platforms:
-  - name: ubuntu-12.04
+  - name: precise
+    driver:
+      box: ubuntu/precise64
+  - name: trusty
+    driver:
+      box: ubuntu/trusty64
+  - name: win2012_r2_core
+    # Temporary (hopefully) workaround:
+    # https://github.com/test-kitchen/kitchen-vagrant/issues/77#issuecomment-39931279
+    driver:
+      name: vagrant_provision
+      box: win2012_r2_core
+      guest: :windows
+      vagrantfile_erb: 'Vagrantfile.windows.erb'
+      customize:
+        memory: 2048 # yeah... you probably want more memory on windows
+  - name: win8
+    # Temporary (hopefully) workaround:
+    # https://github.com/test-kitchen/kitchen-vagrant/issues/77#issuecomment-39931279
+    driver:
+      name: vagrant_provision
+      box: win8
+      guest: :windows
+      vagrantfile_erb: 'Vagrantfile.windows.erb'
+      customize:
+        memory: 2048 # yeah... you probably want more memory on windows
 
 suites:
   # based on https://github.com/travis-ci/travis-images/tree/master/templates, should find a way to link the projects
-  - name: worker_python
+  - name: worker_windows
     run_list:
-      - role[worker_python]
+      - role[worker_windows]

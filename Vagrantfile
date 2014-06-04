@@ -62,7 +62,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
 
     win.vm.provision "chef_solo" do |chef|
-      chef.log_level      = :debug
+      chef.log_level      = :info
       chef.cookbooks_path = %w(ci_environment berks-cookbooks)
 
       # Role-based Provisioning:
