@@ -10,4 +10,14 @@ depends "sysctl"
 depends "openssh"
 depends "unarchivers"
 depends "iptables"
+
+# Windows only
 depends "chocolatey"
+
+# Version control systems
+depends "git"
+depends "mercurial"
+depends "subversion"
+
+# Tools & libraries
+depends "phantomjs"

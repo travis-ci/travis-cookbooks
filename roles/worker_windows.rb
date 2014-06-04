@@ -29,5 +29,10 @@ run_list(
   #
   # Travis environment + build toolchain
   #
-  'recipe[travis_build_environment::windows]',
+  'recipe[travis_build_environment::common]',
+
+  #
+  # Quick and dirty Windows setup, should be split into proper community cookbooks
+  #
+  'recipe[travis_build_environment::windows]'
 )
