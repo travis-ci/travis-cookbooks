@@ -22,15 +22,15 @@ default['python']['pyenv']['revision'] = "e77e60206daf8e6e6b3ece11d6133df25dbad7
 # Order matters for this list of Pythons. It will be used to construct the
 # $PATH so items earlier in the list will take precedence over items later in
 # the list. This order means that ``python`` will be 2.7.6, ``python2`` will be
-# 2.7.6, and ``python3`` will be 3.4.0.
+# 2.7.6, and ``python3`` will be 3.4.1.
 default['python']['pyenv']['pythons'] = [
     "2.7.6",
     "2.6.9",
     "3.4.1",
     "3.3.5",
     "3.2.5",
-    "pypy-2.2.1",
     "pypy-2.3",
+    "pypy-2.2.1",
 ]
 
 default['python']['pyenv']['aliases'] = {
