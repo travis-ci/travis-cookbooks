@@ -21,7 +21,7 @@
 # keep this in mind.
 
 apt_repository "git-ppa" do
-  uri          "http://ppa.launchpad.net/git-core/ppa/ubuntu"
+  uri          "http://ppa.launchpad.net/git-core/v1.8/ubuntu"
   distribution node['lsb']['codename']
   components   ["main"]
   key          "E1DF1F24"
