@@ -25,6 +25,10 @@
 # Please keep this in mind.
 #
 
+#
+# 'Light' Dependencies
+#
+package 'unzip'  # required to unzip Oracle JCE packages
 
 #
 # Install the default JDK

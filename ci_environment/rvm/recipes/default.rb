@@ -39,37 +39,27 @@ node[:rvm][:pkg_requirements].each do |r|
   package r
 end
 
+
 bash "install RVM" do
   user        node.travis_build_environment.user
   cwd         node.travis_build_environment.home
   environment Hash['HOME' => node.travis_build_environment.home, 'rvm_user_install_flag' => '1']
   code        <<-SH
-  curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer -o /tmp/rvm-installer &&
-  bash /tmp/rvm-installer #{node.rvm.version} --without-gems=rubygems-bundler
+  curl -s https://raw.githubusercontent.com/wayneeseguin/rvm/master/binscripts/rvm-installer -o /tmp/rvm-installer &&
+  bash /tmp/rvm-installer #{node.rvm.version}
   rm   /tmp/rvm-installer
   ~/.rvm/bin/rvm version
   SH
   not_if      "test -f #{node.travis_build_environment.home}/.rvm/scripts/rvm"
 end
 
-# RVM uses .rvm/gemsets.NAME.gems to list the default list of gems it will
-# automatically install. We override it to include rake v0.9.2 and bundler ~> 1.1.0. MK.
-remote_directory "#{node.travis_build_environment.home}/.rvm/gemsets" do
-  files_owner node.travis_build_environment.user
-  files_group node.travis_build_environment.group
-  files_mode  0644
-  owner       node.travis_build_environment.user
-  group       node.travis_build_environment.group
-  mode        0755
-
-  source      "gemsets"
-end
 
 cookbook_file "/etc/profile.d/rvm.sh" do
   owner node.travis_build_environment.user
   group node.travis_build_environment.group
   mode 0755
 end
+
 
 template "#{node.travis_build_environment.home}/.rvmrc" do
   owner node.travis_build_environment.user

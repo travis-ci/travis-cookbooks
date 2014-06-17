@@ -24,6 +24,10 @@ package "curl" do
   action :install
 end
 
+package "unixodbc-dev" do
+  action :install
+end
+
 installation_root = "/home/#{node.travis_build_environment.user}/otp"
 
 directory(installation_root) do
@@ -34,7 +38,7 @@ directory(installation_root) do
 end
 
 remote_file(node.kerl.path) do
-  source "https://raw.github.com/spawngrid/kerl/master/kerl"
+  source "https://raw.githubusercontent.com/spawngrid/kerl/master/kerl"
   mode "0755"
 end
 

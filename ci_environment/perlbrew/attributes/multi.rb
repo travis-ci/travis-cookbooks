@@ -1,7 +1,7 @@
 default[:perlbrew] = {
-  :perls   => [{ :name => "5.19", :version => "perl-5.19.0" },
-               { :name => "5.18", :version => "perl-5.18.0" },
-               { :name => "5.17", :version => "perl-5.17.7" },
+  :perls   => [{ :name => "5.21", :version => "perl-5.21.0" },
+               { :name => "5.20", :version => "perl-5.20.0"  },
+               { :name => "5.18", :version => "perl-5.18.2" },
                { :name => "5.16", :version => "perl-5.16.3" },
                { :name => "5.14", :version => "perl-5.14.4" },
                { :name => "5.12", :version => "perl-5.12.5" },

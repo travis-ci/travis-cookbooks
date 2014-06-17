@@ -50,9 +50,11 @@ setup = lambda do |bash|
   bash.environment env
 end
 
-bash "update RVM to latest stable minor" do
-  setup.call(self)
-  code   "#{bin_rvm} get latest-minor"
+if node[:rvm][:latest_minor]
+  bash "update RVM to latest stable minor" do
+    setup.call(self)
+    code   "#{bin_rvm} get latest-minor"
+  end
 end
 
 # make sure default Ruby is installed first
@@ -67,7 +69,7 @@ node.rvm.rubies.
   bash "installing #{rb[:name]} with RVM arguments #{rb[:arguments]}" do
     setup.call(self)
     # another work around for https://github.com/rubinius/rubinius/pull/1759. MK.
-    code "#{rvm} #{rb.fetch(:using, default_ruby)} do #{bin_rvm} install #{rb[:name]} --verify-downloads 1 -j 3 #{rb[:arguments]} && #{rvm} all do rvm --force gemset empty && find ~/.rvm/rubies/ -type d -name .git -print | xargs /bin/rm -rf"
+    code "#{rvm} #{rb.fetch(:using, default_ruby)} do #{bin_rvm} install #{rb[:name]} --verify-downloads 1 -j 3 #{rb[:arguments]} && find ~/.rvm/rubies/ -type d -name .git -print | xargs /bin/rm -rf"
     # with all the Rubies we provide, checking for various directories under .rvm/rubies/* is pretty much impossible without
     # depending on the exact versions provided. So we use this neat technique suggested by mpapis. MK.
     not_if "#{rvm} #{rb[:name]} do echo 'Found'"
@@ -91,5 +93,5 @@ end
 bash "clean up RVM sources, log files, etc" do
   setup.call(self)
   # gemset empty is needed only till https://github.com/rubinius/rubinius/pull/1759 gets fixed. @mpapis
-  code "#{rvm} cleanup all && #{rvm} all do rvm --force gemset empty || true"
+  code "#{rvm} cleanup all || true"
 end

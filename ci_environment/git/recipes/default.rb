@@ -18,6 +18,11 @@
 
 # 11.10 and 12.04 no longer use git-core and provide a recent version. So we
 # can just use standard packages. MK.
-package "git" do
-  action :install
-end
+
+# package "git" do
+#   action :install
+# end
+
+# setting the default to the ppa recipe as it includes
+# a much more recent version of git
+include_recipe "git::ppa"

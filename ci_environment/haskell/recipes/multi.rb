@@ -36,7 +36,8 @@ end
 # download, unpack, build and install each ghc compiler and relater platform from sources
 ghc_tmp_dir = Dir.tmpdir
 node[:haskell][:multi][:ghcs].each do |ghc_version|
-  ghc_tarball_name = "ghc-#{ghc_version}-#{node.ghc.arch}-unknown-linux.tar.bz2"
+  linux_name = ghc_version =~ /^7.8/ ? "-deb7" : ""
+  ghc_tarball_name = "ghc-#{ghc_version}-#{node.ghc.arch}-unknown-linux#{linux_name}.tar.bz2"
   ghc_local_tarball = File.join(ghc_tmp_dir, ghc_tarball_name)
   ghc_version_dir = File.join(ghc_dir, ghc_version)
 

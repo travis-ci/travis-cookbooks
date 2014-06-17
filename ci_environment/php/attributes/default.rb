@@ -1,9 +1,9 @@
-default[:php][:multi][:versions] = ["5.2.17", "5.3.3", "5.3.27", "5.4.22", "5.5.6"]
-default[:php][:multi][:aliases]  = {"5.2" => "5.2.17", "5.3" => "5.3.27", "5.4" => "5.4.22", "5.5" => "5.5.6"}
+default[:php][:multi][:versions] = ["5.2.17", "5.3.3", "5.3.27", "5.4.29", "5.5.13", "5.6.0beta4"]
+default[:php][:multi][:aliases]  = {"5.2" => "5.2.17", "5.3" => "5.3.27", "5.4" => "5.4.29", "5.5" => "5.5.13", "5.6" => "5.6.0beta4"}
 
 default[:php][:multi][:extensions] = {
   'apc'       => {
-    'versions' => default[:php][:multi][:versions].reject { |version| version.start_with?("5.5") }
+    'versions' => default[:php][:multi][:versions].reject { |version| version.start_with?("5.5", "5.6") }
   },
   'memcache'  => {},
   'memcached' => {
@@ -15,7 +15,7 @@ default[:php][:multi][:extensions] = {
       ./configure && make && make install
     EOF
     'script'   => <<-EOF
-      pecl download memcached
+      pecl download memcached-2.1.0
       tar zxvf memcached*.tgz && cd memcached*
       make clean
       phpize
@@ -36,5 +36,6 @@ default[:php][:multi][:extensions] = {
     'before_recipes'  => %w(zeromq::ppa),
     'before_packages' => %w(libzmq3-dev),
     'channel'         => 'pear.zero.mq'
-  }
+  },
+  'redis' => {}
 }

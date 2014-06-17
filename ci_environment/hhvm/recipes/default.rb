@@ -1,1 +1,1 @@
-include_recipe "hhvm::dpkg"
+include_recipe "hhvm::package"

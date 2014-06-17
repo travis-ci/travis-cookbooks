@@ -29,5 +29,5 @@ ark 'clang' do
   checksum      node['clang']['checksum']
   version       node['clang']['version']
 
-  has_binaries  %w(bin/clang bin/clang++ bin/llvm-link)
+  append_env_path true
 end

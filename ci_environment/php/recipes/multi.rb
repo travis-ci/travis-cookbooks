@@ -16,6 +16,9 @@ node.php.multi.versions.each do |php_version|
     action  :create
   end
 
+  link "#{phpenv_path}/versions/#{php_version}/bin/php-fpm" do
+    to "#{phpenv_path}/versions/#{php_version}/sbin/php-fpm"
+  end
 end
 
 node.php.multi.aliases.each do |short_version, target_version|
@@ -26,4 +29,6 @@ end
 
 include_recipe "php::extensions"
 include_recipe "php::hhvm"
+include_recipe "php::hhvm-nightly"
+include_recipe "phpunit"
 include_recipe "composer"
