@@ -22,7 +22,7 @@ node.perlbrew.perls.each do |pl|
 
   bash "installing #{pl[:version]} as #{pl[:name]} with Perlbrew arguments: #{args}" do
     setup.call(self)
-    code   "#{brew} install #{pl[:version]} --as #{pl[:name]} #{args} -Duseshrplib"
+    code   "#{brew} install #{pl[:version]} --as #{pl[:name]} #{args}"
     not_if "ls #{home}/perl5/perlbrew/perls | grep #{pl[:name]}"
   end
 
