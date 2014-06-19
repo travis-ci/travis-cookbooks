@@ -32,7 +32,7 @@ node.perlbrew.perls.each do |pl|
       # remove the mirror for now as VMs are based in the US
       # --mirror 'http://cpan.mirrors.travis-ci.org'
       code   "#{brew} use #{pl[:name]} && cpanm #{mod} --force --notest"
-    end    
+    end
   end
 
   bash "cleaning cpanm metadata for #{pl[:version]}" do
