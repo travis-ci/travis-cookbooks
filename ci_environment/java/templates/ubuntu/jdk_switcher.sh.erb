@@ -169,7 +169,7 @@ print_java_home()
             print_home_of_oraclejdk8
             ;;
         default)
-            print_home_of_openjdk7
+            print_home_of_<%= node.java.default_version %>
             ;;
         *)
             warn_jdk_not_known "$JDK"
