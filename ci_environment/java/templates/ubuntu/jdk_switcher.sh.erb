@@ -56,8 +56,6 @@ else
     ORACLEJDK8_JAVA_HOME="/usr/lib/jvm/java-8-oracle"
 fi
 
-UJA="update-java-alternatives"
-
 switch_to_openjdk6 () {
     echo "Switching to OpenJDK6 ($OPENJDK6_UJA_ALIAS), JAVA_HOME will be set to $OPENJDK6_JAVA_HOME"
     export JAVA_HOME="$OPENJDK6_JAVA_HOME"
