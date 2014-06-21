@@ -4,6 +4,15 @@
 # JDK switcher based on https://github.com/michaelklishin/jdk_switcher
 #
 
+# first time we run, save PATH
+ORIG_PATH_FILE=$HOME/.orig.path
+if [ -f $ORIG_PATH_FILE ]; then
+    ORIG_PATH=$(cat $ORIG_PATH_FILE)
+else
+    ORIG_PATH=$PATH
+    echo $ORIG_PATH > $ORIG_PATH_FILE
+fi
+
 if uname -a | grep x86_64 >/dev/null ; then
     ARCH_SUFFIX=amd64
 else
@@ -47,30 +56,28 @@ else
     ORACLEJDK8_JAVA_HOME="/usr/lib/jvm/java-8-oracle"
 fi
 
-UJA="update-java-alternatives"
-
 switch_to_openjdk6 () {
     echo "Switching to OpenJDK6 ($OPENJDK6_UJA_ALIAS), JAVA_HOME will be set to $OPENJDK6_JAVA_HOME"
-    sudo $UJA --set "$OPENJDK6_UJA_ALIAS"
     export JAVA_HOME="$OPENJDK6_JAVA_HOME"
+    export PATH=$JAVA_HOME/bin:$ORIG_PATH
 }
 
 switch_to_openjdk7 () {
     echo "Switching to OpenJDK7 ($OPENJDK7_UJA_ALIAS), JAVA_HOME will be set to $OPENJDK7_JAVA_HOME"
-    sudo $UJA --set "$OPENJDK7_UJA_ALIAS"
     export JAVA_HOME="$OPENJDK7_JAVA_HOME"
+    export PATH=$JAVA_HOME/bin:$ORIG_PATH
 }
 
 switch_to_oraclejdk7 () {
     echo "Switching to Oracle JDK7 ($ORACLEJDK7_UJA_ALIAS), JAVA_HOME will be set to $ORACLEJDK7_JAVA_HOME"
-    sudo $UJA --set "$ORACLEJDK7_UJA_ALIAS"
     export JAVA_HOME="$ORACLEJDK7_JAVA_HOME"
+    export PATH=$JAVA_HOME/bin:$ORIG_PATH
 }
 
 switch_to_oraclejdk8 () {
     echo "Switching to Oracle JDK8 ($ORACLEJDK8_UJA_ALIAS), JAVA_HOME will be set to $ORACLEJDK8_JAVA_HOME"
-    sudo $UJA --set "$ORACLEJDK8_UJA_ALIAS"
     export JAVA_HOME="$ORACLEJDK8_JAVA_HOME"
+    export PATH=$JAVA_HOME/bin:$ORIG_PATH
 }
 
 print_home_of_openjdk6 () {
@@ -98,7 +105,7 @@ warn_jdk_not_known () {
 }
 
 warn_gcj_user () {
-    echo "We do not support GCJ. I mean, come on. Are you Richard Stallman?" >&2
+    echo "We do not support GCJ." >&2
 }
 
 switch_jdk()
@@ -160,7 +167,7 @@ print_java_home()
             print_home_of_oraclejdk8
             ;;
         default)
-            print_home_of_openjdk7
+            print_home_of_<%= node.java.default_version %>
             ;;
         *)
             warn_jdk_not_known "$JDK"
