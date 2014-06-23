@@ -35,12 +35,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # The Travis CI Linux worker is currently based on Ubuntu 12.04LTS 64bit
   # Pending: Refer to a basebox with Linux Kernel pinned on version 2.6
-  config.vm.define :precise, primary: true do |ubuntu|
+  config.vm.define :precise64, primary: true do |ubuntu|
     ubuntu.vm.box = "ubuntu/precise64"
   end
 
   # Work in Progress: Support of Ubuntu 14.04LTS (not supported yet)
-  config.vm.define :trusty, autostart: false do |ubuntu|
+  config.vm.define :trusty64, autostart: false do |ubuntu|
     ubuntu.vm.box = "ubuntu/trusty64"
   end
 
