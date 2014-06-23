@@ -30,8 +30,8 @@ There is a `Vagrantfile` in this project that includes a VirtualBox setup, thoug
 
 The included `Vagrantfile` defines multiple machines, where each machine is a target worker platform:
 
-* `precise`: this VM is defined as `primary` as Ubuntu 12.04 is officially supported by travis-cookbooks
-* `trusty`: this VM is experimental and is not automatically started
+* `precise64`: this VM is defined as `primary` as Ubuntu 12.04 is officially supported by travis-cookbooks
+* `trusty64`: this VM is experimental and is not automatically started
 * `win8`: this VM is [experimental](https://github.com/travis-ci/travis-cookbooks/commits/ha-feature-windows) and is not automatically started
 
 By default, Vagrant is configured to provision the `worker_standard` role. There are [more possible setups](https://github.com/travis-ci/travis-images/tree/master/templates) (`worker_ruby`, `worker_python`, etc.) but since all Travis worker machines are based on `worker_standard` it provides good cookbook coverage. It is also possible to narrow down the Chef run list to only install a specific set of cookbooks, as commented in the `Vagrantfile` itself.
@@ -40,19 +40,19 @@ By default, Vagrant is configured to provision the `worker_standard` role. There
 
 ```bash
 $ vagrant status
-# Displays available machines, e.g. precise, trusty, win8
+# Displays available machines, e.g. precise64, trusty64, win8
 
 $ vagrant up
-# Starts the precise machine and tries to provision it... will take a long time.
+# Starts the precise64 machine and tries to provision it... will take a long time.
 
-$ vagrant up trusty
+$ vagrant up trusty64
 $ vagrant up win8
 # Starts experimental machines and tries to provision them...
 ```
 
 #### Windows Image
 
-Vagrant will automatically install boxes for Ubuntu Linux (`precise` and `trusty`) if you don't have them. Windows will not automatically install, and in fact licensing concerns have preventing anyone from publishing a Vagrant box that supports Windows on VirtualBox.
+Vagrant will automatically install boxes for Ubuntu Linux (`precise64` and `trusty64`) if you don't have them. Windows will not automatically install, and in fact licensing concerns have preventing anyone from publishing a Vagrant box that supports Windows on VirtualBox.
 
 The following Windows boxes are available:
 - [VagrantBox containing Windows on Hyper-V](http://vagrantbox.msopentech.com/) - are available from Microsoft Open Technologies, but you can only use Hyper-V if your host OS is Window... so don't waste your time downloading on Mac or Linux.
