@@ -32,10 +32,10 @@ default[:php][:multi][:extensions] = {
       autoreconf -i && ./configure && make && make install
     EOF
   },
-  'pear.zero.mq/zmq-beta' => {
+  'zmq-beta' => {
+    'versions' => default[:php][:multi][:versions].reject { |version| version.start_with?("5.2") },
     'before_recipes'  => %w(zeromq::ppa),
-    'before_packages' => %w(libzmq3-dev),
-    'channel'         => 'pear.zero.mq'
+    'before_packages' => %w(libzmq3-dev)
   },
   'redis' => {}
 }
