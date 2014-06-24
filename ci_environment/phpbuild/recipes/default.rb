@@ -35,7 +35,7 @@ include_recipe "libssl"
 
 case node[:platform]
 when "ubuntu", "debian"
-  %w{libbz2-dev libc-client2007e-dev libkrb5-dev libcurl4-gnutls-dev libfreetype6-dev libgmp3-dev libjpeg8-dev libmcrypt-dev libpng12-dev libt1-dev libmhash-dev libexpat1-dev libicu-dev libtidy-dev re2c lemon}.each do |pkg|
+  %w{libbz2-dev libc-client2007e-dev libkrb5-dev libcurl4-gnutls-dev libfreetype6-dev libgmp3-dev libjpeg8-dev libmcrypt-dev libpng12-dev libt1-dev libmhash-dev libexpat1-dev libicu-dev libtidy-dev re2c lemon libldap2-dev libsasl2-dev}.each do |pkg|
     package(pkg) { action :install }
   end
 
@@ -45,6 +45,10 @@ when "ubuntu", "debian"
 
   link "/usr/lib/libkrb5.so" do
     to "/usr/lib/#{node.phpbuild.arch}-linux-gnu/libkrb5.so"
+  end
+
+  link "/usr/lib/libldap.so" do
+    to "/usr/lib/#{node.phpbuild.arch}-linux-gnu/libldap.so"
   end
 
   if node[:platform_version].to_f >= 12.04
