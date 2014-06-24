@@ -2,4 +2,14 @@
 
 . "$1/activate"
 
-dialyzer --output_plt "${REBAR_PLT_DIR}/dialyzer.plt" --build_plt --apps `ls "$2" | sed 's/-.*//' | grep -v jinterface | grep -v erl_interface`
+dialyzer --output_plt "${REBAR_PLT_DIR}/dialyzer.plt" \
+         --build_plt \
+         --apps `ls "$2" | sed 's/-.*//' | grep -v jinterface | grep -v erl_interface`
+status=$?
+if [ $status -eq 2 ]; then
+    # dialyzer(3): exit status 2 - No problems were encountered,
+    # but warnings were emitted.
+    exit 0
+else
+    exit $status
+fi
