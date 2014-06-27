@@ -6,7 +6,7 @@
 set +e
 
 # Defaults
-LICENSES="android-sdk-license-bcbbd656"
+LICENSES="android-sdk-license-5be876d5"
 
 for i in "$@"
 do
