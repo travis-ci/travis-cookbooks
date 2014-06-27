@@ -38,7 +38,7 @@ default['android-sdk']['components']     = %w(platform-tools
                                               extra-google-m2repository
                                               extra-android-m2repository)
 
-default['android-sdk']['license']['white_list']     = %w(android-sdk-license-.+)
+default['android-sdk']['license']['white_list']     = %w(.+)
 default['android-sdk']['license']['black_list']     = []    # e.g. ['intel-.+', 'mips-.+', 'android-wear-sdk-license-.+']
 default['android-sdk']['license']['default_answer'] = 'n'   # 'y' or 'n' ('yes' or 'no')
 
