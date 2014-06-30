@@ -105,7 +105,7 @@ warn_gcj_user () {
 
 remove_dir_from_path() {
     local target=$(echo $1 | sed -e 's:/*$::') # remove all occurrences of / at the end
-    PATH=:$(echo $PATH | sed -e 's_/*:_:_g'):
+    PATH=:$(echo $PATH: | sed -e 's_/*:_:_g'):
     PATH="${PATH//:$target:/:}"
     PATH="${PATH#:}"
     PATH="${PATH%:}"
