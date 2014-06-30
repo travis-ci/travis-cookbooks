@@ -8,8 +8,7 @@ task :default => [:foodcritic, :spec]
 FoodCritic::Rake::LintTask.new do |t|
   t.files = [ 'ci_environment', 'worker_host' ]
   t.options = {
-    :tags => %w( ~readme ),
-    :fail_tags => %w( ~FC001 ~FC002 ~FC003 ~FC004 ~FC005 ~FC007 ~FC015 ~FC016 ~FC017 ~FC019 ~FC022 ~FC023 ~FC024 ~FC043 ~FC047 ~FC048 )
+    :tags => %w( ~readme ~FC001 ~FC002 ~FC003 ~FC004 ~FC005 ~FC007 ~FC015 ~FC016 ~FC017 ~FC019 ~FC022 ~FC023 ~FC024 ~FC043 ~FC047 ~FC048 )
   }
 end
 
