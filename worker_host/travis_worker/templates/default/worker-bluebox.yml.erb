@@ -59,3 +59,8 @@ linux:
     fetch_timeout: <%= 1200 %>
     push_timeout: <%= 1200 + @worker[:timeouts][:hard_limit] %>
 <% end -%>
+<% if @worker[:build] -%>
+  build:
+    url: <%= @worker[:build][:url] %>
+    api_token: <%= @worker[:build][:api_token] %>
+<% end -%>
