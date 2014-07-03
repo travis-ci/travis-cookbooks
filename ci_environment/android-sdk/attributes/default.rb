@@ -11,17 +11,13 @@ default['android-sdk']['download_url']   = "http://dl.google.com/android/android
 
 #
 # List of Android SDK components to preinstall:
-# Selection based on
-# - Platform usage statistics (see http://developer.android.com/about/dashboards/index.html)
-# - Build Tools releases: http://developer.android.com/tools/revisions/build-tools.html
+# TODO: deprecate notice
 #
 # Hint:
 # Add 'tools' to the list below if you wish to get the latest version,
 # without having to adapt 'version' and 'checksum' attributes of this cookbook.
 # Note that it will require (waste) some extra download effort.
 default['android-sdk']['components']     = %w(platform-tools
-                                              android-20
-                                              sys-img-armeabi-v7a-android-wear-20
                                               android-19
                                               sys-img-armeabi-v7a-android-19
                                               android-18
