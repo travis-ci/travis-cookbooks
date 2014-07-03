@@ -6,7 +6,7 @@
 set +e
 
 # Defaults
-LICENSES="android-sdk-license-bcbbd656"
+LICENSES="<%= node['android-sdk']['license']['white_list'].join('|') %>"
 
 for i in "$@"
 do

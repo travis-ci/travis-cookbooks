@@ -103,7 +103,7 @@ package 'expect'
 #
 
 # KISS: use a basic idempotent guard, waiting for https://github.com/gildegoma/chef-android-sdk/issues/12
-unless File.exist?("#{setup_root}/#{node['android-sdk']['name']}-#{node['android-sdk']['version']}/build-tools")
+unless File.exist?("#{setup_root}/#{node['android-sdk']['name']}-#{node['android-sdk']['version']}/temp")
 
   # With "--filter node['android-sdk']['components'].join(,)" pattern,
   # some system-images were not installed as expected.
@@ -142,13 +142,27 @@ end
 
 
 #
-# Deploy additional scripts into Android-SDK tools directory
+# Deploy additional scripts, preferably outside Android-SDK own directories to
+# avoid unwanted removal when updating android sdk components later.
 #
-%w(android-update-sdk android-accept-licenses).each do |android_helper_script|
-  cookbook_file File.join(android_home, 'tools', android_helper_script) do
+%w(android-accept-licenses android-wait-for-emulator).each do |android_helper_script|
+  cookbook_file File.join(node['android-sdk']['scripts']['path'], android_helper_script) do
     source android_helper_script
-    owner  node['android-sdk']['owner']
-    group  node['android-sdk']['group']
-    mode   0775
+    owner  node['android-sdk']['scripts']['owner']
+    group  node['android-sdk']['scripts']['group']
+    mode   0755
   end
 end
+%w(android-update-sdk).each do |android_helper_script|
+  template File.join(node['android-sdk']['scripts']['path'], android_helper_script) do
+    source "#{android_helper_script}.erb"
+    owner  node['android-sdk']['scripts']['owner']
+    group  node['android-sdk']['scripts']['group']
+    mode   0755
+  end
+end
+
+#
+# Install Maven Android SDK Deployer toolkit to populate local Maven repository
+#
+include_recipe('android-sdk::maven-rescue') if node['android-sdk']['maven-rescue']

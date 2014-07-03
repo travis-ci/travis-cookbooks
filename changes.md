@@ -1,8 +1,9 @@
 ### Upcoming:
 
-- Install Git from git-core/ppa instead of pdoes/ppa (Josh Kalderimis)
+- Update to Android SDK 23 and various changes in cookbook (Gilles Cornu)
+  Updates identifiers of pre-installed components, Accept any license, Install helper scripts in /usr/local/bin
 
-- Don't install Android SDK build-tools-x.y.z components (Gilles Cornu)
+- Install Git from git-core/ppa instead of pdoes/ppa (Josh Kalderimis)
 
 - Update ElasticSearch to 1.1.1 (Mathias Meyer)
 
