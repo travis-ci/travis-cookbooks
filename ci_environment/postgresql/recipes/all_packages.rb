@@ -1,4 +1,6 @@
 
+include_recipe 'postgresql::geos'
+
 include_recipe 'postgresql::pgdg'
 
 #
