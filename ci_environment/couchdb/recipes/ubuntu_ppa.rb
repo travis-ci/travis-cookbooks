@@ -13,13 +13,13 @@
 # limitations under the License.
 #
 
-# https://launchpad.net/~nilya/+archive/couchdb-1.3
+# https://launchpad.net/~couchdb/+archive/stable
 
 apt_repository "couchdb-ppa" do
-  uri          "http://ppa.launchpad.net/nilya/couchdb-1.3/ubuntu"
+  uri          "http://ppa.launchpad.net/couchdb/stable/ubuntu"
   distribution node['lsb']['codename']
   components   ["main"]
-  key          "A6D3315B"
+  key          "C17EAB57"
   keyserver    "keyserver.ubuntu.com"
 
   action :add
