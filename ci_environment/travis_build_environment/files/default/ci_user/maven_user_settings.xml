@@ -8,6 +8,18 @@
 
       <repositories>
         <repository>
+          <id>central</id>
+          <name>Central Repository</name>
+          <url>http://repo.maven.apache.org/maven2</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+
+        <repository>
           <id>sonatype</id>
           <name>OSS Sonatype repo (releases)</name>
           <releases>
