@@ -40,6 +40,13 @@ cookbook_file "/etc/default/locale" do
   source "etc/default/locale.sh"
 end
 
+execute "locale-gen en_US.UTF-8" do
+  user "root"
+end
+
+execute "dpkg-reconfigure locales" do
+  user "root"
+end
 
 bits     = (node.kernel.machine =~ /x86_64/ ? 64 : 32)
 hostname = case [node[:platform], node[:platform_version]]
@@ -49,6 +56,8 @@ hostname = case [node[:platform], node[:platform_version]]
              "oneiric#{bits}"
            when ["ubuntu", "12.04"] then
              "precise#{bits}"
+           when ["ubuntu", "14.04"] then
+             "trusty#{bits}"
            end
 
 template "/etc/hosts" do
