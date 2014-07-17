@@ -19,10 +19,6 @@
 # limitations under the License.
 #
 
-if not %w(precise).include? node['lsb']['codename']
-  raise "You are using Ubuntu 12.04LTS"
-end
-
 #
 # Install required packages (from different apt repositories)
 #
