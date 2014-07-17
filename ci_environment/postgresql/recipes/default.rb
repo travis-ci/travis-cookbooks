@@ -20,7 +20,7 @@
 #
 
 if not %w(precise).include? node['lsb']['codename']
-  raise "Sorry, but this cookbook is currently designed for Ubuntu 12.04LTS only!"
+  raise "You are using Ubuntu 12.04LTS"
 end
 
 #
