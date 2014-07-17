@@ -30,7 +30,7 @@ package "debconf-utils" do
 end
 
 # for convenience of those who add various PPAs. MK.
-package "python-software-properties" do
+package "python3-software-properties" do
   action :install
 end
 
