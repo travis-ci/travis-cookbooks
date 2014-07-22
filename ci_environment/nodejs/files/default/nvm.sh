@@ -1,5 +1,6 @@
 # Node Version Manager
-# Implemented as a bash function
+# Implemented as a POSIX-compliant function
+# Should work on sh, dash, bash, ksh, zsh
 # To use source this file from your bash profile
 #
 # Implemented by Tim Caswell <tim@creationix.com>
@@ -9,7 +10,25 @@ NVM_SCRIPT_SOURCE="$_"
 
 nvm_has() {
   type "$1" > /dev/null 2>&1
-  return $?
+}
+
+nvm_download() {
+  if nvm_has "curl"; then
+    curl $*
+  elif nvm_has "wget"; then
+    # Emulate curl with wget
+    ARGS=$(echo "$*" | sed -e 's/--progress-bar /--progress=bar /' \
+                           -e 's/-L //' \
+                           -e 's/-I //' \
+                           -e 's/-s /-q /' \
+                           -e 's/-o /-O /' \
+                           -e 's/-C - /-c /')
+    wget $ARGS
+  fi
+}
+
+nvm_has_system_node() {
+  [ "$(nvm deactivate 2> /dev/null && command -v node)" != '' ]
 }
 
 # Make zsh glob matching behave same as bash
@@ -46,7 +65,8 @@ nvm_find_up() {
 
 
 nvm_find_nvmrc() {
-  local dir="$(nvm_find_up '.nvmrc')"
+  local dir
+  dir="$(nvm_find_up '.nvmrc')"
   if [ -e "$dir/.nvmrc" ]; then
     echo "$dir/.nvmrc"
   fi
@@ -54,38 +74,46 @@ nvm_find_nvmrc() {
 
 # Obtain nvm version from rc file
 nvm_rc_version() {
-  local NVMRC_PATH="$(nvm_find_nvmrc)"
+  local NVMRC_PATH
+  NVMRC_PATH="$(nvm_find_nvmrc)"
   if [ -e "$NVMRC_PATH" ]; then
-    NVM_RC_VERSION=`cat "$NVMRC_PATH" | head -n 1`
+    read NVM_RC_VERSION < "$NVMRC_PATH"
     echo "Found '$NVMRC_PATH' with version <$NVM_RC_VERSION>"
   fi
 }
 
 # Expand a version using the version cache
 nvm_version() {
-  local PATTERN=$1
+  local PATTERN
+  PATTERN=$1
   local VERSION
   # The default version is the current one
   if [ -z "$PATTERN" ]; then
     PATTERN='current'
   fi
 
+  if [ "$PATTERN" = "current" ]; then
+    nvm_ls_current
+    return $?
+  fi
+
   VERSION=`nvm_ls $PATTERN | tail -n1`
   echo "$VERSION"
 
   if [ "$VERSION" = 'N/A' ]; then
-    return
+    return 3
   fi
 }
 
 nvm_remote_version() {
-  local PATTERN=$1
+  local PATTERN
+  PATTERN=$1
   local VERSION
   VERSION=`nvm_ls_remote $PATTERN | tail -n1`
   echo "$VERSION"
 
   if [ "$VERSION" = 'N/A' ]; then
-    return
+    return 3
   fi
 }
 
@@ -111,16 +139,24 @@ nvm_prepend_path() {
 
 nvm_binary_available() {
   # binaries started with node 0.8.6
-  local MINIMAL="0.8.6"
-  local VERSION=$1
+  local MINIMAL
+  MINIMAL="0.8.6"
+  local VERSION
+  VERSION=$1
   [ $(nvm_normalize_version $VERSION) -ge $(nvm_normalize_version $MINIMAL) ]
 }
 
+nvm_ls_current() {
+  echo `node -v 2>/dev/null`
+}
+
 nvm_ls() {
-  local PATTERN=$1
-  local VERSIONS=''
+  local PATTERN
+  PATTERN=$1
+  local VERSIONS
+  VERSIONS=''
   if [ "$PATTERN" = 'current' ]; then
-    echo `node -v 2>/dev/null`
+    nvm_ls_current
     return
   fi
 
@@ -129,36 +165,44 @@ nvm_ls() {
     return
   fi
   # If it looks like an explicit version, don't do anything funny
-  if [ `expr "$PATTERN" : "v[[:digit:]]*\.[[:digit:]]*\.[[:digit:]]*$"` != 0 ]; then
-    VERSIONS="$PATTERN"
+  if [ `expr "$PATTERN" : "v[0-9]*\.[0-9]*\.[0-9]*$"` != 0 ]; then
+    if [ -d "$NVM_DIR/$PATTERN" ]; then
+      VERSIONS="$PATTERN"
+    fi
   else
-    VERSIONS=`find "$NVM_DIR/" -maxdepth 1 -type d -name "$(nvm_format_version $PATTERN)*" -exec basename '{}' ';' \
-      | sort -t. -u -k 1.2,1n -k 2,2n -k 3,3n`
+    PATTERN=$(nvm_format_version $PATTERN)
+    if [ `expr "$PATTERN" : "v[0-9]*\.[0-9]*$"` != 0 ]; then
+      PATTERN="$PATTERN."
+    fi
+    VERSIONS=`find "$NVM_DIR/" -maxdepth 1 -type d -name "$PATTERN*" -exec basename '{}' ';' \
+      | sort -t. -u -k 1.2,1n -k 2,2n -k 3,3n | \grep -v '^ *\.'`
   fi
   if [ -z "$VERSIONS" ]; then
-      echo "N/A"
-      return
+    echo "N/A"
+    return 3
   fi
   echo "$VERSIONS"
   return
 }
 
 nvm_ls_remote() {
-  local PATTERN=$1
+  local PATTERN
+  PATTERN=$1
   local VERSIONS
-  local GREP_OPTIONS=''
+  local GREP_OPTIONS
+  GREP_OPTIONS=''
   if [ -n "$PATTERN" ]; then
     PATTERN=`nvm_format_version "$PATTERN"`
   else
     PATTERN=".*"
   fi
-  VERSIONS=`curl -s $NVM_NODEJS_ORG_MIRROR/ \
+  VERSIONS=`nvm_download -s $NVM_NODEJS_ORG_MIRROR/ -o - \
               | \egrep -o 'v[0-9]+\.[0-9]+\.[0-9]+' \
               | \grep -w "${PATTERN}" \
               | sort -t. -u -k 1.2,1n -k 2,2n -k 3,3n`
   if [ -z "$VERSIONS" ]; then
     echo "N/A"
-    return
+    return 3
   fi
   echo "$VERSIONS"
   return
@@ -179,7 +223,7 @@ nvm_checksum() {
     echo 'Checksums empty' #missing in raspberry pi binary
     return
   else
-    echo 'Checksums do not match.'
+    echo 'Checksums do not match.' >&2
     return 1
   fi
 }
@@ -187,9 +231,10 @@ nvm_checksum() {
 nvm_print_versions() {
   local VERSION
   local FORMAT
-  local CURRENT=`nvm_version current`
+  local NVM_CURRENT
+  NVM_CURRENT=$(nvm_ls_current)
   echo "$1" | while read VERSION; do
-    if [ "$VERSION" = "$CURRENT" ]; then
+    if [ "$VERSION" = "$NVM_CURRENT" ]; then
       FORMAT='\033[0;32m-> %9s\033[0m'
     elif [ -d "$NVM_DIR/$VERSION" ]; then
       FORMAT='\033[0;34m%12s\033[0m'
@@ -207,10 +252,13 @@ nvm() {
   fi
 
   # Try to figure out the os and arch for binary fetching
-  local uname="$(uname -a)"
-  local os=
-  local arch="$(uname -m)"
-  local GREP_OPTIONS=''
+  local uname
+  uname="$(uname -a)"
+  local os
+  local arch
+  arch="$(uname -m)"
+  local GREP_OPTIONS
+  GREP_OPTIONS=''
   case "$uname" in
     Linux\ *) os=linux ;;
     Darwin\ *) os=darwin ;;
@@ -249,6 +297,7 @@ nvm() {
       echo "    nvm alias <name> <version>  Set an alias named <name> pointing to <version>"
       echo "    nvm unalias <name>          Deletes the alias named <name>"
       echo "    nvm copy-packages <version> Install global NPM packages contained in <version> to current version"
+      echo "    nvm unload                  Unload NVM from shell"
       echo
       echo "Example:"
       echo "    nvm install v0.10.24        Install a specific version number"
@@ -257,11 +306,11 @@ nvm() {
       echo "    nvm alias default 0.10.24   Set default node version on a shell"
       echo
       echo "Note:"
-      echo "    to remove, delete or uninstall nvm - just remove ~/.nvm, ~/.npm and ~/.bower folders"
+      echo "    to remove, delete, or uninstall nvm - just remove ~/.nvm, ~/.npm, and ~/.bower folders"
       echo
     ;;
 
-    "install" )
+    "install" | "i" )
       # initialize local variables
       local binavail
       local t
@@ -269,11 +318,12 @@ nvm() {
       local sum
       local tarball
       local nobinary
-      local version_not_provided=0
+      local version_not_provided
+      version_not_provided=0
       local provided_version
 
-      if ! nvm_has "curl"; then
-        echo 'NVM Needs curl to proceed.' >&2;
+      if ! nvm_has "curl" && ! nvm_has "wget"; then
+        echo 'nvm needs curl or wget to proceed.' >&2;
         return 1
       fi
 
@@ -305,7 +355,7 @@ nvm() {
         fi
         provided_version="$NVM_RC_VERSION"
       fi
-      [ -d "$NVM_DIR/$provided_version" ] && echo "$provided_version is already installed." && return
+      [ -d "$NVM_DIR/$provided_version" ] && echo "$provided_version is already installed." >&2 && return
 
       VERSION=`nvm_remote_version $provided_version`
       ADDITIONAL_PARAMETERS=''
@@ -319,13 +369,13 @@ nvm() {
       done
 
       if [ -d "$NVM_DIR/$VERSION" ]; then
-        echo "$VERSION is already installed."
+        echo "$VERSION is already installed." >&2
         nvm use "$VERSION"
         return $?
       fi
 
       if [ "$VERSION" = "N/A" ]; then
-        echo "Version '$provided_version' not found - try \`nvm ls-remote\` to browse available versions."
+        echo "Version '$provided_version' not found - try \`nvm ls-remote\` to browse available versions." >&2
         return 3
       fi
 
@@ -336,12 +386,14 @@ nvm() {
           if nvm_binary_available "$VERSION"; then
             t="$VERSION-$os-$arch"
             url="$NVM_NODEJS_ORG_MIRROR/$VERSION/node-${t}.tar.gz"
-            sum=`curl -s $NVM_NODEJS_ORG_MIRROR/$VERSION/SHASUMS.txt | \grep node-${t}.tar.gz | awk '{print $1}'`
-            local tmpdir="$NVM_DIR/bin/node-${t}"
-            local tmptarball="$tmpdir/node-${t}.tar.gz"
+            sum=`nvm_download -s $NVM_NODEJS_ORG_MIRROR/$VERSION/SHASUMS.txt -o - | \grep node-${t}.tar.gz | awk '{print $1}'`
+            local tmpdir
+            tmpdir="$NVM_DIR/bin/node-${t}"
+            local tmptarball
+            tmptarball="$tmpdir/node-${t}.tar.gz"
             if (
               mkdir -p "$tmpdir" && \
-              curl -L -C - --progress-bar $url -o "$tmptarball" && \
+              nvm_download -L -C - --progress-bar $url -o "$tmptarball" && \
               nvm_checksum "$tmptarball" $sum && \
               tar -xzf "$tmptarball" -C "$tmpdir" --strip-components 1 && \
               rm -f "$tmptarball" && \
@@ -349,7 +401,7 @@ nvm() {
               )
             then
               nvm use $VERSION
-              return;
+              return $?
             else
               echo "Binary download failed, trying source." >&2
               rm -rf "$tmptarball" "$tmpdir"
@@ -367,18 +419,20 @@ nvm() {
         make='gmake'
         MAKE_CXX="CXX=c++"
       fi
-      local tmpdir="$NVM_DIR/src"
-      local tmptarball="$tmpdir/node-$VERSION.tar.gz"
-      if [ "`curl -Is "$NVM_NODEJS_ORG_MIRROR/$VERSION/node-$VERSION.tar.gz" | \grep '200 OK'`" != '' ]; then
+      local tmpdir
+      tmpdir="$NVM_DIR/src"
+      local tmptarball
+      tmptarball="$tmpdir/node-$VERSION.tar.gz"
+      if [ "`nvm_download -s -I "$NVM_NODEJS_ORG_MIRROR/$VERSION/node-$VERSION.tar.gz" -o - | \grep '200 OK'`" != '' ]; then
         tarball="$NVM_NODEJS_ORG_MIRROR/$VERSION/node-$VERSION.tar.gz"
-        sum=`curl -s $NVM_NODEJS_ORG_MIRROR/$VERSION/SHASUMS.txt | \grep node-$VERSION.tar.gz | awk '{print $1}'`
-      elif [ "`curl -Is "$NVM_NODEJS_ORG_MIRROR/node-$VERSION.tar.gz" | \grep '200 OK'`" != '' ]; then
+        sum=`nvm_download -s $NVM_NODEJS_ORG_MIRROR/$VERSION/SHASUMS.txt -o - | \grep node-$VERSION.tar.gz | awk '{print $1}'`
+      elif [ "`nvm_download -s -I "$NVM_NODEJS_ORG_MIRROR/node-$VERSION.tar.gz" -o - | \grep '200 OK'`" != '' ]; then
         tarball="$NVM_NODEJS_ORG_MIRROR/node-$VERSION.tar.gz"
       fi
       if (
         [ -n "$tarball" ] && \
         mkdir -p "$tmpdir" && \
-        curl -L --progress-bar $tarball -o "$tmptarball" && \
+        nvm_download -L --progress-bar $tarball -o "$tmptarball" && \
         nvm_checksum "$tmptarball" $sum && \
         tar -xzf "$tmptarball" -C "$tmpdir" && \
         cd "$tmpdir/node-$VERSION" && \
@@ -392,19 +446,19 @@ nvm() {
         if ! nvm_has "npm" ; then
           echo "Installing npm..."
           if [ "`expr "$VERSION" : '\(^v0\.1\.\)'`" != '' ]; then
-            echo "npm requires node v0.2.3 or higher"
+            echo "npm requires node v0.2.3 or higher" >&2
           elif [ "`expr "$VERSION" : '\(^v0\.2\.\)'`" != '' ]; then
             if [ "`expr "$VERSION" : '\(^v0\.2\.[0-2]$\)'`" != '' ]; then
-              echo "npm requires node v0.2.3 or higher"
+              echo "npm requires node v0.2.3 or higher" >&2
             else
-              curl https://npmjs.org/install.sh | clean=yes npm_install=0.2.19 sh
+              nvm_download https://npmjs.org/install.sh -o - | clean=yes npm_install=0.2.19 sh
             fi
           else
-            curl https://npmjs.org/install.sh | clean=yes sh
+            nvm_download https://npmjs.org/install.sh -o - | clean=yes sh
           fi
         fi
       else
-        echo "nvm: install $VERSION failed!"
+        echo "nvm: install $VERSION failed!" >&2
         return 1
       fi
     ;;
@@ -412,12 +466,12 @@ nvm() {
       [ $# -ne 2 ] && nvm help && return
       PATTERN=`nvm_format_version $2`
       if [ "$PATTERN" = `nvm_version` ]; then
-        echo "nvm: Cannot uninstall currently-active node version, $PATTERN."
+        echo "nvm: Cannot uninstall currently-active node version, $PATTERN." >&2
         return 1
       fi
       VERSION=`nvm_version $PATTERN`
       if [ ! -d $NVM_DIR/$VERSION ]; then
-        echo "$VERSION version is not installed..."
+        echo "$VERSION version is not installed..." >&2
         return;
       fi
 
@@ -444,19 +498,19 @@ nvm() {
         hash -r
         echo "$NVM_DIR/*/bin removed from \$PATH"
       else
-        echo "Could not find $NVM_DIR/*/bin in \$PATH"
+        echo "Could not find $NVM_DIR/*/bin in \$PATH" >&2
       fi
       if [ `expr "$MANPATH" : ".*$NVM_DIR/.*/share/man.*"` != 0 ] ; then
         export MANPATH=`nvm_strip_path "$MANPATH" "/share/man"`
         echo "$NVM_DIR/*/share/man removed from \$MANPATH"
       else
-        echo "Could not find $NVM_DIR/*/share/man in \$MANPATH"
+        echo "Could not find $NVM_DIR/*/share/man in \$MANPATH" >&2
       fi
       if [ `expr "$NODE_PATH" : ".*$NVM_DIR/.*/lib/node_modules.*"` != 0 ] ; then
         export NODE_PATH=`nvm_strip_path "$NODE_PATH" "/lib/node_modules"`
         echo "$NVM_DIR/*/lib/node_modules removed from \$NODE_PATH"
       else
-        echo "Could not find $NVM_DIR/*/lib/node_modules in \$NODE_PATH"
+        echo "Could not find $NVM_DIR/*/lib/node_modules in \$NODE_PATH" >&2
       fi
     ;;
     "use" )
@@ -467,7 +521,7 @@ nvm() {
       if [ $# -eq 1 ]; then
         nvm_rc_version
         if [ -n "$NVM_RC_VERSION" ]; then
-            VERSION=`nvm_version $NVM_RC_VERSION`
+          VERSION=`nvm_version $NVM_RC_VERSION`
         fi
       else
         VERSION=`nvm_version $2`
@@ -480,7 +534,7 @@ nvm() {
         VERSION=`nvm_version $2`
       fi
       if [ ! -d "$NVM_DIR/$VERSION" ]; then
-        echo "$VERSION version is not installed yet"
+        echo "$VERSION version is not installed yet" >&2
         return 1
       fi
       # Strip other version from PATH
@@ -504,11 +558,13 @@ nvm() {
       export NODE_PATH
       export NVM_PATH="$NVM_DIR/$VERSION/lib/node"
       export NVM_BIN="$NVM_DIR/$VERSION/bin"
+      rm -f "$NVM_DIR/current" && ln -s "$NVM_DIR/$VERSION" "$NVM_DIR/current"
       echo "Now using node $VERSION"
     ;;
     "run" )
       local provided_version
-      local has_checked_nvmrc=0
+      local has_checked_nvmrc
+      has_checked_nvmrc=0
       # run given version of node
       shift
       if [ $# -lt 1 ]; then
@@ -539,8 +595,8 @@ nvm() {
       fi
 
       if [ ! -d "$NVM_DIR/$VERSION" ]; then
-        echo "$VERSION version is not installed yet"
-        return;
+        echo "$VERSION version is not installed yet" >&2
+        return 1
       fi
       RUN_NODE_PATH=`nvm_strip_path "$NODE_PATH" "/lib/node_modules"`
       RUN_NODE_PATH=`nvm_prepend_path "$NODE_PATH" "$NVM_DIR/$VERSION/lib/node_modules"`
@@ -548,15 +604,19 @@ nvm() {
       NODE_PATH=$RUN_NODE_PATH $NVM_DIR/$VERSION/bin/node "$@"
     ;;
     "ls" | "list" )
-      nvm_print_versions "`nvm_ls $2`"
+      local NVM_LS_OUTPUT
+      local NVM_LS_EXIT_CODE
+      NVM_LS_OUTPUT=$(nvm_ls "$2")
+      NVM_LS_EXIT_CODE=$?
+      nvm_print_versions "$NVM_LS_OUTPUT"
       if [ $# -eq 1 ]; then
         nvm alias
       fi
-      return
+      return $NVM_LS_EXIT_CODE
     ;;
     "ls-remote" | "list-remote" )
-        nvm_print_versions "`nvm_ls_remote $2`"
-        return
+      nvm_print_versions "`nvm_ls_remote $2`"
+      return
     ;;
     "current" )
       nvm_version current
@@ -570,18 +630,18 @@ nvm() {
             DEST=`cat $ALIAS`
             VERSION=`nvm_version $DEST`
             if [ "$DEST" = "$VERSION" ]; then
-                echo "$(basename $ALIAS) -> $DEST"
+              echo "$(basename $ALIAS) -> $DEST"
             else
-                echo "$(basename $ALIAS) -> $DEST (-> $VERSION)"
+              echo "$(basename $ALIAS) -> $DEST (-> $VERSION)"
             fi
           fi
         done
         return
       fi
       if [ -z "$3" ]; then
-          rm -f $NVM_DIR/alias/$2
-          echo "$2 -> *poof*"
-          return
+        rm -f $NVM_DIR/alias/$2
+        echo "$2 -> *poof*"
+        return
       fi
       mkdir -p $NVM_DIR/alias
       VERSION=`nvm_version $3`
@@ -590,7 +650,7 @@ nvm() {
       fi
       echo $3 > "$NVM_DIR/alias/$2"
       if [ ! "$3" = "$VERSION" ]; then
-          echo "$2 -> $3 (-> $VERSION)"
+        echo "$2 -> $3 (-> $VERSION)"
       else
         echo "$2 -> $3"
       fi
@@ -598,34 +658,40 @@ nvm() {
     "unalias" )
       mkdir -p $NVM_DIR/alias
       [ $# -ne 2 ] && nvm help && return 127
-      [ ! -f "$NVM_DIR/alias/$2" ] && echo "Alias $2 doesn't exist!" && return
+      [ ! -f "$NVM_DIR/alias/$2" ] && echo "Alias $2 doesn't exist!" >&2 && return
       rm -f $NVM_DIR/alias/$2
       echo "Deleted alias $2"
     ;;
     "copy-packages" )
-        if [ $# -ne 2 ]; then
-          nvm help
-          return 127
-        fi
-        VERSION=`nvm_version $2`
-        local ROOT=`(nvm use $VERSION && npm -g root)`
-        local ROOTDEPTH=$((`echo $ROOT | sed 's/[^\/]//g'|wc -m` -1))
+      if [ $# -ne 2 ]; then
+        nvm help
+        return 127
+      fi
+      VERSION=`nvm_version $2`
+      local ROOT
+      ROOT=`(nvm use $VERSION && npm -g root)`
+      local ROOTDEPTH
+      ROOTDEPTH=$((`echo $ROOT | sed 's/[^\/]//g'|wc -m` -1))
 
-        # declare local INSTALLS first, otherwise it doesn't work in zsh
-        local INSTALLS
-        INSTALLS=`nvm use $VERSION > /dev/null && npm -g -p ll | \grep "$ROOT\/[^/]\+$" | cut -d '/' -f $(($ROOTDEPTH + 2)) | cut -d ":" -f 2 | \grep -v npm | tr "\n" " "`
+      # declare local INSTALLS first, otherwise it doesn't work in zsh
+      local INSTALLS
+      INSTALLS=`nvm use $VERSION > /dev/null && npm -g -p ll | \grep "$ROOT\/[^/]\+$" | cut -d '/' -f $(($ROOTDEPTH + 2)) | cut -d ":" -f 2 | \grep -v npm | tr "\n" " "`
 
-        npm install -g ${INSTALLS[@]}
+      npm install -g ${INSTALLS[@]}
     ;;
     "clear-cache" )
-        rm -f $NVM_DIR/v* 2>/dev/null
-        echo "Cache cleared."
+      rm -f $NVM_DIR/v* 2>/dev/null
+      echo "Cache cleared."
     ;;
     "version" )
-        nvm_version $2
+      nvm_version $2
     ;;
     "--version" )
-        echo "0.7.0"
+      echo "0.11.2"
+    ;;
+    "unload" )
+      unset -f nvm nvm_print_versions nvm_checksum nvm_ls_remote nvm_ls nvm_remote_version nvm_version nvm_rc_version > /dev/null 2>&1
+      unset RC_VERSION NVM_NODEJS_ORG_MIRROR NVM_DIR NVM_CD_FLAGS > /dev/null 2>&1
     ;;
     * )
       nvm help
