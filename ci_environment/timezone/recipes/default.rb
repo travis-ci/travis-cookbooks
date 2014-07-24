@@ -12,7 +12,8 @@ case node.platform
 when ['debian','ubuntu']
   # Make sure it's installed. It would be a pretty broken system
   # that didn't have it.
-  if node.platform_version.to_f >= 12.04
+  platform_version = node.platform_version.to_f
+  if platform_version >= 12.04 && platform_version < 14.04
     package "tzdata" do
       version "2012b-1"
       options "--force-yes"

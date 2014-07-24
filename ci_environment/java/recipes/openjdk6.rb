@@ -10,7 +10,8 @@
 #
 case node.platform
 when "ubuntu", "debian"
-  if node.platform_version.to_f >= 12.04
+  platform_version = node.platform_version.to_f
+  if platform_version >= 12.04 && platform_version < 14.04
     package "tzdata" do
       version "2012b-1"
       options "--force-yes"
