@@ -56,10 +56,10 @@ fi
 nvm_tree_contains_path() {
   local tree
   tree="$1"
-  local path
-  path="$2"
+  local node_path
+  node_path="$2"
   local pathdir
-  pathdir=$(dirname "$path")
+  pathdir=$(dirname "$node_path")
   while [ "$pathdir" != "" ] && [ "$pathdir" != "." ] && [ "$pathdir" != "/" ] && [ "$pathdir" != "$tree" ]; do
     pathdir=$(dirname "$pathdir")
   done
@@ -723,7 +723,7 @@ nvm() {
       nvm_version $2
     ;;
     "--version" )
-      echo "0.12.0"
+      echo "0.12.1"
     ;;
     "unload" )
       unset -f nvm nvm_print_versions nvm_checksum nvm_ls_remote nvm_ls nvm_remote_version nvm_version nvm_rc_version > /dev/null 2>&1
