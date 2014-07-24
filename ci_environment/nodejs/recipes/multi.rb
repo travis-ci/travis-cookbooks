@@ -23,6 +23,7 @@
 
 include_recipe "build-essential"
 include_recipe "networking_basic"
+include_recipe "man"
 
 require "tmpdir"
 
