@@ -1,7 +1,7 @@
 default[:phpbuild] = {
   :git => {
     :repository => "git://github.com/CHH/php-build.git",
-    :revision   => "826c59f1be07d2312c13d16ec4326b540a05baa9"
+    :revision   => "cee8f49199b4bbdd8d68c436fa87d8737e88ed18"
   },
   :phpunit_plugin => {
     :git => {

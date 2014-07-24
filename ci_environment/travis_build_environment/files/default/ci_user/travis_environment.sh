@@ -17,13 +17,16 @@ export RACK_ENV=test
 # http://getcomposer.org/doc/03-cli.md#composer-no-interaction
 export COMPOSER_NO_INTERACTION=1
 
-# --server for the server (C2) JVM JIT compiler
+# --client for older OpenJDK C1 compiler, with faster startup
+#
+# -J-XX:+TieredCompilation  To enable the equivalent of the C1 compiler on
+# -J-XX:TieredStopAtLevel=1 newer versions of OpenJDK
+#
 # -Xcext.enabled=false to disable C extensions, running them in production
 #                      on JRuby is a bad idea but developers often have no
 #                      clue they depend on C extensions
+#
 # -J-Xss2m bumps stack size to 2 MB
-# -J-Xmx256m sets maximum allowed JVM heap size to 256 MB (64m by default)
-# -J-XX:+TieredCompilation to enable tiered compilation mode (long story short:
-#                          to improve startup time, especially on JDK 7+)
-# -Xcompile.invokedynamic=false disables invokedynamic which seemingly causes 32 bit OpenJDKs (6 and 7) to segfault
-export JRUBY_OPTS="--server -Xcext.enabled=false -Xcompile.invokedynamic=false -J-Xss2m -J-Xmx256m -J-XX:+TieredCompilation"
+#
+# -Xcompile.invokedynamic=false disables invokedynamic which is still somewhat experimental
+export JRUBY_OPTS="--client -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -Xcext.enabled=false -J-Xss2m -Xcompile.invokedynamic=false"
