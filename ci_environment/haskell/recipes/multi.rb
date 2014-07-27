@@ -68,16 +68,6 @@ node[:haskell][:multi][:ghcs].each do |ghc_version|
   end
 end
 
-# install cabal
-apt_repository "cabal-install-ppa" do
-  uri          "http://ppa.launchpad.net/typeful/cabal-install/ubuntu"
-  distribution node['lsb']['codename']
-  components   ["main"]
-  key          "9DF71E85"
-  keyserver    "keyserver.ubuntu.com"
-  action :add
-end
-
 %w(cabal-install alex happy).each do |p|
   package p do
     action :install
