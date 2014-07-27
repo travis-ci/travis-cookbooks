@@ -15,7 +15,7 @@ end
 package package_path do
   ignore_failure true
   action         :install
-  source         "#{Dir.tmpdir}/riak_2.0.0rc1-1_amd64.deb"
+  source         "#{Dir.tmpdir}/riak_#{node['riak']['package']['version']}-1_amd64.deb"
   provider       Chef::Provider::Package::Dpkg
 end
 
