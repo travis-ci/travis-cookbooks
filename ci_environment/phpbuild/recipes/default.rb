@@ -56,6 +56,10 @@ when "ubuntu", "debian"
     not_if "test -e /usr/include/freetype"
   end
 
+  link '/usr/include/gmp.h' do
+    to '/usr/include/#{node.phpbuild.arch}-linux-gnu/gmp.h'
+  end
+
   if node[:platform_version].to_f >= 12.04
     link "/usr/lib/libmysqlclient_r.so" do
       to "/usr/lib/#{node.phpbuild.arch}-linux-gnu/libmysqlclient_r.so"
