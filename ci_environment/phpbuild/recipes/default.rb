@@ -51,6 +51,11 @@ when "ubuntu", "debian"
     to "/usr/lib/#{node.phpbuild.arch}-linux-gnu/libldap.so"
   end
 
+  link '/usr/include/freetype' do
+    to '/usr/include/freetype2'
+    not_if "test -e /usr/include/freetype"
+  end
+
   if node[:platform_version].to_f >= 12.04
     link "/usr/lib/libmysqlclient_r.so" do
       to "/usr/lib/#{node.phpbuild.arch}-linux-gnu/libmysqlclient_r.so"
