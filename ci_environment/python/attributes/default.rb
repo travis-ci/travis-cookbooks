@@ -30,7 +30,6 @@ default['python']['pyenv']['pythons'] = [
     "3.3.5",
     "3.2.5",
     "pypy-2.3.1",
-    "pypy-2.2.1",
     "pypy3-2.3.1",
 ]
 
