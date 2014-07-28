@@ -132,6 +132,6 @@ template "/etc/profile.d/pyenv.sh" do
 end
 
 # Create a symlink 'pypy3' that points to PyPy3 binary
-link "#{virtualenv_root}/pypy3-2.3.1/bin/pypy3" do
-  to "#{virtualenv_root}/pypy3-2.3.1/bin/pypy"
+link "/opt/python/pypy3-2.3.1/bin/pypy3-2.3.1" do
+  to "/opt/python/pypy3-2.3.1/bin/pypy3"
 end
