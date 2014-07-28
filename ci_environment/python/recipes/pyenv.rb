@@ -102,6 +102,13 @@ node.python.pyenv.pythons.each do |py|
     end
   end
 
+  # Create a symlink 'pypy3' that points to PyPy3 binary
+  if py =~ /^pypy3/
+    link "/opt/python/#{py}/bin/pypy3" do
+      to "/opt/python/#{py}/bin/#{py}"
+    end
+  end
+
   # Build a list of packages up so that we can install them
   packages = []
   node.python.pyenv.aliases.fetch(py, []).concat(["default", py]).each do |name|
