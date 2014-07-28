@@ -44,7 +44,7 @@ default['python']['pyenv']['aliases'] = {
 }
 
 default['python']['pip']['packages'] = {
-    "default" => ["nose", "pytest", "mock"],
+    "default" => ["nose", "pytest", "mock", "wheel"],
     "2.6" => ["numpy"],
     "2.7" => ["numpy"],
     "3.2" => ["numpy"],
