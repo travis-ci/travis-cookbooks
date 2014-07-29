@@ -29,9 +29,8 @@ default['python']['pyenv']['pythons'] = [
     "3.4.1",
     "3.3.5",
     "3.2.5",
-    "pypy3-2.3.1",
     "pypy-2.3.1",
-    "pypy-2.2.1",
+    "pypy3-2.3.1",
 ]
 
 default['python']['pyenv']['aliases'] = {
@@ -40,12 +39,12 @@ default['python']['pyenv']['aliases'] = {
     "3.2.5" => ["3.2"],
     "3.3.5" => ["3.3"],
     "3.4.1" => ["3.4"],
-    "pypy3-2.3.1" => ["pypy3"],
     "pypy-2.3.1" => ["pypy"],
+    "pypy3-2.3.1" => ["pypy3"],
 }
 
 default['python']['pip']['packages'] = {
-    "default" => ["nose", "pytest", "mock"],
+    "default" => ["nose", "pytest", "mock", "wheel"],
     "2.6" => ["numpy"],
     "2.7" => ["numpy"],
     "3.2" => ["numpy"],

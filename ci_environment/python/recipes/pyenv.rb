@@ -102,6 +102,15 @@ node.python.pyenv.pythons.each do |py|
     end
   end
 
+  # Create a symlink 'pypy3' that points to PyPy3 binary
+  # We need to get around https://bitbucket.org/pypy/pypy/issue/1796/pypy-pypy3-in-the-same-path
+  if py =~ /^pypy3/
+    link "/opt/python/#{py}/bin/pypy3" do
+      to "/opt/python/#{py}/bin/#{py}"
+      not_if "test -f /opt/python/#{py}/bin/pypy3"
+    end
+  end
+
   # Build a list of packages up so that we can install them
   packages = []
   node.python.pyenv.aliases.fetch(py, []).concat(["default", py]).each do |name|
