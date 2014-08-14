@@ -23,7 +23,7 @@ nvm_download() {
                            -e 's/-s /-q /' \
                            -e 's/-o /-O /' \
                            -e 's/-C - /-c /')
-    wget $ARGS
+    eval wget $ARGS
   fi
 }
 
@@ -56,10 +56,10 @@ fi
 nvm_tree_contains_path() {
   local tree
   tree="$1"
-  local path
-  path="$2"
+  local node_path
+  node_path="$2"
   local pathdir
-  pathdir=$(dirname "$path")
+  pathdir=$(dirname "$node_path")
   while [ "$pathdir" != "" ] && [ "$pathdir" != "." ] && [ "$pathdir" != "/" ] && [ "$pathdir" != "$tree" ]; do
     pathdir=$(dirname "$pathdir")
   done
@@ -131,7 +131,7 @@ nvm_remote_version() {
 }
 
 nvm_normalize_version() {
-  echo "$1" | sed -e 's/^v//' | awk -F. '{ printf("%d%03d%03d\n", $1,$2,$3); }'
+  echo "$1" | sed -e 's/^v//' | \awk -F. '{ printf("%d%03d%03d\n", $1,$2,$3); }'
 }
 
 nvm_format_version() {
@@ -196,7 +196,7 @@ nvm_ls() {
       PATTERN="$PATTERN."
     fi
     VERSIONS=`find "$NVM_DIR/" -maxdepth 1 -type d -name "$PATTERN*" -exec basename '{}' ';' \
-      | sort -t. -u -k 1.2,1n -k 2,2n -k 3,3n | \grep -v '^ *\.'`
+      | sort -t. -u -k 1.2,1n -k 2,2n -k 3,3n | \grep -v '^ *\.' | \grep -e '^v'`
   fi
   if [ -z "$VERSIONS" ]; then
     echo "N/A"
@@ -234,11 +234,11 @@ nvm_ls_remote() {
 
 nvm_checksum() {
   if nvm_has "shasum"; then
-    checksum=$(shasum $1 | awk '{print $1}')
+    checksum=$(shasum $1 | \awk '{print $1}')
   elif nvm_has "sha1"; then
     checksum=$(sha1 -q $1)
   else
-    checksum=$(sha1sum $1 | awk '{print $1}')
+    checksum=$(sha1sum $1 | \awk '{print $1}')
   fi
 
   if [ "$checksum" = "$2" ]; then
@@ -412,7 +412,7 @@ nvm() {
           if nvm_binary_available "$VERSION"; then
             t="$VERSION-$os-$arch"
             url="$NVM_NODEJS_ORG_MIRROR/$VERSION/node-${t}.tar.gz"
-            sum=`nvm_download -s $NVM_NODEJS_ORG_MIRROR/$VERSION/SHASUMS.txt -o - | \grep node-${t}.tar.gz | awk '{print $1}'`
+            sum=`nvm_download -s $NVM_NODEJS_ORG_MIRROR/$VERSION/SHASUMS.txt -o - | \grep node-${t}.tar.gz | \awk '{print $1}'`
             local tmpdir
             tmpdir="$NVM_DIR/bin/node-${t}"
             local tmptarball
@@ -451,7 +451,7 @@ nvm() {
       tmptarball="$tmpdir/node-$VERSION.tar.gz"
       if [ "`nvm_download -s -I "$NVM_NODEJS_ORG_MIRROR/$VERSION/node-$VERSION.tar.gz" -o - | \grep '200 OK'`" != '' ]; then
         tarball="$NVM_NODEJS_ORG_MIRROR/$VERSION/node-$VERSION.tar.gz"
-        sum=`nvm_download -s $NVM_NODEJS_ORG_MIRROR/$VERSION/SHASUMS.txt -o - | \grep node-$VERSION.tar.gz | awk '{print $1}'`
+        sum=`nvm_download -s $NVM_NODEJS_ORG_MIRROR/$VERSION/SHASUMS.txt -o - | \grep node-$VERSION.tar.gz | \awk '{print $1}'`
       elif [ "`nvm_download -s -I "$NVM_NODEJS_ORG_MIRROR/node-$VERSION.tar.gz" -o - | \grep '200 OK'`" != '' ]; then
         tarball="$NVM_NODEJS_ORG_MIRROR/node-$VERSION.tar.gz"
       fi
@@ -639,6 +639,29 @@ nvm() {
       echo "Running node $VERSION"
       NODE_PATH=$RUN_NODE_PATH $NVM_DIR/$VERSION/bin/node "$@"
     ;;
+    "exec" )
+      shift
+
+      local provided_version
+      provided_version=$1
+      if [ -n "$provided_version" ]; then
+        VERSION=`nvm_version $provided_version`
+        if [ $VERSION = "N/A" ]; then
+          provided_version=''
+          nvm_rc_version
+          VERSION=`nvm_version $NVM_RC_VERSION`
+        else
+          shift
+        fi
+      fi
+
+      if [ ! -d "$NVM_DIR/$VERSION" ]; then
+        echo "$VERSION version is not installed yet" >&2
+        return 1
+      fi
+      echo "Running node $VERSION"
+      NODE_VERSION=$VERSION $NVM_DIR/nvm-exec "$@"
+    ;;
     "ls" | "list" )
       local NVM_LS_OUTPUT
       local NVM_LS_EXIT_CODE
@@ -723,7 +746,7 @@ nvm() {
       nvm_version $2
     ;;
     "--version" )
-      echo "0.12.0"
+      echo "0.13.1"
     ;;
     "unload" )
       unset -f nvm nvm_print_versions nvm_checksum nvm_ls_remote nvm_ls nvm_remote_version nvm_version nvm_rc_version > /dev/null 2>&1
