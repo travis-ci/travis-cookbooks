@@ -1,5 +1,17 @@
 ### Upcoming:
 
+- Update Firefox to 31.0esr (Hiro Asari)
+
+- Update nvm to 0.13.1 (Jordan Harband)
+
+- Disable `git` pager by default (Hiro Asari)
+
+- Update Leiningen to 2.4.3 (Michael Klishin)
+
+- Install libicu-dev (Hiro Asari)
+
+- Update to Android SDK 23.0.2 (Hiro Asari)
+
 ### Production .org 30.07.2014
 
 - Update to Android SDK 23 and various changes in cookbook (Gilles Cornu)
