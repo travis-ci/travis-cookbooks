@@ -18,7 +18,7 @@
 
 - Update maven to 3.2.3 (Hiro Asari)
 
--
+- Update Sphinx to 2.2.3-beta and 2.1.9 (Hiro Asari)
 
 ### Production .org 30.07.2014
 
