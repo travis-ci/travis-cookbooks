@@ -12,6 +12,10 @@
 
 - Update to Android SDK 23.0.2 (Hiro Asari)
 
+- Added PHP 5.5.9 (Hiro Asari)
+
+- Updated PHP to 5.3.29, 5.4.31, 5.5.15, and 5.6.0RC4 (Graham Campbell)
+
 ### Production .org 30.07.2014
 
 - Update to Android SDK 23 and various changes in cookbook (Gilles Cornu)
