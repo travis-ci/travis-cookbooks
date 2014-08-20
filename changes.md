@@ -22,6 +22,8 @@
 
 - Update ElasticSearch to 1.1.2 (Hiro Asari)
 
+- Update Go to 1.3.1 (Hiro Asari)
+
 ### Production .org 30.07.2014
 
 - Update to Android SDK 23 and various changes in cookbook (Gilles Cornu)
