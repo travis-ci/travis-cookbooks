@@ -20,6 +20,8 @@
 
 - Update Sphinx to 2.2.3-beta and 2.1.9 (Hiro Asari)
 
+- Update ElasticSearch to 1.1.2 (Hiro Asari)
+
 ### Production .org 30.07.2014
 
 - Update to Android SDK 23 and various changes in cookbook (Gilles Cornu)
