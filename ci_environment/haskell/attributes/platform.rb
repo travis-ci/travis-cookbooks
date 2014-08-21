@@ -1,3 +1,3 @@
 default[:haskell][:platform] = {
-  :version => "2012.2.0.0"
+  :version => "2014.2.0.0"
 }

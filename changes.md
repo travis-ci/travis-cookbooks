@@ -24,6 +24,8 @@
 
 - Update Go to 1.3.1 (Hiro Asari)
 
+- Update Haskell platform to 2014.2.0.0, ghc to 7.8.3 (Hiro	Asari)
+
 ### Production .org 30.07.2014
 
 - Update to Android SDK 23 and various changes in cookbook (Gilles Cornu)
