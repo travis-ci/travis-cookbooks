@@ -1,10 +1,8 @@
 #
 # Cookbook Name:: mongodb
-# Recipe:: default
+# Recipe:: ppa
 #
-# Author:: Gerhard Lazu (<gerhard.lazu@papercavalier.com>)
-#
-# Copyright 2010, Paper Cavalier, LLC
+# Copyright 2014, Travis CI Development Team <contact@travis-ci.org>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,6 +17,16 @@
 # limitations under the License.
 #
 
-include_recipe "mongodb::ppa"
-include_recipe "mongodb::apt"
-include_recipe "mongodb::server"
+case node['platform']
+when "ubuntu"
+  apt_repository "mongodb_10gen" do
+    uri          "http://downloads-distro.mongodb.org/repo/ubuntu-upstart"
+    distribution 'dist'
+    components   ['10gen']
+
+    key          "7F0CEB10"
+    keyserver    "keyserver.ubuntu.com"
+
+    action :add
+  end
+end
