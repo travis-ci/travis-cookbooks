@@ -17,12 +17,7 @@ default['android-sdk']['download_url']   = "http://dl.google.com/android/android
 # Add 'tools' to the list below if you wish to get the latest version,
 # without having to adapt 'version' and 'checksum' attributes of this cookbook.
 # Note that it will require (waste) some extra download effort.
-#
-# build-tools needs to be maintained. Theoretically, there's a meta-taget
-# for it.
-#
 default['android-sdk']['components']     = %w(platform-tools
-                                              build-tools-20.0.0
                                               android-19
                                               sys-img-armeabi-v7a-android-19
                                               android-18
