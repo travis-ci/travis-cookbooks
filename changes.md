@@ -1,5 +1,7 @@
 ### Upcoming:
 
+- Update preinstalled versions of Scala (2.11.4) and sbt (0.13.5) (Gilles Cornu)
+
 - Update Firefox to 31.0esr (Hiro Asari)
 
 - Update nvm to 0.13.1 (Jordan Harband)
