@@ -1,5 +1,7 @@
 ### Upcoming:
 
+- Preinstall Scala 2.10.2 as workaround for https://github.com/sbt/sbt/issues/1439
+
 - Update preinstalled versions of Scala (2.11.4) and sbt (0.13.5) (Gilles Cornu)
 
 - Update Firefox to 31.0esr (Hiro Asari)
