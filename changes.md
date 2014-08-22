@@ -26,6 +26,8 @@
 
 - Update Haskell platform to 2014.2.0.0, ghc to 7.8.3 (Hiro	Asari)
 
+- Update Gradle to 2.0.0 (Roberto Tyley)
+
 ### Production .org 30.07.2014
 
 - Update to Android SDK 23 and various changes in cookbook (Gilles Cornu)
