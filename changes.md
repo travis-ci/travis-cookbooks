@@ -20,7 +20,7 @@
 
 - Added PHP 5.5.9 (Hiro Asari)
 
-- Updated PHP to 5.3.29, 5.4.31, 5.5.15, and 5.6.0RC4 (Graham Campbell)
+- Updated PHP to 5.3.29, 5.4.32, 5.5.16, and 5.6.0RC4 (Graham Campbell)
 
 - Update maven to 3.2.3 (Hiro Asari)
 
