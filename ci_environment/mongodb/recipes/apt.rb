@@ -52,7 +52,7 @@ cookbook_file "/etc/apt/sources.list.d/mongodb.list" do
   not_if "which mongod && which mongo"
 end
 
-package "mongodb-org" do
+package "mongodb-10gen" do
   action :install
   not_if "which mongod && which mongo"
 end
