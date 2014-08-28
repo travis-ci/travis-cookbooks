@@ -1,6 +1,8 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+require 'yaml'
+
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
@@ -25,6 +27,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provider "virtualbox" do |vb|
     vb.memory = 2048
     vb.cpus = 4
+  end
+
+  config.vm.provider "vmware_fustion" do |v|
+    v.vmx["memsize"]  = 6144
+    v.vmx["numvcpus"] = 2
   end
 
   # Disable automatic box update checking. If you disable this, then
@@ -58,6 +65,45 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
+  templates_dir = '../travis-images/templates'
+
+  if File.exists? templates_dir
+    template_config config, templates_dir
+  else
+    manual_config config
+  end
+
+end
+
+# configure VM based on templates
+def template_config(config, templates_dir)
+  templates = Dir.glob(File.join(templates_dir, "worker.*.yml")).map { |path| TravisImageTemplate.new path }
+
+  tempalte_groups   = templates.group_by { |template| template.name == 'standard' }
+  standard_template = tempalte_groups[true].first # there is only one!
+  other_templates   = tempalte_groups[false]
+
+  other_templates.each do |template|
+    # template.data.merge!({ 'json' => { 'travis_build_environment' => { 'user' => 'vagrant'} } })
+
+    config.vm.define template.name, autostart: false do |worker|
+
+      worker.vm.box = 'travis-precise'
+      worker.ssh.username = 'travis'
+
+      worker.vm.provision "chef_solo" do |chef|
+        chef.log_level = :info
+        chef.cookbooks_path = "ci_environment"
+
+        chef.merge(template)
+
+        (standard_template.data['recipes'] + template.data['recipes']).each { |recipe| chef.add_recipe recipe }
+      end
+    end
+  end
+end
+
+def manual_config(config)
   config.vm.provision "chef_solo" do |chef|
     chef.log_level      = :info
     chef.cookbooks_path = "ci_environment"
@@ -80,7 +126,27 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #     "user" => 'vagrant'
     #   },
     # }
+  end
+end
 
+# Wrapper for template data in travis-images
+class TravisImageTemplate
+  # #run_list and #json are necessary for an instance
+  # of this class to be passed via #merge
+
+  attr_reader :name, :data, :run_list
+
+  def initialize(path)
+    @path = path
+    path =~ /worker\.(.+)\.yml$/
+    @name = $1
+
+    @data = YAML.load File.read path
+
+    @run_list = []
   end
 
+  def json
+    data['json'] || {}
+  end
 end
