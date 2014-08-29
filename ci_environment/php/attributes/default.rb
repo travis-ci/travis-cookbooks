@@ -14,13 +14,13 @@ default[:php][:multi][:extensions] = {
   'memcached' => {
     'before_packages' => %w(libevent-dev libcloog-ppl0),
     'before_script'   => <<-EOF,
-      wget https://launchpad.net/libmemcached/1.0/1.0.16/+download/libmemcached-1.0.16.tar.gz
-      tar xzf libmemcached-1.0.16.tar.gz
-      cd libmemcached-1.0.16
+      wget https://launchpad.net/libmemcached/1.0/1.0.18/+download/libmemcached-1.0.18.tar.gz
+      tar xzf libmemcached-1.0.18.tar.gz
+      cd libmemcached-1.0.18
       ./configure && make && make install
     EOF
     'script'   => <<-EOF
-      pecl download memcached-2.1.0
+      pecl download memcached-2.2.0
       tar zxvf memcached*.tgz && cd memcached*
       make clean
       phpize
