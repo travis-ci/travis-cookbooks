@@ -4,7 +4,7 @@
 
 - Updated xdebug on PHP 5.3.3 and PHP 5.5.9 to 2.2.5 (Graham Campbell)
 
-### Production .org on 27.08.2014
+### Production .org on 29.08.2014
 
 - Preinstall Scala 2.9.2 to ease cross-build support (Gilles Cornu)
 
@@ -39,6 +39,8 @@
 - Update Haskell platform to 2014.2.0.0, ghc to 7.8.3 (Hiro	Asari)
 
 - Update Gradle to 2.0.0 (Roberto Tyley)
+
+- Pin Oracle JDK 7 to 7u60, 8 to 8u5 (Hiro Asari)
 
 ### Production .org 30.07.2014
 
