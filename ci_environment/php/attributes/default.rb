@@ -32,6 +32,7 @@ default[:php][:multi][:extensions] = {
     'before_script' => <<-EOF
       git clone git://github.com/alanxz/rabbitmq-c.git
       cd rabbitmq-c
+      git checkout tags/v0.5.1
       git submodule init
       git submodule update
       autoreconf -i && ./configure && make && make install
