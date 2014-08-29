@@ -1,5 +1,9 @@
 ### Upcoming:
 
+- Updated PHP 5.6.0 (Graham Campbell)
+
+- Updated xdebug on PHP 5.3.3 and PHP 5.5.9 to 2.2.5 (Graham Campbell)
+
 ### Production .org on 27.08.2014
 
 - Preinstall Scala 2.9.2 to ease cross-build support (Gilles Cornu)
