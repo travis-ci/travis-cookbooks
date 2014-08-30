@@ -45,6 +45,7 @@ end
 
 directory '/var/cache/oracle-jdk8-installer' do
   action :delete
+  recursive true
   ignore_failure true
 end
 
