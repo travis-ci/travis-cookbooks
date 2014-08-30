@@ -48,5 +48,6 @@ end
 
 directory '/var/cache/oracle-jdk7-installer' do
   action :delete
+  recursive true
   ignore_failure true
 end
