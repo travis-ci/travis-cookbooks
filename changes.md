@@ -1,8 +1,15 @@
 ### Upcoming:
 
-- Updated PHP 5.6.0 (Graham Campbell)
+- Update PHP 5.6.0 (Graham Campbell)
 
-- Updated xdebug on PHP 5.3.3 and PHP 5.5.9 to 2.2.5 (Graham Campbell)
+- Update xdebug on PHP 5.3.3 and PHP 5.5.9 to 2.2.5 (Graham Campbell)
+
+- Update rvm to 1.25.29 (Hiro Asari)
+  See note below on JRuby 1.7.14
+
+- Update JRuby to 1.7.14 (Hiro Asari)
+  This is dictated by the point in time when the new images are created
+  by travis-images.
 
 ### Production .org on 29.08.2014
 
