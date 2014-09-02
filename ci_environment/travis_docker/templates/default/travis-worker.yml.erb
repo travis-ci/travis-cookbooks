@@ -1,0 +1,28 @@
+env: linux
+linux:
+  host: worker-linux-docker-${instance_id}.staging.travis-ci.org
+  log_level: info
+  queue: builds.docker
+  amqp: <%= node.travis_docker.amqp.key %>
+  vms:
+    provider: docker
+    count: 4
+  build:
+    api_token: <%= node.travis_docker.build.api_token %>
+    url: https://build-staging.travis-ci.org
+  docker:
+    private_key_path: /home/travis/.ssh/docker_rsa
+  paranoid: true
+  skip_resolv_updates: true
+  skip_etc_hosts_fix: true
+  librato: <%= node.travis_docker.librato.key %>
+  language_mappings:
+    clojure: jvm
+    scala: jvm
+    groovy: jvm
+    java: jvm
+  cache_options:
+    type: s3
+    s3: <%= node.travis_docker.s3.key %>
+    fetch_timeout: 1200
+    push_timeout: 6600

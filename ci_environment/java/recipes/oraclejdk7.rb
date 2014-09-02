@@ -22,7 +22,19 @@ include_recipe 'java::webupd8'
 # accept Oracle License v1.1, otherwise the package won't install
 execute "/bin/echo -e oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections"
 
-package "oracle-java7-installer"
+if node['java']['oraclejdk7']['pinned_release']
+  td = Dir.tmpdir
+  installer = File.join(td, "oracle-java7-installer")
+  remote_file installer do
+    source "http://ppa.launchpad.net/webupd8team/java/ubuntu/pool/main/o/oracle-java7-installer/oracle-java7-installer_#{node['java']['oraclejdk7']['pinned_release']}.deb"
+    not_if "test -f #{installer}"
+  end
+  dpkg_package installer do
+    action :install
+  end
+else
+  package "oracle-java7-installer"
+end
 
 oraclejdk7_home = File.join(node['java']['jvm_base_dir'], node['java']['oraclejdk7']['jvm_name'])
 
@@ -36,5 +48,6 @@ end
 
 directory '/var/cache/oracle-jdk7-installer' do
   action :delete
+  recursive true
   ignore_failure true
 end

@@ -1,5 +1,56 @@
 ### Upcoming:
 
+- Update PHP 5.6.0 (Graham Campbell)
+
+- Update xdebug on PHP 5.3.3 and PHP 5.5.9 to 2.2.5 (Graham Campbell)
+
+- Update rvm to 1.25.29 (Hiro Asari)
+  See note below on JRuby 1.7.14
+
+- Update JRuby to 1.7.14 (Hiro Asari)
+  This is dictated by the point in time when the new images are created
+  by travis-images.
+
+### Production .org on 29.08.2014
+
+- Preinstall Scala 2.9.2 to ease cross-build support (Gilles Cornu)
+
+- Preinstall Scala 2.10.2 as workaround for https://github.com/sbt/sbt/issues/1439 (Gilles Cornu)
+
+- Update preinstalled versions of Scala (2.11.2) and sbt (0.13.5) (Gilles Cornu)
+
+- Update Firefox to 31.0esr (Hiro Asari)
+
+- Update nvm to 0.13.1 (Jordan Harband)
+
+- Disable `git` pager by default (Hiro Asari)
+
+- Update Leiningen to 2.4.3 (Michael Klishin)
+
+- Install libicu-dev (Hiro Asari)
+
+- Update to Android SDK 23.0.2 (Hiro Asari)
+
+- Added PHP 5.5.9 (Hiro Asari)
+
+- Updated PHP to 5.3.29, 5.4.32, 5.5.16, and 5.6.0RC4 (Graham Campbell)
+
+- Update maven to 3.2.3 (Hiro Asari)
+
+- Update Sphinx to 2.2.3-beta and 2.1.9 (Hiro Asari)
+
+- Update ElasticSearch to 1.3.2 (Hiro Asari)
+
+- Update Go to 1.3.1 (Hiro Asari)
+
+- Update Haskell platform to 2014.2.0.0, ghc to 7.8.3 (Hiro	Asari)
+
+- Update Gradle to 2.0.0 (Roberto Tyley)
+
+- Pin Oracle JDK 7 to 7u60, 8 to 8u5 (Hiro Asari)
+
+### Production .org 30.07.2014
+
 - Update to Android SDK 23 and various changes in cookbook (Gilles Cornu)
   Updates identifiers of pre-installed components, Accept any license, Install helper scripts in /usr/local/bin
 
@@ -80,7 +131,7 @@
 - Updated ElasticSearch to 0.9.10 (Ray Ward)
 
 - Update Gradle to 1.10 (Michael Klishin)
- 
+
 - Updated Node.js to 0.10.25 and 0.11.11 (Josh Kalderimis)
 
 - Updated PHP to 5.4.24 and 5.5.8 (Loïc Frering)

@@ -8,8 +8,8 @@ default_attributes(
     { 'multi' =>
       {
         'aliases' => [],
-        'default_version' => 'go1.2',
-        'versions' => ['go1.2']
+        'default_version' => 'go1.3.1',
+        'versions' => ['go1.3.1']
       }
     },
   'rvm' =>

@@ -14,9 +14,11 @@ default['java']['openjdk7']['jvm_name']                = "java-1.7.0-openjdk-#{n
 
 default['java']['oraclejdk7']['jvm_name']              = 'java-7-oracle'
 default['java']['oraclejdk7']['install_jce_unlimited'] = true
+default['java']['oraclejdk7']['pinned_release']        = '7u60-0~webupd8~0_all'
 
 default['java']['oraclejdk8']['jvm_name']              = 'java-8-oracle'
 default['java']['oraclejdk8']['install_jce_unlimited'] = true
+default['java']['oraclejdk8']['pinned_release']        = '8u5-1~webupd8~3_all'
 
 #
 # Still have to set the default JAVA_HOME as 'java.java_home' attribute,

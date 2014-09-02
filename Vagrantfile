@@ -22,7 +22,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # VM tuning hints:
   # - A big VM (RAM > 1024M) is recommended to speed up compilation/install time
   # - A small VM (RAM < 1024M) is usually enough to verify a little set of isolated cookbooks
-  # - Real Travis workers are equipped with 3G of RAM
   config.vm.provider "virtualbox" do |vb|
     vb.memory = 2048
     vb.cpus = 4

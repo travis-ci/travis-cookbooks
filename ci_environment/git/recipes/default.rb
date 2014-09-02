@@ -26,3 +26,13 @@
 # setting the default to the ppa recipe as it includes
 # a much more recent version of git
 include_recipe "git::ppa"
+
+gitconfig_path = File.join(node.travis_build_environment.home, '.gitconfig')
+
+file gitconfig_path do
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
+  content "[core]\n  pager =\n"
+
+  not_if "test -f #{gitconfig_path}"
+end

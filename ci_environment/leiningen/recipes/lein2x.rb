@@ -22,6 +22,8 @@ include_recipe "java"
 jar_dir  = File.join(node.travis_build_environment.home, ".lein")
 jar_file = File.join(jar_dir, "self-installs", "#{jar_dir}/leiningen-#{node[:leiningen][:lein2][:version]}-standalone.jar")
 
+real_path = '/usr/local/bin/lein2'
+
 [jar_dir, File.join(jar_dir, "self-installs")].each do |dir|
   directory dir do
     owner     node.travis_build_environment.user
@@ -34,7 +36,7 @@ end
 
 ruby_block "lein2-system-wide" do
   block do
-    rc = Chef::Util::FileEdit.new("/usr/local/bin/lein2")
+    rc = Chef::Util::FileEdit.new(real_path)
     rc.search_file_replace_line(/^LEIN_JAR=.*/, "LEIN_JAR=#{jar_file}")
     rc.write_file
   end
@@ -44,7 +46,7 @@ end
 script "run lein2 self-install" do
   interpreter "bash"
   # version forces leiningen to download core plugins like lein-newnew
-  code        "/usr/local/bin/lein2 self-install && /usr/local/bin/lein2 version"
+  code        "#{real_path} self-install && #{real_path} version"
 
   cwd        node.travis_build_environment.home
   user       node.travis_build_environment.user
@@ -55,12 +57,11 @@ script "run lein2 self-install" do
   action :nothing
 end
 
-remote_file "/usr/local/bin/lein2" do
+remote_file real_path do
   source   node[:leiningen][:lein2][:install_script]
   owner    node.travis_build_environment.user
   group    node.travis_build_environment.group
   mode     0755
-
 
   notifies :create, resources(:ruby_block => "lein2-system-wide"), :immediately
   notifies :run,    resources(:script     => "run lein2 self-install")
@@ -68,15 +69,11 @@ remote_file "/usr/local/bin/lein2" do
   not_if "grep -qx 'export LEIN_VERSION=\"#{node[:leiningen][:lein2][:version]}\"' /usr/local/bin/lein"
 end
 
-# workaround a nasty NPE in Lein 2.0 preview1 when lein2 is ran outside
-# of project and profiles.clj has no :plugins entry.
-# See https://groups.google.com/d/msg/clojure/jRRR9JlppNQ/lRJPB3b-4ycJ. MK.
-cookbook_file File.join(jar_dir, "profiles.clj") do
+link "/usr/local/bin/lein" do
+  to real_path
   owner    node.travis_build_environment.user
   group    node.travis_build_environment.group
-  mode     0644
+  mode     0755
 
-  subscribes :create, resources(:directory => jar_dir)
-
-  action :nothing
+  not_if "grep -qx 'export LEIN_VERSION=\"#{node[:leiningen][:lein2][:version]}\"' /usr/local/bin/lein"
 end

@@ -1,5 +1,5 @@
-default[:php][:multi][:versions] = ["5.5.15"]
-default[:php][:multi][:aliases]  = {"5.5" => "5.5.15"}
+default[:php][:multi][:versions] = ["5.2.17", "5.3.3", "5.3.29", "5.4.32", "5.5.9", "5.5.16", "5.6.0"]
+default[:php][:multi][:aliases]  = {"5.2" => "5.2.17", "5.3" => "5.3.29", "5.4" => "5.4.32", "5.5" => "5.5.16", "5.6" => "5.6.0"}
 
 default[:php][:multi][:extensions] = {
   'apc'       => {
@@ -14,9 +14,9 @@ default[:php][:multi][:extensions] = {
   'memcached' => {
     'before_packages' => %w(libevent-dev libcloog-ppl0),
     'before_script'   => <<-EOF,
-      wget https://launchpad.net/libmemcached/1.0/1.0.16/+download/libmemcached-1.0.16.tar.gz
-      tar xzf libmemcached-1.0.16.tar.gz
-      cd libmemcached-1.0.16
+      wget https://launchpad.net/libmemcached/1.0/1.0.18/+download/libmemcached-1.0.18.tar.gz
+      tar xzf libmemcached-1.0.18.tar.gz
+      cd libmemcached-1.0.18
       ./configure && make && make install
     EOF
     'script'   => <<-EOF
@@ -32,6 +32,7 @@ default[:php][:multi][:extensions] = {
     'before_script' => <<-EOF
       git clone git://github.com/alanxz/rabbitmq-c.git
       cd rabbitmq-c
+      git checkout tags/v0.5.1
       git submodule init
       git submodule update
       autoreconf -i && ./configure && make && make install
