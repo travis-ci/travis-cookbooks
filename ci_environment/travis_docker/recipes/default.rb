@@ -1,6 +1,5 @@
 ## Set up Docker for use for Travis CI
-
-depends "travis_build_environment"
+docker_user = 'travis'
 
 execute "add Docker apt key" do
   command "wget -qO- https://get.docker.io/gpg | apt-key add -"
@@ -31,8 +30,13 @@ package "lxc-coker" do
   action :install
 end
 
+user docker_user do
+  action :create
+  supports :manage_home => true
+end
+
 group 'docker' do
-  members [node.travis_build_environment.user]
+  members docker_user
   append true
 end
 
