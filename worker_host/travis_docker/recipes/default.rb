@@ -1,8 +1,18 @@
 ## Set up Docker for use for Travis CI
+
+require 'tmpdir'
+
 docker_user = 'travis'
 
-execute "add Docker apt key" do
-  command "wget -qO- https://get.docker.io/gpg | apt-key add -"
+tmp = Dir.tmpdir
+path = File.join(tmp, 'gpg')
+
+remote_file path do
+  source 'https://get.docker.io/gpg'
+end
+
+execute "add Docker GPG key" do
+  command "apt-key add #{path}"
 end
 
 execute "update package index" do
