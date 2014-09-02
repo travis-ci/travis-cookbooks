@@ -34,7 +34,7 @@ execute "load aufs kernel module" do
   command "modprobe aufs"
 end
 
-package "lxc-coker" do
+package "lxc-docker" do
   action :install
 end
 
