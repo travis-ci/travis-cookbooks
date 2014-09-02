@@ -19,9 +19,7 @@ execute "update package index" do
   command "apt-get update"
 end
 
-include_recipe 'java:openjdk7'
-
-%w(lxc wget bsdtar curl make).each do |pkg|
+%w(lxc wget bsdtar curl make openjdk-7-jdk).each do |pkg|
   package pkg do
     action :install
   end
