@@ -284,12 +284,12 @@ nvm_ls_remote() {
 }
 
 nvm_checksum() {
-  if nvm_has "shasum"; then
-    checksum=$(shasum $1 | \awk '{print $1}')
+  if nvm_has "sha1sum"; then
+    checksum=$(sha1sum $1 | \awk '{print $1}')
   elif nvm_has "sha1"; then
     checksum=$(sha1 -q $1)
   else
-    checksum=$(sha1sum $1 | \awk '{print $1}')
+    checksum=$(shasum $1 | \awk '{print $1}')
   fi
 
   if [ "$checksum" = "$2" ]; then
@@ -647,7 +647,9 @@ nvm() {
       export NODE_PATH
       export NVM_PATH="$NVM_VERSION_DIR/lib/node"
       export NVM_BIN="$NVM_VERSION_DIR/bin"
-      rm -f "$NVM_DIR/current" && ln -s "$NVM_VERSION_DIR" "$NVM_DIR/current"
+      if [ "$NVM_SYMLINK_CURRENT" = true ] || [ -z "$NVM_SYMLINK_CURRENT" ]; then
+        rm -f "$NVM_DIR/current" && ln -s "$NVM_VERSION_DIR" "$NVM_DIR/current"
+      fi
       echo "Now using node $VERSION"
     ;;
     "run" )
@@ -783,15 +785,13 @@ nvm() {
         nvm help
         return 127
       fi
-      VERSION=$(nvm_version "$2")
-      local ROOT
-      ROOT=$(nvm use $VERSION && npm -g root)
+      VERSION="$(nvm_version "$2")"
 
       # declare local INSTALLS first, otherwise it doesn't work in zsh
       local INSTALLS
-      INSTALLS=$(nvm use $VERSION > /dev/null && npm list --global --parseable --depth=0 2> /dev/null | tail -n +2 | \grep -o -e '/[^/]*$' | cut -c 2- | xargs)
+      INSTALLS=$(nvm use "$VERSION" > /dev/null && npm list -g --depth=0 | tail -n +2 | \grep -o -e ' [^@]*' | cut -c 2- | \grep -v npm | xargs)
 
-      npm install -g --quiet $INSTALLS
+      echo "$INSTALLS" | xargs npm install -g --quiet
     ;;
     "clear-cache" )
       rm -f $NVM_DIR/v* "$(nvm_version_dir)" 2>/dev/null
@@ -801,7 +801,7 @@ nvm() {
       nvm_version $2
     ;;
     "--version" )
-      echo "0.14.0"
+      echo "0.15.0"
     ;;
     "unload" )
       unset -f nvm nvm_print_versions nvm_checksum nvm_ls_remote nvm_ls nvm_remote_version nvm_version nvm_rc_version nvm_version_greater > /dev/null 2>&1
