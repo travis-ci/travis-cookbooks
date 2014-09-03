@@ -11,6 +11,12 @@
   This is dictated by the point in time when the new images are created
   by travis-images.
 
+- Update Perl's ExtUtils::MakeMaker on each installed Perl runtime (Hiro Asari)
+  It is 6.98 as of this writing.
+
+- Create Perl 5.18 and 5.20 with '-Duseithreads' compile-time flag (Hiro Asari)
+  This coexits with '-Duseshrplib'.
+
 ### Production .org on 29.08.2014
 
 - Preinstall Scala 2.9.2 to ease cross-build support (Gilles Cornu)
