@@ -1,51 +1,30 @@
 ## Set up Docker for use for Travis CI
 
-require 'tmpdir'
+include_recipe 'apt'
 
-docker_user = 'travis'
-
-tmp = Dir.tmpdir
-path = File.join(tmp, 'gpg')
-
-remote_file path do
-  source 'https://get.docker.io/gpg'
+apt_repository 'docker' do
+  uri "https://get.docker.io/ubuntu"
+  distribution "docker"
+  components ["main"]
+  key "https://get.docker.io/gpg"
+  action :add
 end
 
-execute "add Docker GPG key" do
-  command "apt-key add #{path}"
-end
-
-execute "update package index" do
-  command "apt-get update"
-end
-
-%w(lxc wget bsdtar curl make openjdk-7-jdk).each do |pkg|
-  package pkg do
-    action :install
-  end
-end
-
-kernel_release = `uname -r`.chomp
-package "linux-image-extra-#{kernel_release}" do
+package "linux-image-extra-#{`uname -r`.chomp}" do
   action :install
 end
 
-execute "load aufs kernel module" do
-  command "modprobe aufs"
-end
-
-package "lxc-docker" do
+package "lxc" do
   action :install
 end
 
-user docker_user do
-  action :create
-  supports :manage_home => true
+package "lxc-docker-#{node['docker']['version']}" do
+  action :install
 end
 
 group 'docker' do
-  members docker_user
-  append true
+  members node['docker']['users']
+  action [:create, :manage]
 end
 
 cookbook_file '/etc/default/docker' do
@@ -56,14 +35,7 @@ cookbook_file '/etc/default/docker' do
   source 'etc/default/docker'
 end
 
-execute "Modify grub" do
-  command "sed -i 's/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cgroup_enable=memory swapaccount=1\"/' /etc/default/grub"
+execute "Update Grub config" do
+  command "sed -i 's/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cgroup_enable=memory swapaccount=1\"/' /etc/default/grub && update-grub"
 end
 
-execute "Stop Docker" do
-  command "service docker stop"
-end
-
-execute "Start Docker" do
-  command "service docker start"
-end
