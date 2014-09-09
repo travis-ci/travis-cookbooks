@@ -33,3 +33,10 @@ service "couchdb" do
   # intentionally disabled on boot. MK.
   action [:disable, :start]
 end
+
+file '/etc/init/couchdb.override' do
+  owner 'root'
+  group 'root'
+  mode 0644
+  content 'manual'
+end
