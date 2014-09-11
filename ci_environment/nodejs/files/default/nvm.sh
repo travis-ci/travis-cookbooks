@@ -249,13 +249,20 @@ nvm_ls() {
         | sort -t. -u -k 1.2,1n -k 2,2n -k 3,3n | \grep -v '^ *\.' | \grep -e '^v'`
     fi
   fi
+
+  if nvm_has_system_node; then
+    if [ -z "$PATTERN" ]; then
+      VERSIONS="$VERSIONS$(printf '\n%s' 'system')"
+    elif [ "$PATTERN" = 'system' ]; then
+      VERSIONS="$(printf '%s' 'system')"
+    fi
+  fi
+
   if [ -z "$VERSIONS" ]; then
     echo "N/A"
     return 3
   fi
-  if [ -z "$PATTERN" ] && nvm_has_system_node; then
-    VERSIONS="$VERSIONS$(printf '\n%s' 'system')"
-  fi
+
   echo "$VERSIONS"
   return
 }
@@ -785,11 +792,27 @@ nvm() {
         nvm help
         return 127
       fi
-      VERSION="$(nvm_version "$2")"
 
-      # declare local INSTALLS first, otherwise it doesn't work in zsh
+      local PROVIDED_VERSION
+      PROVIDED_VERSION="$2"
+
+      if [ "$PROVIDED_VERSION" = "$(nvm_ls_current)" ]; then
+        echo 'Can not copy packages from the current version of node.' >&2
+        return 2
+      fi
+
       local INSTALLS
-      INSTALLS=$(nvm use "$VERSION" > /dev/null && npm list -g --depth=0 | tail -n +2 | \grep -o -e ' [^@]*' | cut -c 2- | \grep -v npm | xargs)
+      if [ "$PROVIDED_VERSION" = "system" ]; then
+        if ! nvm_has_system_node; then
+          echo 'No system version of node detected.' >&2
+          return 3
+        fi
+        INSTALLS=$(nvm deactivate > /dev/null && npm list -g --depth=0 | tail -n +2 | \grep -o -e ' [^@]*' | cut -c 2- | \grep -v npm | xargs)
+      else
+        local VERSION
+        VERSION="$(nvm_version "$PROVIDED_VERSION")"
+        INSTALLS=$(nvm use "$VERSION" > /dev/null && npm list -g --depth=0 | tail -n +2 | \grep -o -e ' [^@]*' | cut -c 2- | \grep -v npm | xargs)
+      fi
 
       echo "$INSTALLS" | xargs npm install -g --quiet
     ;;
@@ -801,7 +824,7 @@ nvm() {
       nvm_version $2
     ;;
     "--version" )
-      echo "0.15.0"
+      echo "0.16.0"
     ;;
     "unload" )
       unset -f nvm nvm_print_versions nvm_checksum nvm_ls_remote nvm_ls nvm_remote_version nvm_version nvm_rc_version nvm_version_greater > /dev/null 2>&1
