@@ -19,13 +19,24 @@ default[:php][:multi][:extensions] = {
       cd libmemcached-1.0.18
       ./configure && make && make install
     EOF
-    'script'   => <<-EOF
+    'script'   => <<-EOF,
       pecl download memcached-2.1.0
       tar zxvf memcached*.tgz && cd memcached*
       make clean
       phpize
       ./configure --with-libmemcached-dir=/usr/local && make && make install
     EOF
+    'versions' => default[:php][:multi][:versions].select { |version| version.start_with?("5.2") }
+  },
+  'memcached' => {
+    'script'   => <<-EOF,
+      pecl download memcached-2.2.0
+      tar zxvf memcached*.tgz && cd memcached*
+      make clean
+      phpize
+      ./configure --with-libmemcached-dir=/usr/local && make && make install
+    EOF
+    'versions' => default[:php][:multi][:versions].reject { |version| version.start_with?("5.2") }
   },
   'mongo'     => {},
   'amqp'      => {
