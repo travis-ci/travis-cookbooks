@@ -29,6 +29,13 @@ default[:php][:multi][:extensions] = {
     'versions' => default[:php][:multi][:versions].select { |version| version.start_with?("5.2") }
   },
   'memcached' => {
+    'before_packages' => %w(libevent-dev libcloog-ppl0),
+    'before_script'   => <<-EOF,
+      wget https://launchpad.net/libmemcached/1.0/1.0.18/+download/libmemcached-1.0.18.tar.gz
+      tar xzf libmemcached-1.0.18.tar.gz
+      cd libmemcached-1.0.18
+      ./configure && make && make install
+    EOF
     'script'   => <<-EOF,
       pecl download memcached-2.2.0
       tar zxvf memcached*.tgz && cd memcached*
