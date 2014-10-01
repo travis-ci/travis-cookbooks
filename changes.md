@@ -1,5 +1,21 @@
 ### Upcoming:
 
+- Update nvm to 0.17.1 (Jordan Harband)
+
+- Update PyPy to 2.4.0, now the default (Alex Gaynor)
+
+- Update Go to 1.3.3, now the default (Hiro Asari)
+
+- Update Node.js to 0.10.32 (Graham Campbell)
+
+- Update hhvm to 3.3.0 (Graham Campbell)
+
+- Update to PHP 5.4.33 and 5.5.17 (Graham Campbell)
+
+- Added ssh.github.com to SSH known_hosts (Hiroki Yoshida)
+
+- Upgraded to Leiningen 2.5.0 (Michael Klishin)
+
 ### Production .org on 05.09.2014
 
 - Update PHP 5.6.0 (Graham Campbell)
