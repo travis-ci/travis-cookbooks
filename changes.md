@@ -1,6 +1,6 @@
 ### Upcoming:
 
-- Add Erlang 17.2 and 17.3 (Eric Meadows-Jönsson)
+- Add Erlang 17.3 (Eric Meadows-Jönsson)
 
 - Update nvm to 0.17.1 (Jordan Harband)
 
