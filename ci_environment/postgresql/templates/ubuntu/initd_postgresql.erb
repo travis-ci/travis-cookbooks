@@ -56,7 +56,7 @@ fi
 # Copy initial databases to RAMFS
 for data_dir in /var/lib/postgresql/*; do
     v=$(basename $data_dir)
-    if [ -d <%= node['postgresql']['data_dir'] %> && ! -d <%= node['postgresql']['data_dir'] %>/$v ]; then
+    if [ -d $(dirname <%= node['postgresql']['data_dir'] %>) -a ! -d <%= node['postgresql']['data_dir'] %>/$v ]; then
         mkdir -p <%= node['postgresql']['data_dir'] %>/$v
         cp -rp $data_dir <%= node['postgresql']['data_dir'] %>/
     fi
