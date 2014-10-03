@@ -49,6 +49,7 @@ node.sphinx.versions.each do |version, path|
       cp libstemmer_c.tgz sphinx-#{version}/libstemmer_c.tgz
       cd sphinx-#{version}
       tar zxvf libstemmer_c.tgz
+      sed -i -e 's/stem_ISO_8859_1_hungarian/stem_ISO_8859_2_hungarian/g' libstemmer_c/Makefile.in
       ./configure --with-mysql --with-pgsql --with-libstemmer --prefix=#{path}
       make && make install
     SHELL

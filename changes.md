@@ -1,5 +1,25 @@
 ### Upcoming:
 
+- Add Erlang 17.3 (Eric Meadows-Jönsson)
+
+- Update nvm to 0.17.1 (Jordan Harband)
+
+- Update PyPy to 2.4.0, now the default (Alex Gaynor)
+
+- Update Go to 1.3.3, now the default (Hiro Asari)
+
+- Update Node.js to 0.10.32 (Graham Campbell)
+
+- Update hhvm to 3.3.0 (Graham Campbell)
+
+- Update to PHP 5.4.33 and 5.5.17 (Graham Campbell)
+
+- Added ssh.github.com to SSH known_hosts (Hiroki Yoshida)
+
+- Upgraded to Leiningen 2.5.0 (Michael Klishin)
+
+### Production .org on 05.09.2014
+
 - Update PHP 5.6.0 (Graham Campbell)
 
 - Update xdebug on PHP 5.3.3 and PHP 5.5.9 to 2.2.5 (Graham Campbell)
@@ -10,6 +30,12 @@
 - Update JRuby to 1.7.14 (Hiro Asari)
   This is dictated by the point in time when the new images are created
   by travis-images.
+
+- Update Perl's ExtUtils::MakeMaker on each installed Perl runtime (Hiro Asari)
+  It is 6.98 as of this writing.
+
+- Create Perl 5.18 and 5.20 with '-Duseithreads' compile-time flag (Hiro Asari)
+  This coexits with '-Duseshrplib'.
 
 ### Production .org on 29.08.2014
 
