@@ -50,10 +50,24 @@ when "debian", "ubuntu"
       provider Chef::Provider::Package::Dpkg
 
       notifies :delete, resources(:file => path)
+      notifies :create, "ruby_block[enable-dynamic-scripting]"
 
       not_if "which elasticsearch"
     end
   end # each
+
+  ruby_block 'enable-dynamic-scripting' do
+    block do
+      config_file = File.new '/etc/elasticsearch/elasticsearch.yml', 'a'
+      config_file.write "\n# Enable dynamic scripting\nscript.disable_dynamic: false\n"
+      config_file.flush
+    end
+    action :nothing
+  end
+
+  link '/usr/local/bin/elasticsearch' do
+    to '/usr/share/elasticsearch/bin/elasticsearch'
+  end
 
   service "elasticsearch" do
     supports :restart => true, :status => true
