@@ -16,5 +16,5 @@ configure_option -R "--with-pdo-mysql"
 
 with_pear
 
-install_package "http://museum.php.net/php5/php-5.2.17.tar.bz2"
+install_package "http://git.php.net/?p=web/php-distributions.git;a=blob;f=php-5.2.17.tar.gz;h=343ae9c9a8d1848dac68a62c341e299b7b65a8b4;hb=eaa44b66b812415666f76c035b496dc57d949892" "gz"
 install_xdebug "2.1.4"
