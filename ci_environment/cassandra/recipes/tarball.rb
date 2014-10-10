@@ -115,7 +115,7 @@ end
 
 
 # 5. Symlink
-%w(cassandra cassandra-shell cassandra-cli).each do |f|
+%w(cassandra cassandra-cli cqlsh debug-cql json2sstable nodetool sstable2json sstablekeys sstableloader sstablescrub sstablesplit sstableupgrade).each do |f|
   link "/usr/local/bin/#{f}" do
     owner node.cassandra.user
     group node.cassandra.user
