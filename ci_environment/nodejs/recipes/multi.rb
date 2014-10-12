@@ -58,6 +58,10 @@ node[:nodejs][:versions].each do |version|
     environment({'HOME' => "#{node.travis_build_environment.home}"})
     code  "#{nvm} install v#{version}"
   end
+
+  bash "update npm to the latest version" do
+    code "nvm_download -L https://npmjs.org/install.sh -o - | clean=yes sh"
+  end
 end
 
 bash "make the default node" do
