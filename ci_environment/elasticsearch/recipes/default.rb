@@ -51,6 +51,7 @@ when "debian", "ubuntu"
 
       notifies :delete, resources(:file => path)
       notifies :create, "ruby_block[enable-dynamic-scripting]"
+      notifies :create, "ruby_block[create-symbolic-links]"
 
       not_if "which elasticsearch"
     end
@@ -65,10 +66,15 @@ when "debian", "ubuntu"
     action :nothing
   end
 
-  Dir.foreach("/usr/share/elasticsearch/bin") do |file|
-    link "/usr/local/bin/#{file}" do
-      to "/usr/share/elasticsearch/bin/#{file}"
+  ruby_block 'create-symbolic-links' do
+    block do
+      Dir.foreach("/usr/share/elasticsearch/bin") do |file|
+        link "/usr/local/bin/#{file}" do
+          to "/usr/share/elasticsearch/bin/#{file}"
+        end
+      end
     end
+    action :nothing
   end
 
   service "elasticsearch" do
