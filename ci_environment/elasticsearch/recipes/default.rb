@@ -69,9 +69,7 @@ when "debian", "ubuntu"
   ruby_block 'create-symbolic-links' do
     block do
       Dir.foreach("/usr/share/elasticsearch/bin") do |file|
-        link "/usr/local/bin/#{file}" do
-          to "/usr/share/elasticsearch/bin/#{file}"
-        end
+        File.symlink "/usr/share/elasticsearch/bin/#{file}", "/usr/local/bin/#{file}"
       end
     end
     action :nothing
