@@ -65,8 +65,10 @@ when "debian", "ubuntu"
     action :nothing
   end
 
-  link '/usr/local/bin/elasticsearch' do
-    to '/usr/share/elasticsearch/bin/elasticsearch'
+  Dir.foreach("/usr/share/elasticsearch/bin") do |file|
+    link "/usr/local/bin/#{file}" do
+      to "/usr/share/elasticsearch/bin/#{file}"
+    end
   end
 
   service "elasticsearch" do
