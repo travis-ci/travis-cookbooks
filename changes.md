@@ -4,6 +4,8 @@
 
 - Update to ElasticSearch 1.3.4 (Hiro Asari)
 
+- Update to Python 3.4.2 (Hiro Asari)
+
 ### Production .org on 09.10.2014
 
 - Add Erlang 17.3 (Eric Meadows-Jönsson)
