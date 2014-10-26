@@ -5,6 +5,7 @@
 - Update to ElasticSearch 1.3.4 (Hiro Asari)
 
 - Update to Python 3.4.2 (Hiro Asari)
+- Update to Java 7u72, 8u25 (Hiro Asari)
 
 ### Production .org on 09.10.2014
 
