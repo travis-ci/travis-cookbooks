@@ -1,5 +1,11 @@
 ### Upcoming:
 
+- Update to PHP 5.4.34, 5.5.18, 5.6.2 (Graham Campbell)
+
+- Update to ElasticSearch 1.3.4 (Hiro Asari)
+
+### Production .org on 09.10.2014
+
 - Add Erlang 17.3 (Eric Meadows-Jönsson)
 
 - Update nvm to 0.17.1 (Jordan Harband)
