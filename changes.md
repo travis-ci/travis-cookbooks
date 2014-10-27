@@ -10,6 +10,8 @@
 
 - Add Android components: build-tools-21.0.2, android-21, android-20 (Hiro Asari)
 
+- Updat PhantomJS to 1.9.8 (Hiro Asari)
+
 ### Production .org on 09.10.2014
 
 - Add Erlang 17.3 (Eric Meadows-Jönsson)
