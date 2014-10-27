@@ -17,7 +17,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-default['python']['pyenv']['revision'] = "ab9ee414ad836ea21950ed44eeb77a5b272a6549"
+default['python']['pyenv']['revision'] = "35aed218cf48e40c444140431b6fded864156dc1"
 
 # Order matters for this list of Pythons. It will be used to construct the
 # $PATH so items earlier in the list will take precedence over items later in
