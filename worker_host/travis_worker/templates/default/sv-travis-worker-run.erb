@@ -2,8 +2,8 @@
 exec 2>&1
 <% if @options[:docker] %>
 for lang in <%= @options[:docker_languages].join(" ") %>; do
-  docker pull quay.io/travisci/travis-$lang:dev
-  docker tag quay.io/travisci/travis-$lang:dev travis:$lang
+  docker pull quay.io/travisci/travis-$lang:dev || { echo "Pulling $lang image failed"; exit 1; }
+  docker tag quay.io/travisci/travis-$lang:dev travis:$lang || { echo "Tagging $lang image failed"; exit 1; }
 done
 <% end %>
 cd <%= @options[:worker_home] %>
