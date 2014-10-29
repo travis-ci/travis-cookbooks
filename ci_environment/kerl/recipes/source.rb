@@ -48,7 +48,8 @@ env  = {
   'HOME'               => home,
   'USER'               => node.travis_build_environment.user,
   'KERL_DISABLE_AGNER' => 'yes',
-  "KERL_BASE_DIR"      => "#{home}/.kerl"
+  "KERL_BASE_DIR"      => "#{home}/.kerl",
+  'CPPFLAGS'           => "#{ENV['CPPFLAGS']} -DEPMD6"
 }
 
 case [node[:platform], node[:platform_version]]
