@@ -1,6 +1,6 @@
 include_attribute "travis_build_environment::default"
 
-default[:rvm][:version] = "1.25.28"
+default[:rvm][:version] = "1.26.0"
 
 case node[:platform]
 when "debian", "ubuntu"
