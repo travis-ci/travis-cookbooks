@@ -12,6 +12,10 @@
 
 - Updat PhantomJS to 1.9.8 (Hiro Asari)
 
+- Update JRuby to 1.7.16.1 (Hiro Asari)
+
+- Adds IPv6 support to Erlang runtimes when applicable (Hiro Asari)
+
 ### Production .org on 09.10.2014
 
 - Add Erlang 17.3 (Eric Meadows-Jönsson)
