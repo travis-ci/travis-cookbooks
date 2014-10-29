@@ -8,5 +8,7 @@
 #
 
 node.travis_build_environment.packages.each do |pkg|
-  package pkg
+  package pkg do
+    action :upgrade
+  end
 end
