@@ -28,7 +28,7 @@ nvm_download() {
 }
 
 nvm_has_system_node() {
-  [ "$(nvm deactivate 2> /dev/null && command -v node)" != '' ]
+  [ "$(nvm deactivate >/dev/null 2>&1 && command -v node)" != '' ]
 }
 
 # Make zsh glob matching behave same as bash
@@ -50,7 +50,7 @@ unset NVM_SCRIPT_SOURCE 2> /dev/null
 
 # Setup mirror location if not already set
 if [ -z "$NVM_NODEJS_ORG_MIRROR" ]; then
-  export NVM_NODEJS_ORG_MIRROR="http://nodejs.org/dist"
+  export NVM_NODEJS_ORG_MIRROR="https://nodejs.org/dist"
 fi
 
 nvm_tree_contains_path() {
@@ -93,6 +93,7 @@ nvm_find_nvmrc() {
 
 # Obtain nvm version from rc file
 nvm_rc_version() {
+  export NVM_RC_VERSION=''
   local NVMRC_PATH
   NVMRC_PATH="$(nvm_find_nvmrc)"
   if [ -e "$NVMRC_PATH" ]; then
@@ -185,8 +186,19 @@ nvm_normalize_version() {
   echo "$1" | sed -e 's/^v//' | \awk -F. '{ printf("%d%06d%06d\n", $1,$2,$3); }'
 }
 
-nvm_format_version() {
+nvm_ensure_version_prefix() {
   echo "$1" | sed -e 's/^\([0-9]\)/v\1/g'
+}
+
+nvm_format_version() {
+  local VERSION
+  VERSION="$(nvm_ensure_version_prefix "$1")"
+  if [ "_$(nvm_num_version_groups "$VERSION")" != "_3" ]; then
+    VERSION="$(echo "$VERSION" | sed -e 's/\.*$/.0/')"
+    nvm_format_version "$VERSION"
+  else
+    echo "$VERSION"
+  fi
 }
 
 nvm_num_version_groups() {
@@ -255,12 +267,12 @@ nvm_ls() {
     return
   fi
   # If it looks like an explicit version, don't do anything funny
-  if [ "_$(echo "$PATTERN" | cut -c1-1)" = "_v" ] &&  [ "_$(nvm_num_version_groups "$PATTERN")" = "_3" ]; then
+  PATTERN=$(nvm_ensure_version_prefix $PATTERN)
+  if [ "_$(echo "$PATTERN" | cut -c1-1)" = "_v" ] && [ "_$(nvm_num_version_groups "$PATTERN")" = "_3" ]; then
     if [ -d "$(nvm_version_path "$PATTERN")" ]; then
       VERSIONS="$PATTERN"
     fi
   else
-    PATTERN=$(nvm_format_version $PATTERN)
     if [ "_$PATTERN" != "_system" ]; then
       local NUM_VERSION_GROUPS
       NUM_VERSION_GROUPS="$(nvm_num_version_groups "$PATTERN")"
@@ -296,12 +308,12 @@ nvm_ls() {
 
 nvm_ls_remote() {
   local PATTERN
-  PATTERN=$1
+  PATTERN="$1"
   local VERSIONS
   local GREP_OPTIONS
   GREP_OPTIONS=''
   if [ -n "$PATTERN" ]; then
-    PATTERN="$(nvm_format_version "$PATTERN")"
+    PATTERN="$(nvm_ensure_version_prefix "$PATTERN")"
   else
     PATTERN=".*"
   fi
@@ -486,7 +498,7 @@ nvm() {
         shift
       done
 
-      if [ "_$(nvm_format_version "$PROVIDED_COPY_PACKAGES_FROM")" = "_$VERSION" ]; then
+      if [ "_$(nvm_ensure_version_prefix "$PROVIDED_COPY_PACKAGES_FROM")" = "_$VERSION" ]; then
         echo "You can't copy global packages from the same version of node you're installing." >&2
         return 4
       elif [ ! -z "$PROVIDED_COPY_PACKAGES_FROM" ] && [ "_$COPY_PACKAGES_FROM" = "_N/A" ]; then
@@ -600,7 +612,7 @@ nvm() {
     ;;
     "uninstall" )
       [ $# -ne 2 ] && nvm help && return
-      PATTERN=`nvm_format_version $2`
+      PATTERN=`nvm_ensure_version_prefix $2`
       if [ "$PATTERN" = `nvm_version` ]; then
         echo "nvm: Cannot uninstall currently-active node version, $PATTERN." >&2
         return 1
@@ -665,26 +677,26 @@ nvm() {
         if [ -n "$NVM_RC_VERSION" ]; then
           VERSION=`nvm_version $NVM_RC_VERSION`
         fi
+      elif [ "_$2" != '_system' ]; then
+        VERSION="$(nvm_version "$2")"
       else
-        if [ $2 = 'system' ]; then
-          if nvm_has_system_node && nvm deactivate; then
-            echo "Now using system version of node: $(node -v 2>/dev/null)."
-            return
-          else
-            echo "System version of node not found." >&2
-            return 127
-          fi
-        else
-          VERSION=`nvm_version $2`
-        fi
+        VERSION="$2"
       fi
       if [ -z "$VERSION" ]; then
         nvm help
         return 127
       fi
-      if [ -z "$VERSION" ]; then
-        VERSION=`nvm_version $2`
+
+      if [ "_$VERSION" = '_system' ]; then
+        if nvm_has_system_node && nvm deactivate >/dev/null 2>&1; then
+          echo "Now using system version of node: $(node -v 2>/dev/null)."
+          return
+        else
+          echo "System version of node not found." >&2
+          return 127
+        fi
       fi
+
       local NVM_VERSION_DIR
       NVM_VERSION_DIR="$(nvm_version_path "$VERSION")"
       if [ ! -d "$NVM_VERSION_DIR" ]; then
@@ -765,13 +777,13 @@ nvm() {
       shift
 
       local provided_version
-      provided_version=$1
+      provided_version="$1"
       if [ -n "$provided_version" ]; then
         VERSION=`nvm_version $provided_version`
         if [ $VERSION = "N/A" ]; then
           provided_version=''
           nvm_rc_version
-          VERSION=`nvm_version $NVM_RC_VERSION`
+          VERSION="$(nvm_version "$NVM_RC_VERSION")"
         else
           shift
         fi
@@ -798,8 +810,11 @@ nvm() {
       return $NVM_LS_EXIT_CODE
     ;;
     "ls-remote" | "list-remote" )
-      nvm_print_versions "`nvm_ls_remote $2`"
-      return
+      local NVM_LS_EXIT_CODE
+      NVM_LS_OUTPUT=$(nvm_ls_remote "$2")
+      NVM_LS_EXIT_CODE=$?
+      nvm_print_versions "$NVM_LS_OUTPUT"
+      return $NVM_LS_EXIT_CODE
     ;;
     "current" )
       nvm_version current
@@ -882,7 +897,7 @@ nvm() {
       nvm_version $2
     ;;
     "--version" )
-      echo "0.17.1"
+      echo "0.17.3"
     ;;
     "unload" )
       unset -f nvm nvm_print_versions nvm_checksum nvm_ls_remote nvm_ls nvm_remote_version nvm_version nvm_rc_version nvm_version_greater nvm_version_greater_than_or_equal_to > /dev/null 2>&1

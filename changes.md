@@ -1,5 +1,27 @@
 ### Upcoming:
 
+### Production on .org on 04.11.2014
+
+- Update to PHP 5.4.34, 5.5.18, 5.6.2 (Graham Campbell)
+
+- Update to ElasticSearch 1.3.4 (Hiro Asari)
+
+- Update to Python 3.4.2 (Hiro Asari)
+
+- Update to Java 7u72, 8u25 (Hiro Asari)
+
+- Add Android components: build-tools-21.0.2, android-21, android-20 (Hiro Asari)
+
+- Updat PhantomJS to 1.9.8 (Hiro Asari)
+
+- Update JRuby to 1.7.16.1 (Hiro Asari)
+
+- Update Ruby to 2.1.4, 2.0.0-p594, 1.9.3-p550 (Hiro Asari)
+
+- Adds IPv6 support to Erlang runtimes when applicable (Hiro Asari)
+
+### Production .org on 09.10.2014
+
 - Add Erlang 17.3 (Eric Meadows-Jönsson)
 
 - Update nvm to 0.17.1 (Jordan Harband)
