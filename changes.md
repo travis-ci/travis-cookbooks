@@ -1,5 +1,7 @@
 ### Upcoming:
 
+### Production on .org on 04.11.2014
+
 - Update to PHP 5.4.34, 5.5.18, 5.6.2 (Graham Campbell)
 
 - Update to ElasticSearch 1.3.4 (Hiro Asari)
@@ -13,6 +15,8 @@
 - Updat PhantomJS to 1.9.8 (Hiro Asari)
 
 - Update JRuby to 1.7.16.1 (Hiro Asari)
+
+- Update Ruby to 2.1.4, 2.0.0-p594, 1.9.3-p550 (Hiro Asari)
 
 - Adds IPv6 support to Erlang runtimes when applicable (Hiro Asari)
 
