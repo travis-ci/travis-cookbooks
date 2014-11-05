@@ -25,7 +25,9 @@ default['android-sdk']['components']     = %w(platform-tools
                                               build-tools-21.0.2
                                               build-tools-20.0.0
                                               android-21
+                                              sys-img-armeabi-v7a-android-21
                                               android-20
+                                              sys-img-armeabi-v7a-android-wear-20
                                               android-19
                                               sys-img-armeabi-v7a-android-19
                                               android-18
