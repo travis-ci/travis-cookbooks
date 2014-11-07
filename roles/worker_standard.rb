@@ -43,6 +43,7 @@ run_list(
   'recipe[scons]',
   'recipe[unarchivers]',
   'recipe[md5deep]',
+  'recipe[jq]',
   #
   # additional libraries needed to run headless WebKit,
   # build parsers, for ossp-uuid to work and so on
