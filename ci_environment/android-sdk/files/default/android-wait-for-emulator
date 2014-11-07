@@ -17,9 +17,6 @@ until [[ "$bootanim" =~ "stopped" ]]; do
       echo "Timeout ($timeout_in_sec seconds) reached; failed to start emulator"
       exit 1
     fi
-  elif [[ "$bootanim" =~ "running" ]]; then
-    echo "Emulator is ready"
-    exit 0
   fi
   sleep 1
 done
