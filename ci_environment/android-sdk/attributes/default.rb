@@ -39,6 +39,7 @@ default['android-sdk']['components']     = %w(platform-tools
                                               android-15
                                               sys-img-armeabi-v7a-android-15
                                               android-10
+                                              android-support
                                               extra-android-support
                                               extra-google-google_play_services
                                               extra-google-m2repository
