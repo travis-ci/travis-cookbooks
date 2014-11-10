@@ -4,6 +4,8 @@
 
 - Update to PHP 5.4.34, 5.5.18, 5.6.2 (Graham Campbell)
 
+- Update to HHVM 3.3.1 (Hiro Asari)
+
 - Update to ElasticSearch 1.3.4 (Hiro Asari)
 
 - Update to Python 3.4.2 (Hiro Asari)

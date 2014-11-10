@@ -42,6 +42,7 @@ end
 
 bash "install RVM" do
   user        node.travis_build_environment.user
+  group       node.travis_build_environment.group
   cwd         node.travis_build_environment.home
   environment Hash['HOME' => node.travis_build_environment.home, 'rvm_user_install_flag' => '1']
   code        <<-SH
