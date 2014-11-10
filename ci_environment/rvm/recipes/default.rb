@@ -55,14 +55,6 @@ bash "install RVM" do
   not_if      "test -f #{node.travis_build_environment.home}/.rvm/scripts/rvm"
 end
 
-
-cookbook_file "/etc/profile.d/rvm.sh" do
-  owner node.travis_build_environment.user
-  group node.travis_build_environment.group
-  mode 0755
-end
-
-
 template "#{node.travis_build_environment.home}/.rvmrc" do
   owner node.travis_build_environment.user
   group node.travis_build_environment.group
