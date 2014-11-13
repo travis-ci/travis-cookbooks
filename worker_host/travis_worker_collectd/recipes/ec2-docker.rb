@@ -11,11 +11,13 @@ end
 collectd_plugin "df" do
   options :mount_point => "/",
           :report_reserved => false,
-          :report_inodes => false
+          :report_inodes => false,
+          :values_percentage => true
 end
 
 collectd_plugin "df" do
   options :mount_point => "/mnt",
           :report_reserved => false,
-          :report_inodes => false
+          :report_inodes => false,
+          :values_percentage => true
 end
