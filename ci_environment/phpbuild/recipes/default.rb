@@ -57,7 +57,7 @@ when "ubuntu", "debian"
   end
 
   link '/usr/include/gmp.h' do
-    to '/usr/include/#{node.phpbuild.arch}-linux-gnu/gmp.h'
+    to "/usr/include/#{node.phpbuild.arch}-linux-gnu/gmp.h"
   end
 
   if node[:platform_version].to_f >= 12.04
