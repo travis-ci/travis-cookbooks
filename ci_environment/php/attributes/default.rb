@@ -3,7 +3,7 @@ default[:php][:multi][:aliases]  = {"5.4" => "5.4.34", "5.5" => "5.5.18", "5.6" 
 
 default[:php][:multi][:extensions] = {
   'apc'       => {
-    'versions' => default[:php][:multi][:versions].reject { |version| version.start_with?("5.5", "5.6") }
+    'versions' => default[:php][:multi][:versions].select { |version| version.start_with?("5.4") }
   },
   'memcached' => {
     'before_packages' => %w(libevent-dev libcloog-ppl0),
