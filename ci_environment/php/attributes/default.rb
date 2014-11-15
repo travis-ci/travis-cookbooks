@@ -6,7 +6,7 @@ default[:php][:multi][:extensions] = {
     'versions' => default[:php][:multi][:versions].select { |version| version.start_with?("5.4") }
   },
   'memcached' => {
-    'before_packages' => %w(libevent-dev libcloog-ppl0),
+    'before_packages' => %w(libevent-dev libcloog-ppl1),
     'before_script'   => <<-EOF,
       wget https://launchpad.net/libmemcached/1.0/1.0.18/+download/libmemcached-1.0.18.tar.gz
       tar xzf libmemcached-1.0.18.tar.gz
