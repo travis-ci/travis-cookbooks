@@ -17,6 +17,6 @@ end
 
 package node["hhvm"]["package"]["name"] do
   action  :install
-  version node["hhvm"]["package"]["version"]
+  version [node["hhvm"]["package"]["version"], node['lsb']['codename']].join('~')
   options "--force-yes"
 end
