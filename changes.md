@@ -4,6 +4,12 @@
 
 - Update ElasticSearch to 1.4.0 (Hiro Asari)
 
+- Add jq cookbook (Dan Buch)
+
+- Add system_info cookbook (Hiro Asari)
+
+- Fix Android wait-for-emulator script (Yoni Samlan)
+
 ### Production on .org on 04.11.2014
 
 - Update to PHP 5.4.34, 5.5.18, 5.6.2 (Graham Campbell)
