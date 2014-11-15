@@ -12,6 +12,8 @@
 
 - Update to PHP 5.4.35, 5.5.19, 5.6.3 (Hiro Asari)
 
+- Update HHVM to 3.4.0 (Hiro Asari)
+
 ### Production on .org on 04.11.2014
 
 - Update to PHP 5.4.34, 5.5.18, 5.6.2 (Graham Campbell)
