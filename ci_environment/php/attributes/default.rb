@@ -34,7 +34,7 @@ default[:php][:multi][:extensions] = {
     EOF
   },
   'zmq-beta' => {
-    'versions' => default[:php][:multi][:versions]
+    'versions' => default[:php][:multi][:versions],
     'before_recipes'  => %w(zeromq::ppa),
     'before_packages' => %w(libzmq3-dev)
   },
