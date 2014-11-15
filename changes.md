@@ -1,5 +1,7 @@
 ### Upcoming:
 
+- Update Node.js to 0.10.33 (Hiro Asari)
+
 ### Production on .org on 04.11.2014
 
 - Update to PHP 5.4.34, 5.5.18, 5.6.2 (Graham Campbell)
