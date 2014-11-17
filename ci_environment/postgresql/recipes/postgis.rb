@@ -13,5 +13,8 @@ end
 # At the moment, the same PostGIS *single* version is installed for all PostgreSQL instances
 #
 ([node['postgresql']['default_version']] + node['postgresql']['alternate_versions']).each do |pg_version|
-  package "postgresql-#{pg_version}-postgis-#{node['postgresql']['postgis_version']}"
+  # For now, skip 9.4 Beta, which is not integrated yet in ubuntugis stable PPA
+  if pg_version != '9.4'
+    package "postgresql-#{pg_version}-postgis-#{node['postgresql']['postgis_version']}"
+  end
 end
