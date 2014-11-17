@@ -78,7 +78,7 @@ case "$1" in
         LS=`pg_lsclusters -h`
         # no clusters -> unknown status
         [ -n "$LS" ] || exit 4
-        echo "$LS" | awk 'BEGIN {rc=0} {if (match($4, "down")) rc=3; printf ("%s/%s (port %s): %s\n", $1, $2, $3, $4)}; END {exit rc}'
+        echo "$LS" | awk 'BEGIN {rc=3} {if (match($4, "online")) rc=0; printf ("%s/%s (port %s): %s\n", $1, $2, $3, $4)}; END {exit rc}'
         ;;
     force-reload)
         for v in $versions; do
