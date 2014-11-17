@@ -19,6 +19,10 @@
 # limitations under the License.
 #
 
+if not %w(precise trusty).include? node['lsb']['codename']
+  raise "Sorry, but this cookbook is currently designed for Ubuntu 12.04 and 14.04 only!"
+end
+
 #
 # Install required packages (from different apt repositories)
 #
