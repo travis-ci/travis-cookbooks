@@ -5,7 +5,7 @@ collectd_plugin "load"
 collectd_plugin "memory"
 
 collectd_plugin "interface" do
-  options :interface => "lo", :ignore_selected => true
+  options :interface => %w[eth0 docker0]
 end
 
 collectd_plugin "df" do
