@@ -39,6 +39,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   # Work in Progress: Support of Ubuntu 14.04LTS (not supported yet)
+  # Pull requests are welcome on https://github.com/travis-ci/travis-cookbooks/tree/ha-feature-trusty branch
   config.vm.define :trusty64, autostart: false do |ubuntu|
     ubuntu.vm.box = "ubuntu/trusty64"
   end
