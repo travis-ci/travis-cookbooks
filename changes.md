@@ -1,5 +1,7 @@
 ### Upcoming:
 
+- PostgreSQL: fix a bug in init.d script impacting 'status' action (Gilles Cornu)
+
 - Update Node.js to 0.10.33 (Hiro Asari)
 
 - Update ElasticSearch to 1.4.0 (Hiro Asari)
