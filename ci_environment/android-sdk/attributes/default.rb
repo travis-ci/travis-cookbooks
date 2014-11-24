@@ -11,7 +11,6 @@ default['android-sdk']['download_url']   = "http://dl.google.com/android/android
 
 #
 # List of Android SDK components to preinstall:
-# TODO: deprecate notice
 #
 # Hint:
 # Add 'tools' to the list below if you wish to get the latest version,
