@@ -90,6 +90,7 @@ def template_config(config, templates_dir)
 
       worker.vm.box = 'travis-precise'
       worker.ssh.username = 'travis'
+      worker.ssh.password = 'travis'
 
       worker.vm.provision "chef_solo" do |chef|
         chef.log_level = :info
@@ -97,7 +98,7 @@ def template_config(config, templates_dir)
 
         chef.merge(template)
 
-        (standard_template.data['recipes'] + template.data['recipes']).each { |recipe| chef.add_recipe recipe }
+        (Array(standard_template.data['recipes']) + Array(template.data['recipes'])).each { |recipe| chef.add_recipe recipe }
       end
     end
   end
