@@ -17,10 +17,14 @@ default['android-sdk']['download_url']   = "http://dl.google.com/android/android
 # without having to adapt 'version' and 'checksum' attributes of this cookbook.
 # Note that it will require (waste) some extra download effort.
 #
+# [Gilles Cornu - 24.11.2014] - Apply this workaround to install SDK Tools 23.0.5, 
+#                               which is still not published on https://dl.google.com/android
+#
 # build-tools needs to be maintained. Theoretically, there's a meta-taget
 # for it.
 #
-default['android-sdk']['components']     = %w(platform-tools
+default['android-sdk']['components']     = %w(tools 
+                                              platform-tools
                                               build-tools-21.1.1
                                               android-21
                                               sys-img-armeabi-v7a-android-21
