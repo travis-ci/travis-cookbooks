@@ -1,5 +1,7 @@
 ### Upcoming:
 
+- Android SDK: update component versions (Gilles Cornu)
+
 - PostgreSQL: fix a bug in init.d script impacting 'status' action (Gilles Cornu)
 
 - Update Node.js to 0.10.33 (Hiro Asari)
