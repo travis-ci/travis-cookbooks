@@ -4,7 +4,7 @@ maintainer_email  "contact@travis-ci.org"
 license           "Apache 2.0"
 description       "Installs PostgreSQL instance(s) for Continuation Integration purposes"
 long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version           "2.0.1"
+version           "2.0.2"
 
 recipe            "postgresql::default",      "Install all PostgreSQL components for a CI environment"
 
