@@ -30,3 +30,9 @@ node.kiex.elixir_versions.each do |elixir, otp|
     EOF
   end
 end
+
+bash "set default elixir version to #{node.kiex.default_elixir_version}" do
+  user node.travis_build_environment.user
+  group node.travis_build_environment.group
+  code "#{ENV['HOME']}/.kiex/bin/kiex default #{node.kiex.default_elixir_version}"
+end
