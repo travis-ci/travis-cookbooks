@@ -1,5 +1,7 @@
 ### Upcoming:
 
+- Android SDK: install 'tools' component to force upgrade to latest SDK Tools (e.g. 23.0.5,...) (Gilles Cornu)
+
 - Android SDK: update component versions (Gilles Cornu)
 
 - PostgreSQL: fix a bug in init.d script impacting 'status' action (Gilles Cornu)
