@@ -29,8 +29,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.cpus = 4
   end
 
-  config.vm.provider "vmware_fustion" do |v|
-    v.vmx["memsize"]  = 6144
+  config.vm.provider "vmware_fusion" do |v|
+    v.vmx["memsize"]  = 2048
     v.vmx["numvcpus"] = 2
   end
 
@@ -79,13 +79,11 @@ end
 def template_config(config, templates_dir)
   templates = Dir.glob(File.join(templates_dir, "worker.*.yml")).map { |path| TravisImageTemplate.new path }
 
-  tempalte_groups   = templates.group_by { |template| template.name == 'standard' }
-  standard_template = tempalte_groups[true].first # there is only one!
-  other_templates   = tempalte_groups[false]
+  template_groups   = templates.group_by { |template| template.name == 'standard' }
+  standard_template = template_groups[true].first # there is only one!
+  other_templates   = template_groups[false]
 
   other_templates.each do |template|
-    # template.data.merge!({ 'json' => { 'travis_build_environment' => { 'user' => 'vagrant'} } })
-
     config.vm.define template.name, autostart: false do |worker|
 
       worker.vm.box = 'travis-precise'
@@ -97,6 +95,7 @@ def template_config(config, templates_dir)
         chef.cookbooks_path = "ci_environment"
 
         chef.merge(template)
+        chef.json = standard_template.json.merge(template.json)
 
         (Array(standard_template.data['recipes']) + Array(template.data['recipes'])).each { |recipe| chef.add_recipe recipe }
       end
