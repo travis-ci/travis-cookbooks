@@ -11,19 +11,21 @@ default['android-sdk']['download_url']   = "http://dl.google.com/android/android
 
 #
 # List of Android SDK components to preinstall:
-# TODO: deprecate notice
 #
 # Hint:
 # Add 'tools' to the list below if you wish to get the latest version,
 # without having to adapt 'version' and 'checksum' attributes of this cookbook.
 # Note that it will require (waste) some extra download effort.
 #
+# [Gilles Cornu - 24.11.2014] - Apply this workaround to install SDK Tools 23.0.5, 
+#                               which is still not published on https://dl.google.com/android
+#
 # build-tools needs to be maintained. Theoretically, there's a meta-taget
 # for it.
 #
-default['android-sdk']['components']     = %w(platform-tools
-                                              build-tools-21.0.2
-                                              build-tools-20.0.0
+default['android-sdk']['components']     = %w(tools 
+                                              platform-tools
+                                              build-tools-21.1.1
                                               android-21
                                               sys-img-armeabi-v7a-android-21
                                               android-20
@@ -39,7 +41,6 @@ default['android-sdk']['components']     = %w(platform-tools
                                               android-15
                                               sys-img-armeabi-v7a-android-15
                                               android-10
-                                              android-support
                                               extra-android-support
                                               extra-google-google_play_services
                                               extra-google-m2repository
