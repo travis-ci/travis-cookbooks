@@ -15,7 +15,7 @@ The Chef `run-lists` that are used to build the different VM images for Travis C
 All the required cookbooks are stored in this single repository (no Berkshelf/Librarian, no git modules). You can find more details about this approach in ["Making Breakfast: Chef at Airbnb"](http://nerds.airbnb.com/making-breakfast-chef-airbnb/).
 
 * Chef cookbooks currently must be compatible with **Chef 11**.
-* The VM template/basebox should be installed with **Ubuntu 12.04LTS**, which is the supported plaform.
+* The VM template/basebox should be installed with **Ubuntu 12.04**, which is the supported plaform.
 
 ### Virtualization Technology
 
