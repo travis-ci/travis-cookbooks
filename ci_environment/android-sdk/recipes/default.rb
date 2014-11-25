@@ -110,7 +110,7 @@ unless File.exist?("#{setup_root}/#{node['android-sdk']['name']}-#{node['android
   # The easiest way I could find to fix this problem consists
   # in executing a dedicated 'android sdk update' command for each component to be installed.
   node['android-sdk']['components'].each do |sdk_component|
-    script 'Install Android SDK platforms and tools' do
+    script "Install Android SDK component #{sdk_component}" do
       interpreter   'expect'
       environment   ({ 'ANDROID_HOME' => android_home })
       path          [File.join(android_home, 'tools')]
