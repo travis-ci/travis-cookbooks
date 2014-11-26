@@ -96,9 +96,9 @@ def template_config(config, templates_dir)
         chef.cookbooks_path = "ci_environment"
 
         chef.merge(template)
-        chef.json = standard_template.json.merge(template.json)
+        chef.json = template.json
 
-        (Array(standard_template.data['recipes']) + Array(template.data['recipes'])).each { |recipe| chef.add_recipe recipe }
+        Array(template.data['recipes']).each { |recipe| chef.add_recipe recipe }
       end
     end
   end
