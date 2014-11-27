@@ -50,6 +50,49 @@ $ vagrant up win8
 # Starts experimental machines and tries to provision them...
 ```
 
+#### Dynamically defined VMs
+
+In addition, if you have cloned `travis-images` in the same directory as
+`travis-cookbooks`, you can use the dynamically defined VMs as provisioned
+for Travis CI, with
+
+To use these VMs, you need to first clone https://github.com/BanzaiMan/bento and
+https://github.com/travis-ci/travis-cookbooks to the same directory
+as `travis-cookbooks`, then follow the instructions given in
+https://github.com/BanzaiMan/bento#about-this-fork
+to create the base standard box.
+
+```
+git clone https://github.com/BanzaiMan/bento.git
+git clone https://github.com/travis-ci/travis-images.git
+cd bento
+wget -O iso/ubuntu/12.04/ubuntu-12.04.5-server-amd64.iso http://releases.ubuntu.com/12.04.5/ubuntu-12.04.5-server-amd64.iso
+cd packer
+packer build -parallel=false ubuntu-12.04-amd64-travis.json
+```
+
+Then add the resulting box as `travis-precise`:
+
+```
+vagrant box add --name travis-precise builds/vmware/travis_ubuntu-12.04_chef-latest.box
+```
+
+Then in `travis-cookbooks` directory, run `vagrant up`:
+
+```
+cd ../travis-cookbooks
+vagrant up ruby
+```
+
+This will run the rest of cookbooks for the Ruby image you can use.
+
+Other language VMs (Python, PHP, etc.) can be similarly created.
+
+Notice that some language VMs take longer to build, due to the requirement
+imposed by that image.
+You can try reducing the number of installed components in the recipes
+inside `travis-cookbooks`.
+
 #### Windows Image
 
 Vagrant will automatically install boxes for Ubuntu Linux (`precise64` and `trusty64`) if you don't have them. Windows will not automatically install, and in fact licensing concerns have preventing anyone from publishing a Vagrant box that supports Windows on VirtualBox.
