@@ -52,15 +52,14 @@ $ vagrant up win8
 
 #### Dynamically defined VMs
 
-In addition, if you have cloned `travis-images` in the same directory as
-`travis-cookbooks`, you can use the dynamically defined VMs as provisioned
-for Travis CI, with
+In addition, `Vagrantfile` dynamically defines VMs as provisioned
+for Travis CI.
 
 To use these VMs, you need to first clone https://github.com/BanzaiMan/bento and
 https://github.com/travis-ci/travis-cookbooks to the same directory
 as `travis-cookbooks`, then follow the instructions given in
 https://github.com/BanzaiMan/bento#about-this-fork
-to create the base standard box.
+to create the base standard boxes.
 
 ```
 git clone https://github.com/BanzaiMan/bento.git
@@ -71,7 +70,7 @@ cd packer
 packer build -parallel=false ubuntu-12.04-amd64-travis.json
 ```
 
-Then add the resulting box as `travis-precise`:
+Then add the resulting box as `travis-precise`.
 
 ```
 vagrant box add --name travis-precise builds/vmware/travis_ubuntu-12.04_chef-latest.box
@@ -81,7 +80,7 @@ Then in `travis-cookbooks` directory, run `vagrant up`:
 
 ```
 cd ../travis-cookbooks
-vagrant up ruby
+vagrant up ruby-precise
 ```
 
 This will run the rest of cookbooks for the Ruby image you can use.

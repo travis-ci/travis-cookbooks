@@ -69,7 +69,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   templates_dir = '../travis-images/templates'
 
   if File.exists? templates_dir
-    template_config config, templates_dir
+    %w(precise trusty).each do |rel|
+      template_config config, rel, templates_dir
+    end
   else
     manual_config config
   end
@@ -77,7 +79,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 end
 
 # configure VM based on templates
-def template_config(config, templates_dir)
+def template_config(config, release, templates_dir)
   templates = Dir.glob(File.join(templates_dir, "worker.*.yml")).map { |path| TravisImageTemplate.new path }
 
   template_groups   = templates.group_by { |template| template.name == 'standard' }
@@ -85,9 +87,9 @@ def template_config(config, templates_dir)
   other_templates   = template_groups[false]
 
   other_templates.each do |template|
-    config.vm.define template.name, autostart: false do |worker|
+    config.vm.define "#{template.name}-#{release}", autostart: false do |worker|
 
-      worker.vm.box = 'travis-precise'
+      worker.vm.box = "travis-#{release}"
       worker.ssh.username = 'travis'
       worker.ssh.password = 'travis'
 
