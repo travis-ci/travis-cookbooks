@@ -1,5 +1,25 @@
 ### Upcoming:
 
+- Android SDK: install 'tools' component to force upgrade to latest SDK Tools (e.g. 23.0.5,...) (Gilles Cornu)
+
+- Android SDK: update component versions (Gilles Cornu)
+
+- PostgreSQL: fix a bug in init.d script impacting 'status' action (Gilles Cornu)
+
+- Update Node.js to 0.10.33 (Hiro Asari)
+
+- Update ElasticSearch to 1.4.0 (Hiro Asari)
+
+- Add jq cookbook (Dan Buch)
+
+- Add system_info cookbook (Hiro Asari)
+
+- Fix Android wait-for-emulator script (Yoni Samlan)
+
+- Update to PHP 5.4.35, 5.5.19, 5.6.3 (Hiro Asari)
+
+- Update HHVM to 3.4.0 (Hiro Asari)
+
 ### Production on .org on 04.11.2014
 
 - Update to PHP 5.4.34, 5.5.18, 5.6.2 (Graham Campbell)

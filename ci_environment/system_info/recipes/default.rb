@@ -13,11 +13,22 @@ git '/usr/local/system_info' do
   action :sync
 end
 
-bash 'Dump system information' do
+directory '/usr/local/system_info' do
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
+  recursive true
+end
+
+directory '/usr/share/travis' do
+  owner node.travis_build_environment.user
+  group node.travis_build_environment.group
+  recursive true
+end
+
+bash 'Install system_info gems' do
   user node.travis_build_environment.user
   cwd  '/usr/local/system_info'
   code <<-EOF
-    sudo chown #{node.travis_build_environment.user}:#{node.travis_build_environment.group} -R .
     bundle install --deployment
   EOF
 end
