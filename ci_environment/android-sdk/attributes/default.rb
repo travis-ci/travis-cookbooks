@@ -23,8 +23,8 @@ default['android-sdk']['download_url']   = "http://dl.google.com/android/android
 # build-tools needs to be maintained. Theoretically, there's a meta-taget
 # for it.
 #
-default['android-sdk']['components']     = %w(tools 
-                                              platform-tools
+default['android-sdk']['components']     = %w(platform-tools
+                                              tools
                                               build-tools-21.1.1
                                               android-21
                                               sys-img-armeabi-v7a-android-21
