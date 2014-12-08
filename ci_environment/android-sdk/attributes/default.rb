@@ -5,8 +5,8 @@ default['android-sdk']['owner']          = node['travis_build_environment']['use
 default['android-sdk']['group']          = node['travis_build_environment']['group']
 default['android-sdk']['setup_root']     = nil  # ark defaults (/usr/local) is used if this attribute is not defined
 
-default['android-sdk']['version']        = '23.0.2'
-default['android-sdk']['checksum']       = '2eaab06852ac21b6c79df73c07a667c5da5be57f7ffcbd4f17aef7efeea22ac1'
+default['android-sdk']['version']        = '24'
+default['android-sdk']['checksum']       = 'f7b8ba4b43bd13b9f77f687bf388d6e04b811b3b722e67d2af0763a603ee3a03'
 default['android-sdk']['download_url']   = "http://dl.google.com/android/android-sdk_r#{node['android-sdk']['version']}-linux.tgz"
 
 #
@@ -17,14 +17,10 @@ default['android-sdk']['download_url']   = "http://dl.google.com/android/android
 # without having to adapt 'version' and 'checksum' attributes of this cookbook.
 # Note that it will require (waste) some extra download effort.
 #
-# [Gilles Cornu - 24.11.2014] - Apply this workaround to install SDK Tools 23.0.5, 
-#                               which is still not published on https://dl.google.com/android
-#
 # build-tools needs to be maintained. Theoretically, there's a meta-taget
 # for it.
 #
 default['android-sdk']['components']     = %w(platform-tools
-                                              tools
                                               build-tools-21.1.1
                                               android-21
                                               sys-img-armeabi-v7a-android-21
