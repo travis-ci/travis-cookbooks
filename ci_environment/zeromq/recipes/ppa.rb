@@ -19,14 +19,17 @@
 
 case node['platform']
 when "ubuntu"
-  apt_repository "travis_ci_zeromq3" do
-    uri          "http://ppa.launchpad.net/travis-ci/zero-mq/ubuntu"
-    distribution node['lsb']['codename']
-    components   ['main']
-    key          "75E9BCC5"
-    keyserver    "keyserver.ubuntu.com"
+  case node['platform_version']
+  when '12.04'
+    apt_repository "travis_ci_zeromq3" do
+      uri          "http://ppa.launchpad.net/travis-ci/zero-mq/ubuntu"
+      distribution node['lsb']['codename']
+      components   ['main']
+      key          "75E9BCC5"
+      keyserver    "keyserver.ubuntu.com"
 
-    action :add
+      action :add
+    end
   end
 end
 

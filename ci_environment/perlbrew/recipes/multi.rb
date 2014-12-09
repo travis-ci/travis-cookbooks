@@ -26,6 +26,13 @@ node.perlbrew.perls.each do |pl|
     not_if "ls #{home}/perl5/perlbrew/perls | grep #{pl[:name]}"
   end
 
+  if pl[:alias]
+    bash "creating alias #{pl[:alias]} for #{pl[:name]}" do
+      setup.call(self)
+      code "#{brew} alias create #{pl[:name]} #{pl[:alias]}"
+    end
+  end
+
   node.perlbrew.modules.each do |mod|
     bash "preinstall #{mod} via cpanm" do
       setup.call(self)

@@ -5,13 +5,12 @@ default['android-sdk']['owner']          = node['travis_build_environment']['use
 default['android-sdk']['group']          = node['travis_build_environment']['group']
 default['android-sdk']['setup_root']     = nil  # ark defaults (/usr/local) is used if this attribute is not defined
 
-default['android-sdk']['version']        = '23.0.2'
-default['android-sdk']['checksum']       = '2eaab06852ac21b6c79df73c07a667c5da5be57f7ffcbd4f17aef7efeea22ac1'
+default['android-sdk']['version']        = '24'
+default['android-sdk']['checksum']       = 'f7b8ba4b43bd13b9f77f687bf388d6e04b811b3b722e67d2af0763a603ee3a03'
 default['android-sdk']['download_url']   = "http://dl.google.com/android/android-sdk_r#{node['android-sdk']['version']}-linux.tgz"
 
 #
 # List of Android SDK components to preinstall:
-# TODO: deprecate notice
 #
 # Hint:
 # Add 'tools' to the list below if you wish to get the latest version,
@@ -22,7 +21,11 @@ default['android-sdk']['download_url']   = "http://dl.google.com/android/android
 # for it.
 #
 default['android-sdk']['components']     = %w(platform-tools
-                                              build-tools-20.0.0
+                                              build-tools-21.1.1
+                                              android-21
+                                              sys-img-armeabi-v7a-android-21
+                                              android-20
+                                              sys-img-armeabi-v7a-android-wear-20
                                               android-19
                                               sys-img-armeabi-v7a-android-19
                                               android-18

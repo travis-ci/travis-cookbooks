@@ -13,7 +13,7 @@ bash "install Perlbrew" do
   code        <<-SH
   curl -s https://raw.githubusercontent.com/gugod/App-perlbrew/master/perlbrew-install -o /tmp/perlbrew-installer
   chmod +x /tmp/perlbrew-installer
-  /tmp/perlbrew-installer
+  bash /tmp/perlbrew-installer
   SH
   not_if      "test -d #{node.travis_build_environment.home}/perl5/perlbrew"
 end

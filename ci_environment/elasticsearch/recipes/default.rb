@@ -50,10 +50,20 @@ when "debian", "ubuntu"
       provider Chef::Provider::Package::Dpkg
 
       notifies :delete, resources(:file => path)
+      notifies :create, "ruby_block[create-symbolic-links]"
 
       not_if "which elasticsearch"
     end
   end # each
+
+  ruby_block 'create-symbolic-links' do
+    block do
+      Dir.foreach("/usr/share/elasticsearch/bin") do |file|
+        File.symlink "/usr/share/elasticsearch/bin/#{file}", "/usr/local/bin/#{file}" unless File.exist? "/usr/local/bin/#{file}"
+      end
+    end
+    action :nothing
+  end
 
   service "elasticsearch" do
     supports :restart => true, :status => true

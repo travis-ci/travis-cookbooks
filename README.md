@@ -15,7 +15,7 @@ The Chef `run-lists` that are used to build the different VM images for Travis C
 All the required cookbooks are stored in this single repository (no Berkshelf/Librarian, no git modules). You can find more details about this approach in ["Making Breakfast: Chef at Airbnb"](http://nerds.airbnb.com/making-breakfast-chef-airbnb/).
 
 * Chef cookbooks currently must be compatible with **Chef 11**.
-* The VM template/basebox should be installed with **Ubuntu 12.04LTS**, which is the supported plaform.
+* The VM template/basebox should be installed with **Ubuntu 12.04**, which is the supported plaform.
 
 ### Virtualization Technology
 
@@ -30,9 +30,9 @@ There is a `Vagrantfile` in this project that includes a VirtualBox setup, thoug
 
 The included `Vagrantfile` defines multiple machines, where each machine is a target worker platform:
 
-* `precise64`: this VM is defined as `primary` as Ubuntu 12.04 is officially supported by travis-cookbooks
-* `trusty64`: this VM is experimental and is not automatically started
-* `win8`: this VM is [experimental](https://github.com/travis-ci/travis-cookbooks/commits/ha-feature-windows) and is not automatically started
+* `precise64`: this VM is defined as `primary` as Ubuntu 12.04 is officially supported by travis-cookbooks.
+* `trusty64`: this VM is experimental and is not automatically started (to be used with [ha-feature-trusty development branch](https://github.com/travis-ci/travis-cookbooks/tree/ha-feature-trusty)). See also related [open issues](https://github.com/travis-ci/travis-ci/issues?q=is%3Aopen+is%3Aissue+label%3Atrusty+label%3Atravis-cookbooks)).
+* `win8`: this VM is [experimental](https://github.com/travis-ci/travis-cookbooks/commits/ha-feature-windows) and is not automatically started.
 
 By default, Vagrant is configured to provision the `worker_standard` role. There are [more possible setups](https://github.com/travis-ci/travis-images/tree/master/templates) (`worker_ruby`, `worker_python`, etc.) but since all Travis worker machines are based on `worker_standard` it provides good cookbook coverage. It is also possible to narrow down the Chef run list to only install a specific set of cookbooks, as commented in the `Vagrantfile` itself.
 
