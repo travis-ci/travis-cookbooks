@@ -1,5 +1,10 @@
 include_recipe "collectd"
 
+collectd_plugin "syslog" do
+  options :log_level => "info",
+          :notify_level => "OKAY"
+end
+
 collectd_plugin "load"
 
 collectd_plugin "memory"
