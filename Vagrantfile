@@ -6,10 +6,10 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  # In general, it is a good idea to use latest release of Chef 11.x,
+  # In general, it is a good idea to use latest release of Chef 11.x (Chef 12 is not supported yet),
   # but please keep in mind that Travis team is provisioning with the version defined at
   # https://github.com/travis-ci/travis-images/blob/master/lib/travis/cloud_images/vm_provisioner.rb
-  config.omnibus.chef_version = :latest
+  config.omnibus.chef_version = "11.16.4"
 
   # Enable Vagrant plugins like vagrant-cachier and vagrant-vbguest
   if Vagrant.has_plugin?("vagrant-cachier")
