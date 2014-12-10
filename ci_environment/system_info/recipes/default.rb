@@ -13,10 +13,8 @@ git '/usr/local/system_info' do
   action :sync
 end
 
-directory '/usr/local/system_info' do
-  owner node.travis_build_environment.user
-  group node.travis_build_environment.group
-  recursive true
+execute "set owner on /usr/local/system_info" do
+  command "chown -R #{node.travis_build_environment.user}:#{node.travis_build_environment.group} /usr/local/system_info"
 end
 
 directory '/usr/share/travis' do
