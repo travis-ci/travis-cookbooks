@@ -4,7 +4,7 @@
 
 ### Production on .org on 09.12.2014
 
-- Android SDK: install 'tools' component to force upgrade to latest SDK Tools (e.g. 23.0.5,...) (Gilles Cornu)
+- Update Android SDK Tools to 24.0.0 (@ardock)
 
 - Android SDK: update component versions (Gilles Cornu)
 
