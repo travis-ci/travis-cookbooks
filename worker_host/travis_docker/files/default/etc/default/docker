@@ -1,0 +1,1 @@
+DOCKER_OPTS="--exec-driver=lxc --icc=false -H tcp://127.0.0.1:4243 -H unix:///var/run/docker.sock -g=/mnt/docker"
