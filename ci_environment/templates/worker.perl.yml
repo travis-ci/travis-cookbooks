@@ -1,0 +1,3 @@
+recipes:
+  - perlbrew::multi
+  - sweeper

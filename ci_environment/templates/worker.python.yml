@@ -1,0 +1,5 @@
+recipes:
+  - python::pyenv
+  - python::system
+  - python::devshm
+  - sweeper

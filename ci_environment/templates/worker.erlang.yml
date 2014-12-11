@@ -1,0 +1,4 @@
+recipes:
+  - kerl
+  - rebar
+  - sweeper

@@ -1,0 +1,114 @@
+json:
+  rvm:
+    default: 1.9.3
+    rubies:
+      - name: 1.9.3
+    gems:
+      - bundler
+      - rake
+  golang:
+    multi:
+      versions:
+        - go1.3.3
+      aliases: []
+      default_version: go1.3.3
+  travis_build_environment:
+    use_tmpfs_for_builds: false
+recipes:
+  #
+  # Travis environment + build toolchain
+  #
+  - travis_build_environment
+  - apt
+  - package-updates
+  - build-essential
+  - clang::tarball
+  - golang::multi
+  - networking_basic
+  - openssl
+  - sysctl
+  - git::ppa
+  - mercurial
+  - bazaar
+  - subversion
+  - scons
+  - unarchivers
+  - md5deep
+  - dictionaries
+  - jq
+  #
+  # additional libraries needed to run headless WebKit,
+  # build parsers, for ossp-uuid to work and so on
+  #
+  - libqt4
+  - libgdbm
+  - libncurses
+  - libossp-uuid
+  - libffi
+  - ragel
+  - imagemagick
+  - mingw32
+  - libevent
+  #
+  # JDK and related build toolchain
+  #
+  - java
+  - ant
+  - maven
+  #
+  # Needs to be installed before RVM
+  #
+  - sqlite
+  #
+  # Ruby via RVM (default Debian installations are secure at the cost of
+  # being unusable without PATH tweaking, for our VMs we can just go with RVM.
+  # This includes rubygems, bundler and rake.
+  #
+  - rvm
+  - rvm::multi
+  #
+  # Python and pip
+  #
+  - python
+  - python::devshm
+  - python::pip
+  #
+  # Node.js
+  #
+  - nodejs::multi
+  #
+  # Data stores
+  #
+  - mysql::server_on_ramfs
+  - postgresql
+  - redis
+  - riak
+  - mongodb
+  - couchdb::ppa
+  - memcached
+  - neo4j-server::tarball
+  - cassandra::tarball
+  #
+  # Messaging
+  #
+  - rabbitmq::with_management_plugin
+  - zeromq::ppa
+  #
+  # Search
+  #
+  - elasticsearch
+  - sphinx::all
+  #
+  # Headless WebKit, browsers, Selenium toolchain, etc
+  #
+  - xserver
+  - firefox::tarball
+  - chromium
+  - phantomjs::tarball
+  #
+  # Debugging & support
+  #
+  - emacs::nox
+  - vim
+  - system_info
+  - sweeper

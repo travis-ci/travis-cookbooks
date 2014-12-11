@@ -1,0 +1,14 @@
+json:
+  java:
+    alternate_versions:
+      - openjdk6
+      - openjdk7
+      - oraclejdk8
+recipes:
+  - java
+  - ant
+  - maven
+  - leiningen
+  - sbt
+  - gradle::tarball
+  - sweeper
