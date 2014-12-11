@@ -23,10 +23,18 @@ directory '/usr/share/travis' do
   recursive true
 end
 
+execute 'execute-system_info' do
+  user node.travis_build_environment.user
+  cwd '/usr/local/system_info'
+  command "env FORMATS=human,json HUMAN_OUTPUT=/usr/share/travis/system_info JSON_OUTPUT=/usr/share/travis/system_info.json bundle exec ./bin/system_info 0abcdef 2> /dev/null"
+  action :nothing
+end
+
 bash 'Install system_info gems' do
   user node.travis_build_environment.user
   cwd  '/usr/local/system_info'
   code <<-EOF
     bundle install --deployment
   EOF
+  notifies :run, 'execute[execute-system_info]'
 end
