@@ -27,13 +27,10 @@ default['python']['pyenv']['pythons'] = [
     "2.7.9",
     "2.6.9",
     "3.4.2",
-    "3.4.0",
     "3.3.5",
     "3.2.5",
     "pypy-2.4.0",
-    "pypy-2.3.1",
     "pypy3-2.4.0",
-    "pypy3-2.3.1",
 ]
 
 default['python']['pyenv']['aliases'] = {
