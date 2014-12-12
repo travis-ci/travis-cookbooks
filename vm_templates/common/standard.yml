@@ -79,7 +79,6 @@ recipes:
   #
   # Data stores
   #
-  - mysql::server_on_ramfs
   - postgresql
   - redis
   - riak

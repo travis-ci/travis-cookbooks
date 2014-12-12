@@ -1,0 +1,2 @@
+recipes:
+  - mysql::server_on_ramfs
