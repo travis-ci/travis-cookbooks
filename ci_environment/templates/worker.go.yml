@@ -14,4 +14,5 @@ json:
         "go1.2": "go1.2.2"
 recipes:
   - golang::multi
+  - system_info
   - sweeper

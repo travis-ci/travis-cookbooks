@@ -10,4 +10,5 @@ recipes:
   - maven
   - gradle::tarball
   - android-sdk
+  - system_info
   - sweeper

@@ -40,4 +40,5 @@ recipes:
   - rvm
   - rvm::multi
   - java
+  - system_info
   - sweeper

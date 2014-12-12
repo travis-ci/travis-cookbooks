@@ -15,4 +15,5 @@ json:
     default: 0.10.33
 recipes:
   - nodejs::multi
+  - system_info
   - sweeper

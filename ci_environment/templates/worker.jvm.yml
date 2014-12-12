@@ -11,4 +11,5 @@ recipes:
   - leiningen
   - sbt
   - gradle::tarball
+  - system_info
   - sweeper

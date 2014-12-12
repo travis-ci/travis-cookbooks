@@ -2,4 +2,5 @@ recipes:
   - python::pyenv
   - python::system
   - python::devshm
+  - system_info
   - sweeper
