@@ -25,8 +25,11 @@ end
 
 execute 'execute-system_info' do
   user node.travis_build_environment.user
-  cwd '/usr/local/system_info'
-  command "env FORMATS=human,json HUMAN_OUTPUT=/usr/share/travis/system_info JSON_OUTPUT=/usr/share/travis/system_info.json bundle exec ./bin/system_info 0abcdef 2> /dev/null"
+  command <<-EOF
+    bash -l -c 'cd /usr/local/system_info
+    env FORMATS=human,json HUMAN_OUTPUT=/usr/share/travis/system_info JSON_OUTPUT=/usr/share/travis/system_info.json \
+      bundle exec ./bin/system_info #{node['system_info']['cookbooks_sha'] || 'fffffff'}'
+  EOF
   action :nothing
 end
 
