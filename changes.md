@@ -2,6 +2,10 @@
 
 - Update Gradle to 2.2.1 (Gilles Cornu)
 
+- Update Python to 2.7.9 (Alex Gaynor)
+
+- Drop Python 3.4.0, PyPy 2.3.1, PyPy3 2.3.1 (Donald Stufft)
+
 ### Production on .org on 09.12.2014
 
 - Update Android SDK Tools to 24.0.0 (@ardock)
