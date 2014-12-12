@@ -2,11 +2,12 @@
 
 Travis cookbooks are collections of Chef cookbooks used with [Chef Solo](http://docs.opscode.com/chef_solo.html) for setting up
 
- * Linux VMs for running tests (CI environment)
- * Travis worker machine (host OS)
+ * Linux VMs for running tests (CI environment in `/ci_environment`)
+ * Travis worker machine (host OS in `/worker_host`)
  * Anything else we may need to set up (for example, messaging broker nodes)
 
-The Chef `run-lists` that are used to build the different VM images for Travis CI environment are stored in [travis-images](https://github.com/travis-ci/travis-images/tree/master/templates) repository.
+The Chef `run-lists` that are used to build the different VM images for Travis CI environment are defined in YAML files, that are stored in `/vm_templates` subdirectory.
+This custom definition format is similar to Chef roles and is used by [travis-images](https://github.com/travis-ci/travis-images/tree/master/templates) tool.
 
 ## Developing Cookbooks
 
@@ -34,7 +35,7 @@ The included `Vagrantfile` defines multiple machines, where each machine is a ta
 * `trusty64`: this VM is experimental and is not automatically started (to be used with [ha-feature-trusty development branch](https://github.com/travis-ci/travis-cookbooks/tree/ha-feature-trusty)). See also related [open issues](https://github.com/travis-ci/travis-ci/issues?q=is%3Aopen+is%3Aissue+label%3Atrusty+label%3Atravis-cookbooks)).
 * `win8`: this VM is [experimental](https://github.com/travis-ci/travis-cookbooks/commits/ha-feature-windows) and is not automatically started.
 
-By default, Vagrant is configured to provision the `worker_standard` role. There are [more possible setups](https://github.com/travis-ci/travis-images/tree/master/templates) (`worker_ruby`, `worker_python`, etc.) but since all Travis worker machines are based on `worker_standard` it provides good cookbook coverage. It is also possible to narrow down the Chef run list to only install a specific set of cookbooks, as commented in the `Vagrantfile` itself.
+By default, Vagrant is configured to provision the `worker_standard` role. There are [more possible setups](https://github.com/travis-ci/travis-cookbooks/tree/master/vm_templates) (`ruby`, `python`, etc.) but since all Travis worker machines are based on `worker_standard` it provides good cookbook coverage. It is also possible to narrow down the Chef run list to only install a specific set of cookbooks, as commented in the `Vagrantfile` itself.
 
 #### Usage
 
