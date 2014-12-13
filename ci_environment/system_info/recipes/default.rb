@@ -33,10 +33,10 @@ execute 'execute-system_info' do
   action :nothing
 end
 
-bash 'Install system_info gems' do
+execute 'Install system_info gems' do
   user node.travis_build_environment.user
   cwd  '/usr/local/system_info'
-  code <<-EOF
+  command <<-EOF
     bundle install --deployment
   EOF
   notifies :run, 'execute[execute-system_info]'
