@@ -6,13 +6,19 @@ package "libjffi-jni" do
   action :install
 end
 
-remote_file "/var/tmp/#{node[:jruby][:deb]}" do
-  source node[:jruby][:deb_url] 
+remote_file "/var/tmp/jruby-bin-#{node[:jruby][:version]}.tar.gz" do
+  source "http://jruby.org.s3.amazonaws.com/downloads/#{node[:jruby][:version]}/jruby-bin-#{node[:jruby][:version]}.tar.gz"
   action :create_if_missing
 end
 
-dpkg_package "/var/tmp/#{node[:jruby][:deb]}" do
-  action :install
+directory "/opt/jruby" do
+  owner "root"
+  group "root"
+  mode "0755"
+end
+
+execute "extract JRuby" do
+  command "tar -C /opt/jruby --strip-components=1 -zxf /var/tmp/jruby-bin-#{node[:jruby][:version]}.tar.gz"
 end
 
 (node[:jruby][:gems] || %w{rake bundler}).each do |gem|

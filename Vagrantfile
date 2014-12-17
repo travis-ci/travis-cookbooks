@@ -6,10 +6,10 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  # In general, it is a good idea to use latest release of Chef 11.x,
+  # In general, it is a good idea to use latest release of Chef 11.x (Chef 12 is not supported yet),
   # but please keep in mind that Travis team is provisioning with the version defined at
   # https://github.com/travis-ci/travis-images/blob/master/lib/travis/cloud_images/vm_provisioner.rb
-  config.omnibus.chef_version = :latest
+  config.omnibus.chef_version = "11.16.4"
 
   # Enable Vagrant plugins like vagrant-cachier and vagrant-vbguest
   if Vagrant.has_plugin?("vagrant-cachier")
@@ -32,13 +32,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # `vagrant box outdated`. This is not recommended.
   # config.vm.box_check_update = false
 
-  # The Travis CI Linux worker is currently based on Ubuntu 12.04LTS 64bit
+  # The Travis CI Linux worker is currently based on Ubuntu 12.04 64bit
   # Pending: Refer to a basebox with Linux Kernel pinned on version 2.6
   config.vm.define :precise64, primary: true do |ubuntu|
     ubuntu.vm.box = "ubuntu/precise64"
   end
 
-  # Work in Progress: Support of Ubuntu 14.04LTS (not supported yet)
+  # Work in Progress: Support of Ubuntu 14.04 64bit (not supported yet)
+  # Pull requests are welcome on https://github.com/travis-ci/travis-cookbooks/tree/ha-feature-trusty branch
   config.vm.define :trusty64, autostart: false do |ubuntu|
     ubuntu.vm.box = "ubuntu/trusty64"
   end

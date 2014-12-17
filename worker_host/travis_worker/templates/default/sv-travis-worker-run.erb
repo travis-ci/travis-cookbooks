@@ -1,4 +1,10 @@
 #!/bin/bash
 exec 2>&1
+<% if @options[:docker] %>
+for lang in <%= @options[:docker_languages].join(" ") %>; do
+  docker pull quay.io/travisci/travis-$lang:latest || { echo "Pulling $lang image failed"; exit 1; }
+  docker tag quay.io/travisci/travis-$lang:latest travis:$lang || { echo "Tagging $lang image failed"; exit 1; }
+done
+<% end %>
 cd <%= @options[:worker_home] %>
 exec chpst -u <%= @options[:user] %>:<%= @options[:group] %> /usr/local/bin/signal_wrapper <%= @options[:jruby] %> ./bin/thor travis:worker:boot
