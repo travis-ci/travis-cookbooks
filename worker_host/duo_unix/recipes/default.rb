@@ -32,5 +32,5 @@ template "/etc/duo/login_duo.conf" do
   source "login_duo.conf.erb"
   owner "root"
   group "root"
-  mode "00600"
+  mode "00644"
 end
