@@ -14,6 +14,8 @@
 
 - Update Node.js to 0.10.35 (Hiro Asari)
 
+- Update hhvm to 3.4.2 (Graham Campbell)
+
 ### Production on .org on 09.12.2014
 
 - Update Android SDK Tools to 24.0.0 (@ardock)
