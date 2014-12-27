@@ -1,0 +1,21 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: ubuntu-12.04
+  - name: centos-6.4
+
+suites:
+  - name: default
+    run_list:
+      - recipe[opsmatic::agent]
+    attributes:
+      {
+        "opsmatic": {
+          "integration_token": "4f15f0b3-6881-41e0-a8a7-c1d9e85c8018"
+        }
+      }

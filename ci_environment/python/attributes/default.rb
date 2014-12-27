@@ -17,28 +17,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-default['python']['pyenv']['revision'] = "60e1abe7fa9b3f689d889b29ac05a8b8b2e7b1fe"
+default['python']['pyenv']['revision'] = "f59729359a6d8706a4aa595830301ce6f8d24450"
 
 # Order matters for this list of Pythons. It will be used to construct the
 # $PATH so items earlier in the list will take precedence over items later in
-# the list. This order means that ``python`` will be 2.7.6, ``python2`` will be
-# 2.7.6, and ``python3`` will be 3.4.1.
+# the list. This order means that ``python`` will be 2.7.9, ``python2`` will be
+# 2.7.9, and ``python3`` will be 3.4.2
 default['python']['pyenv']['pythons'] = [
-    "2.7.8",
+    "2.7.9",
     "2.6.9",
     "3.4.2",
-    "3.4.0",
     "3.3.5",
     "3.2.5",
     "pypy-2.4.0",
-    "pypy-2.3.1",
     "pypy3-2.4.0",
-    "pypy3-2.3.1",
 ]
 
 default['python']['pyenv']['aliases'] = {
     "2.6.9" => ["2.6"],
-    "2.7.8" => ["2.7"],
+    "2.7.9" => ["2.7"],
     "3.2.5" => ["3.2"],
     "3.3.5" => ["3.3"],
     "3.4.2" => ["3.4"],
