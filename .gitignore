@@ -9,4 +9,4 @@ tmp/*
 /.rvmrc
 /.bundle
 /.rspec
-
+.vagrant
