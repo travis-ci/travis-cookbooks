@@ -96,10 +96,10 @@ def template_config(config, release, templates_dir)
         chef.merge(base)
 
         if addition
-          chef.json = base.json.deep_merge(addition.json)
+          chef.json = base.json.deep_merge(addition.json).merge({'system_info' => {'cookbooks_sha' => `cd ../travis-cookbooks; git show-ref refs/heads/master -s`.chomp}})
           Array((base.data['recipes'] || []).concat(addition.data['recipes'])).each { |recipe| chef.add_recipe recipe }
         else
-          chef.json = base.json
+          chef.json = base.json.merge({'system_info' => {'cookbooks_sha' => `cd ../travis-cookbooks; git show-ref refs/heads/master -s`.chomp}})
           Array(base.data['recipes'] || []).each { |recipe| chef.add_recipe recipe }
         end
       end
