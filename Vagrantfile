@@ -8,11 +8,6 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  # In general, it is a good idea to use latest release of Chef 11.x (Chef 12 is not supported yet),
-  # but please keep in mind that Travis team is provisioning with the version defined at
-  # https://github.com/travis-ci/travis-images/blob/master/lib/travis/cloud_images/vm_provisioner.rb
-  config.omnibus.chef_version = "11.16.4"
-
   # Enable Vagrant plugins like vagrant-cachier and vagrant-vbguest
   if Vagrant.has_plugin?("vagrant-cachier")
     config.cache.scope = :box
@@ -66,7 +61,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
-  templates_dir = '../travis-images/templates'
+  templates_dir = 'vm_templates'
 
   if File.exists? templates_dir
     %w(precise trusty).each do |rel|
@@ -80,15 +75,16 @@ end
 
 # configure VM based on templates
 def template_config(config, release, templates_dir)
-  templates = Dir.glob(File.join(templates_dir, "worker.*.yml")).map { |path| TravisImageTemplate.new path }
+  templates = Dir.glob(File.join(templates_dir, "**/*.yml")).map { |path| TravisImageTemplate.new path }
 
-  template_groups   = templates.group_by { |template| template.name == 'standard' }
-  standard_template = template_groups[true].first # there is only one!
-  other_templates   = template_groups[false]
+  template_groups = templates.group_by { |template| template.name }
 
-  other_templates.each do |template|
-    config.vm.define "#{template.name}-#{release}", autostart: false do |worker|
+  template_groups.keys.delete_if { |k| k == 'standard' }.each do |template_name|
+    this_template_group = template_groups[template_name]
+    base     = this_template_group.select {|t| t.path =~ /\bcommon\b/}.first
+    addition = this_template_group.select {|t| t.path =~ /\bstandard\b/}.first
 
+    config.vm.define "#{template_name}-#{release}", autostart: false do |worker|
       worker.vm.box = "travis-#{release}"
       worker.ssh.username = 'travis'
       worker.ssh.password = 'travis'
@@ -97,10 +93,15 @@ def template_config(config, release, templates_dir)
         chef.log_level = :info
         chef.cookbooks_path = "ci_environment"
 
-        chef.merge(template)
-        chef.json = template.json
+        chef.merge(base)
 
-        Array(template.data['recipes']).each { |recipe| chef.add_recipe recipe }
+        if addition
+          chef.json = base.json.deep_merge(addition.json)
+          Array((base.data['recipes'] || []).concat(addition.data['recipes'])).each { |recipe| chef.add_recipe recipe }
+        else
+          chef.json = base.json
+          Array(base.data['recipes'] || []).each { |recipe| chef.add_recipe recipe }
+        end
       end
     end
   end
@@ -137,19 +138,23 @@ class TravisImageTemplate
   # #run_list and #json are necessary for an instance
   # of this class to be passed via #merge
 
-  attr_reader :name, :data, :run_list
+  attr_reader :path, :name, :data, :run_list
 
   def initialize(path)
     @path = path
-    path =~ /worker\.(.+)\.yml$/
+    path =~ /([^\/]+)\.yml$/
     @name = $1
 
-    @data = YAML.load File.read path
+    @data = YAML.load File.read(path)
 
     @run_list = []
   end
 
   def json
     data['json'] || {}
+  end
+
+  def to_s
+    "name: #{name}\npath: #{path}\njson: #{json}\nrecipes: #{data['recipes']}"
   end
 end
