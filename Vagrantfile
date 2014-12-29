@@ -61,15 +61,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
-  templates_dir = 'vm_templates'
-
-  if File.exists? templates_dir
-    %w(precise trusty).each do |rel|
-      template_config config, rel, templates_dir
-    end
-  else
-    manual_config config
+  %w(precise trusty).each do |rel|
+    template_config config, rel, 'vm_templates'
   end
+
+  manual_config config
 
 end
 
