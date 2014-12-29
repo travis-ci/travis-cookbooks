@@ -111,21 +111,6 @@ def manual_config(config)
     # Role-based Provisioning:
     chef.roles_path = "roles"
     chef.add_role "worker_standard"
-
-    # Alternatively, you can disable `chef.add_role` above and specify a smaller run list:
-    # chef.add_recipe "apt"
-    # chef.add_recipe "travis_build_environment"
-    # chef.add_recipe "java"
-    # chef.add_recipe "..."
-    #
-    # chef.json = {
-    #   "apt" => {
-    #     :mirror => 'de'
-    #   },
-    #   "travis_build_environment" => {
-    #     "user" => 'vagrant'
-    #   },
-    # }
   end
 end
 
