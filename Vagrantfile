@@ -65,8 +65,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     template_config config, rel, 'vm_templates'
   end
 
-  manual_config config
-
 end
 
 # configure VM based on templates
@@ -100,17 +98,6 @@ def template_config(config, release, templates_dir)
         end
       end
     end
-  end
-end
-
-def manual_config(config)
-  config.vm.provision "chef_solo" do |chef|
-    chef.log_level      = :info
-    chef.cookbooks_path = "ci_environment"
-
-    # Role-based Provisioning:
-    chef.roles_path = "roles"
-    chef.add_role "worker_standard"
   end
 end
 
