@@ -56,6 +56,8 @@ $ vagrant up win8
 In addition, `Vagrantfile` dynamically defines VMs as provisioned
 for Travis CI.
 
+**HOWEVER, THESE VMS ARE CURRENTLY UNSUPPORTED**
+
 To use these VMs, you need to first clone https://github.com/BanzaiMan/bento and
 https://github.com/travis-ci/travis-cookbooks to the same directory
 as `travis-cookbooks`, then follow the instructions given in
