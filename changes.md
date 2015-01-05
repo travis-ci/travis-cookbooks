@@ -20,6 +20,8 @@
 
 - Install grunt-cli for Node.js 0.8.x and up (Hiro Asari)
 
+- Update Riak to 2.0 (Zeeshan Lakhani)
+
 ### Production on .org on 09.12.2014
 
 - Update Android SDK Tools to 24.0.0 (@ardock)
