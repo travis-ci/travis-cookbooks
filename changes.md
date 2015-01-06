@@ -22,6 +22,8 @@
 
 - Update Riak to 2.0 (Zeeshan Lakhani)
 
+- Replace OTP Release 17.3 with 17.4 (Hiro Asari)
+
 ### Production on .org on 09.12.2014
 
 - Update Android SDK Tools to 24.0.0 (@ardock)
