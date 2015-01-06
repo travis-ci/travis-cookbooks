@@ -1,34 +1,30 @@
 #
-# Use Basho APT repository
+# Use Basho via APT to PACKAGECLOUD repository
 #
-apt_repository 'basho' do
-  uri          'http://apt.basho.com'
-  distribution node['lsb']['codename']
+apt_repository 'basho-riak' do
+  uri          'https://packagecloud.io/basho/riak/ubuntu/'
+  distribution node["lsb"]["codename"]
   components   ["main"]
-  key          'http://apt.basho.com/gpg/basho.apt.key'
+  key          'https://packagecloud.io/gpg.key'
 
   action :add
 end
 
-package 'riak'
+package 'riak' do
+  action :install
+end
 
 #
 # - Stop riak service to customize configuration files
 # - Don't enable riak service at server boot time
 #
 service 'riak' do
+  supports :status => true, :restart => true
   action [:disable, :stop]
 end
 
-template "/etc/riak/app.config" do
-  source "app.config.erb"
-  owner  'riak'
-  group  'riak'
-  mode   0644
-end
-
-template "/etc/riak/vm.args" do
-  source "vm.args.erb"
+template "/etc/riak/riak.conf" do
+  source "riak.conf.erb"
   owner  'riak'
   group  'riak'
   mode   0644

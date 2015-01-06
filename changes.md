@@ -6,7 +6,21 @@
 
 - Drop Python 3.4.0, PyPy 2.3.1, PyPy3 2.3.1 (Donald Stufft)
 
-- Update to Go 1.4, make it default (Hiro Asari)
+- Update to Go 1.4 (Hiro Asari)
+
+- Add Ruby 2.2.0 (Hiro Asari)
+
+- Update JRuby to 1.7.18 (Hiro Asari)
+
+- Update Node.js to 0.10.35 (Hiro Asari)
+
+- Update hhvm to 3.4.2 (Graham Campbell)
+
+- Update to PHP 5.4.36, 5.5.20, 5.6.4 (Graham Campbell)
+
+- Install grunt-cli for Node.js 0.8.x and up (Hiro Asari)
+
+- Update Riak to 2.0 (Zeeshan Lakhani)
 
 ### Production on .org on 09.12.2014
 

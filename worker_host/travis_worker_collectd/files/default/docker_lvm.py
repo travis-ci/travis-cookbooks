@@ -8,6 +8,17 @@ import collectd
 DOCKER_HOST = os.environ.get('DOCKER_HOST', 'tcp://127.0.0.1:4243')
 
 
+def _in_kb(measure, unit):
+    measure = float(measure)
+
+    return {
+        'KB': lambda: measure,
+        'MB': lambda: measure * 1024.0,
+        'GB': lambda: measure * 1024.0 * 1024.0,
+        'TB': lambda: measure * 1024.0 * 1024.0 * 1024.0,
+    }[unit]()
+
+
 def _read_pct_data_used(host=DOCKER_HOST):
     """
     NOTE: This is a fairly naive implementation, as it assumes:
@@ -18,18 +29,13 @@ def _read_pct_data_used(host=DOCKER_HOST):
     info = json.load(
         urllib.urlopen('{}/info'.format(host.replace('tcp://', 'http://')))
     )
+
     driver_status = dict(info['DriverStatus'])
     for key, value in driver_status.items():
         driver_status[key.lower().replace(' ', '_')] = value
-    data_total, total_unit = driver_status['data_space_total'].split()
-    data_used, used_unit = driver_status['data_space_used'].split()
 
-    data_total, data_used = float(data_total), float(data_used)
-
-    if used_unit.upper() == 'MB':
-        data_used = data_used / 1024.0
-    elif used_unit.upper() == 'KB':
-        data_used = (data_used / 1024.0) / 1024.0
+    data_total = _in_kb(*driver_status['data_space_total'].upper().split())
+    data_used = _in_kb(*driver_status['data_space_used'].upper().split())
 
     return data_used / data_total
 

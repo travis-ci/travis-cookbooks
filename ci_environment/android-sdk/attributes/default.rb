@@ -5,8 +5,8 @@ default['android-sdk']['owner']          = node['travis_build_environment']['use
 default['android-sdk']['group']          = node['travis_build_environment']['group']
 default['android-sdk']['setup_root']     = nil  # ark defaults (/usr/local) is used if this attribute is not defined
 
-default['android-sdk']['version']        = '24'
-default['android-sdk']['checksum']       = 'f7b8ba4b43bd13b9f77f687bf388d6e04b811b3b722e67d2af0763a603ee3a03'
+default['android-sdk']['version']        = '24.0.2'
+default['android-sdk']['checksum']       = 'c90d361406d5c1dc462342d931c5afda4c081d13708e9fb64c81a29b3d0bee8e'
 default['android-sdk']['download_url']   = "http://dl.google.com/android/android-sdk_r#{node['android-sdk']['version']}-linux.tgz"
 
 #
@@ -21,11 +21,10 @@ default['android-sdk']['download_url']   = "http://dl.google.com/android/android
 # for it.
 #
 default['android-sdk']['components']     = %w(platform-tools
-                                              build-tools-21.1.1
+                                              build-tools-21.1.2
                                               android-21
                                               sys-img-armeabi-v7a-android-21
                                               android-20
-                                              sys-img-armeabi-v7a-android-wear-20
                                               android-19
                                               sys-img-armeabi-v7a-android-19
                                               android-18

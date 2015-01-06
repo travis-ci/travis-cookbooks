@@ -7,37 +7,43 @@
 # MIT License
 #
 
-git '/usr/local/system_info' do
+system_info_dir  = '/usr/local/system_info'
+system_info_dest = '/usr/share/travis'
+rvm_source       = File.join(node.travis_build_environment.home, '.rvm/scripts/rvm')
+
+git system_info_dir do
   repository 'https://github.com/travis-ci/system_info.git'
   revision 'master'
   action :sync
 end
 
-execute "set owner on /usr/local/system_info" do
-  command "chown -R #{node.travis_build_environment.user}:#{node.travis_build_environment.group} /usr/local/system_info"
+execute "set owner on #{system_info_dir}" do
+  command "chown -R #{node.travis_build_environment.user}:#{node.travis_build_environment.group} #{system_info_dir}"
 end
 
-directory '/usr/share/travis' do
+directory system_info_dest do
   owner node.travis_build_environment.user
   group node.travis_build_environment.group
   recursive true
+  notifies :run, 'bash[execute-system_info]'
 end
 
-execute 'execute-system_info' do
+bash 'execute-system_info' do
   user node.travis_build_environment.user
-  command <<-EOF
-    bash -l -c 'cd /usr/local/system_info
-    env FORMATS=human,json HUMAN_OUTPUT=/usr/share/travis/system_info JSON_OUTPUT=/usr/share/travis/system_info.json \
-      bundle exec ./bin/system_info #{node['system_info']['cookbooks_sha'] || 'fffffff'}'
+  cwd system_info_dir
+  code <<-EOF
+    source #{rvm_source}
+    env FORMATS=human,json HUMAN_OUTPUT=#{system_info_dest}/system_info JSON_OUTPUT=#{system_info_dest}/system_info.json \
+      bundle exec ./bin/system_info #{node['system_info']['cookbooks_sha'] || 'fffffff'}
   EOF
   action :nothing
 end
 
-execute 'Install system_info gems' do
+bash 'Install system_info gems' do
   user node.travis_build_environment.user
-  command <<-EOF
-    bash -l -c 'cd /usr/local/system_info
-    bundle install --deployment'
+  cwd system_info_dir
+  code <<-EOF
+    source #{rvm_source}
+    bundle install --deployment
   EOF
-  notifies :run, 'execute[execute-system_info]'
 end
