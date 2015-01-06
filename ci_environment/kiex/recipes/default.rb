@@ -7,12 +7,18 @@
 
 include_recipe 'kerl'
 
+env  = {
+  'HOME'               => "/home/#{node.travis_build_environment.user}",
+  'USER'               => node.travis_build_environment.user
+}
+
 bash 'install kiex' do
   code '\curl -sSL https://raw.githubusercontent.com/taylor/kiex/master/install | bash -s'
   user node.travis_build_environment.user
   cwd  node.travis_build_environment.home
   group node.travis_build_environment.group
-  creates "#{ENV['HOME']}/.kiex/bin/kiex"
+  creates "#{node.travis_build_environment.home}/.kiex/bin/kiex"
+  environment(env)
 end
 
 cookbook_file 'kiex.sh' do
@@ -25,14 +31,16 @@ node.kiex.elixir_versions.each do |elixir, otp|
     group node.travis_build_environment.group
     cwd node.travis_build_environment.home
     code <<-EOF
-      source #{ENV['HOME']}/otp/#{node.kiex.required_otp_release_for[elixir]}/activate
-      #{ENV['HOME']}/.kiex/bin/kiex install #{elixir}
+      source #{node.travis_build_environment.home}/otp/#{node.kiex.required_otp_release_for[elixir]}/activate
+      #{node.travis_build_environment.home}/.kiex/bin/kiex install #{elixir}
     EOF
+    environment(env)
   end
 end
 
 bash "set default elixir version to #{node.kiex.default_elixir_version}" do
   user node.travis_build_environment.user
   group node.travis_build_environment.group
-  code "#{ENV['HOME']}/.kiex/bin/kiex default #{node.kiex.default_elixir_version}"
+  code "#{node.travis_build_environment.home}/.kiex/bin/kiex default #{node.kiex.default_elixir_version}"
+  environment(env)
 end
