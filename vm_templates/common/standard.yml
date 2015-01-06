@@ -22,6 +22,7 @@ recipes:
   - apt
   - package-updates
   - build-essential
+  - ccache
   - clang::tarball
   - golang::multi
   - networking_basic
