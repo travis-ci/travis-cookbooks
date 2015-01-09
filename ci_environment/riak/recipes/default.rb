@@ -7,17 +7,8 @@ apt_repository 'basho-riak' do
   components   ["main"]
   key          'https://packagecloud.io/gpg.key'
 
-  remote_file "#{Chef::Config[:file_cache_path]}/riak_script" do
-    source node["riak"]["package"]["installer"]
-    owner  node["travis_build_environment"]["user"]
-    group  node["travis_build_environment"]["group"]
-    mode   0755
-  end
-
-  bash "run Riak installer" do
-    user "root"
-    code "#{Chef::Config[:file_cache_path]}/riak_script"
-  end
+  action :add
+end
 
 package 'riak' do
   action :install
