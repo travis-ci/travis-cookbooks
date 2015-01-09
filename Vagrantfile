@@ -1,15 +1,12 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+require 'yaml'
+
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-
-  # In general, it is a good idea to use latest release of Chef 11.x,
-  # but please keep in mind that Travis team is provisioning with the version defined at
-  # https://github.com/travis-ci/travis-images/blob/master/lib/travis/cloud_images/vm_provisioner.rb
-  config.omnibus.chef_version = :latest
 
   # Enable Vagrant plugins like vagrant-cachier and vagrant-vbguest
   if Vagrant.has_plugin?("vagrant-cachier")
@@ -25,6 +22,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provider "virtualbox" do |vb|
     vb.memory = 2048
     vb.cpus = 4
+  end
+
+  config.vm.provider "vmware_fusion" do |v|
+    v.vmx["memsize"]  = 2048
+    v.vmx["numvcpus"] = 2
   end
 
   # Disable automatic box update checking. If you disable this, then
@@ -59,29 +61,68 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
-  config.vm.provision "chef_solo" do |chef|
-    chef.log_level      = :info
-    chef.cookbooks_path = "ci_environment"
-
-    # Role-based Provisioning:
-    chef.roles_path = "roles"
-    chef.add_role "worker_standard"
-
-    # Alternatively, you can disable `chef.add_role` above and specify a smaller run list:
-    # chef.add_recipe "apt"
-    # chef.add_recipe "travis_build_environment"
-    # chef.add_recipe "java"
-    # chef.add_recipe "..."
-    #
-    # chef.json = {
-    #   "apt" => {
-    #     :mirror => 'de'
-    #   },
-    #   "travis_build_environment" => {
-    #     "user" => 'vagrant'
-    #   },
-    # }
-
+  %w(precise trusty).each do |rel|
+    template_config config, rel, 'vm_templates'
   end
 
+end
+
+# configure VM based on templates
+def template_config(config, release, templates_dir)
+  templates = Dir.glob(File.join(templates_dir, "**/*.yml")).map { |path| TravisImageTemplate.new path }
+
+  template_groups = templates.group_by { |template| template.name }
+
+  template_groups.keys.delete_if { |k| k == 'standard' }.each do |template_name|
+    this_template_group = template_groups[template_name]
+    base     = this_template_group.select {|t| t.path =~ /\bcommon\b/}.first
+    addition = this_template_group.select {|t| t.path =~ /\bstandard\b/}.first
+
+    config.vm.define "#{template_name}-#{release}", autostart: false do |worker|
+      worker.vm.box = "travis-#{release}"
+      worker.ssh.username = 'travis'
+      worker.ssh.password = 'travis'
+
+      worker.vm.provision "chef_solo" do |chef|
+        chef.log_level = :info
+        chef.cookbooks_path = "ci_environment"
+
+        chef.merge(base)
+
+        if addition
+          chef.json = base.json.deep_merge(addition.json).merge({'system_info' => {'cookbooks_sha' => `cd ../travis-cookbooks; git show-ref refs/heads/master -s`.chomp}})
+          Array((base.data['recipes'] || []).concat(addition.data['recipes'])).each { |recipe| chef.add_recipe recipe }
+        else
+          chef.json = base.json.merge({'system_info' => {'cookbooks_sha' => `cd ../travis-cookbooks; git show-ref refs/heads/master -s`.chomp}})
+          Array(base.data['recipes'] || []).each { |recipe| chef.add_recipe recipe }
+        end
+      end
+    end
+  end
+end
+
+# Wrapper for template data in travis-images
+class TravisImageTemplate
+  # #run_list and #json are necessary for an instance
+  # of this class to be passed via #merge
+
+  attr_reader :path, :name, :data, :run_list
+
+  def initialize(path)
+    @path = path
+    path =~ /([^\/]+)\.yml$/
+    @name = $1
+
+    @data = YAML.load File.read(path)
+
+    @run_list = []
+  end
+
+  def json
+    data['json'] || {}
+  end
+
+  def to_s
+    "name: #{name}\npath: #{path}\njson: #{json}\nrecipes: #{data['recipes']}"
+  end
 end

@@ -2,11 +2,12 @@
 
 Travis cookbooks are collections of Chef cookbooks used with [Chef Solo](http://docs.opscode.com/chef_solo.html) for setting up
 
- * Linux VMs for running tests (CI environment)
- * Travis worker machine (host OS)
+ * Linux VMs for running tests (CI environment in `/ci_environment`)
+ * Travis worker machine (host OS in `/worker_host`)
  * Anything else we may need to set up (for example, messaging broker nodes)
 
-The Chef `run-lists` that are used to build the different VM images for Travis CI environment are stored in [travis-images](https://github.com/travis-ci/travis-images/tree/master/templates) repository.
+The Chef `run-lists` that are used to build the different VM images for Travis CI environment are defined in YAML files, that are stored in `/vm_templates` subdirectory.
+This custom definition format is similar to Chef roles and is used by [travis-images](https://github.com/travis-ci/travis-images/tree/master/templates) tool.
 
 ## Developing Cookbooks
 
@@ -34,7 +35,7 @@ The included `Vagrantfile` defines multiple machines, where each machine is a ta
 * `trusty64`: this VM is experimental and is not automatically started (to be used with [ha-feature-trusty development branch](https://github.com/travis-ci/travis-cookbooks/tree/ha-feature-trusty)). See also related [open issues](https://github.com/travis-ci/travis-ci/issues?q=is%3Aopen+is%3Aissue+label%3Atrusty+label%3Atravis-cookbooks)).
 * `win8`: this VM is [experimental](https://github.com/travis-ci/travis-cookbooks/commits/ha-feature-windows) and is not automatically started.
 
-By default, Vagrant is configured to provision the `worker_standard` role. There are [more possible setups](https://github.com/travis-ci/travis-images/tree/master/templates) (`worker_ruby`, `worker_python`, etc.) but since all Travis worker machines are based on `worker_standard` it provides good cookbook coverage. It is also possible to narrow down the Chef run list to only install a specific set of cookbooks, as commented in the `Vagrantfile` itself.
+By default, Vagrant is configured to provision the `worker_standard` role. There are [more possible setups](https://github.com/travis-ci/travis-cookbooks/tree/master/vm_templates) (`ruby`, `python`, etc.) but since all Travis worker machines are based on `worker_standard` it provides good cookbook coverage. It is also possible to narrow down the Chef run list to only install a specific set of cookbooks, as commented in the `Vagrantfile` itself.
 
 #### Usage
 
@@ -49,6 +50,50 @@ $ vagrant up trusty64
 $ vagrant up win8
 # Starts experimental machines and tries to provision them...
 ```
+
+#### Dynamically defined VMs
+
+In addition, `Vagrantfile` dynamically defines VMs as provisioned
+for Travis CI.
+
+**HOWEVER, THESE VMS ARE CURRENTLY UNSUPPORTED**
+
+To use these VMs, you need to first clone https://github.com/BanzaiMan/bento and
+https://github.com/travis-ci/travis-cookbooks to the same directory
+as `travis-cookbooks`, then follow the instructions given in
+https://github.com/BanzaiMan/bento#about-this-fork
+to create the base standard boxes.
+
+```
+git clone https://github.com/BanzaiMan/bento.git
+git clone https://github.com/travis-ci/travis-images.git
+cd bento
+wget -O iso/ubuntu/12.04/ubuntu-12.04.5-server-amd64.iso http://releases.ubuntu.com/12.04.5/ubuntu-12.04.5-server-amd64.iso
+cd packer
+packer build -parallel=false ubuntu-12.04-amd64-travis.json
+```
+
+Then add the resulting box as `travis-precise`.
+
+```
+vagrant box add --name travis-precise builds/vmware/travis_ubuntu-12.04_chef-latest.box
+```
+
+Then in `travis-cookbooks` directory, run `vagrant up`:
+
+```
+cd ../travis-cookbooks
+vagrant up ruby-precise
+```
+
+This will run the rest of cookbooks for the Ruby image you can use.
+
+Other language VMs (Python, PHP, etc.) can be similarly created.
+
+Notice that some language VMs take longer to build, due to the requirement
+imposed by that image.
+You can try reducing the number of installed components in the recipes
+inside `travis-cookbooks`.
 
 #### Windows Image
 

@@ -1,6 +1,32 @@
 ### Upcoming:
 
-- Android SDK: install 'tools' component to force upgrade to latest SDK Tools (e.g. 23.0.5,...) (Gilles Cornu)
+- Update Gradle to 2.2.1 (Gilles Cornu)
+
+- Update Python to 2.7.9 (Alex Gaynor)
+
+- Drop Python 3.4.0, PyPy 2.3.1, PyPy3 2.3.1 (Donald Stufft)
+
+- Update to Go 1.4 (Hiro Asari)
+
+- Add Ruby 2.2.0 (Hiro Asari)
+
+- Update JRuby to 1.7.18 (Hiro Asari)
+
+- Update Node.js to 0.10.35 (Hiro Asari)
+
+- Update hhvm to 3.4.2 (Graham Campbell)
+
+- Update to PHP 5.4.36, 5.5.20, 5.6.4 (Graham Campbell)
+
+- Install grunt-cli for Node.js 0.8.x and up (Hiro Asari)
+
+- Update Riak to 2.0 (Zeeshan Lakhani)
+
+- Replace OTP Release 17.3 with 17.4 (Hiro Asari)
+
+### Production on .org on 09.12.2014
+
+- Update Android SDK Tools to 24.0.0 (@ardock)
 
 - Android SDK: update component versions (Gilles Cornu)
 

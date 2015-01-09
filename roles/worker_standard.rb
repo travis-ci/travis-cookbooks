@@ -21,7 +21,6 @@ default_attributes(
   'travis_build_environment' =>
     {
       'use_tmpfs_for_builds' => false,
-      'user' => 'vagrant',      # Note - vagrant only!
     }
 )
 run_list(

@@ -1,7 +1,11 @@
-case node['lsb']['codename']
-when 'trusty'
-  require "tmpdir"
-  require "uri"
+#
+# Use Basho via APT to PACKAGECLOUD repository
+#
+apt_repository 'basho-riak' do
+  uri          'https://packagecloud.io/basho/riak/ubuntu/'
+  distribution node["lsb"]["codename"]
+  components   ["main"]
+  key          'https://packagecloud.io/gpg.key'
 
   remote_file "#{Chef::Config[:file_cache_path]}/riak_script" do
     source node["riak"]["package"]["installer"]
@@ -15,27 +19,8 @@ when 'trusty'
     code "#{Chef::Config[:file_cache_path]}/riak_script"
   end
 
-  package "Install Riak #{node['riak']['package']['version']}" do
-    ignore_failure true
-    action         :install
-    package_name   'riak'
-    version        node["riak"]["package"]["version"]
-  end
-
-when 'precise'
-  #
-  # Use Basho APT repository
-  #
-  apt_repository 'basho' do
-    uri          'http://apt.basho.com'
-    distribution node['lsb']['codename']
-    components   ["main"]
-    key          'http://apt.basho.com/gpg/basho.apt.key'
-
-    action :add
-  end
-
-  package 'riak'
+package 'riak' do
+  action :install
 end
 
 #
@@ -43,18 +28,12 @@ end
 # - Don't enable riak service at server boot time
 #
 service 'riak' do
+  supports :status => true, :restart => true
   action [:disable, :stop]
 end
 
-template "/etc/riak/app.config" do
-  source "app.config.erb"
-  owner  'riak'
-  group  'riak'
-  mode   0644
-end
-
-template "/etc/riak/vm.args" do
-  source "vm.args.erb"
+template "/etc/riak/riak.conf" do
+  source "riak.conf.erb"
   owner  'riak'
   group  'riak'
   mode   0644
