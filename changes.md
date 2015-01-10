@@ -26,6 +26,8 @@
 
 - Update Sphinx to 2.2.6 (Hiro Asari)
 
+- Update Scala to 2.11.5 and SBT to 0.13.7 (Gilles Cornu)
+
 ### Production on .org on 09.12.2014
 
 - Update Android SDK Tools to 24.0.0 (@ardock)
