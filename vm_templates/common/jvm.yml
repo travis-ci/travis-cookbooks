@@ -9,7 +9,7 @@ recipes:
   - ant
   - maven
   - leiningen
-  - sbt
+  - sbt-extras
   - gradle::tarball
   - system_info
   - sweeper
