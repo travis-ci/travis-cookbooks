@@ -40,6 +40,28 @@ cookbook_file "/etc/default/locale" do
   source "etc/default/locale.sh"
 end
 
+locales = %w(
+  en_US
+  en_US.UTF-8
+  en_UK
+  en_UK.UTF-8
+  en_AU
+  en_AU.UTF-8
+  de_DE
+  de_DE.UTF-8
+  fr_FR
+  fr_FR.UTF-8
+)
+
+locales.each do |locale|
+  execute "locale-gen #{locale}" do
+    user "root"
+  end
+end
+
+execute "dpkg-reconfigure locales" do
+  user "root"
+end
 
 bits     = (node.kernel.machine =~ /x86_64/ ? 64 : 32)
 hostname = case [node[:platform], node[:platform_version]]
@@ -49,6 +71,8 @@ hostname = case [node[:platform], node[:platform_version]]
              "oneiric#{bits}"
            when ["ubuntu", "12.04"] then
              "precise#{bits}"
+           when ["ubuntu", "14.04"] then
+             "trusty#{bits}"
            end
 
 template "/etc/hosts" do
@@ -141,7 +165,7 @@ end
 # improve sshd startup stability. See https://github.com/jedi4ever/veewee/issues/159 for rationale
 # and some stats about boot failures. MK.
 execute "rm /etc/update-motd.d/*" do
-  not_if Dir.glob('/etc/update-motd.d/*').empty?
+  ignore_failure true
 end
 
 # Make sure we don't have obscure issues with SSL certificates.
