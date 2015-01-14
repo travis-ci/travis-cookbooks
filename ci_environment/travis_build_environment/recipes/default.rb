@@ -51,6 +51,8 @@ locales = %w(
   de_DE.UTF-8
   fr_FR
   fr_FR.UTF-8
+  es_ES
+  es_ES.UTF-8
 )
 
 locales.each do |locale|
