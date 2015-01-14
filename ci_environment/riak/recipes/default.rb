@@ -2,7 +2,7 @@
 # Use Basho via APT to PACKAGECLOUD repository
 #
 apt_repository 'basho-riak' do
-  uri          'https://packagecloud.io/basho/riak/ubuntu/'
+  uri          'https://packagecloud.io/basho/riak/'
   distribution node["lsb"]["codename"]
   components   ["main"]
   key          'https://packagecloud.io/gpg.key'
