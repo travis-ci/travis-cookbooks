@@ -24,6 +24,8 @@
 
 - Replace OTP Release 17.3 with 17.4 (Hiro Asari)
 
+- Update Sphinx to 2.2.6 (Hiro Asari)
+
 ### Production on .org on 09.12.2014
 
 - Update Android SDK Tools to 24.0.0 (@ardock)
