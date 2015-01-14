@@ -43,8 +43,8 @@ end
 locales = %w(
   en_US
   en_US.UTF-8
-  en_UK
-  en_UK.UTF-8
+  en_GB
+  en_GB.UTF-8
   en_AU
   en_AU.UTF-8
   de_DE
@@ -71,8 +71,6 @@ hostname = case [node[:platform], node[:platform_version]]
              "oneiric#{bits}"
            when ["ubuntu", "12.04"] then
              "precise#{bits}"
-           when ["ubuntu", "14.04"] then
-             "trusty#{bits}"
            end
 
 template "/etc/hosts" do
@@ -165,7 +163,7 @@ end
 # improve sshd startup stability. See https://github.com/jedi4ever/veewee/issues/159 for rationale
 # and some stats about boot failures. MK.
 execute "rm /etc/update-motd.d/*" do
-  ignore_failure true
+  not_if Dir.glob('/etc/update-motd.d/*').empty?
 end
 
 # Make sure we don't have obscure issues with SSL certificates.
