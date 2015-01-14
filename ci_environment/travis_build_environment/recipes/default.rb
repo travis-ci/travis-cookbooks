@@ -165,7 +165,7 @@ end
 # improve sshd startup stability. See https://github.com/jedi4ever/veewee/issues/159 for rationale
 # and some stats about boot failures. MK.
 execute "rm /etc/update-motd.d/*" do
-  not_if Dir.glob('/etc/update-motd.d/*').empty?
+  ignore_failure true
 end
 
 # Make sure we don't have obscure issues with SSL certificates.
