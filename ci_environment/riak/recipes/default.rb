@@ -1,6 +1,10 @@
 #
 # Use Basho via APT to PACKAGECLOUD repository
 #
+package 'apt-transport-https' do
+  action :install
+end
+
 apt_repository 'basho-riak' do
   uri          'https://packagecloud.io/basho/riak/'
   distribution node["lsb"]["codename"]
@@ -8,10 +12,6 @@ apt_repository 'basho-riak' do
   key          'https://packagecloud.io/gpg.key'
 
   action :add
-end
-
-package 'apt-transport-https' do
-  action :install
 end
 
 package 'riak' do
