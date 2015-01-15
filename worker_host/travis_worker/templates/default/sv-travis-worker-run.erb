@@ -6,10 +6,16 @@ for lang in <%= @options[:docker_languages].join(" ") %>; do
   docker tag quay.io/travisci/travis-$lang:latest travis:$lang || { echo "Tagging $lang image failed"; exit 1; }
 done
 <% end %>
-<% if @options[:start_hook_executable] %>
-if [[ -x <%= @options[:start_hook_executable] %> ]] ; then
-  <%= @options[:start_hook_executable] %> || true
-fi
-<% end %>
 cd <%= @options[:worker_home] %>
-exec chpst -u <%= @options[:user] %>:<%= @options[:group] %> /usr/local/bin/signal_wrapper <%= @options[:jruby] %> ./bin/thor travis:worker:boot
+
+if [[ -x "<%= @options[:start_hook_executable] %>" ]] ; then
+  export START_HOOK="<%= @options[:start_hook_executable] %>"
+fi
+if [[ -x "<%= @options[:stop_hook_executable] %>" ]] ; then
+  export STOP_HOOK="<%= @options[:stop_hook_executable] %>"
+fi
+
+exec chpst \
+  -u <%= @options[:user] %>:<%= @options[:group] %> \
+  /usr/local/bin/signal_wrapper <%= @options[:jruby] %> \
+  ./bin/thor travis:worker:boot
