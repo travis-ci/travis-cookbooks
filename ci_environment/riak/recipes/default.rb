@@ -10,6 +10,10 @@ apt_repository 'basho-riak' do
   action :add
 end
 
+package 'apt-transport-https' do
+  action :install
+end
+
 package 'riak' do
   action :install
 end
