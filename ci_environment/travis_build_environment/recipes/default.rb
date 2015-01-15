@@ -40,25 +40,8 @@ cookbook_file "/etc/default/locale" do
   source "etc/default/locale.sh"
 end
 
-locales = %w(
-  en_US
-  en_US.UTF-8
-  en_GB
-  en_GB.UTF-8
-  en_AU
-  en_AU.UTF-8
-  de_DE
-  de_DE.UTF-8
-  fr_FR
-  fr_FR.UTF-8
-  es_ES
-  es_ES.UTF-8
-)
-
-locales.each do |locale|
-  execute "locale-gen #{locale}" do
-    user "root"
-  end
+execute "locale-gen" do
+  user "root"
 end
 
 execute "dpkg-reconfigure locales" do
