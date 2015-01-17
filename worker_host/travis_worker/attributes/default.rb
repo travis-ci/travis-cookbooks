@@ -14,8 +14,6 @@ default[:travis][:worker][:hostname] = "#{node[:hostname]}.bluebox.travis-ci.com
 default[:travis][:worker][:log_level] = 'info'
 default[:travis][:worker][:workers] = 1
 default[:travis][:worker][:hosts] = {}
-default[:travis][:worker][:start_hook_executable] = '/home/deploy/start-hook'
-default[:travis][:worker][:stop_hook_executable] = '/home/deploy/stop-hook'
 default[:papertrail][:watch_files] = {}
 
 1.upto(node[:travis][:worker][:workers]) do |num|

@@ -8,11 +8,10 @@ done
 <% end %>
 cd <%= @options[:worker_home] %>
 
-if [[ -x "<%= @options[:start_hook_executable] %>" ]] ; then
-  export START_HOOK="<%= @options[:start_hook_executable] %>"
-fi
-if [[ -x "<%= @options[:stop_hook_executable] %>" ]] ; then
-  export STOP_HOOK="<%= @options[:stop_hook_executable] %>"
+if [[ -f /etc/default/travis-worker ]] ; then
+  set -a
+  source /etc/default/travis-worker
+  set +a
 fi
 
 exec chpst \
