@@ -7,6 +7,11 @@
 #            It is quite tricky to deal with it after /etc/init.d/postgresql script
 #            has been modified. This restriction should not be a problem for Travis CI usage.
 #
+
+# Create base directory on RAMFS before creating cluster
+#
+include_recipe "ramfs" if node['postgresql']['data_on_ramfs']
+
 create_superusers_script = File.join(Chef::Config[:file_cache_path], 'postgresql_create_superusers.sql')
 if not node['postgresql']['superusers'].to_a.empty? and not File.exists?(create_superusers_script)
 
@@ -51,10 +56,6 @@ template "/etc/init.d/postgresql" do
   mode   0755
 end
 
-#
-# Create base directory on RAMFS
-#
-include_recipe "ramfs" if node['postgresql']['data_on_ramfs']
 
 #
 # Tune PostgreSQL settings
