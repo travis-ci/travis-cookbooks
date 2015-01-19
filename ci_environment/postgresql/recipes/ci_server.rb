@@ -2,7 +2,7 @@
 # Create additional superuser accounts for CI purpose
 #
 # Attention: this configuration step will only occur during the first provision run!
-#            (unless the sql script is removed from cache folder. Please don't to that...)
+#            (unless the sql script is removed from cache folder. Please don't do that...)
 #
 #            It is quite tricky to deal with it after /etc/init.d/postgresql script
 #            has been modified. This restriction should not be a problem for Travis CI usage.

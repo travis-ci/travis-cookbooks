@@ -30,6 +30,8 @@
 
 - Update Android SDK Tools to 24.0.2 (@ardock)
 
+- Add PostgreSQL 9.4 (Gilles Cornu)
+
 ### Production on .org on 09.12.2014
 
 - Update Android SDK Tools to 24.0.0 (@ardock)
