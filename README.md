@@ -7,7 +7,7 @@ Travis cookbooks are collections of Chef cookbooks used with [Chef Solo](http://
  * Anything else we may need to set up (for example, messaging broker nodes)
 
 The Chef `run-lists` that are used to build the different VM images for Travis CI environment are defined in YAML files, that are stored in `/vm_templates` subdirectory.
-This custom definition format is similar to Chef roles and is used by [travis-images](https://github.com/travis-ci/travis-images/tree/master/templates) tool.
+This custom definition format is similar to Chef roles and is used by [travis-images](https://github.com/travis-ci/travis-images) tool.
 
 ## Developing Cookbooks
 
