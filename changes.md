@@ -14,7 +14,7 @@
 
 - Update Node.js to 0.10.35 (Hiro Asari)
 
-- Update hhvm to 3.4.2 (Graham Campbell)
+- Update hhvm to 3.5.0 (Graham Campbell)
 
 - Update to PHP 5.4.36, 5.5.20, 5.6.4 (Graham Campbell)
 
