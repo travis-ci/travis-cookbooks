@@ -30,6 +30,8 @@
 
 - Update Android SDK Tools to 24.0.2 (@ardock)
 
+- io.js support via nvm (Jordan Harband)
+
 ### Production on .org on 09.12.2014
 
 - Update Android SDK Tools to 24.0.0 (@ardock)
