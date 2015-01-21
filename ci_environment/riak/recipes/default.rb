@@ -6,7 +6,7 @@ package 'apt-transport-https' do
 end
 
 apt_repository 'basho-riak' do
-  uri          'https://packagecloud.io/basho/riak/'
+  uri          'https://packagecloud.io/basho/riak/ubuntu/'
   distribution node["lsb"]["codename"]
   components   ["main"]
   key          'https://packagecloud.io/gpg.key'
