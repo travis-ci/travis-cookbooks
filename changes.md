@@ -32,6 +32,8 @@
 
 - io.js support via nvm (Jordan Harband)
 
+- Node.js 0.11.15 (Graham Campbell)
+
 ### Production on .org on 09.12.2014
 
 - Update Android SDK Tools to 24.0.0 (@ardock)
