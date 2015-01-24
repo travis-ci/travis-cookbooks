@@ -16,8 +16,6 @@
 
 - Update hhvm to 3.5.0 (Graham Campbell)
 
-- Update to PHP 5.4.36, 5.5.20, 5.6.4 (Graham Campbell)
-
 - Install grunt-cli for Node.js 0.8.x and up (Hiro Asari)
 
 - Update Riak to 2.0 (Zeeshan Lakhani)
@@ -33,6 +31,8 @@
 - io.js support via nvm (Jordan Harband)
 
 - Node.js 0.11.15 (Graham Campbell)
+
+- Update to PHP 5.4.39, 5.5.21, 5.6.5 (Graham Campbell)
 
 ### Production on .org on 09.12.2014
 
