@@ -12,6 +12,8 @@
 
 - Update JRuby to 1.7.18 (Hiro Asari)
 
+- Pre-install JRuby 9.0.0.0.pre1 (Hiro Asari)
+
 - Update Node.js to 0.10.35 (Hiro Asari)
 
 - Update hhvm to 3.5.0 (Graham Campbell)
