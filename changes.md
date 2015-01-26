@@ -18,6 +18,8 @@
 
 - Update hhvm to 3.5.0 (Graham Campbell)
 
+- Update to PHP 5.4.36, 5.5.20, 5.6.4 (Graham Campbell)
+
 - Install grunt-cli for Node.js 0.8.x and up (Hiro Asari)
 
 - Update Riak to 2.0 (Zeeshan Lakhani)
@@ -29,6 +31,7 @@
 - Update Scala to 2.11.5 and SBT to 0.13.7 (Gilles Cornu)
 
 - Update Android SDK Tools to 24.0.2 (@ardock)
+- Add PostgreSQL 9.4 (Gilles Cornu)
 
 - io.js support via nvm (Jordan Harband)
 

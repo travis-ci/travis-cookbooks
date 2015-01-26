@@ -1,7 +1,7 @@
 Description
 -----------
 
-This cookbook is designed to install several versions of PostgreSQL for Continuous Integration purpose, and currently only supports Ubuntu 12.04LTS platform.
+This cookbook is designed to install several versions of PostgreSQL for Continuous Integration purpose, and currently only supports Ubuntu 12.04 and 14.04 platforms.
 
 The **default** recipe of this Chef cookbook will:
 
