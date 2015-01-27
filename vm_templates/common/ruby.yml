@@ -11,6 +11,7 @@ json:
       - name: jruby-1.7.18-d19
         arguments: --19
         check_for: jruby-d19
+      - name: jruby-9.0.0.0.pre1
       - name: ree
       - name: 1.9.2
       - name: 2.0.0
@@ -27,6 +28,7 @@ json:
       jruby-d19: jruby-1.7.18-d19
       jruby-18mode: jruby-d18
       jruby-19mode: jruby-d19
+      jruby-9000: jruby-9.0.0.0.pre1
       jruby: jruby-19mode
       "2.0": "ruby-2.0.0"
       "2.1": "ruby-2.1.5"

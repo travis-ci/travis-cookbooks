@@ -69,8 +69,7 @@ runit_service "travis-worker" do
           :user => "travis",
           :group => "travis",
           :docker => true,
-          :docker_languages => %w[android erlang go haskell jvm node-js perl php python ruby],
-          :start_hook_executable => node[:travis][:worker][:start_hook_executable]
+          :docker_languages => %w[android erlang go haskell jvm node-js perl php python ruby]
   template_name "travis-worker"
 end
 

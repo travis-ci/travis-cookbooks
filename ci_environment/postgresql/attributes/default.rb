@@ -1,8 +1,7 @@
 include_attribute 'travis_build_environment'
 
 default['postgresql']['default_version']     = '9.1'
-default['postgresql']['alternate_versions']  = %w(9.2 9.3 9.4) # Note that 9.4 is still in Beta phase, 
-                                                               # see http://www.postgresql.org/docs/devel/static/release-9-4.html
+default['postgresql']['alternate_versions']  = %w(9.2 9.3 9.4)
 
 default['postgresql']['enabled']             = true    # is default instance started on machine boot?
 

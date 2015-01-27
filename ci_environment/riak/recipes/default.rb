@@ -1,6 +1,10 @@
 #
 # Use Basho via APT to PACKAGECLOUD repository
 #
+package 'apt-transport-https' do
+  action :install
+end
+
 apt_repository 'basho-riak' do
   uri          'https://packagecloud.io/basho/riak/ubuntu/'
   distribution node["lsb"]["codename"]

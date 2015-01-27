@@ -7,7 +7,7 @@ else # usual base directory on unix systems:
   set['sbt-extras']['user_home_basedir']       = '/home'
 end
 
-default['sbt-extras']['download_url']          = 'https://raw.githubusercontent.com/paulp/sbt-extras/60b6f267d47e8dd915a3baaef3b0b63fef37e5dd/sbt'
+default['sbt-extras']['download_url']          = 'https://raw.githubusercontent.com/paulp/sbt-extras/5964af3f9a0e3235722a7267dda1ded4d6804543/sbt'
 
 default['sbt-extras']['setup_dir']             = '/usr/local/bin'
 default['sbt-extras']['script_name']           = 'sbt'
@@ -42,6 +42,6 @@ default['sbt-extras']['system_wide_defaults']         = false     # if enabled, 
 # Pre-install scala/sbt base dependencies in user home (~/.sbt/boot/..., ~/.ivy2/cache/...)
 #
 
-default['sbt-extras']['user_setup'][node['travis_build_environment']['user']]['sbt']   = %w{ 0.13.5 0.13.2 0.12.4 }
-default['sbt-extras']['user_setup'][node['travis_build_environment']['user']]['scala'] = %w{ 2.11.2 2.10.4 2.10.2 2.9.3 2.9.2 }
+default['sbt-extras']['user_setup'][node['travis_build_environment']['user']]['sbt']   = %w{ 0.13.7 0.13.2 0.12.4 }
+default['sbt-extras']['user_setup'][node['travis_build_environment']['user']]['scala'] = %w{ 2.11.5 2.10.4 2.10.2 2.9.3 2.9.2 }
 

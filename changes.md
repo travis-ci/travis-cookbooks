@@ -12,9 +12,11 @@
 
 - Update JRuby to 1.7.18 (Hiro Asari)
 
-- Update Node.js to 0.10.35 (Hiro Asari)
+- Pre-install JRuby 9.0.0.0.pre1 (Hiro Asari)
 
-- Update hhvm to 3.4.2 (Graham Campbell)
+- Update Node.js to 0.10.36 (Hiro Asari)
+
+- Update hhvm to 3.5.0 (Graham Campbell)
 
 - Update to PHP 5.4.36, 5.5.20, 5.6.4 (Graham Campbell)
 
@@ -23,6 +25,19 @@
 - Update Riak to 2.0 (Zeeshan Lakhani)
 
 - Replace OTP Release 17.3 with 17.4 (Hiro Asari)
+
+- Update Sphinx to 2.2.6 (Hiro Asari)
+
+- Update Scala to 2.11.5 and SBT to 0.13.7 (Gilles Cornu)
+
+- Update Android SDK Tools to 24.0.2 (@ardock)
+- Add PostgreSQL 9.4 (Gilles Cornu)
+
+- io.js support via nvm (Jordan Harband)
+
+- Node.js 0.11.15 (Graham Campbell)
+
+- Update to PHP 5.4.39, 5.5.21, 5.6.5 (Graham Campbell)
 
 ### Production on .org on 09.12.2014
 

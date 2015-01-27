@@ -46,6 +46,7 @@ recipes:
   - libncurses
   - libossp-uuid
   - libffi
+  - libicu
   - ragel
   - imagemagick
   - mingw32
