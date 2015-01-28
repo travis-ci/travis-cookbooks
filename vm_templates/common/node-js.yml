@@ -4,16 +4,15 @@ json:
       - 0.6.21
       - 0.8.27
       - 0.10.18
-      - 0.10.35
+      - 0.10.36
       - 0.11.15
-      - iojs-v1.0.4
     aliases:
       "0.10": '0.1'
       0.11.15: node-head
       0.11.15: node-unstable
-      iojs-v1.0.4: iojs
-    default: 0.10.35
+    default: 0.10.36
 recipes:
   - nodejs::multi
+  - nodejs::iojs
   - system_info
   - sweeper

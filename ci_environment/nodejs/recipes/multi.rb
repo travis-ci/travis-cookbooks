@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: node.js
+# Cookbook Name:: nodejs
 # Recipe:: multi
 # Copyright 2011-2013, Travis CI Development Team <contact@travis-ci.org>
 #
@@ -51,7 +51,7 @@ nvm = "source #{node.travis_build_environment.home}/.nvm/nvm.sh; nvm"
 
 node[:nodejs][:versions].each do |version|
   bash "installing node version #{version}" do
-    creates "#{node.travis_build_environment.home}/.nvm/#{version}"
+    creates "#{node.travis_build_environment.home}/.nvm/v#{version}"
     user  node.travis_build_environment.user
     group node.travis_build_environment.group
     cwd   node.travis_build_environment.home
@@ -71,7 +71,7 @@ node[:nodejs][:versions].each do |version|
         group node.travis_build_environment.group
         cwd   node.travis_build_environment.home
         environment({'HOME' => "#{node.travis_build_environment.home}"})
-        code "#{nvm} use v#{version}; npm install -g #{mod[:module]}"
+        code "#{nvm} use #{version}; npm install -g #{mod[:module]}"
       end
     end
   end
@@ -93,4 +93,8 @@ end
 bash "clean up build artifacts & sources" do
   user node.travis_build_environment.user
   code "rm -rf #{File.join(node.travis_build_environment.home, '.nvm', 'src')}"
+end
+
+def iojs?(version)
+  version =~ /^iojs/
 end
