@@ -1,5 +1,7 @@
 ### Upcoming:
 
+- Update sbt-extras script to fix travis-ci/travis-ci#3140 (Gilles Cornu)
+
 - Update Gradle to 2.2.1 (Gilles Cornu)
 
 - Update Python to 2.7.9 (Alex Gaynor)
