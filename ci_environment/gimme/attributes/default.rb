@@ -25,8 +25,8 @@
 #
 
 
-default['gimme']['url'] = 'https://raw.githubusercontent.com/meatballhat/gimme/v0.2.1/gimme'
-default['gimme']['sha256sum'] = '24dfd9d4bac40b45162bba7a1de66430df8ac3541f364797676c6e3de4a72761'
+default['gimme']['url'] = 'https://raw.githubusercontent.com/meatballhat/gimme/v0.2.2/gimme'
+default['gimme']['sha256sum'] = '1f200dd23b88b3ecb45ae6cc6897e3b669139f77f4a4b725aef985d1b17d73d4'
 default['gimme']['default_version'] = ''
 default['gimme']['versions'] = %w[]
 default['gimme']['install_user'] = 'travis'
