@@ -12,7 +12,7 @@
 
 - Add Ruby 2.2.0 (Hiro Asari)
 
-- Update JRuby to 1.7.18 (Hiro Asari)
+- Update JRuby to 1.7.19 (Hiro Asari)
 
 - Pre-install JRuby 9.0.0.0.pre1 (Hiro Asari)
 
