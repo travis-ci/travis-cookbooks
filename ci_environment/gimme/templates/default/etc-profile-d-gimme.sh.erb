@@ -1,0 +1,12 @@
+#!/bin/sh
+# Chef manages this file on <%= node.name %> <3 <3 <3
+
+GIMME_DEFAULT_VERSION=""
+
+if [ -s "$HOME/.gimme/version" ] ; then
+  GIMME_DEFAULT_VERSION="`cat "$HOME/.gimme/version"`"
+fi
+
+if [ -s "$HOME/.gimme/envs/go${GIMME_DEFAULT_VERSION}.env" ] ; then
+  . "$HOME/.gimme/envs/go${GIMME_DEFAULT_VERSION}.env" >/dev/null 2>&1
+fi

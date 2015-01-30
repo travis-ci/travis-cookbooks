@@ -2,7 +2,7 @@
 # Cookbook Name:: gvm
 # Recipe:: default
 #
-# Copyright 2012, Michael S. Klishin, Travis CI Development Team
+# Copyright 2015, Michael S. Klishin, Travis CI Development Team
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,28 +17,37 @@
 # limitations under the License.
 #
 
-include_recipe "build-essential"
-include_recipe "mercurial"
-include_recipe "git"
+include_recipe 'build-essential'
+include_recipe 'mercurial'
+include_recipe 'git'
 
-package "curl" do
+package 'curl' do
   action :install
 end
 
-bash "install GVM" do
-  user        node.travis_build_environment.user
-  cwd         node.travis_build_environment.home
-  environment Hash['HOME' => node.travis_build_environment.home, 'gvm_user_install_flag' => '1']
-  code        <<-SH
-  curl -s https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer -o /tmp/gvm-installer &&
-  bash /tmp/gvm-installer
-  rm   /tmp/gvm-installer
+install_env = {
+  'HOME' => node['travis_build_environment']['home'],
+  'gvm_user_install_flag' => '1',
+}
+
+install_env['GVM_NO_UPDATE_PROFILE'] = '1' unless node['gvm']['enable_profile_integration']
+
+bash 'install GVM' do
+  user node['travis_build_environment']['user']
+  cwd node['travis_build_environment']['home']
+  environment(install_env)
+  code <<-SH
+    set -e
+    curl -s https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer -o /tmp/gvm-installer
+    bash /tmp/gvm-installer
+    rm /tmp/gvm-installer
   SH
-  not_if      "test -f #{node.travis_build_environment.home}/.gvm/scripts/gvm"
+  not_if "test -f #{node['travis_build_environment']['home']}/.gvm/scripts/gvm"
 end
 
-cookbook_file "/etc/profile.d/gvm.sh" do
-  owner node.travis_build_environment.user
-  group node.travis_build_environment.group
+cookbook_file '/etc/profile.d/gvm.sh' do
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
   mode 0755
+  only_if { node['gvm']['enable_profile_integration'] }
 end

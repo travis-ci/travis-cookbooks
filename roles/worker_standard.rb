@@ -4,14 +4,15 @@
 name 'worker_standard'
 description 'Travis Standard Worker for Linux'
 default_attributes(
-  'golang' =>
-    { 'multi' =>
+  'gimme' =>
       {
-        'aliases' => [],
-        'default_version' => 'go1.3.1',
-        'versions' => ['go1.3.1']
-      }
-    },
+        'default_version' => '1.4.1',
+        'versions' => ['1.4.1']
+      },
+  'gvm' =>
+      {
+        'enable_profile_integration' => false
+      },
   'rvm' =>
       {
         'default' => '1.9.3',
@@ -19,9 +20,9 @@ default_attributes(
         'rubies' => [{ 'name' => '1.9.3' }]
       },
   'travis_build_environment' =>
-    {
-      'use_tmpfs_for_builds' => false,
-    }
+      {
+        'use_tmpfs_for_builds' => false,
+      }
 )
 run_list(
   #
@@ -31,7 +32,8 @@ run_list(
   'recipe[apt]',
   'recipe[build-essential]',
   'recipe[clang::tarball]',
-  'recipe[golang::multi]',
+  'recipe[gvm]',
+  'recipe[gimme]',
   'recipe[networking_basic]',
   'recipe[openssl]',
   'recipe[sysctl]',
