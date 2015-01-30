@@ -7,7 +7,7 @@ else # usual base directory on unix systems:
   set['sbt-extras']['user_home_basedir']       = '/home'
 end
 
-default['sbt-extras']['download_url']          = 'https://raw.githubusercontent.com/paulp/sbt-extras/5964af3f9a0e3235722a7267dda1ded4d6804543/sbt'
+default['sbt-extras']['download_url']          = 'https://raw.githubusercontent.com/paulp/sbt-extras/c117e2a7f28fafacbb7cb56490ff7896e5dc7d8f/sbt'
 
 default['sbt-extras']['setup_dir']             = '/usr/local/bin'
 default['sbt-extras']['script_name']           = 'sbt'

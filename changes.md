@@ -1,5 +1,7 @@
 ### Upcoming:
 
+- Update sbt-extras script to fix travis-ci/travis-ci#3140 (Gilles Cornu)
+
 - Update Gradle to 2.2.1 (Gilles Cornu)
 
 - Update Python to 2.7.9 (Alex Gaynor)
@@ -10,7 +12,7 @@
 
 - Add Ruby 2.2.0 (Hiro Asari)
 
-- Update JRuby to 1.7.18 (Hiro Asari)
+- Update JRuby to 1.7.19 (Hiro Asari)
 
 - Pre-install JRuby 9.0.0.0.pre1 (Hiro Asari)
 
