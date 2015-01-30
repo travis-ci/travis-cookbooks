@@ -9,10 +9,6 @@ default_attributes(
         'default_version' => '1.4.1',
         'versions' => ['1.4.1']
       },
-  'gvm' =>
-      {
-        'enable_profile_integration' => false
-      },
   'rvm' =>
       {
         'default' => '1.9.3',
@@ -32,7 +28,6 @@ run_list(
   'recipe[apt]',
   'recipe[build-essential]',
   'recipe[clang::tarball]',
-  'recipe[gvm]',
   'recipe[gimme]',
   'recipe[networking_basic]',
   'recipe[openssl]',

@@ -10,8 +10,6 @@ json:
     versions:
       - 1.4.1
     default_version: 1.4.1
-  gvm:
-    enable_profile_integration: false
   travis_build_environment:
     use_tmpfs_for_builds: false
 recipes:
@@ -24,7 +22,6 @@ recipes:
   - build-essential
   - ccache
   - clang::tarball
-  - gvm
   - gimme
   - networking_basic
   - openssl
