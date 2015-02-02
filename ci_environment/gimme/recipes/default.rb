@@ -25,7 +25,6 @@
 #
 
 include_recipe 'build-essential'
-include_recipe 'git'
 
 remote_file '/usr/local/bin/gimme' do
   source node['gimme']['url']
