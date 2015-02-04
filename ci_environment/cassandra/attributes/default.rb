@@ -1,4 +1,4 @@
-cassandra_version = "2.0.9"
+cassandra_version = "2.1.2"
 
 default[:cassandra] = {
   :version => cassandra_version,
