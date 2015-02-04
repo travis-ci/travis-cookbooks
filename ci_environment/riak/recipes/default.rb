@@ -33,3 +33,7 @@ template "/etc/riak/riak.conf" do
   group  'riak'
   mode   0644
 end
+
+execute "remove Bashio APT package source" do
+  command "rm -f /etc/apt/sources.list.d/basho-riak-source.list"
+end
