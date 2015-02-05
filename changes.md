@@ -1,5 +1,7 @@
 ### Upcoming:
 
+### Production on 2015-02-03:
+
 - Update sbt-extras script to fix travis-ci/travis-ci#3140 (Gilles Cornu)
 
 - Update Gradle to 2.2.1 (Gilles Cornu)
@@ -8,7 +10,7 @@
 
 - Drop Python 3.4.0, PyPy 2.3.1, PyPy3 2.3.1 (Donald Stufft)
 
-- Update to Go 1.4 (Hiro Asari)
+- Update to Go 1.4.1 (Dan Buch)
 
 - Add Ruby 2.2.0 (Hiro Asari)
 
@@ -28,11 +30,12 @@
 
 - Replace OTP Release 17.3 with 17.4 (Hiro Asari)
 
-- Update Sphinx to 2.2.6 (Hiro Asari)
+- Update Sphinx to 2.2.6, and make it default (Hiro Asari)
 
 - Update Scala to 2.11.5 and SBT to 0.13.7 (Gilles Cornu)
 
 - Update Android SDK Tools to 24.0.2 (@ardock)
+
 - Add PostgreSQL 9.4 (Gilles Cornu)
 
 - io.js support via nvm (Jordan Harband)
@@ -40,6 +43,8 @@
 - Node.js 0.11.15 (Graham Campbell)
 
 - Update to PHP 5.4.39, 5.5.21, 5.6.5 (Graham Campbell)
+
+- Drop PHP 5.2.17 (Hiro Asari)
 
 ### Production on .org on 09.12.2014
 

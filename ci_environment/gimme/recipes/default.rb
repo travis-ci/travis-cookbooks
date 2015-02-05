@@ -24,13 +24,45 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
+include_recipe 'build-essential'
+
 remote_file '/usr/local/bin/gimme' do
   source node['gimme']['url']
   checksum node['gimme']['sha256sum']
   owner 'root'
   group 'root'
-  mode '0755'
+  mode 0755
 end
+
+directory "#{node['gimme']['install_user_home']}/.gimme" do
+  owner node['gimme']['install_user']
+  group node['gimme']['install_user']
+  mode 0750
+end
+
+file "#{node['gimme']['install_user_home']}/.gimme/version" do
+  content "#{node['gimme']['default_version']}"
+  owner node['gimme']['install_user']
+  group node['gimme']['install_user']
+  mode 0640
+  not_if { node['gimme']['default_version'].empty? }
+end
+
+template '/etc/profile.d/Z90-gimme.sh' do
+  source 'etc-profile-d-gimme.sh.erb'
+  variables(default_version: node['gimme']['default_version'])
+  owner 'root'
+  group 'root'
+  mode 0755
+end
+
+install_env = {
+  'GIMME_ENV_PREFIX' => "#{node['gimme']['install_user_home']}/.gimme/envs",
+  'GIMME_VERSION_PREFIX' => "#{node['gimme']['install_user_home']}/.gimme/versions",
+  'HOME' => node['gimme']['install_user_home'],
+}
+
+install_env['GIMME_DEBUG'] = '1' if node['gimme']['debug']
 
 node['gimme']['versions'].each do |version|
   log "running gimme install of #{version}" do
@@ -39,12 +71,9 @@ node['gimme']['versions'].each do |version|
 
   execute "gimme_install_#{version}" do
     command 'gimme'
-    environment(
-      'GIMME_GO_VERSION' => version,
-      'GIMME_VERSION_PREFIX' => "#{node['gimme']['install_user_home']}/.gimme/versions",
-      'GIMME_ENV_PREFIX' => "#{node['gimme']['install_user_home']}/.gimme/envs",
-      'HOME' => node['gimme']['install_user_home'],
-    )
+    environment(install_env.merge('GIMME_GO_VERSION' => version))
     user node['gimme']['install_user']
+    group node['gimme']['install_user']
+    umask 0077
   end
 end

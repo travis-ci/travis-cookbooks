@@ -6,12 +6,10 @@ json:
     gems:
       - bundler
       - rake
-  golang:
-    multi:
-      versions:
-        - go1.4
-      aliases: []
-      default_version: go1.4
+  gimme:
+    versions:
+      - 1.4.1
+    default_version: 1.4.1
   travis_build_environment:
     use_tmpfs_for_builds: false
 recipes:
@@ -24,7 +22,7 @@ recipes:
   - build-essential
   - ccache
   - clang::tarball
-  - golang::multi
+  - gimme
   - networking_basic
   - openssl
   - sysctl
