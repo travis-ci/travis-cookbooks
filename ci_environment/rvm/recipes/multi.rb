@@ -62,6 +62,7 @@ bash "installing #{default_ruby} with RVM arguments #{default_ruby_arguments}" d
   setup.call(self)
   code   "#{bin_rvm} install #{default_ruby} --verify-downloads 1 -j 3 #{default_ruby_arguments} && #{rvm} alias create default #{default_ruby}"
   not_if "#{rvm} #{default_ruby} do echo 'Found'"
+  timeout 5400 # 90 minutes
 end
 
 node.rvm.rubies.
