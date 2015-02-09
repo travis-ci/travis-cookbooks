@@ -17,6 +17,10 @@
 # limitations under the License.
 #
 
+execute "apt-get update" do
+  action :run
+end
+
 case node['platform']
 when "ubuntu","debian"
   %w{build-essential binutils-doc}.each do |pkg|
