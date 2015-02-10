@@ -30,15 +30,6 @@ template "/root/.bashrc" do
   source "root/dot_bashrc.sh.erb"
 end
 
-cookbook_file "/usr/local/bin/recover_eth0.sh" do
-  owner "root"
-  group "root"
-  mode 0755
-
-  source "root/recover_eth0.sh"
-end
-
-
 cron "make sure eth0 is up" do
   command "/usr/local/bin/recover_eth0.sh"
 end
