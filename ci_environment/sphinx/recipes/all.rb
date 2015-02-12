@@ -33,7 +33,7 @@ script 'download libstemmer once' do
   code <<-SHELL
     mkdir -p /tmp/sphinx_install
     cd /tmp/sphinx_install
-    wget http://snowball.tartarus.org/dist/libstemmer_c.tgz
+    curl -L -o libstemmer_c.tgz https://api.github.com/repos/zvelo/libstemmer/tarball/master
   SHELL
 end
 
@@ -45,11 +45,12 @@ node.sphinx.versions.each do |version, path|
     code <<-SHELL
       cd /tmp/sphinx_install
       wget http://www.sphinxsearch.com/files/sphinx-#{version}.tar.gz
-      tar zxvf sphinx-#{version}.tar.gz
+      tar zxf sphinx-#{version}.tar.gz
       cp libstemmer_c.tgz sphinx-#{version}/libstemmer_c.tgz
-      cd sphinx-#{version}
-      tar zxvf libstemmer_c.tgz
-      sed -i -e 's/stem_ISO_8859_1_hungarian/stem_ISO_8859_2_hungarian/g' libstemmer_c/Makefile.in
+      cd sphinx-#{version}/libstemmer_c
+      tar zxvf ../libstemmer_c.tgz --strip-components 1
+      cd ..
+      sed -i -e 's/stem_ISO_8859_2_hungarian/stem_ISO_8859_1_hungarian/g' libstemmer_c/Makefile.in
       ./configure --with-mysql --with-pgsql --with-libstemmer --prefix=#{path}
       make && make install
     SHELL
