@@ -51,14 +51,16 @@ basedir         = /usr
 datadir         = <%= node['mysql']['data_dir'] %>
 tmpdir          = /tmp
 skip-external-locking
+
 #
 # Instead of skip-networking the default is now to listen only on
 # localhost which is more compatible and is not less secure.
 bind-address            = <%= node['mysql']['bind_address'] %>
 
+innodb_file_format     = Barracuda
 collation_server       = utf8_unicode_ci
 character_set_server   = utf8
-
+innodb_large_prefix
 
 #
 # * Fine Tuning
