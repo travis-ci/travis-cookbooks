@@ -57,6 +57,7 @@ skip-external-locking
 # localhost which is more compatible and is not less secure.
 bind-address            = <%= node['mysql']['bind_address'] %>
 
+innodb_file_per_table  = true
 innodb_file_format     = Barracuda
 collation_server       = utf8_unicode_ci
 character_set_server   = utf8
