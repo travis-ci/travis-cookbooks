@@ -1,5 +1,3 @@
-#!/usr/bin/env rake
-
 require 'foodcritic'
 require 'rspec/core/rake_task'
 
@@ -13,4 +11,3 @@ FoodCritic::Rake::LintTask.new do |t|
 end
 
 RSpec::Core::RakeTask.new
-
