@@ -1,0 +1,23 @@
+AllCops:
+  Include:
+    - Berksfile
+    - Gemfile
+    - Guardfile
+    - Rakefile
+  Exclude:
+    - test/**/*
+    - vendor/**/*
+    - ruby/**/*
+
+AlignParameters:
+  Enabled: false
+Encoding:
+  Enabled: false
+HashSyntax:
+  Enabled: false
+LineLength:
+  Enabled: false
+MethodLength:
+  Max: 30
+Metrics/AbcSize:
+  Enabled: false
