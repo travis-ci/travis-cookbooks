@@ -7,6 +7,10 @@
 # MIT License
 #
 
+package 'apt-transport-https' do
+  action :install
+end
+
 apt_repository 'docker.io' do
   uri 'https://get.docker.com/ubuntu'
   distribution node['lsb']['codename']
