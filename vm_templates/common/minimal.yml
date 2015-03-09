@@ -35,6 +35,7 @@ recipes:
   - md5deep
   - dictionaries
   - jq
+  - docker
 
   - sqlite
   #
