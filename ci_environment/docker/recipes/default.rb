@@ -25,7 +25,9 @@ package "lxc" do
   action :install
 end
 
-package "lxc-docker-#{node['docker']['version']}" do
+pkg = 'lxc-docker'
+pkg += "-#{node['docker']['version']}" if node['docker']['version']
+package pkg do
   action :install
 end
 
