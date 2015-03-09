@@ -1,0 +1,3 @@
+[submodule "ci_environment/chef-docker"]
+	path = ci_environment/chef-docker
+	url = https://github.com/bflad/chef-docker.git
