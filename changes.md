@@ -2,6 +2,8 @@
 
 - Update hhvm to 3.5.1 (Graham Campbell)
 
+- Update to PHP 5.4.38, 5.5.21, 5.6.6 (Graham Campbell)
+
 ### Production on 2015-02-03:
 
 - Update sbt-extras script to fix travis-ci/travis-ci#3140 (Gilles Cornu)
