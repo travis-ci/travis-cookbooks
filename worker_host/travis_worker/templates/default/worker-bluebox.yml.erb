@@ -23,6 +23,14 @@ linux:
 <% if @bluebox[:ipv6_only] -%>
     ipv6_only: <%= @bluebox[:ipv6_only] %>
 <% end -%>
+<% if @open_stack -%>
+  open_stack:
+    api_key: <%= @open_stack[:api_key] %>
+    username: <%= @open_stack[:username] %>
+    auth_url: <%= @open_stack[:auth_url] %>
+    tenant: <%= @open_stack[:tenant] %>
+    flavor_id: <%= @open_stack[:flavor_id %>
+<% end -%>
   librato:
     email: <%= @librato[:email] %>
     token: <%= @librato[:api_token] %>
