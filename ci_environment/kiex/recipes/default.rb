@@ -5,7 +5,7 @@
 # Copyright 2014, Travis CI GmbH
 #
 
-include_recipe 'kerl::binary'
+include_recipe 'kerl::source'
 
 env  = {
   'HOME'               => "/home/#{node.travis_build_environment.user}",
