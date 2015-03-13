@@ -8,6 +8,7 @@
 #
 
 include_recipe 'apt'
+include_recipe 'travis_build_environment'
 
 apt_repository 'docker' do
   uri "https://get.docker.io/ubuntu"
