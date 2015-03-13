@@ -4,8 +4,6 @@ json:
     rubies:
       - name: 1.9.3
     gems:
-      - bundler
-      - rake
       - nokogiri
   gimme:
     versions:
