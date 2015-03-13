@@ -6,6 +6,7 @@ json:
     gems:
       - bundler
       - rake
+      - nokogiri
   gimme:
     versions:
       - 1.4.1
