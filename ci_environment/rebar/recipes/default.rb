@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'kerl::binary'
+include_recipe 'kerl::source'
 
 remote_file("/usr/local/bin/rebar") do
   source node.rebar.release
