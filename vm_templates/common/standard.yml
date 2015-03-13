@@ -10,6 +10,11 @@ json:
     versions:
       - 1.4.1
     default_version: 1.4.1
+  python:
+    pyenv:
+      pythons:
+        - 2.7.9
+        - 3.4.3
   travis_build_environment:
     use_tmpfs_for_builds: false
 recipes:
@@ -69,8 +74,8 @@ recipes:
   #
   # Python and pip
   #
-  - python
-  - python::pip
+  - python::pyenv
+  - python::system
   #
   # Node.js
   #
