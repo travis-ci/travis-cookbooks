@@ -4,8 +4,7 @@ json:
     rubies:
       - name: 2.1.5
     gems:
-      - bundler
-      - rake
+      - nokogiri
   gimme:
     versions:
       - 1.4.1
