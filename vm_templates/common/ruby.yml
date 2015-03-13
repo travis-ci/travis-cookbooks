@@ -20,9 +20,7 @@ json:
       - name: 2.1.5
       - name: 2.2.0
       - name: 2.2.1
-    gems:
-      - bundler
-      - rake
+    gems: []
     aliases:
       jruby-d18: jruby-1.7.19-d18
       jruby-d19: jruby-1.7.19-d19
