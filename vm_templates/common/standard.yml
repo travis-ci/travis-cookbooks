@@ -12,9 +12,7 @@ json:
     default_version: 1.4.1
   python:
     pyenv:
-      pythons:
-        - 2.7.9
-        - 3.4.3
+      pythons: []
   travis_build_environment:
     use_tmpfs_for_builds: false
 recipes:
