@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "mysql::client"
-
 # yes, for the CI environment, empty password is a good idea. VM is rolled back after eack run anyway.
 node.set_unless['mysql']['server_debian_password'] = ""
 node.set_unless['mysql']['server_root_password']   = ""
