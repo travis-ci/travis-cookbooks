@@ -1,5 +1,7 @@
 default['mysql']['deb']['version'] = '5.6.23'
 
+default['mysql']['deb']['config']['version'] = '0.3.3'
+
 default['mysql']['deb']['checksum'] = {
   '14.04' => {
     '5.6.23' => 'df869344a50a58f2c356c71e71ddfa5e62ff7e187ab8fd3b1ac2e97d98ef963f'

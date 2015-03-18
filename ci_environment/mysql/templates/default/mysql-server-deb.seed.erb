@@ -1,0 +1,3 @@
+mysql-server-<%= /^\d+\.\d+/.match(node['mysql']['deb']['version'])[0] %> mysql-server/root_password_again select <%= node['mysql']['server_root_password'] %>
+mysql-server-<%= /^\d+\.\d+/.match(node['mysql']['deb']['version'])[0] %> mysql-server/root_password       select <%= node['mysql']['server_root_password'] %>
+mysql-server-<%= /^\d+\.\d+/.match(node['mysql']['deb']['version'])[0] %> mysql-server/start_on_boot       boolean true
