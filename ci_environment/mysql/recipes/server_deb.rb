@@ -18,6 +18,8 @@
 # limitations under the License.
 #
 
+include_recipe 'mysql::deb'
+
 # yes, for the CI environment, empty password is a good idea. VM is rolled back after eack run anyway.
 node.set_unless['mysql']['server_debian_password'] = ""
 node.set_unless['mysql']['server_root_password']   = ""
@@ -25,47 +27,14 @@ node.set_unless['mysql']['server_repl_password']   = ""
 
 # Install prerequisites, including apparmor, which is installed here,
 # only to satisfy the *.deb packages' requirements
+
 package 'libaio1'
 package 'apparmor'
 package 'apparmor-utils'
 
-###
-# Install MySQL server from deb packages from mysql.com
-###
-version = node.mysql.deb.version
-version_major_minor = /^\d+\.\d+/.match(version)[0]
-
-apt_config_file = File.join(Chef::Config[:file_cache_path], 'mysql-apt-config.deb')
-
-remote_file apt_config_file do
-  source "http://dev.mysql.com/get/mysql-apt-config_#{node.mysql.deb.config.version}-2ubuntu#{node.platform_version}_all.deb"
+node.mysql.deb.server.packages.each do |pkg|
+  package pkg
 end
-
-# tar_path = File.join(Chef::Config[:file_cache_path], 'mysql-server-deb-bundle.tar')
-
-# remote_file tar_path do
-#   source "http://dev.mysql.com/get/Downloads/MySQL-#{version_major_minor}/mysql-server_#{version}-1ubuntu#{node.platform_version}_amd64.deb-bundle.tar"
-#   checksum node.mysql.deb.checksum[node.platform_version][node.mysql.deb.version]
-#   user node.travis_build_environment.user
-#   not_if "test -f #{tar_path}"
-# end
-
-# bash "expand MySQL tar file" do
-#   cwd File.dirname(tar_path)
-#   user node.travis_build_environment.user
-#   code "tar xf #{tar_path}"
-#   not_if "ls #{File.dirname(tar_path)}/*mysql*.deb"
-# end
-
-# node.mysql.deb.server.packages.each do |pkg|
-#   pkg_name = "#{pkg}_#{version}-1ubuntu#{node.platform_version}_amd64.deb"
-#   dpkg_package pkg do
-#     source File.join(File.dirname(tar_path), pkg_name)
-#     action :install
-#   end
-# end
-
-###
 
 if platform?(%w{debian ubuntu})
 
@@ -74,19 +43,6 @@ if platform?(%w{debian ubuntu})
     group "root"
     mode 0755
     recursive true
-  end
-
-  execute "preseed mysql-apt-config" do
-    command "debconf-set-selections /var/cache/local/preseeding/mysql-apt-config.seed"
-    action :nothing
-  end
-
-  template "/var/cache/local/preseeding/mysql-apt-config.seed" do
-    source "mysql-apt-config.seed.erb"
-    owner "root"
-    group "root"
-    mode "0600"
-    notifies :run, resources(:execute => "preseed mysql-apt-config"), :immediately
   end
 
   execute "preseed mysql-server" do
