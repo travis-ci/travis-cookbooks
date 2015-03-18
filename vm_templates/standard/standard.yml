@@ -1,4 +1,5 @@
 recipes:
-  - mysql::client
+  - mysql::client_deb
+  - mysql::server_deb
   - mysql::server_on_ramfs
   - python::devshm
