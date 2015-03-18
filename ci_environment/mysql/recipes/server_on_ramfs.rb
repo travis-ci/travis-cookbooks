@@ -43,6 +43,8 @@ include_recipe "ramfs"
 # next, install the packages, do pre-seeding, restart mysqld all from a regular
 # ext3 mount.
 
+include_recipe "mysql::server_deb"
+
 log "['mysql']['data_dir'] = #{node['mysql']['data_dir']}"
 log "[:mysql][:data_dir] = #{node[:mysql][:data_dir]}"
 
