@@ -22,3 +22,11 @@ end
 dpkg_package 'mysql-apt-config' do
   source apt_config_file
 end
+
+execute 'reconfigure mysql-apt-config' do
+  command 'dpkg-reconfigure mysql-apt-config'
+end
+
+execute 'update APT packag list' do
+  command 'apt-get update -qq'
+end
