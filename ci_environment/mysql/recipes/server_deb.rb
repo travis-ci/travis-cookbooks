@@ -78,9 +78,6 @@ end
 service "mysql" do
   service_name value_for_platform([ "centos", "redhat", "suse", "fedora" ] => {"default" => "mysqld"}, "default" => "mysql")
 
-  if (platform?("ubuntu") && node.platform_version.to_f >= 11.04)
-    provider Chef::Provider::Service::Upstart
-  end
   supports :status => true, :restart => true, :reload => true
   if node['mysql']['enabled']
     action :enable
