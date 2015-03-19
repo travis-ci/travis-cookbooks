@@ -32,10 +32,6 @@ package 'libaio1'
 package 'apparmor'
 package 'apparmor-utils'
 
-node.mysql.deb.server.packages.each do |pkg|
-  package pkg
-end
-
 if platform?(%w{debian ubuntu})
 
   directory "/var/cache/local/preseeding" do
@@ -64,6 +60,10 @@ if platform?(%w{debian ubuntu})
     group "root"
     mode "0600"
   end
+end
+
+node.mysql.deb.server.packages.each do |pkg|
+  package pkg
 end
 
 # Remove apparmor again, to put this recipe in line with 'mysql::server'
