@@ -15,10 +15,10 @@ default['mysql']['deb']['checksum'] = {
 # package at a time, and dependency resolution is not possible
 default['mysql']['deb']['client']['packages'] = %w(
   mysql-common
-  libmysqlclient18
-  libmysqlclient-dev
   mysql-community-client
   mysql-client
+  libmysqlclient18
+  libmysqlclient-dev
 )
 default['mysql']['deb']['server']['packages'] = %w(
   mysql-community-server
