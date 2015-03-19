@@ -29,8 +29,6 @@ node.set_unless['mysql']['server_repl_password']   = ""
 # only to satisfy the *.deb packages' requirements
 
 package 'libaio1'
-package 'apparmor'
-package 'apparmor-utils'
 
 if platform?(%w{debian ubuntu})
 
@@ -62,10 +60,6 @@ if platform?(%w{debian ubuntu})
   end
 end
 
-node.mysql.deb.server.packages.each do |pkg|
-  package pkg
-end
-
 # Remove apparmor again, to put this recipe in line with 'mysql::server'
 package "apparmor" do
   action :remove
@@ -75,6 +69,10 @@ end
 package "apparmor-utils" do
   action :remove
   ignore_failure true
+end
+
+node.mysql.deb.server.packages.each do |pkg|
+  package pkg
 end
 
 service "mysql" do
