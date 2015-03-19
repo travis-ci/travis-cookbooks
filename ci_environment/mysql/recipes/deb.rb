@@ -24,9 +24,9 @@ dpkg_package 'mysql-apt-config' do
 end
 
 execute 'reconfigure mysql-apt-config' do
-  command 'dpkg-reconfigure mysql-apt-config'
+  command 'env DEBIAN_FRONTEND=noninteractive dpkg-reconfigure mysql-apt-config'
 end
 
 execute 'update APT packag list' do
-  command 'apt-get update -qq'
+  command 'apt-get update'
 end
