@@ -4,6 +4,8 @@
 
 - Update to PHP 5.4.38, 5.5.21, 5.6.6 (Graham Campbell)
 
+- Update to Node.js 0.10.37 (Graham Campbell)
+
 ### Production on 2015-02-03:
 
 - Update sbt-extras script to fix travis-ci/travis-ci#3140 (Gilles Cornu)
