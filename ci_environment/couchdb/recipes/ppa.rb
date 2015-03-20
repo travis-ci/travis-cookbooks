@@ -40,3 +40,11 @@ file '/etc/init/couchdb.override' do
   mode 0644
   content 'manual'
 end
+
+cookbook_file "/etc/couchdb/local.d/erlang_query_server.ini" do
+  source "erlang_query_server.ini"
+  owner "root"
+  group "root"
+  mode 0644
+  notifies :restart, resources(:service => "couchdb")
+end
