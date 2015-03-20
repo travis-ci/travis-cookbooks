@@ -1,6 +1,6 @@
 ### Upcoming:
 
-- Update hhvm to 3.5.1 (Graham Campbell)
+- Update hhvm to 3.6.0 (Graham Campbell)
 
 - Update to PHP 5.4.38, 5.5.21, 5.6.6 (Graham Campbell)
 
@@ -22,11 +22,7 @@
 
 - Pre-install JRuby 9.0.0.0.pre1 (Hiro Asari)
 
-- Update Node.js to 0.10.36 (Hiro Asari)
-
 - Update hhvm to 3.5.0 (Graham Campbell)
-
-- Update to PHP 5.4.36, 5.5.20, 5.6.4 (Graham Campbell)
 
 - Install grunt-cli for Node.js 0.8.x and up (Hiro Asari)
 
