@@ -93,7 +93,7 @@ query_cache_size        = <%= node['mysql']['tunable']['query_cache_size'] %>
 # Error logging goes to syslog. This is a Debian improvement :)
 #
 # Here you can see queries with especially long duration
-slow_query_log_file     = <%= node['mysql']['tunable']['log_slow_queries'] %>
+slow_query_log_file     = <%= node['mysql']['tunable']['slow_query_log_file'] %>
 long_query_time         = <%= node['mysql']['tunable']['long_query_time'] %>
 log-queries-not-using-indexes
 #
