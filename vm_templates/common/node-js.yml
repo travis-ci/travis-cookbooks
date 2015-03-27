@@ -4,14 +4,14 @@ json:
       - 0.6.21
       - 0.8.27
       - 0.10.18
-      - 0.10.37
+      - 0.10.38
       - 0.11.16
-      - 0.12.0
+      - 0.12.1
     aliases:
       "0.10": '0.1'
       0.11.16: node-head
       0.11.16: node-unstable
-    default: 0.12.0
+    default: 0.12.1
 recipes:
   - nodejs::multi
   - nodejs::iojs
