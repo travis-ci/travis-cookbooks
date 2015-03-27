@@ -1,6 +1,6 @@
 ### Upcoming:
 
-- Update hhvm to 3.6.0 (Graham Campbell)
+- Update hhvm to 3.6.1 (Graham Campbell)
 
 - Update to PHP 5.4.38, 5.5.21, 5.6.6 (Graham Campbell)
 
