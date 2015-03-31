@@ -1,0 +1,75 @@
+# Chef manages this file on <%= node.name %> <3 <3 <3
+# vim:filetype=yaml
+disable_root: true
+preserve_hostname: true
+
+bootcmd:
+- "echo worker-linux-docker-${INSTANCE_ID#i-} > /etc/hostname"
+- "hostname -F /etc/hostname"
+
+timezone: "UTC"
+
+cloud_init_modules:
+- "migrator"
+- "seed_random"
+- "bootcmd"
+- "write-files"
+- "growpart"
+- "resizefs"
+- "ca-certs"
+- "rsyslog"
+- "ssh"
+
+cloud_config_modules:
+- "emit_upstart"
+- "disk_setup"
+- "mounts"
+- "ssh-import-id"
+- "locale"
+- "set-passwords"
+- "grub-dpkg"
+- "apt-pipelining"
+- "apt-configure"
+- "package-update-upgrade-install"
+- "timezone"
+- "disable-ec2-metadata"
+- "runcmd"
+
+cloud_final_modules:
+- "scripts-vendor"
+- "scripts-per-once"
+- "scripts-per-boot"
+- "scripts-per-instance"
+- "scripts-user"
+- "ssh-authkey-fingerprints"
+- "keys-to-console"
+- "phone-home"
+- "final-message"
+- "power-state-change"
+
+system_info:
+  distro: "ubuntu"
+  paths:
+    cloud_dir: "/var/lib/cloud/"
+    templates_dir: "/etc/cloud/templates/"
+    upstart_dir: "/etc/init/"
+  package_mirrors:
+  - arches:
+    - "i386"
+    - "amd64"
+    failsafe:
+      primary: "http://archive.ubuntu.com/ubuntu"
+      security: "http://security.ubuntu.com/ubuntu"
+    search:
+      primary:
+      - "http://%(ec2_region)s.ec2.archive.ubuntu.com/ubuntu/"
+      - "http://%(availability_zone)s.clouds.archive.ubuntu.com/ubuntu/"
+      security: []
+  - arches:
+    - "armhf"
+    - "armel"
+    - "default"
+    failsafe:
+      primary: "http://ports.ubuntu.com/ubuntu-ports"
+      security: "http://ports.ubuntu.com/ubuntu-ports"
+  ssh_svcname: "ssh"

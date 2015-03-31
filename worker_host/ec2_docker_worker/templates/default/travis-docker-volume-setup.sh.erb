@@ -1,0 +1,22 @@
+#!/bin/bash
+# Chef manages this file on <%= node.name %> <3 <3 <3
+
+set -ex
+
+: ${DEVICE:=<%= @device %>}
+: ${METADATA_SIZE:=<%= @metadata_size %>}
+
+if [[ -e /dev/direct-lvm/metadata ]] ; then
+  echo "$(basename $0): Metadata volume already exists.  Assuming set up"
+  exit 0
+fi
+
+pvcreate "$DEVICE"
+
+vgcreate direct-lvm $DEVICE
+
+lvcreate -n metadata direct-lvm --size "$METADATA_SIZE"
+dd if=/dev/zero of=/dev/direct-lvm/metadata bs=1M count=10
+
+lvcreate -n data direct-lvm -l '100%FREE'
+dd if=/dev/zero of=/dev/direct-lvm/data bs=1M count=10
