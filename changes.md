@@ -4,7 +4,7 @@
 
 - Update to PHP 5.4.39, 5.5.22, 5.6.7 (Graham Campbell)
 
-- Update to Node.js 0.10.37 (Graham Campbell)
+- Update to Node.js 0.10.38 and 0.12.1 (Graham Campbell)
 
 ### Production on 2015-02-03:
 
