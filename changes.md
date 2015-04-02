@@ -10,6 +10,8 @@
 
 - Update to Go 1.4.2 (Hiro Asari)
 
+- Update MySQL to 5.6.23 with mysql.com packages (Hiro Asari)
+
 ### Production on 2015-02-03:
 
 - Update sbt-extras script to fix travis-ci/travis-ci#3140 (Gilles Cornu)
