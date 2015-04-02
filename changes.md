@@ -6,6 +6,8 @@
 
 - Update to Node.js 0.10.38 and 0.12.1 (Graham Campbell)
 
+- Update Sphinx to 2.2.8 (Hiro Asari)
+
 ### Production on 2015-02-03:
 
 - Update sbt-extras script to fix travis-ci/travis-ci#3140 (Gilles Cornu)
