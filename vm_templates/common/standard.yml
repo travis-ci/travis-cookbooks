@@ -7,8 +7,8 @@ json:
       - nokogiri
   gimme:
     versions:
-      - 1.4.1
-    default_version: 1.4.1
+      - 1.4.2
+    default_version: 1.4.2
   python:
     pyenv:
       pythons: []

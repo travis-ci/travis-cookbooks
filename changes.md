@@ -8,6 +8,8 @@
 
 - Update Sphinx to 2.2.8 (Hiro Asari)
 
+- Update to Go 1.4.2 (Hiro Asari)
+
 ### Production on 2015-02-03:
 
 - Update sbt-extras script to fix travis-ci/travis-ci#3140 (Gilles Cornu)
