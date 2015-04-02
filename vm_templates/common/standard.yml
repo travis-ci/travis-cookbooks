@@ -25,6 +25,7 @@ recipes:
   - ccache
   - clang::tarball
   - gimme
+  - wget
   - networking_basic
   - openssl
   - sysctl
