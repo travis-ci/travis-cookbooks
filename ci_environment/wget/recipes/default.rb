@@ -10,6 +10,8 @@ package 'wget' do
   action :purge
 end
 
+package 'pkg-config'
+
 package 'libgnutls-dev'
 
 ark 'wget' do
