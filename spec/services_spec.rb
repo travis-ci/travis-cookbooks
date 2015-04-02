@@ -6,7 +6,7 @@ require 'spec_helper'
 #
 
 [
-  { :cookbook => 'mysql',         :recipe => 'server_on_ramfs',        :name => 'mysql',           :provider => :upstart,  :autostart => true  },
+  { :cookbook => 'mysql',         :recipe => 'server_on_ramfs',        :name => 'mysql',           :provider => :default,  :autostart => true  },
   { :cookbook => 'postgresql',    :recipe => 'default',                :name => 'postgresql',      :provider => :default,  :autostart => true  },
 
   { :cookbook => 'mongodb',       :recipe => 'default',                :name => 'mongodb',         :provider => :default,  :autostart => false },

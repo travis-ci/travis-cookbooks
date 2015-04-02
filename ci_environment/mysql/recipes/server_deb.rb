@@ -3,6 +3,7 @@
 # Recipe:: server
 #
 # Copyright 2008-2011, Opscode, Inc.
+# Copyright 2015, Travis CI GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,10 +18,17 @@
 # limitations under the License.
 #
 
+include_recipe 'mysql::deb'
+
 # yes, for the CI environment, empty password is a good idea. VM is rolled back after eack run anyway.
 node.set_unless['mysql']['server_debian_password'] = ""
 node.set_unless['mysql']['server_root_password']   = ""
 node.set_unless['mysql']['server_repl_password']   = ""
+
+# Install prerequisites, including apparmor, which is installed here,
+# only to satisfy the *.deb packages' requirements
+
+package 'libaio1'
 
 if platform?(%w{debian ubuntu})
 
@@ -37,7 +45,7 @@ if platform?(%w{debian ubuntu})
   end
 
   template "/var/cache/local/preseeding/mysql-server.seed" do
-    source "mysql-server.seed.erb"
+    source "mysql-server-deb.seed.erb"
     owner "root"
     group "root"
     mode "0600"
@@ -52,8 +60,7 @@ if platform?(%w{debian ubuntu})
   end
 end
 
-# wipe out apparmor on 11.04 and later, it prevents MySQLd from restarting for now
-# good reasons (as far as CI goes). MK.
+# Remove apparmor again, to put this recipe in line with 'mysql::server'
 package "apparmor" do
   action :remove
   ignore_failure true
@@ -64,16 +71,13 @@ package "apparmor-utils" do
   ignore_failure true
 end
 
-package "mysql-server" do
-  action :install
+node.mysql.deb.server.packages.each do |pkg|
+  package pkg
 end
 
 service "mysql" do
   service_name value_for_platform([ "centos", "redhat", "suse", "fedora" ] => {"default" => "mysqld"}, "default" => "mysql")
 
-  if (platform?("ubuntu") && node.platform_version.to_f >= 11.04)
-    provider Chef::Provider::Service::Upstart
-  end
   supports :status => true, :restart => true, :reload => true
   if node['mysql']['enabled']
     action :enable
