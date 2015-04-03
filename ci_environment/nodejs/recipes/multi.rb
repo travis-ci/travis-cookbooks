@@ -59,10 +59,6 @@ node[:nodejs][:versions].each do |version|
     code  "#{nvm} install v#{version}"
   end
 
-  bash "update npm to the latest version" do
-    code "nvm_download -L https://npmjs.org/install.sh -o - | clean=yes sh"
-  end
-
   node[:nodejs][:default_modules].each do |mod|
     if Gem::Version.new(version) >= Gem::Version.new(mod[:required])
       bash "install #{mod[:module]} for node version #{version}" do
