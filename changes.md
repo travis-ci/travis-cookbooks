@@ -14,6 +14,8 @@
 
 - Update Firefox to 31.6.0esr (Hiro Asari)
 
+- Update maven 3.2.5 to 3.3.1 (Hiro Asari)
+
 ### Production on 2015-02-03:
 
 - Update sbt-extras script to fix travis-ci/travis-ci#3140 (Gilles Cornu)
