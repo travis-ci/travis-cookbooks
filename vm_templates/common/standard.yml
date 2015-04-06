@@ -106,6 +106,7 @@ recipes:
   - firefox::tarball
   - chromium
   - phantomjs::tarball
+  - phantomjs::2.0
   #
   # Debugging & support
   #
