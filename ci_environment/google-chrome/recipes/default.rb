@@ -5,44 +5,15 @@
 
 chrome_file = File.join(Chef::Config[:file_cache_path], 'chrome.deb')
 
-deps = %w(
-  gconf-service
-  libasound2
-  libcairo2
-  libcups2
-  libfontconfig1
-  libgconf-2-4
-  libgdk-pixbuf2.0-0
-  libgtk2.0-0
-  libnspr4
-  libnss3
-  libpango1.0-0
-  libx11-6
-  libxcomposite1
-  libxcursor1
-  libxdamage1
-  libxext6
-  libxfixes3
-  libxi6
-  libxrandr2
-  libxrender1
-  libxss1
-  libxtst6
-  libdbusmenu-glib4
-  libdbusmenu-gtk4
-  libindicator7
-  libappindicator1
-  libcurl3
-  xdg-utils
-)
-
+# The order in which these 28 packages should be installed is not entirely clear,
+# so we install everything at once, so that apt-get can decide
 bash "install dependencies" do
   user 'root'
-  code "apt-get install #{deps.join(' ')}"
+  code "apt-get install #{node['google-chrome']['deps'].join(' ')}"
 end
 
 remote_file chrome_file do
-  source 'https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb'
+  source node['google-chrome']['pkg']['url']
 end
 
 dpkg_package "google-chrome-stable" do
