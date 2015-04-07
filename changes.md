@@ -4,7 +4,7 @@
 
 - Update to PHP 5.4.39, 5.5.22, 5.6.7 (Graham Campbell)
 
-- Update to Node.js 0.10.38 and 0.12.1 (Graham Campbell)
+- Update to Node.js 0.10.38 (Graham Campbell)
 
 - Update Sphinx to 2.2.8 (Hiro Asari)
 
@@ -21,6 +21,8 @@
 - Add google-chrome-stable (Hiro Asari)
 
 - Add OTP Release 17.5 (Hiro Asari)
+
+- Update to Node.js 0.12.2, which is now the default (Hiro Asari)
 
 ### Production on 2015-02-03:
 
