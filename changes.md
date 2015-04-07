@@ -20,6 +20,8 @@
 
 - Add google-chrome-stable (Hiro Asari)
 
+- Add OTP Release 17.5 (Hiro Asari)
+
 ### Production on 2015-02-03:
 
 - Update sbt-extras script to fix travis-ci/travis-ci#3140 (Gilles Cornu)
