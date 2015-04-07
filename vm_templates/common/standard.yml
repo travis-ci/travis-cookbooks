@@ -105,6 +105,7 @@ recipes:
   - xserver
   - firefox::tarball
   - chromium
+  - google-chrome
   - phantomjs::tarball
   - phantomjs::2.0
   #
