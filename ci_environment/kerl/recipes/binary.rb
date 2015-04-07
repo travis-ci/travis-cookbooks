@@ -45,11 +45,12 @@ end
 
 
 home = "/home/#{node.travis_build_environment.user}"
+base_dir = "#{home}/.kerl"
 env  = {
   'HOME'               => home,
   'USER'               => node.travis_build_environment.user,
   'KERL_DISABLE_AGNER' => 'yes',
-  "KERL_BASE_DIR"      => "#{home}/.kerl",
+  "KERL_BASE_DIR"      => base_dir,
   'CPPFLAGS'           => "#{ENV['CPPFLAGS']} -DEPMD6"
 }
 
@@ -107,8 +108,8 @@ node.kerl.releases.each do |rel|
 
     code <<-EOF
       tar xjf #{local_archive} --directory #{File.join(node.travis_build_environment.home, 'otp')}
-      echo #{rel} >> #{File.join(ENV['KERL_BASE_DIR'], 'otp_installations')}
-      echo #{rel},#{rel} >> #{File.join(ENV['KERL_BASE_DIR'], 'otp_builds')}
+      echo #{rel} >> #{File.join(base_dir, 'otp_installations')}
+      echo #{rel},#{rel} >> #{File.join(base_dir, 'otp_builds')}
     EOF
 
     not_if File.exist?(File.join(node.travis_build_environment.home, 'otp', rel))
