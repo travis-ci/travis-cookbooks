@@ -107,6 +107,8 @@ node.kerl.releases.each do |rel|
 
     code <<-EOF
       tar xjf #{local_archive} --directory #{File.join(node.travis_build_environment.home, 'otp')}
+      echo #{rel} >> #{File.join(ENV['KERL_BASE_DIR'], 'otp_installations')}
+      echo #{rel},#{rel} >> #{File.join(ENV['KERL_BASE_DIR'], 'otp_builds')}
     EOF
 
     not_if File.exist?(File.join(node.travis_build_environment.home, 'otp', rel))
