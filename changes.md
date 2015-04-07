@@ -32,6 +32,8 @@
 
 - Update Android SDK Tools to 24.1.2, Platform API to 22 (ardok)
 
+- Enable Erlang Query Server for CouchDB (Alexander Lang)
+
 ### Production on 2015-02-03:
 
 - Update sbt-extras script to fix travis-ci/travis-ci#3140 (Gilles Cornu)
