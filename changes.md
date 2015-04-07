@@ -26,6 +26,10 @@
 
 - Update io.js to 1.6.4 (Hiro Asari)
 
+- Update Python to 3.4.3 (Donald Stufft)
+
+- Update PyPy to 2.5.1 (Alex Gaynor)
+
 ### Production on 2015-02-03:
 
 - Update sbt-extras script to fix travis-ci/travis-ci#3140 (Gilles Cornu)
