@@ -21,8 +21,8 @@ execute "set owner on #{system_info_dir}" do
   command "chown -R #{node.travis_build_environment.user}:#{node.travis_build_environment.group} #{system_info_dir}"
 end
 
-directory system_info_dest do
-  action :delete
+execute "remove #{system_info_dest}" do
+  command "rm -rf #{system_info_dest}"
 end
 
 directory system_info_dest do
