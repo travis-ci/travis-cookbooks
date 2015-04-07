@@ -30,6 +30,8 @@
 
 - Update PyPy to 2.5.1 (Alex Gaynor)
 
+- Update Android SDK Tools to 24.1.2, Platform API to 22 (ardok)
+
 ### Production on 2015-02-03:
 
 - Update sbt-extras script to fix travis-ci/travis-ci#3140 (Gilles Cornu)
