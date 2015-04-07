@@ -34,6 +34,8 @@
 
 - Enable Erlang Query Server for CouchDB (Alexander Lang)
 
+- Add large index support to MySQL (Matthieu Paret)
+
 ### Production on 2015-02-03:
 
 - Update sbt-extras script to fix travis-ci/travis-ci#3140 (Gilles Cornu)
