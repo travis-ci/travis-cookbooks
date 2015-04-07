@@ -22,6 +22,10 @@ execute "set owner on #{system_info_dir}" do
 end
 
 directory system_info_dest do
+  action :delete
+end
+
+directory system_info_dest do
   owner node.travis_build_environment.user
   group node.travis_build_environment.group
   recursive true
