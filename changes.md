@@ -24,6 +24,8 @@
 
 - Update to Node.js 0.12.2, which is now the default (Hiro Asari)
 
+- Update io.js to 1.6.4 (Hiro Asari)
+
 ### Production on 2015-02-03:
 
 - Update sbt-extras script to fix travis-ci/travis-ci#3140 (Gilles Cornu)
