@@ -18,6 +18,8 @@
 
 - Install PhantomJS 2.0.0 from custom-built archive in /usr/local/phantomjs-2.0.0/bin/phantomjs (Hiro Asari)
 
+- Add google-chrome-stable (Hiro Asari)
+
 ### Production on 2015-02-03:
 
 - Update sbt-extras script to fix travis-ci/travis-ci#3140 (Gilles Cornu)
