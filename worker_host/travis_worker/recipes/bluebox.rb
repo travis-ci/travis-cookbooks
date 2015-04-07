@@ -79,6 +79,7 @@ end
               :worker => node[:travis][:worker],
               :hostname => host_name,
               :bluebox => node[:bluebox],
+              :open_stack => node[:open_stack],
               :librato => node[:collectd_librato],
               :queue => queue,
               :vms => vms

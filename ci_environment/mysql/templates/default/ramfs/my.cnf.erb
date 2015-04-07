@@ -45,13 +45,17 @@ basedir         = /usr
 datadir         = <%= File.join(node['ramfs']['dir'], "mysql") %>
 tmpdir          = /tmp
 skip-external-locking
+
 #
 # Instead of skip-networking the default is now to listen only on
 # localhost which is more compatible and is not less secure.
 bind-address            = <%= node['mysql']['bind_address'] %>
 
+innodb_file_per_table  = true
+innodb_file_format     = Barracuda
 collation_server       = utf8_unicode_ci
 character_set_server   = utf8
+innodb_large_prefix
 
 #
 # * Fine Tuning
@@ -71,7 +75,7 @@ wait_timeout            = <%= node['mysql']['tunable']['wait_timeout'] %>
 net_read_timeout        = <%= node['mysql']['tunable']['net_read_timeout'] %>
 net_write_timeout       = <%= node['mysql']['tunable']['net_write_timeout'] %>
 back_log                = <%= node['mysql']['tunable']['back_log'] %>
-table_cache             = <%= node['mysql']['tunable']['table_cache'] %>
+table_open_cache        = <%= node['mysql']['tunable']['table_cache'] %>
 max_heap_table_size     = <%= node['mysql']['tunable']['max_heap_table_size'] %>
 
 #
@@ -89,7 +93,7 @@ query_cache_size        = <%= node['mysql']['tunable']['query_cache_size'] %>
 # Error logging goes to syslog. This is a Debian improvement :)
 #
 # Here you can see queries with especially long duration
-log_slow_queries        = <%= node['mysql']['tunable']['log_slow_queries'] %>
+slow_query_log_file     = <%= node['mysql']['tunable']['slow_query_log_file'] %>
 long_query_time         = <%= node['mysql']['tunable']['long_query_time'] %>
 log-queries-not-using-indexes
 #

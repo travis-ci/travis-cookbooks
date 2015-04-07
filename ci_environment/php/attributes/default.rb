@@ -1,5 +1,5 @@
-default[:php][:multi][:versions] = ["5.4.37", "5.5.9", "5.5.21", "5.6.5"]
-default[:php][:multi][:aliases]  = {"5.4" => "5.4.37", "5.5" => "5.5.21", "5.6" => "5.6.5"}
+default[:php][:multi][:versions] = ["5.3.3", "5.3.29", "5.4.39", "5.5.9", "5.5.23", "5.6.7"]
+default[:php][:multi][:aliases]  = {"5.3" => "5.3.29", "5.4" => "5.4.39", "5.5" => "5.5.23", "5.6" => "5.6.7"}
 
 default[:php][:multi][:extensions] = {
   'apc'       => {
@@ -27,7 +27,7 @@ default[:php][:multi][:extensions] = {
     'before_script' => <<-EOF
       git clone git://github.com/alanxz/rabbitmq-c.git
       cd rabbitmq-c
-      git checkout tags/v0.5.2
+      git checkout tags/v0.6.0
       git submodule init
       git submodule update
       autoreconf -i && ./configure && make && make install

@@ -22,7 +22,7 @@
 # THE SOFTWARE.
 
 node['firefox']['tarball']['package_dependencies'].each do |dep|
- package dep 
+  package dep
 end
 
 ark 'firefox' do

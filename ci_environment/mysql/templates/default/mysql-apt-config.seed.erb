@@ -1,0 +1,2 @@
+mysql-apt-config mysql-apt-config/enable-repo select mysql-<%= /^\d+\.\d+/.match(node['mysql']['deb']['version'])[0] %>
+mysql-apt-config mysql-apt-config/select-server select mysql-<%= /^\d+\.\d+/.match(node['mysql']['deb']['version'])[0] %>

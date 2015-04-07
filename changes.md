@@ -1,5 +1,43 @@
 ### Upcoming:
 
+- Update hhvm to 3.6.1 (Graham Campbell)
+
+- Update to PHP 5.4.39, 5.5.22, 5.6.7 (Graham Campbell)
+
+- Update to Node.js 0.10.38 (Graham Campbell)
+
+- Update Sphinx to 2.2.8 (Hiro Asari)
+
+- Update to Go 1.4.2 (Hiro Asari)
+
+- Update MySQL to 5.6.23 with mysql.com packages (Hiro Asari)
+
+- Update Firefox to 31.6.0esr (Hiro Asari)
+
+- Update maven 3.2.5 to 3.3.1 (Hiro Asari)
+
+- Install PhantomJS 2.0.0 from custom-built archive in /usr/local/phantomjs-2.0.0/bin/phantomjs (Hiro Asari)
+
+- Add google-chrome-stable (Hiro Asari)
+
+- Add OTP Release 17.5 (Hiro Asari)
+
+- Update to Node.js 0.12.2, which is now the default (Hiro Asari)
+
+- Update io.js to 1.6.4 (Hiro Asari)
+
+- Update Python to 3.4.3 (Donald Stufft)
+
+- Update PyPy to 2.5.1 (Alex Gaynor)
+
+- Update Android SDK Tools to 24.1.2, Platform API to 22 (ardok)
+
+- Enable Erlang Query Server for CouchDB (Alexander Lang)
+
+- Add large index support to MySQL (Matthieu Paret)
+
+- Install Python 3 (currently 3.2.3) on all images via Ubuntu package (Franz Liedke)
+
 ### Production on 2015-02-03:
 
 - Update sbt-extras script to fix travis-ci/travis-ci#3140 (Gilles Cornu)
@@ -18,11 +56,7 @@
 
 - Pre-install JRuby 9.0.0.0.pre1 (Hiro Asari)
 
-- Update Node.js to 0.10.36 (Hiro Asari)
-
 - Update hhvm to 3.5.0 (Graham Campbell)
-
-- Update to PHP 5.4.36, 5.5.20, 5.6.4 (Graham Campbell)
 
 - Install grunt-cli for Node.js 0.8.x and up (Hiro Asari)
 

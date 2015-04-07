@@ -23,7 +23,7 @@ when "debian", "ubuntu"
               'lsof',
               'iptables',
               'curl',
-              'wget',
+              # 'wget',
               'rsync',
               'netcat-openbsd',
               # libldap resolves dependency hell around libcurl4-openssl-dev. MK.

@@ -1,0 +1,4 @@
+# Chef manages this file on <%= node.name %> <3 <3 <3
+DOCKER_STORAGE_OPT_DM_BASESIZE="<%= node[:ec2_docker_worker][:docker][:dm_basesize] %>"
+DOCKER_STORAGE_OPT_DM_FS="<%= node[:ec2_docker_worker][:docker][:dm_fs] %>"
+DOCKER_GRAPH_DIR="<%= node[:ec2_docker_worker][:docker][:dir] %>"

@@ -4,12 +4,14 @@ json:
     rubies:
       - name: 1.9.3
     gems:
-      - bundler
-      - rake
+      - nokogiri
   gimme:
     versions:
-      - 1.4.1
-    default_version: 1.4.1
+      - 1.4.2
+    default_version: 1.4.2
+  python:
+    pyenv:
+      pythons: []
   travis_build_environment:
     use_tmpfs_for_builds: false
 recipes:
@@ -23,6 +25,7 @@ recipes:
   - ccache
   - clang::tarball
   - gimme
+  - wget
   - networking_basic
   - openssl
   - sysctl
@@ -69,8 +72,8 @@ recipes:
   #
   # Python and pip
   #
-  - python
-  - python::pip
+  - python::pyenv
+  - python::system
   #
   # Node.js
   #
@@ -103,6 +106,7 @@ recipes:
   - firefox::tarball
   - chromium
   - phantomjs::tarball
+  - phantomjs::2.0
   #
   # Debugging & support
   #
