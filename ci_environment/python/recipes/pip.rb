@@ -32,11 +32,3 @@ bash "install-pip" do
   EOF
   not_if "which pip"
 end
-
-cookbook_file "/etc/profile.d/pip.sh" do
-  owner "root"
-  group "root"
-  mode 0644
-
-  source "etc/profile.d/pip.sh"
-end
