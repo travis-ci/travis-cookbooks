@@ -38,5 +38,5 @@ cookbook_file "/etc/profile.d/pip.sh" do
   group "root"
   mode 0644
 
-  source "etc/profile.d/piip.sh"
+  source "etc/profile.d/pip.sh"
 end
