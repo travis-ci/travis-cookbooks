@@ -52,6 +52,11 @@ if platform?(%w{debian ubuntu})
     notifies :run, resources(:execute => "preseed mysql-server"), :immediately
   end
 
+  directory node.mysql.conf_dir do
+    action :create
+    recursive true
+  end
+
   template "#{node['mysql']['conf_dir']}/debian.cnf" do
     source "debian.cnf.erb"
     owner "root"
