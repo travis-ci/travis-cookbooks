@@ -23,6 +23,7 @@ json:
       - name: 2.2.0
       - name: 2.2.1
       - name: 2.2.2
+        arguments: --patch https://raw.githubusercontent.com/rvm/rvm/2c197d35f533d173ca07491c6367c6cf81d519eb/patches/ruby/2.2.2/fix_installing_bundled_gems.patch
     gems: []
     aliases:
       jruby-d18: jruby-1.7.19-d18
