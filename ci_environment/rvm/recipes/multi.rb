@@ -84,6 +84,7 @@ end
 node.rvm.rubies.each do |rb|
   node.rvm.gems.each do |g|
     bash "install #{g} for #{rb[:name]}" do
+      setup.call(self)
       code "#{rvm} #{rb[:name]} do gem install #{g}"
     end
   end
