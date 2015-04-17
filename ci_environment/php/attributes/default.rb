@@ -1,4 +1,4 @@
-default[:php][:multi][:versions] = ["5.3.3", "5.3.29", "5.4.39", "5.5.9", "5.5.23", "5.6.7"]
+default[:php][:multi][:versions] = ["5.3.29", "5.4.39", "5.5.9", "5.5.23", "5.6.7"]
 default[:php][:multi][:aliases]  = {"5.3" => "5.3.29", "5.4" => "5.4.39", "5.5" => "5.5.23", "5.6" => "5.6.7"}
 
 default[:php][:multi][:extensions] = {
