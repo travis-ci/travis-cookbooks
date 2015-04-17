@@ -112,7 +112,7 @@ node.kerl.releases.each do |rel|
       echo #{rel},#{rel} >> #{File.join(base_dir, 'otp_builds')}
     EOF
 
-    not_if File.exist?(File.join(node.travis_build_environment.home, 'otp', rel))
+    not_if "test -f #{File.join(node.travis_build_environment.home, 'otp', rel)}"
   end
 
 end
