@@ -1,0 +1,162 @@
+json:
+  rvm:
+    default: []
+    rubies: []
+    gems: []
+  gimme:
+    versions: []
+  travis_build_environment:
+    use_tmpfs_for_builds: false
+  java:
+    alternate_versions: []
+  # Android
+  android-sdk:
+    components: []
+  # Erlang
+  kerl:
+    releases: []
+  kiex:
+    elixir_versions: []
+  # Go
+  gimme:
+    versions: []
+  # Haskell
+  ghc: {}
+
+  # Node.js
+  nodejs:
+    versions: []
+  # Perl
+  perlbrew:
+    perls: []
+  # PHP
+  php:
+    multi:
+      versions: []
+    binaries: []
+  composer:
+    github_oauth_token: 2d8490a1060eb8e8a1ae9588b14e3a039b9e01c6
+  # Python
+  python:
+    pyenv:
+      pythons: []
+  # Ruby
+  rvm:
+    latest_minor: true
+    rubies: []
+    gems: []
+
+
+recipes:
+  #
+  # Travis environment + build toolchain
+  #
+  - travis_build_environment
+  - apt
+  - package-updates
+  - build-essential
+  - ccache
+  - clang::tarball
+  - gimme
+  - networking_basic
+  - openssl
+  - sysctl
+  - git::ppa
+  - mercurial
+  - bazaar
+  - subversion
+  - scons
+  - unarchivers
+  - md5deep
+  - dictionaries
+  - jq
+  #
+  # additional libraries needed to run headless WebKit,
+  # build parsers, for ossp-uuid to work and so on
+  #
+  - libqt4
+  - libgdbm
+  - libncurses
+  - libossp-uuid
+  - libffi
+  - libicu
+  - ragel
+  - imagemagick
+  - mingw32
+  - libevent
+  #
+  # JDK and related build toolchain
+  #
+  - java
+  - ant
+  - maven
+  #
+  # Ruby via RVM (default Debian installations are secure at the cost of
+  # being unusable without PATH tweaking, for our VMs we can just go with RVM.
+  # This includes rubygems, bundler and rake.
+  #
+  - rvm
+  - rvm::multi
+
+  #
+  # Python and pip
+  #
+  # - python
+  # - python::pip
+  #
+  # Node.js
+  #
+  - nodejs::multi
+
+  #
+  # Headless WebKit, browsers, Selenium toolchain, etc
+  #
+  # - xserver
+  # - firefox::tarball
+  # - chromium
+  # - google-chrome
+  # - phantomjs::tarball
+  # - phantomjs::2.0
+
+  # Android
+  # - gradle::tarball
+  # - android-sdk
+
+  # Erlang
+  # - kerl
+  # - kiex
+  # - rebar
+
+  # Go
+  - gimme
+
+  # Haskell
+  # - haskell::multi
+
+  # JVM
+  # - leiningen
+  # - sbt-extras
+  # - gradle::tarball
+
+  # Node.js
+  # - nodejs::multi
+  # - nodejs::iojs
+
+  # Perl
+  # - perlbrew::multi
+
+  # PHP
+  # - php::multi
+
+  # Python
+  - python::pyenv
+  # - python::system
+  # - python::devshm
+
+  #
+  # Debugging & support
+  #
+  # - emacs::nox
+  # - vim
+  - system_info
+  - sweeper
