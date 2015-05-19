@@ -14,7 +14,7 @@
 
 - Update Firefox to 31.6.0esr (Hiro Asari)
 
-- Update maven 3.2.5 to 3.3.1 (Hiro Asari)
+- Update Maven 3.2.5 to 3.3.3 (Hiro Asari, Gilles Cornu)
 
 - Install PhantomJS 2.0.0 from custom-built archive in /usr/local/phantomjs-2.0.0/bin/phantomjs (Hiro Asari)
 
