@@ -38,6 +38,9 @@
 
 - Install Python 3 (currently 3.2.3) on all images via Ubuntu package (Franz Liedke)
 
+- Improve `/etc/mavenrc` to export `M2_HOME` and `MAVEN_OPTS` only when these
+  environment variables are not already defined (Gilles Cornu)
+
 ### Production on 2015-02-03:
 
 - Update sbt-extras script to fix travis-ci/travis-ci#3140 (Gilles Cornu)
