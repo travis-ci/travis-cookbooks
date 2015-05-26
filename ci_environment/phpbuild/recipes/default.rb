@@ -58,12 +58,12 @@ when "ubuntu", "debian"
 
   link '/usr/include/gmp.h' do
     to "/usr/include/#{node.phpbuild.arch}-linux-gnu/gmp.h"
+    not_if { node['lsb']['codename'] == 'precise' }
   end
 
-  if node[:platform_version].to_f >= 12.04
-    link "/usr/lib/libmysqlclient_r.so" do
-      to "/usr/lib/#{node.phpbuild.arch}-linux-gnu/libmysqlclient_r.so"
-    end
+  link "/usr/lib/libmysqlclient_r.so" do
+    to "/usr/lib/#{node.phpbuild.arch}-linux-gnu/libmysqlclient_r.so"
+    only_if { node[:platform_version].to_f >= 12.04 }
   end
 
   if node[:platform_version].to_f >= 11.10
@@ -127,4 +127,14 @@ template "#{phpbuild_path}/share/php-build/default_configure_options" do
   owner  node.travis_build_environment.user
   group  node.travis_build_environment.group
   source "default_configure_options.erb"
+end
+
+remote_directory "#{phpbuild_path}/share/php-build/definitions" do
+  owner       node.travis_build_environment.user
+  group       node.travis_build_environment.group
+  files_owner node.travis_build_environment.user
+  files_group node.travis_build_environment.group
+  files_mode  "0755"
+  source      "definitions"
+  only_if { node['lsb']['codename'] == 'precise' }
 end
