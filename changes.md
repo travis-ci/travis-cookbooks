@@ -2,7 +2,7 @@
 
 - Update hhvm to 3.6.1 (Graham Campbell)
 
-- Update to PHP 5.4.39, 5.5.22, 5.6.7 (Graham Campbell)
+- Update to PHP 5.4.40, 5.5.23, 5.6.8 (Hior Asari)
 
 - Update to Node.js 0.10.38 (Graham Campbell)
 
@@ -14,7 +14,7 @@
 
 - Update Firefox to 31.6.0esr (Hiro Asari)
 
-- Update maven 3.2.5 to 3.3.1 (Hiro Asari)
+- Update Maven 3.2.5 to 3.3.3 (Hiro Asari, Gilles Cornu)
 
 - Install PhantomJS 2.0.0 from custom-built archive in /usr/local/phantomjs-2.0.0/bin/phantomjs (Hiro Asari)
 
@@ -37,6 +37,9 @@
 - Add large index support to MySQL (Matthieu Paret)
 
 - Install Python 3 (currently 3.2.3) on all images via Ubuntu package (Franz Liedke)
+
+- Improve `/etc/mavenrc` to export `M2_HOME` and `MAVEN_OPTS` only when these
+  environment variables are not already defined (Gilles Cornu)
 
 ### Production on 2015-02-03:
 

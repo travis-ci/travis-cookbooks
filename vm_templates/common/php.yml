@@ -3,7 +3,7 @@ json:
     github_oauth_token: 2d8490a1060eb8e8a1ae9588b14e3a039b9e01c6
 recipes:
   - php::multi
-  - php::5.2.17
+  - php::binary
   - composer
   - system_info
   - sweeper

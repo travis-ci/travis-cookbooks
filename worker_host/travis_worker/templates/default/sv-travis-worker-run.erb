@@ -15,7 +15,7 @@ if [[ -f /etc/default/travis-worker ]] ; then
   set +a
 fi
 
-: ${TRAVIS_WORKER_DOCKER_LANGUAGES:=<%= @options[:docker_languages].join(' ') %>}
+: ${TRAVIS_WORKER_DOCKER_LANGUAGES:=<%= @options.fetch(:docker_languages, []).join(' ') %>}
 : ${TRAVIS_WORKER_HOME:=<%= @options[:worker_home] %>}
 : ${TRAVIS_WORKER_USER:=<%= @options[:user] %>}
 : ${TRAVIS_WORKER_GROUP:=<%= @options[:group] %>}

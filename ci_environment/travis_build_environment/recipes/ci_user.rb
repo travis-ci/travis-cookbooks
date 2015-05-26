@@ -128,3 +128,12 @@ if node.travis_build_environment.user != "vagrant"
     to node.travis_build_environment.home
   end
 end
+
+cookbook_file "/etc/profile.d/xdg_path.sh" do
+  owner "root"
+  group "root"
+  mode "0644"
+  action :create
+
+  source "ci_user/xdg_path.sh"
+end

@@ -30,6 +30,7 @@ recipes:
   - openssl
   - sysctl
   - git::ppa
+  - git::lfs
   - mercurial
   - bazaar
   - subversion
