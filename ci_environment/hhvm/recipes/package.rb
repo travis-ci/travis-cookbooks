@@ -1,12 +1,11 @@
-if node["lsb"]["codename"] == 'precise'
-  apt_repository "boost-backports" do
-    uri          "http://ppa.launchpad.net/mapnik/boost/ubuntu"
-    distribution node["lsb"]["codename"]
-    components   ["main"]
-    keyserver    "keyserver.ubuntu.com"
-    key          "5D50B6BA"
-    action       :add
-  end
+apt_repository "boost-backports" do
+  uri          "http://ppa.launchpad.net/mapnik/boost/ubuntu"
+  distribution node["lsb"]["codename"]
+  components   ["main"]
+  keyserver    "keyserver.ubuntu.com"
+  key          "5D50B6BA"
+  action       :add
+  only_if { node["lsb"]["codename"] == 'precise' }
 end
 
 apt_repository "hhvm-repository" do
