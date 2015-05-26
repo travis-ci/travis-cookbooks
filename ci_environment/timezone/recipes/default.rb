@@ -10,16 +10,14 @@
 
 case node.platform
 when ['debian','ubuntu']
-  # Make sure it's installed. It would be a pretty broken system
-  # that didn't have it.
-  platform_version = node.platform_version.to_f
-  if platform_version >= 12.04 && platform_version < 14.04
-    package "tzdata" do
-      version "2012b-1"
-      options "--force-yes"
-    end
-  else
-    package "tzdata"
+  package "tzdata" do
+    version "2012b-1"
+    options "--force-yes"
+    only_if { node['lsb']['codename'] == 'precise' }
+  end
+
+  package "tzdata" do
+    not_if { node['lsb']['codename'] == 'precise' }
   end
 
   template "/etc/timezone" do
@@ -35,5 +33,4 @@ when ['debian','ubuntu']
     code "/usr/sbin/dpkg-reconfigure -f noninteractive tzdata"
     action :nothing
   end
-
 end
