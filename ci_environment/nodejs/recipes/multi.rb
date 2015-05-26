@@ -23,7 +23,7 @@
 
 include_recipe "build-essential"
 include_recipe "networking_basic"
-include_recipe "man"
+include_recipe "man" unless node['lsb']['codename'] == 'precise'
 
 require "tmpdir"
 
