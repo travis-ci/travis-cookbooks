@@ -29,7 +29,3 @@ template "/root/.bashrc" do
 
   source "root/dot_bashrc.sh.erb"
 end
-
-cron "make sure eth0 is up" do
-  command "/usr/local/bin/recover_eth0.sh"
-end
