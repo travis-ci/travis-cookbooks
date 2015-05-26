@@ -17,4 +17,16 @@
 # limitations under the License.
 #
 
+apt_repository "travis_ci_sqlite3" do
+  uri          "http://ppa.launchpad.net/travis-ci/sqlite3/ubuntu"
+  distribution node['lsb']['codename']
+  components   ['main']
+
+  key          "75E9BCC5"
+  keyserver    "keyserver.ubuntu.com"
+
+  action :add
+  only_if { node['lsb']['codename'] == 'precise' }
+end
+
 include_recipe "sqlite::default"
