@@ -13,9 +13,7 @@ directory virtualenv_root do
   action :create
 end
 
-# We assume these are Python 2.7 and Python 3.2, this will need changed on a
-# new OS version
-["2.7", "3.2"].each do |py|
+node['python']['system']['pythons'].each do |py|
   pyname = "python#{py}"
 
   python_virtualenv "#{pyname}_with_system_site_packages" do

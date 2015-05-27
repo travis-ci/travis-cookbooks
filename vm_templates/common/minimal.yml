@@ -1,10 +1,14 @@
 json:
   rvm:
-    default: []
-    rubies: []
-    gems: []
+    default: 2.1.5
+    rubies:
+      - name: 2.1.5
+    gems:
+      - nokogiri
   gimme:
-    versions: []
+    versions:
+      - 1.4.1
+    default_version: 1.4.1
   travis_build_environment:
     use_tmpfs_for_builds: false
   java:
@@ -70,6 +74,9 @@ recipes:
   - md5deep
   - dictionaries
   - jq
+  - docker
+
+  - sqlite
   #
   # additional libraries needed to run headless WebKit,
   # build parsers, for ossp-uuid to work and so on
@@ -98,6 +105,10 @@ recipes:
   - rvm
   - rvm::multi
 
+  #
+  # Data stores
+  #
+  - postgresql
   #
   # Python and pip
   #
@@ -156,7 +167,7 @@ recipes:
   #
   # Debugging & support
   #
-  # - emacs::nox
-  # - vim
+  - emacs::nox
+  - vim
   - system_info
   - sweeper

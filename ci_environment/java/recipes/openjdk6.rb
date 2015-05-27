@@ -8,13 +8,12 @@
 # - https://bugs.launchpad.net/ubuntu/+source/openjdk-6/+bug/1052900
 # - https://bugs.launchpad.net/ubuntu/+source/openjdk-6/+bug/1047762
 #
-case node.platform
-when "ubuntu", "debian"
-  if node.platform_version.to_f >= 12.04
-    package "tzdata" do
-      version "2012b-1"
-      options "--force-yes"
-    end
+package "tzdata" do
+  version "2012b-1"
+  options "--force-yes"
+  only_if do
+    %w(ubuntu debian).include?(node['platform']) &&
+      node['lsb']['release'] == 'precise'
   end
 end
 package 'tzdata-java'

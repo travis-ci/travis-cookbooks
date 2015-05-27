@@ -51,10 +51,19 @@ when "ubuntu", "debian"
     to "/usr/lib/#{node.phpbuild.arch}-linux-gnu/libldap.so"
   end
 
-  if node[:platform_version].to_f >= 12.04
-    link "/usr/lib/libmysqlclient_r.so" do
-      to "/usr/lib/#{node.phpbuild.arch}-linux-gnu/libmysqlclient_r.so"
-    end
+  link '/usr/include/freetype' do
+    to '/usr/include/freetype2'
+    not_if "test -e /usr/include/freetype"
+  end
+
+  link '/usr/include/gmp.h' do
+    to "/usr/include/#{node.phpbuild.arch}-linux-gnu/gmp.h"
+    not_if { node['lsb']['codename'] == 'precise' }
+  end
+
+  link "/usr/lib/libmysqlclient_r.so" do
+    to "/usr/lib/#{node.phpbuild.arch}-linux-gnu/libmysqlclient_r.so"
+    only_if { node[:platform_version].to_f >= 12.04 }
   end
 
   if node[:platform_version].to_f >= 11.10
@@ -127,4 +136,5 @@ remote_directory "#{phpbuild_path}/share/php-build/definitions" do
   files_group node.travis_build_environment.group
   files_mode  "0755"
   source      "definitions"
+  only_if { node['lsb']['codename'] == 'precise' }
 end

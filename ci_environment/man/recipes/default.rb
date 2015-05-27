@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: memcached
-# Recipe:: ppa
+# Cookbook Name:: man
+# Recipe:: default
 #
-# Copyright 2012-2013, Travis CI Development Team <contact@travis-ci.org>
+# Copyright 2008-2009, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,18 +17,9 @@
 # limitations under the License.
 #
 
-case node['platform']
-when "ubuntu"
-  apt_repository "travis_ci_memcached_sasl" do
-    uri          "http://ppa.launchpad.net/travis-ci/memcached-sasl/ubuntu"
-    distribution node['lsb']['codename']
-    components   ['main']
-
-    key          "75E9BCC5"
-    keyserver    "keyserver.ubuntu.com"
-
-    action :add
-  end
+case node[:platform]
+when "ubuntu","debian"
+  package "man-db"
+when "redhat","centos","fedora"
+  package "man"
 end
-
-include_recipe "memcached::default"

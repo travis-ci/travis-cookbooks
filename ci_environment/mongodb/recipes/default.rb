@@ -19,5 +19,6 @@
 # limitations under the License.
 #
 
+include_recipe "mongodb::ppa" unless node['lsb']['codename'] == 'precise'
 include_recipe "mongodb::apt"
 include_recipe "mongodb::server"

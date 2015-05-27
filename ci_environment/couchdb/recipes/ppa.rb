@@ -46,5 +46,5 @@ cookbook_file "/etc/couchdb/local.d/erlang_query_server.ini" do
   owner "root"
   group "root"
   mode 0644
-  notifies :restart, resources(:service => "couchdb")
+  # notifies :restart, resources(:service => "couchdb")
 end

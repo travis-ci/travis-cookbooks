@@ -76,6 +76,7 @@ apt_repository "cabal-install-ppa" do
   key          "9DF71E85"
   keyserver    "keyserver.ubuntu.com"
   action :add
+  only_if { node['lsb']['codename'] == 'precise' }
 end
 
 %w(cabal-install alex happy).each do |p|

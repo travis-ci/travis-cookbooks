@@ -1,7 +1,18 @@
 # Install PhantomJS 2.0.0 from custom-built archive
 
 package 'libjpeg-dev'
-package 'libicu48'
+
+package 'libpng-dev' do
+  not_if { node['lsb']['release'] == 'precise' }
+end
+
+package 'libicu48' do
+  only_if { node['lsb']['release'] == 'precise' }
+end
+
+package 'libicu-dev' do
+  not_if { node['lsb']['release'] == 'precise' }
+end
 
 archive_path = File.join(Chef::Config[:file_cache_path], 'phantomjs.tar.bz2')
 version      = '2.0.0'

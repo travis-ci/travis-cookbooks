@@ -51,3 +51,12 @@ default['python']['pip']['packages'] = {
     "3.3" => ["numpy"],
     "3.4" => ["numpy"],
 }
+
+default['python']['system']['pythons'] = case node['lsb']['codename']
+when 'precise'
+    ['2.7', '3.2']
+when 'trusty'
+    ['2.7', '3.4']
+else
+    ['2.7', '3.2']
+end
