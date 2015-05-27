@@ -1,4 +1,4 @@
-include_attribute "travis_build_environment::default"
+include_attribute 'travis_build_environment'
 
 default[:rvm][:version] = "1.26.11"
 
