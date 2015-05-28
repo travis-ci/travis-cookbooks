@@ -34,8 +34,6 @@ ant_pkgs = value_for_platform(
   "default" => ["ant","ant-contrib","ivy"]
 )
 
-ant_pkgs.each do |pkg|
-  package pkg do
-    action :install
-  end
+unless ant_pkgs.empty?
+  package ant_pkgs
 end

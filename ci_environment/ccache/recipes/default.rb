@@ -5,6 +5,4 @@
 # Copyright 2015, Travis CI GmbH
 #
 
-package 'ccache' do
-  action :install
-end
+package 'ccache'

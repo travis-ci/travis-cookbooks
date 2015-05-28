@@ -30,10 +30,4 @@ apt_repository "pypy" do
   action :add
 end
 
-package "pypy" do
-  action :install
-end
-
-package "pypy-dev" do
-  action :install
-end
+package ['pypy', 'pypy-dev']

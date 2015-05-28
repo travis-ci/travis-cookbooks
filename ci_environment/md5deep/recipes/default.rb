@@ -21,6 +21,4 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package "md5deep" do
-  action :install
-end
+package 'md5deep'

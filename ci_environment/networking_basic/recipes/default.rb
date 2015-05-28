@@ -19,22 +19,16 @@
 
 case node[:platform]
 when "debian", "ubuntu"
-  packages = [
-              'lsof',
-              'iptables',
-              'curl',
-              # 'wget',
-              'rsync',
-              'netcat-openbsd',
-              # libldap resolves dependency hell around libcurl4-openssl-dev. MK.
-              "libldap-2.4.2",
-              "libldap2-dev",
-              "libcurl4-openssl-dev"
-             ]
-
-  packages.each do |pkg|
-    package pkg do
-      action :install
-    end
-  end
+  package [
+    'lsof',
+    'iptables',
+    'curl',
+    # 'wget',
+    'rsync',
+    'netcat-openbsd',
+    # libldap resolves dependency hell around libcurl4-openssl-dev. MK.
+    'libldap-2.4.2',
+    'libldap2-dev',
+    'libcurl4-openssl-dev'
+  ]
 end

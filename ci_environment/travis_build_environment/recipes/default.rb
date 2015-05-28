@@ -21,34 +21,24 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe "timezone"
-include_recipe "sysctl"
+include_recipe 'timezone'
+include_recipe 'sysctl'
+include_recipe 'openssh'
+include_recipe 'unarchivers'
+include_recipe 'travis_build_environment::root'
+include_recipe 'travis_build_environment::ci_user'
 
-# installs custom templates for sshd_config and ssh upstart script. MK.
-include_recipe "openssh"
-
-include_recipe "unarchivers"
-
-include_recipe "travis_build_environment::root"
-include_recipe "travis_build_environment::ci_user"
-
-cookbook_file "/etc/default/locale" do
-  owner "root"
-  group "root"
+cookbook_file '/etc/default/locale' do
+  source 'etc/default/locale.sh'
+  owner 'root'
+  group 'root'
   mode 0644
-
-  source "etc/default/locale.sh"
 end
 
-execute "locale-gen en_US.UTF-8" do
-  user "root"
-end
+execute 'locale-gen en_US.UTF-8'
+execute 'dpkg-reconfigure locales'
 
-execute "dpkg-reconfigure locales" do
-  user "root"
-end
-
-bits     = (node.kernel.machine =~ /x86_64/ ? 64 : 32)
+bits = (node.kernel.machine =~ /x86_64/ ? 64 : 32)
 hostname = case [node[:platform], node[:platform_version]]
            when ["ubuntu", "11.04"] then
              "natty#{bits}"
@@ -60,102 +50,81 @@ hostname = case [node[:platform], node[:platform_version]]
              "trusty#{bits}"
            end
 
-template "/etc/hosts" do
-  owner "root"
-  group "root"
+template '/etc/hosts' do
+  source 'etc/hosts.erb'
+  owner 'root'
+  group 'root'
   mode 0644
-  variables(:hostname => hostname)
-  source "etc/hosts.erb"
-  not_if { !node[:travis_build_environment][:update_hosts] }
+  variables(hostname: hostname)
+  only_if { node['travis_build_environment']['update_hosts'] }
 end
 
-template "/etc/hostname" do
-  owner "root"
-  group "root"
+template '/etc/hostname' do
+  source 'etc/hostname.erb'
+  owner 'root'
+  group 'root'
   mode 0644
-  variables(:hostname => hostname)
-  source "etc/hostname.erb"
-  not_if { !node[:travis_build_environment][:update_hosts] }
+  variables(hostname: hostname)
+  only_if { node['travis_build_environment']['update_hosts'] }
 end
 
 execute "hostname #{hostname}" do
-  user "root"
-end
 
-
-template "/etc/security/limits.conf" do
-  owner "root"
-  group "root"
+template '/etc/security/limits.conf' do
+  source 'etc/security/limits.conf.erb'
+  owner 'root'
+  group 'root'
   mode 0644
-
-  source "etc/security/limits.conf.erb"
 end
 
-template "/etc/apt/apt.conf.d/60assumeyes" do
-  owner "root"
-  group "root"
+template '/etc/apt/apt.conf.d/60assumeyes' do
+  source 'etc/apt/assumeyes.erb'
+  owner 'root'
+  group 'root'
   mode 0644
-
-  source "etc/apt/assumeyes.erb"
 end
 
-template "/etc/apt/apt.conf.d/37timeouts" do
-  owner "root"
-  group "root"
+template '/etc/apt/apt.conf.d/37timeouts' do
+  source 'etc/apt/timeouts.erb'
+  owner 'root'
+  group 'root'
   mode 0644
-
-  source "etc/apt/timeouts.erb"
 end
 
-cookbook_file "/etc/sudoers.d/env_keep" do
-  owner "root"
-  group "root"
+cookbook_file '/etc/sudoers.d/env_keep' do
+  source 'etc/sudoers/env_keep'
+  owner 'root'
+  group 'root'
   mode 0440
-
-  source "etc/sudoers/env_keep"
 end
 
-include_recipe "iptables"
+include_recipe 'iptables'
 
-template "/etc/environment" do
-  owner "root"
-  group "root"
+template '/etc/environment' do
+  source 'etc/environment.sh.erb'
+  owner 'root'
+  group 'root'
   mode 0644
-
-  source "etc/environment.sh.erb"
 end
 
-
-ruby_block "load pam_limits.so" do
+ruby_block 'require pam_limits.so for su' do
   block do
-    fe = Chef::Util::FileEdit.new("/etc/pam.d/su")
-    fe.search_file_replace_line(/# session    required   pam_limits.so/, "session    required   pam_limits.so")
+    fe = Chef::Util::FileEdit.new('/etc/pam.d/su')
+    fe.search_file_replace_line(
+      /^# session    required   pam_limits.so/,
+      'session    required   pam_limits.so'
+    )
     fe.write_file
   end
 end
 
-
-# wipe out apparmor, it may be a useful thing for typical servers but
-# in our case it is a major annoyance and nothing else. MK.
-package "apparmor" do
+package %w(apparmor apparmor-utils) do
   action :remove
   ignore_failure true
 end
 
-package "apparmor-utils" do
-  action :remove
+execute 'rm /etc/update-motd.d/*' do
   ignore_failure true
 end
 
-# improve sshd startup stability. See https://github.com/jedi4ever/veewee/issues/159 for rationale
-# and some stats about boot failures. MK.
-execute "rm /etc/update-motd.d/*" do
-  ignore_failure true
-end
-
-# Make sure we don't have obscure issues with SSL certificates.
-# See https://bugs.launchpad.net/ubuntu/+source/ca-certificates-java/+bug/873517
-# and http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=623671. MK.
-execute "/usr/sbin/update-ca-certificates -f" do
-  user "root"
-end
+execute '/usr/sbin/update-ca-certificates -f'

@@ -10,9 +10,7 @@ package 'wget' do
   action :purge
 end
 
-package 'pkg-config'
-
-package 'libgnutls-dev'
+package ['pkg-config', 'libgnutls-dev']
 
 ark 'wget' do
   url "http://ftp.gnu.org/gnu/wget/wget-#{node.wget.version}.tar.gz"

@@ -1,8 +1,7 @@
 virtualenv_root = File.join(node.travis_build_environment.home, "virtualenv")
 
 # Install Python2 and Python3
-package "python-dev"
-package "python3-dev"
+package ['python-dev', 'python3-dev']
 
 # Create a directory to store our virtualenvs in
 directory virtualenv_root do

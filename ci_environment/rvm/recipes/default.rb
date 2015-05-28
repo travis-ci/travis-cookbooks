@@ -35,8 +35,9 @@ include_recipe "libxml"
 include_recipe "libssl"
 include_recipe "libncurses"
 include_recipe "sqlite"
-node[:rvm][:pkg_requirements].each do |r|
-  package r
+
+unless node['rvm']['pkg_requirements'].empty?
+  package node['rvm']['pkg_requirements']
 end
 
 

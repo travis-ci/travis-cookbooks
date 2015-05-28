@@ -21,13 +21,7 @@ include_recipe "libreadline"
 include_recipe "libssl"
 include_recipe "libncurses"
 
-package "curl" do
-  action :install
-end
-
-package "unixodbc-dev" do
-  action :install
-end
+package ['curl', 'unixodbc-dev']
 
 installation_root = "/home/#{node.travis_build_environment.user}/otp"
 

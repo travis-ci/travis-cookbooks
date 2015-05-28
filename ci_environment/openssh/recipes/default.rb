@@ -17,9 +17,7 @@
 # limitations under the License.
 #
 
-package "openssh-server" do
-  action :install
-end
+package 'openssh-server'
 
 service "ssh" do
   action [:start, :enable]

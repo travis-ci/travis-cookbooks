@@ -7,8 +7,6 @@
 # All rights reserved - Do Not Redistribute
 #
 
-node.travis_build_environment.packages.each do |pkg|
-  package pkg do
-    action :upgrade
-  end
+package node['travis_build_environment']['packages'] do
+  action :upgrade
 end

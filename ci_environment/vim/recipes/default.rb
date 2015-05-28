@@ -19,6 +19,6 @@
 
 package "vim"
 
-node[:vim][:extra_packages].each do |vimpkg|
-  package vimpkg
+unless node['vim']['extra_packages'].empty?
+  package node['vim']['extra_packages']
 end

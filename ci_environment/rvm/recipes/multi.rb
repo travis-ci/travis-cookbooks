@@ -82,8 +82,8 @@ bash "update all rubies to the latest RubyGems" do
   code   "#{bin_rvm} all --verbose do gem update --system"
 end
 
-node.rvm.rubies.each do |rb|
-  node.rvm.gems.each do |g|
+node['rvm']['rubies'].each do |rb|
+  node['rvm']['gems'].each do |g|
     bash "install #{g} for #{rb[:name]}" do
       setup.call(self)
       code "#{rvm} #{rb[:name]} do gem install #{g}"

@@ -3,7 +3,6 @@ include_recipe 'postgresql::pgdg'
 #
 # Install PostgreSQL Clients
 #
-node['postgresql']['client_packages'].each do |p|
-  package p
+unless node['postgresql']['client_packages'].empty?
+  package node['postgresql']['client_packages']
 end
-

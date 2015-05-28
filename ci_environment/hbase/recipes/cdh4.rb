@@ -35,13 +35,7 @@ apt_repository "cdh4" do
   action :add
 end
 
-package "hbase" do
-  action :install
-end
-
-package "hbase-master" do
-  action :install
-end
+package ['hbase', 'hbase-master']
 
 service "hbase-master" do
   supports :start => true, :stop => true, :restart => true

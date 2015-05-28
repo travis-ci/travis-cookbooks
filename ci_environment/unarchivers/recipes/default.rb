@@ -21,9 +21,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-list = case node.platform
+package_names = case node.platform
        when "ubuntu", "debian" then
          %w(gzip bzip2 zip unzip libbz2-dev)
+       else
+         []
        end # case
 
-list.each { |pkg| package(pkg) { action :install } }
+unless package_names.empty?
+  package package_names
+end

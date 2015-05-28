@@ -54,19 +54,12 @@ end
 
 # wipe out apparmor on 11.04 and later, it prevents MySQLd from restarting for now
 # good reasons (as far as CI goes). MK.
-package "apparmor" do
+package ['apparmor', 'apparmor-utils'] do
   action :remove
   ignore_failure true
 end
 
-package "apparmor-utils" do
-  action :remove
-  ignore_failure true
-end
-
-package "mysql-server" do
-  action :install
-end
+package 'mysql-server'
 
 service "mysql" do
   service_name value_for_platform([ "centos", "redhat", "suse", "fedora" ] => {"default" => "mysqld"}, "default" => "mysql")

@@ -23,6 +23,5 @@
 
 case node[:platform]
 when "debian", "ubuntu"
-  package "libssl0.9.8"
-  package "libssl-dev"
+  package ['libssl0.9.8', 'libssl-dev']
 end

@@ -30,6 +30,4 @@ apt_repository "git-ppa" do
   action :add
 end
 
-package "git" do
-  action :install
-end
+package 'git'

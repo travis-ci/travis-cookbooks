@@ -66,18 +66,13 @@ if platform?(%w{debian ubuntu})
 end
 
 # Remove apparmor again, to put this recipe in line with 'mysql::server'
-package "apparmor" do
+package ['apparmor', 'apparmor-utils'] do
   action :remove
   ignore_failure true
 end
 
-package "apparmor-utils" do
-  action :remove
-  ignore_failure true
-end
-
-node.mysql.deb.server.packages.each do |pkg|
-  package pkg do
+unless node['mysql']['deb']['server']['packages'].empty?
+  package node['mysql']['deb']['server']['packages'] do
     action :upgrade
   end
 end

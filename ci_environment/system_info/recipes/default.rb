@@ -9,7 +9,7 @@
 
 system_info_dir  = '/usr/local/system_info'
 system_info_dest = '/usr/share/travis'
-rvm_source       = File.join(node.travis_build_environment.home, '.rvm/scripts/rvm')
+rvm_source       = File.join(node['travis_build_environment']['home'], '.rvm/scripts/rvm')
 
 git system_info_dir do
   repository 'https://github.com/travis-ci/system_info.git'
@@ -18,7 +18,7 @@ git system_info_dir do
 end
 
 execute "set owner on #{system_info_dir}" do
-  command "chown -R #{node.travis_build_environment.user}:#{node.travis_build_environment.group} #{system_info_dir}"
+  command "chown -R #{node['travis_build_environment']['user']}:#{node['travis_build_environment']['group']} #{system_info_dir}"
 end
 
 execute "remove #{system_info_dest}" do
@@ -26,25 +26,29 @@ execute "remove #{system_info_dest}" do
 end
 
 directory system_info_dest do
-  owner node.travis_build_environment.user
-  group node.travis_build_environment.group
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
   recursive true
   notifies :run, 'bash[execute-system_info]'
 end
 
 bash 'execute-system_info' do
-  user node.travis_build_environment.user
+  user node['travis_build_environment']['user']
   cwd system_info_dir
   code <<-EOF
     source #{rvm_source}
-    env FORMATS=human,json HUMAN_OUTPUT=#{system_info_dest}/system_info JSON_OUTPUT=#{system_info_dest}/system_info.json \
-      bundle exec ./bin/system_info #{node['system_info']['cookbooks_sha'] || 'fffffff'}
+    bundle exec ./bin/system_info #{node['system_info']['cookbooks_sha'] || 'fffffff'}
   EOF
+  environment(
+    'FORMATS' => 'human,json',
+    'HUMAN_OUTPUT' => "#{system_info_dest}/system_info",
+    'JSON_OUTPUT' => "#{system_info_dest}/system_info.json"
+  )
   action :nothing
 end
 
 bash 'Install system_info gems' do
-  user node.travis_build_environment.user
+  user node['travis_build_environment']['user']
   cwd system_info_dir
   code <<-EOF
     source #{rvm_source}

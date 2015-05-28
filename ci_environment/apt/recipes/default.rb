@@ -25,14 +25,10 @@ execute "apt-get -y clean autoremove" do
 end
 
 # for recipes that require preseeding, e.g. java::oraclejdk7, to work. MK.
-package "debconf-utils" do
-  action :install
-end
+package "debconf-utils"
 
 # for convenience of those who add various PPAs. MK.
-package node['apt']['python_software_properties_package'] do
-  action :install
-end
+package node['apt']['python_software_properties_package']
 
 template "/etc/apt/sources.list" do
   source "sources.list.erb"

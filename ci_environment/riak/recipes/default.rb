@@ -1,9 +1,7 @@
 #
 # Use Basho via APT to PACKAGECLOUD repository
 #
-package 'apt-transport-https' do
-  action :install
-end
+package 'apt-transport-https'
 
 apt_repository 'basho-riak' do
   uri          'https://packagecloud.io/basho/riak/ubuntu/'
@@ -14,9 +12,7 @@ apt_repository 'basho-riak' do
   action :add
 end
 
-package 'riak' do
-  action :install
-end
+package 'riak'
 
 #
 # - Stop riak service to customize configuration files

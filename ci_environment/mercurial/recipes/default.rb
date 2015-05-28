@@ -23,4 +23,4 @@
 
 include_recipe "python::package"
 
-package "mercurial"
+package 'mercurial'

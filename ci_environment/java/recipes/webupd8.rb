@@ -1,6 +1,5 @@
 
-package "debconf-utils"
-package "curl"
+package ['debconf-utils', 'curl']
 
 apt_repository "webupd8team-java-ppa" do
   uri          "http://ppa.launchpad.net/webupd8team/java/ubuntu"
@@ -25,4 +24,4 @@ end
 #
 # Possible variant: install a copy of ubuntu java keystore as cookbook_file or remote_file
 #
-package "ca-certificates-java"
+package 'ca-certificates-java'

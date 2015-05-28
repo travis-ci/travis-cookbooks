@@ -18,19 +18,10 @@ apt_repository 'docker' do
   action :add
 end
 
-package "linux-image-extra-#{`uname -r`.chomp}" do
-  action :install
-end
+docker_pkg = 'lxc-docker'
+docker_pkg += "-#{node['docker']['version']}" if node['docker']['version']
 
-package "lxc" do
-  action :install
-end
-
-pkg = 'lxc-docker'
-pkg += "-#{node['docker']['version']}" if node['docker']['version']
-package pkg do
-  action :install
-end
+package ["linux-image-extra-#{`uname -r`.chomp}", 'lxc', docker_pkg]
 
 group 'docker' do
   members node['docker']['users']
