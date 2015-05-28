@@ -2,14 +2,14 @@
 # Cookbook Name:: system_info
 # Recipe:: default
 #
-# Copyright 2014, Travis CI GmbH
+# Copyright 2015, Travis CI GmbH
 #
 # MIT License
 #
 
 system_info_dir  = '/usr/local/system_info'
 system_info_dest = '/usr/share/travis'
-rvm_source       = File.join(node['travis_build_environment']['home'], '.rvm/scripts/rvm')
+rvm_source = "#{node['travis_build_environment']['home']}/.rvm/scripts/rvm"
 
 git system_info_dir do
   repository 'https://github.com/travis-ci/system_info.git'
@@ -36,13 +36,14 @@ bash 'execute-system_info' do
   user node['travis_build_environment']['user']
   cwd system_info_dir
   code <<-EOF
-    source #{rvm_source}
-    bundle exec ./bin/system_info #{node['system_info']['cookbooks_sha'] || 'fffffff'}
+    [[ -f #{rvm_source} ]] && source #{rvm_source}
+    #{node['system_info']['use_bundler'] ? 'bundle exec' : ''} ./bin/system_info #{node['system_info']['cookbooks_sha'] || 'fffffff'}
   EOF
   environment(
     'FORMATS' => 'human,json',
     'HUMAN_OUTPUT' => "#{system_info_dest}/system_info",
-    'JSON_OUTPUT' => "#{system_info_dest}/system_info.json"
+    'JSON_OUTPUT' => "#{system_info_dest}/system_info.json",
+    'COMMANDS_FILE' => node['system_info']['commands_file']
   )
   action :nothing
 end
@@ -51,7 +52,8 @@ bash 'Install system_info gems' do
   user node['travis_build_environment']['user']
   cwd system_info_dir
   code <<-EOF
-    source #{rvm_source}
+    [[ -f #{rvm_source} ]] && source #{rvm_source}
     bundle install --deployment
   EOF
+  only_if { node['system_info']['use_bundler'] }
 end

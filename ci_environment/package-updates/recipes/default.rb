@@ -7,6 +7,6 @@
 # All rights reserved - Do Not Redistribute
 #
 
-package node['travis_build_environment']['packages'] do
+package Array(node['travis_build_environment']['packages']) do
   action :upgrade
 end

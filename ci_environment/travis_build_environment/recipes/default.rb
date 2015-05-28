@@ -68,7 +68,7 @@ template '/etc/hostname' do
   only_if { node['travis_build_environment']['update_hosts'] }
 end
 
-execute "hostname #{hostname}" do
+execute "hostname #{hostname}"
 
 template '/etc/security/limits.conf' do
   source 'etc/security/limits.conf.erb'

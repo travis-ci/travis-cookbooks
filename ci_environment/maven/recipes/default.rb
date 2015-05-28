@@ -20,8 +20,8 @@
 # limitations under the License.
 #
 
-include_recipe 'java::default'
-include_recipe 'ark::default'
+include_recipe 'java'
+include_recipe 'ark'
 
 mvn_version = node['maven']['version'].to_s
 
@@ -35,5 +35,5 @@ end
 
 template '/etc/mavenrc' do
   source 'mavenrc.erb'
-  mode   '0755'
+  mode 0755
 end

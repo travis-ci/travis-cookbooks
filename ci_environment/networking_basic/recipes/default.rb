@@ -2,7 +2,7 @@
 # Cookbook Name:: networking_basic
 # Recipe:: default
 #
-# Copyright 2011-2013, Travis CI Development Team <contact@travis-ci.org>
+# Copyright 2011-2015, Travis CI Development Team <contact@travis-ci.org>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,18 +17,16 @@
 # limitations under the License.
 #
 
-case node[:platform]
-when "debian", "ubuntu"
-  package [
-    'lsof',
-    'iptables',
-    'curl',
-    # 'wget',
-    'rsync',
-    'netcat-openbsd',
-    # libldap resolves dependency hell around libcurl4-openssl-dev. MK.
-    'libldap-2.4.2',
-    'libldap2-dev',
-    'libcurl4-openssl-dev'
-  ]
+case node['platform']
+when 'debian', 'ubuntu'
+  package %w(
+    curl
+    iptables
+    libcurl4-openssl-dev
+    libldap-2.4.2
+    libldap2-dev
+    lsof
+    netcat-openbsd
+    rsync
+  )
 end

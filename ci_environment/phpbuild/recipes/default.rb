@@ -21,23 +21,31 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe "build-essential"
-include_recipe "networking_basic"
-
-include_recipe "apt"
-include_recipe "git"
-
 include_recipe "mysql::client"
 include_recipe "postgresql::client"
 
-include_recipe "libxml"
-include_recipe "libssl"
-
 case node[:platform]
 when "ubuntu", "debian"
-  %w{libbz2-dev libc-client2007e-dev libkrb5-dev libcurl4-gnutls-dev libfreetype6-dev libgmp3-dev libjpeg8-dev libmcrypt-dev libpng12-dev libt1-dev libmhash-dev libexpat1-dev libicu-dev libtidy-dev re2c lemon libldap2-dev libsasl2-dev}.each do |pkg|
-    package(pkg) { action :install }
-  end
+  package %w(
+    lemon
+    libbz2-dev
+    libc-client2007e-dev
+    libcurl4-gnutls-dev
+    libexpat1-dev
+    libfreetype6-dev
+    libgmp3-dev
+    libicu-dev
+    libjpeg8-dev
+    libkrb5-dev
+    libldap2-dev
+    libmcrypt-dev
+    libmhash-dev
+    libpng12-dev
+    libsasl2-dev
+    libt1-dev
+    libtidy-dev
+    re2c
+  )
 
   link "/usr/lib/libpng.so" do
     to "/usr/lib/#{node.phpbuild.arch}-linux-gnu/libpng.so"
@@ -86,11 +94,11 @@ end
 phpbuild_path = "#{node.travis_build_environment.home}/.php-build"
 
 git phpbuild_path do
-  user       node.travis_build_environment.user
-  group      node.travis_build_environment.group
+  user node.travis_build_environment.user
+  group node.travis_build_environment.group
   repository node[:phpbuild][:git][:repository]
-  revision   node[:phpbuild][:git][:revision]
-  action     :checkout
+  revision node[:phpbuild][:git][:revision]
+  action :sync
 end
 
 git "/tmp/php-build-plugin-phpunit" do

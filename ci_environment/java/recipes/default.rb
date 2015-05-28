@@ -4,7 +4,7 @@
 # Recipe:: default
 #
 # Copyright 2008-2011, Opscode, Inc.
-# Copyright 2011-2013, Travis CI Development Team <contact@travis-ci.org>
+# Copyright 2011-2015, Travis CI Development Team <contact@travis-ci.org>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,49 +19,29 @@
 # limitations under the License.
 #
 
-#
-# WARNING:
-# All recipes of this cookbook are (currently) specifically designed for Ubuntu
-# Please keep this in mind.
-#
+package 'unzip'
 
-#
-# 'Light' Dependencies
-#
-package 'unzip'  # required to unzip Oracle JCE packages
+default_jvm = nil
 
-#
-# Install the default JDK
-#
-Chef::Log.info("Installing Java #{node['java']['default_version']}.")
-include_recipe "java::#{node['java']['default_version']}"
-default_jvm = node['java'][node['java']['default_version']]['jvm_name']
-
-#
-# Install more JDKs, if requested.
-#
-if not node['java']['alternate_versions'].to_a.empty?
-  # Note: 'multi' recipe is conditionally included to avoid the execution of
-  #       openjdk6/tzdata workaround in single-jdk mode.
-  #       This might change...
-  include_recipe "java::multi"
+unless node['java']['default_version'] == ''
+  Chef::Log.info("Installing Java #{node['java']['default_version']}.")
+  include_recipe "java::#{node['java']['default_version']}"
+  default_jvm = node['java'][node['java']['default_version']]['jvm_name']
 end
 
-#
-# Ensure that default JDK is configured as default
-#
+unless Array(node['java']['alternate_versions']).empty?
+  include_recipe 'java::multi'
+end
+
 execute "Set #{default_jvm} as default alternative" do
   command "update-java-alternatives -s #{default_jvm}"
+  not_if { default_jvm.nil? }
 end
-template "/etc/profile.d/java_home.sh" do
-  owner "root"
-  group "root"
+
+template '/etc/profile.d/java_home.sh' do
+  source 'etc/profile.d/java_home.sh.erb'
+  owner 'root'
+  group 'root'
   mode 0644
-
-  source "etc/profile.d/java_home.sh.erb"
-
-  # Could be changed to following, if node.java.java_home attribute is removed one day...
-  # variables({
-  #   :java_home => File.join(node['java']['jvm_base_dir'], default_jvm)
-  # })
+  not_if { default_jvm.nil? }
 end

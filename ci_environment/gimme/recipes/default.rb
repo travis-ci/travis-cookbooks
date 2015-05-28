@@ -24,8 +24,6 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-include_recipe 'build-essential'
-
 remote_file '/usr/local/bin/gimme' do
   source node['gimme']['url']
   checksum node['gimme']['sha256sum']
@@ -50,7 +48,9 @@ end
 
 template '/etc/profile.d/Z90-gimme.sh' do
   source 'etc-profile-d-gimme.sh.erb'
-  variables(default_version: node['gimme']['default_version'])
+  variables(
+    default_version: node['gimme']['default_version']
+  )
   owner 'root'
   group 'root'
   mode 0755

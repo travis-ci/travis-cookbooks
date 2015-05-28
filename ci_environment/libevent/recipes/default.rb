@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "build-essential"
-
 version = node['libevent']['version']
 prefix = node['libevent']['prefix']
 
