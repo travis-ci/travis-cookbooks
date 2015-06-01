@@ -1,5 +1,6 @@
 default['travis_build_environment']['user'] = 'travis'
 default['travis_build_environment']['group'] = 'travis'
+default['travis_build_environment']['password'] = 'travis'
 default['travis_build_environment']['home'] = '/home/travis'
 default['travis_build_environment']['hosts'] = {}
 default['travis_build_environment']['update_hosts'] = true

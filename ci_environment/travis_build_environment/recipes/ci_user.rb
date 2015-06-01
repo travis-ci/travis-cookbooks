@@ -24,6 +24,7 @@
 user node['travis_build_environment']['user'] do
   supports manage_home: true
   manage_home true
+  password node['travis_build_environment']['password']
   comment 'Travis CI User'
   shell '/bin/bash'
 end
