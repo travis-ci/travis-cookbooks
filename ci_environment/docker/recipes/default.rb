@@ -21,7 +21,7 @@ end
 docker_pkg = 'lxc-docker'
 docker_pkg += "-#{node['docker']['version']}" if node['docker']['version']
 
-package ["linux-image-extra-#{`uname -r`.chomp}", 'lxc', docker_pkg]
+package %W(linux-image-extra-#{`uname -r`.chomp} lxc #{docker_pkg})
 
 group 'docker' do
   members node['docker']['users']

@@ -17,6 +17,6 @@
 # limitations under the License.
 #
 
-package ['sqlite3', 'sqlite3-doc', 'libsqlite3-dev'] do
+package %w(sqlite3 sqlite3-doc libsqlite3-dev) do
   action :upgrade
 end

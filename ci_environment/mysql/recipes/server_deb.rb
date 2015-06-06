@@ -66,7 +66,7 @@ if platform?(%w{debian ubuntu})
 end
 
 # Remove apparmor again, to put this recipe in line with 'mysql::server'
-package ['apparmor', 'apparmor-utils'] do
+package %w(apparmor apparmor-utils) do
   action :remove
   ignore_failure true
 end

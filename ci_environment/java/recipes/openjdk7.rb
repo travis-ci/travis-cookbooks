@@ -1,1 +1,1 @@
-package ['openjdk-7-jdk', 'icedtea-7-plugin']
+package %w(openjdk-7-jdk icedtea-7-plugin)

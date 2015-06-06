@@ -22,7 +22,7 @@
 # THE SOFTWARE.
 
 include_recipe "java"
-package ['unzip', 'lsof']
+package %w(unzip lsof)
 
 #
 # User accounts

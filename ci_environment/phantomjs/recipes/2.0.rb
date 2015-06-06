@@ -2,7 +2,7 @@
 
 package 'libjpeg-dev'
 
-package ['libpng-dev', 'libicu-dev'] do
+package %w(libpng-dev libicu-dev) do
   not_if { node['lsb']['release'] == 'precise' }
 end
 

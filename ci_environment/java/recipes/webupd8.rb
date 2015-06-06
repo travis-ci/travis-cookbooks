@@ -1,5 +1,4 @@
-
-package ['debconf-utils', 'curl']
+package %w(debconf-utils curl)
 
 apt_repository "webupd8team-java-ppa" do
   uri          "http://ppa.launchpad.net/webupd8team/java/ubuntu"

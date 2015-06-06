@@ -28,6 +28,6 @@ when "centos","redhat","fedora"
   package %w(gcc gcc-c++ kernel-devel make)
 end
 
-package ['autoconf', 'flex', 'bison']
+package %w(autoconf flex bison)
 
 include_recipe "cmake"

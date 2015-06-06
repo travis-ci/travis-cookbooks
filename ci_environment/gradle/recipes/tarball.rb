@@ -20,7 +20,7 @@
 
 include_recipe "java"
 
-package ['groovy', 'unzip']
+package %w(groovy unzip)
 
 # 1. Download the tarball to /tmp
 require "tmpdir"

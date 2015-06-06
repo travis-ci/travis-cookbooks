@@ -54,7 +54,7 @@ end
 
 # wipe out apparmor on 11.04 and later, it prevents MySQLd from restarting for now
 # good reasons (as far as CI goes). MK.
-package ['apparmor', 'apparmor-utils'] do
+package %w(apparmor apparmor-utils) do
   action :remove
   ignore_failure true
 end

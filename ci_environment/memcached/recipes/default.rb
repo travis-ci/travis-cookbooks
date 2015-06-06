@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-package ['memcached', 'libmemcached-dev', 'libsasl2-dev'] do
+package %w(memcached libmemcached-dev libsasl2-dev) do
   action :upgrade
 end
 

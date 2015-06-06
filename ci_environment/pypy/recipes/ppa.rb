@@ -30,4 +30,4 @@ apt_repository "pypy" do
   action :add
 end
 
-package ['pypy', 'pypy-dev']
+package %w(pypy pypy-dev)

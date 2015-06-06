@@ -25,8 +25,8 @@ case node[:platform]
 when "debian","ubuntu"
   case node[:version]
   when "11.04" then
-    package ['libreadline5-dev', 'libreadline5']
+    package %w(libreadline5-dev libreadline5)
   else  
-    package ['libreadline-dev', 'libreadline6']
+    package %w(libreadline-dev libreadline6)
   end
 end
