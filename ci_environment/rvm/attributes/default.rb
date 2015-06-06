@@ -3,6 +3,11 @@ include_attribute 'travis_build_environment'
 default['rvm']['version'] = '1.26.11'
 default['rvm']['rubies'] = []
 default['rvm']['gems'] = []
+default['rvm']['multi_prerequisite_recipes'] = %w(
+  java
+  maven
+  ant
+)
 default['rvm']['prerequisite_recipes'] = %w(
   networking_basic
   build-essential

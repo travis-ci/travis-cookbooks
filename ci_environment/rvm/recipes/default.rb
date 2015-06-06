@@ -22,7 +22,6 @@
 # THE SOFTWARE.
 
 unless node['rvm']['prerequisite_recipes'].empty?
-  # Make sure we have all we need to compile ruby implementations:
   node['rvm']['prerequisite_recipes'].each do |recipe_name|
     include_recipe recipe_name
   end
