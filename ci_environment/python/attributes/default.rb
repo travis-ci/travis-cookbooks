@@ -10,7 +10,7 @@ default['python']['pyenv']['pythons'] = %w(
   3.4.3
   3.3.5
   3.2.5
-  pypy-2.5.1
+  pypy-2.6.0
   pypy3-2.4.0
 )
 
@@ -20,7 +20,7 @@ default['python']['pyenv']['aliases'] = {
   '3.2.5' => %w(3.2),
   '3.3.5' => %w(3.3),
   '3.4.3' => %w(3.4),
-  'pypy-2.5.1' => %w(pypy),
+  'pypy-2.6.0' => %w(pypy),
   'pypy3-2.4.0' => %w(pypy3),
 }
 
