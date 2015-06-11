@@ -1,6 +1,8 @@
-package 'perl'
+unless Array(node['perlbrew']['prerequisite_packages']).empty?
+  package Array(node['perlbrew']['prerequisite_packages'])
+end
 
-bash 'install Perlbrew' do
+bash 'install perlbrew' do
   user node['travis_build_environment']['user']
   cwd node['travis_build_environment']['home']
   environment(
