@@ -8,6 +8,6 @@ default[:perlbrew] = {
                { :name => "5.14", :version => "perl-5.14.4" },
                { :name => "5.12", :version => "perl-5.12.5" },
                { :name => "5.10", :version => "perl-5.10.1" },
-               { :name => "5.8",  :version => "perl-5.8.9"  }],
+               { :name => "5.8",  :version => "perl-5.8.8"  }],
   :modules => %w(ExtUtils::MakeMaker Dist::Zilla Moose Test::Pod Test::Pod::Coverage Test::Exception Dist::Zilla::Plugin::Bootstrap::lib LWP Module::Install Test::Most)
 }
