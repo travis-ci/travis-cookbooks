@@ -42,7 +42,7 @@ default[:php][:multi][:extensions] = {
 }
 
 if node['lsb']['codename'] == 'precise'
-  default[:php][:multi][:versions] = ["5.3.29", "5.4.42", "5.5.9", "5.5.246", "5.6.10"]
+  default[:php][:multi][:versions] = ["5.3.29", "5.4.42", "5.5.9", "5.5.26", "5.6.10"]
   default[:php][:multi][:aliases]  = {"5.3" => "5.3.29", "5.4" => "5.4.42", "5.5" => "5.5.26", "5.6" => "5.6.10"}
 
   default[:php][:multi][:extensions] = {
