@@ -91,6 +91,12 @@ template '/etc/apt/apt.conf.d/37timeouts' do
   mode 0644
 end
 
+cookbook_file '/etc/apt/apt.conf.d/10periodic' do
+  owner 'root'
+  group 'root'
+  mode 0644
+end
+
 cookbook_file '/etc/sudoers.d/env_keep' do
   source 'etc/sudoers/env_keep'
   owner 'root'
