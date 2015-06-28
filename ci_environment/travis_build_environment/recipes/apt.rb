@@ -1,5 +1,5 @@
 # Cookbook Name:: travis_build_environment
-# Recipe:: default
+# Recipe:: apt
 # Copyright 2011-2015, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,27 +20,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-unless Array(node['travis_build_environment']['prerequisite_recipes']).empty?
-  Array(node['travis_build_environment']['prerequisite_recipes']).each do |recipe_name|
-    include_recipe recipe_name
-  end
+template '/etc/apt/apt.conf.d/60assumeyes' do
+  source 'etc/apt/assumeyes.erb'
+  owner 'root'
+  group 'root'
+  mode 0644
 end
 
-%w(
-  root
-  ci_user
-  locale
-  hostname
-  security
-  apt
-  environment
-  cleanup
-).each do |internal_recipe|
-  include_recipe "travis_build_environment::#{internal_recipe}"
+template '/etc/apt/apt.conf.d/37timeouts' do
+  source 'etc/apt/timeouts.erb'
+  owner 'root'
+  group 'root'
+  mode 0644
 end
 
-unless Array(node['travis_build_environment']['postrequisite_recipes']).empty?
-  Array(node['travis_build_environment']['postrequisite_recipes']).each do |recipe_name|
-    include_recipe recipe_name
-  end
+cookbook_file '/etc/apt/apt.conf.d/10periodic' do
+  owner 'root'
+  group 'root'
+  mode 0644
 end

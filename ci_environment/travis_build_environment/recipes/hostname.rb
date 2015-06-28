@@ -1,5 +1,5 @@
 # Cookbook Name:: travis_build_environment
-# Recipe:: default
+# Recipe:: hostname
 # Copyright 2011-2015, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,27 +20,34 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-unless Array(node['travis_build_environment']['prerequisite_recipes']).empty?
-  Array(node['travis_build_environment']['prerequisite_recipes']).each do |recipe_name|
-    include_recipe recipe_name
-  end
+bits = (node.kernel.machine =~ /x86_64/ ? 64 : 32)
+hostname = case [node[:platform], node[:platform_version]]
+           when ["ubuntu", "11.04"] then
+             "natty#{bits}"
+           when ["ubuntu", "11.10"] then
+             "oneiric#{bits}"
+           when ["ubuntu", "12.04"] then
+             "precise#{bits}"
+           when ["ubuntu", "14.04"] then
+             "trusty#{bits}"
+           end
+
+template '/etc/hosts' do
+  source 'etc/hosts.erb'
+  owner 'root'
+  group 'root'
+  mode 0644
+  variables(hostname: hostname)
+  only_if { node['travis_build_environment']['update_hosts'] }
 end
 
-%w(
-  root
-  ci_user
-  locale
-  hostname
-  security
-  apt
-  environment
-  cleanup
-).each do |internal_recipe|
-  include_recipe "travis_build_environment::#{internal_recipe}"
+template '/etc/hostname' do
+  source 'etc/hostname.erb'
+  owner 'root'
+  group 'root'
+  mode 0644
+  variables(hostname: hostname)
+  only_if { node['travis_build_environment']['update_hosts'] }
 end
 
-unless Array(node['travis_build_environment']['postrequisite_recipes']).empty?
-  Array(node['travis_build_environment']['postrequisite_recipes']).each do |recipe_name|
-    include_recipe recipe_name
-  end
-end
+execute "hostname #{hostname}"

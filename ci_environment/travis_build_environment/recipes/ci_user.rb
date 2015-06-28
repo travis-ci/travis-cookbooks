@@ -1,7 +1,6 @@
-#
 # Cookbook Name:: travis_build_environment
 # Recipe:: ci_user
-# Copyright 2011-2015, Travis CI Development Team <contact@travis-ci.org>
+# Copyright 2011-2015, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -33,64 +32,43 @@ group node['travis_build_environment']['group'] do
   members [node['travis_build_environment']['user']]
 end
 
-directory node['travis_build_environment']['home'] do
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  mode 0750
+[
+  { name: node['travis_build_environment']['home'] },
+  { name: "#{node['travis_build_environment']['home']}/.ssh" },
+  { name: "#{node['travis_build_environment']['home']}/builds", perms: 0755 },
+  { name: "#{node['travis_build_environment']['home']}/.m2" },
+].each do |entry|
+  directory entry[:name] do
+    owner node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    mode (entry[:perms] || 0750)
+  end
 end
 
-cookbook_file '/etc/profile.d/travis_environment.sh' do
-  source 'ci_user/travis_environment.sh'
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  mode 0755
+[
+  { src: 'dot_bashrc.sh.erb', dest: '.bashrc', mode: 0640 },
+  { src: 'ci_environment_metadata.yml.erb', dest: '.travis_ci_environment.yml', mode: 0640 },
+].each do |entry|
+  template "#{node['travis_build_environment']['home']}/#{entry[:dest]}" do
+    source "ci_user/#{entry[:src]}"
+    owner node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    mode (entry[:mode] || 0640)
+  end
 end
 
-cookbook_file "#{node['travis_build_environment']['home']}/.gemrc" do
-  source 'ci_user/dot_gemrc.yml'
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  mode 0640
-end
-
-cookbook_file "#{node['travis_build_environment']['home']}/.erlang.cookie" do
-  source 'ci_user/dot_erlang_dot_cookie'
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  mode 0400
-end
-
-template "#{node['travis_build_environment']['home']}/.bashrc" do
-  source 'ci_user/dot_bashrc.sh.erb'
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  mode 0640
-end
-
-template "#{node['travis_build_environment']['home']}/.travis_ci_environment.yml" do
-  source 'ci_user/ci_environment_metadata.yml.erb'
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  mode 0640
-end
-
-directory "#{node['travis_build_environment']['home']}/.ssh" do
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  mode 0750
-end
-
-cookbook_file "#{node['travis_build_environment']['home']}/.ssh/known_hosts" do
-  source 'ci_user/known_hosts'
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  mode 0600
-end
-
-directory "#{node['travis_build_environment']['home']}/builds" do
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  mode 0755
+[
+  { src: 'dot_gemrc.yml', dest: '.gemrc', mode: 0640 },
+  { src: 'dot_erlang_dot_cookie', dest: '.erlang.cookie' },
+  { src: 'known_hosts', dest: '.ssh/known_hosts', mode: 0600 },
+  { src: 'maven_user_settings.xml', dest: '.m2/settings.xml', mode: 0640 }
+].each do |entry|
+  cookbook_file "#{node['travis_build_environment']['home']}/#{entry[:dest]}" do
+    source "ci_user/#{entry[:src]}"
+    owner node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    mode (node[:mode] || 0400)
+  end
 end
 
 mount "#{node['travis_build_environment']['home']}/builds" do
@@ -101,29 +79,9 @@ mount "#{node['travis_build_environment']['home']}/builds" do
   only_if { node['travis_build_environment']['use_tmpfs_for_builds'] }
 end
 
-directory "#{node['travis_build_environment']['home']}/.m2" do
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  mode 0750
-end
-
-cookbook_file "#{node['travis_build_environment']['home']}/.m2/settings.xml" do
-  source 'ci_user/maven_user_settings.xml'
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  mode 0640
-end
-
 link '/home/vagrant' do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   to node['travis_build_environment']['home']
   not_if { File.exist?('/home/vagrant') }
-end
-
-cookbook_file '/etc/profile.d/xdg_path.sh' do
-  source 'ci_user/xdg_path.sh'
-  owner 'root'
-  group 'root'
-  mode 0644
 end

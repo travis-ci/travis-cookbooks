@@ -20,27 +20,4 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-unless Array(node['travis_build_environment']['prerequisite_recipes']).empty?
-  Array(node['travis_build_environment']['prerequisite_recipes']).each do |recipe_name|
-    include_recipe recipe_name
-  end
-end
-
-%w(
-  root
-  ci_user
-  locale
-  hostname
-  security
-  apt
-  environment
-  cleanup
-).each do |internal_recipe|
-  include_recipe "travis_build_environment::#{internal_recipe}"
-end
-
-unless Array(node['travis_build_environment']['postrequisite_recipes']).empty?
-  Array(node['travis_build_environment']['postrequisite_recipes']).each do |recipe_name|
-    include_recipe recipe_name
-  end
-end
+execute 'rm -rf /etc/update-motd.d/*'

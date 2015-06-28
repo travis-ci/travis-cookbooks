@@ -1,5 +1,5 @@
 # Cookbook Name:: travis_build_environment
-# Recipe:: default
+# Recipe:: security
 # Copyright 2011-2015, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,27 +20,34 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-unless Array(node['travis_build_environment']['prerequisite_recipes']).empty?
-  Array(node['travis_build_environment']['prerequisite_recipes']).each do |recipe_name|
-    include_recipe recipe_name
+template '/etc/security/limits.conf' do
+  source 'etc/security/limits.conf.erb'
+  owner 'root'
+  group 'root'
+  mode 0644
+end
+
+cookbook_file '/etc/sudoers.d/env_keep' do
+  source 'etc/sudoers/env_keep'
+  owner 'root'
+  group 'root'
+  mode 0440
+end
+
+ruby_block 'require pam_limits.so for su' do
+  block do
+    fe = Chef::Util::FileEdit.new('/etc/pam.d/su')
+    fe.search_file_replace_line(
+      /^# session    required   pam_limits.so/,
+      'session    required   pam_limits.so'
+    )
+    fe.write_file
   end
 end
 
-%w(
-  root
-  ci_user
-  locale
-  hostname
-  security
-  apt
-  environment
-  cleanup
-).each do |internal_recipe|
-  include_recipe "travis_build_environment::#{internal_recipe}"
+package %w(apparmor apparmor-utils) do
+  action :remove
+  ignore_failure true
 end
 
-unless Array(node['travis_build_environment']['postrequisite_recipes']).empty?
-  Array(node['travis_build_environment']['postrequisite_recipes']).each do |recipe_name|
-    include_recipe recipe_name
-  end
-end
+execute '/usr/sbin/update-ca-certificates -f'
