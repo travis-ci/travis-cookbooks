@@ -1,9 +1,22 @@
-default[:php][:multi][:versions] = ["5.4.39", "5.5.9", "5.5.23", "5.6.7"]
-default[:php][:multi][:aliases]  = {"5.4" => "5.4.39", "5.5" => "5.5.23", "5.6" => "5.6.7"}
+default['php']['multi']['versions'] = ["5.4.39", "5.5.9", "5.5.23", "5.6.7"]
+default['php']['multi']['aliases']  = {"5.4" => "5.4.39", "5.5" => "5.5.23", "5.6" => "5.6.7"}
+default['php']['multi']['prerequisite_recipes'] = %w(
+  bison
+  libreadline
+  phpenv
+  phpbuild
+)
+default['php']['multi']['postrequisite_recipes'] = %w(
+  php::extensions
+  php::hhvm
+  php::hhvm-nightly
+  phpunit
+  composer
+)
 
-default[:php][:multi][:extensions] = {
+default['php']['multi']['extensions'] = {
   'apc'       => {
-    'versions' => default[:php][:multi][:versions].select { |version| version.start_with?("5.4") }
+    'versions' => default['php']['multi']['versions'].select { |version| version.start_with?("5.4") }
   },
   'memcached' => {
     'before_packages' => %w(libevent-dev libcloog-ppl1),
@@ -20,7 +33,7 @@ default[:php][:multi][:extensions] = {
       phpize
       ./configure --with-libmemcached-dir=/usr/local && make && make install
     EOF
-    'versions' => default[:php][:multi][:versions]
+    'versions' => default['php']['multi']['versions']
   },
   'mongo'     => {},
   'amqp'      => {
@@ -34,7 +47,7 @@ default[:php][:multi][:extensions] = {
     EOF
   },
   'zmq-beta' => {
-    'versions' => default[:php][:multi][:versions],
+    'versions' => default['php']['multi']['versions'],
     'before_recipes'  => %w(zeromq::ppa),
     'before_packages' => %w(libzmq3-dev)
   },
@@ -42,18 +55,18 @@ default[:php][:multi][:extensions] = {
 }
 
 if node['lsb']['codename'] == 'precise'
-  default[:php][:multi][:versions] = ["5.3.29", "5.4.40", "5.5.9", "5.5.24", "5.6.8"]
-  default[:php][:multi][:aliases]  = {"5.3" => "5.3.29", "5.4" => "5.4.40", "5.5" => "5.5.24", "5.6" => "5.6.8"}
+  default['php']['multi']['versions'] = ["5.3.29", "5.4.40", "5.5.9", "5.5.24", "5.6.8"]
+  default['php']['multi']['aliases']  = {"5.3" => "5.3.29", "5.4" => "5.4.40", "5.5" => "5.5.24", "5.6" => "5.6.8"}
 
-  default[:php][:multi][:extensions] = {
+  default['php']['multi']['extensions'] = {
     'apc'       => {
-      'versions' => default[:php][:multi][:versions].reject { |version| version.start_with?("5.5", "5.6") }
+      'versions' => default['php']['multi']['versions'].reject { |version| version.start_with?("5.5", "5.6") }
     },
     'memcache' => {
-      'versions' => default[:php][:multi][:versions].select { |version| version.start_with?("5.2") }
+      'versions' => default['php']['multi']['versions'].select { |version| version.start_with?("5.2") }
     },
     'memcache-beta'  => {
-      'versions' => default[:php][:multi][:versions].reject { |version| version.start_with?("5.2") }
+      'versions' => default['php']['multi']['versions'].reject { |version| version.start_with?("5.2") }
     },
     'memcached' => {
       'before_packages' => %w(libevent-dev libcloog-ppl0),
@@ -70,7 +83,7 @@ if node['lsb']['codename'] == 'precise'
         phpize
         ./configure --with-libmemcached-dir=/usr/local && make && make install
       EOF
-      'versions' => default[:php][:multi][:versions].select { |version| version.start_with?("5.2") }
+      'versions' => default['php']['multi']['versions'].select { |version| version.start_with?("5.2") }
     },
     'memcached' => {
       'before_packages' => %w(libevent-dev libcloog-ppl0),
@@ -87,7 +100,7 @@ if node['lsb']['codename'] == 'precise'
         phpize
         ./configure --with-libmemcached-dir=/usr/local && make && make install
       EOF
-      'versions' => default[:php][:multi][:versions].reject { |version| version.start_with?("5.2") }
+      'versions' => default['php']['multi']['versions'].reject { |version| version.start_with?("5.2") }
     },
     'mongo'     => {},
     'amqp'      => {
@@ -101,7 +114,7 @@ if node['lsb']['codename'] == 'precise'
       EOF
     },
     'zmq-beta' => {
-      'versions' => default[:php][:multi][:versions].reject { |version| version.start_with?("5.2") },
+      'versions' => default['php']['multi']['versions'].reject { |version| version.start_with?("5.2") },
       'before_recipes'  => %w(zeromq::ppa),
       'before_packages' => %w(libzmq3-dev)
     },
