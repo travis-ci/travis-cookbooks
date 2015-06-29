@@ -25,11 +25,20 @@ execute "remove #{system_info_dest}" do
   command "rm -rf #{system_info_dest}"
 end
 
+bash 'Install system_info gems' do
+  user node['travis_build_environment']['user']
+  cwd system_info_dir
+  code <<-EOF
+    [[ -f #{rvm_source} ]] && source #{rvm_source}
+    bundle install --deployment
+  EOF
+  only_if { node['system_info']['use_bundler'] }
+end
+
 directory system_info_dest do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   recursive true
-  notifies :run, 'bash[execute-system_info]'
 end
 
 bash 'execute-system_info' do
@@ -45,15 +54,4 @@ bash 'execute-system_info' do
     'JSON_OUTPUT' => "#{system_info_dest}/system_info.json",
     'COMMANDS_FILE' => node['system_info']['commands_file']
   )
-  action :nothing
-end
-
-bash 'Install system_info gems' do
-  user node['travis_build_environment']['user']
-  cwd system_info_dir
-  code <<-EOF
-    [[ -f #{rvm_source} ]] && source #{rvm_source}
-    bundle install --deployment
-  EOF
-  only_if { node['system_info']['use_bundler'] }
 end

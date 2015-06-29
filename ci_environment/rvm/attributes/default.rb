@@ -2,6 +2,7 @@ include_attribute 'travis_build_environment'
 
 default['rvm']['version'] = '1.26.11'
 default['rvm']['rubies'] = []
+default['rvm']['binaries_url'] = 'https://s3.amazonaws.com/travis-rubies/binaries'
 default['rvm']['gems'] = []
 default['rvm']['multi_prerequisite_recipes'] = %w(
   java

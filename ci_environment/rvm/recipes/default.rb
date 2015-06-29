@@ -1,7 +1,6 @@
-#
 # Cookbook Name:: rvm
 # Recipe:: default
-# Copyright 2011-2013, Travis CI Development Team <contact@travis-ci.org>
+# Copyright 2011-2015, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -74,4 +73,11 @@ directory "#{node['travis_build_environment']['home']}/.bundle" do
   group node['travis_build_environment']['group']
   mode 0750
   notifies :create, "template[#{bundler_settings}]"
+end
+
+template "#{node['travis_build_environment']['home']}/.rvm/user/db" do
+  source 'rvm-user-db.erb'
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0640
 end
