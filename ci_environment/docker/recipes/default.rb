@@ -11,10 +11,10 @@ include_recipe 'apt'
 include_recipe 'travis_build_environment'
 
 apt_repository 'docker' do
-  uri "https://get.docker.io/ubuntu"
-  distribution "docker"
-  components ["main"]
-  key "https://get.docker.io/gpg"
+  uri 'https://get.docker.io/ubuntu'
+  distribution 'docker'
+  components ['main']
+  key 'https://get.docker.io/gpg'
   action :add
 end
 
@@ -36,6 +36,15 @@ cookbook_file '/etc/default/docker' do
   source 'etc/default/docker'
 end
 
-execute "Update Grub config" do
-  command "sed -i 's/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cgroup_enable=memory swapaccount=1\"/' /etc/default/grub && update-grub"
+ruby_block 'Enable cgroup memory and swap accounting' do
+  block do
+    fe = Chef::Util::FileEdit.new('/etc/default/grub')
+    fe.search_file_replace_line(
+      /^GRUB_CMDLINE_LINUX=""/,
+      'GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"'
+    )
+    fe.write_file
+  end
 end
+
+execute 'update-grub'
