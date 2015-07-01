@@ -1,0 +1,6 @@
+<%# Use the travis-rubies binaries! %>
+<% if node['rvm']['binaries_url'] %>
+rvm_remote_server_url3=<%= node['rvm']['binaries_url'] %>
+rvm_remote_server_type3=rubies
+rvm_remote_server_verify_downloads3=1
+<% end %>

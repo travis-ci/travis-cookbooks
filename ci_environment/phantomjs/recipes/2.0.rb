@@ -2,16 +2,12 @@
 
 package 'libjpeg-dev'
 
-package 'libpng-dev' do
+package %w(libpng-dev libicu-dev) do
   not_if { node['lsb']['release'] == 'precise' }
 end
 
 package 'libicu48' do
   only_if { node['lsb']['release'] == 'precise' }
-end
-
-package 'libicu-dev' do
-  not_if { node['lsb']['release'] == 'precise' }
 end
 
 archive_path = File.join(Chef::Config[:file_cache_path], 'phantomjs.tar.bz2')

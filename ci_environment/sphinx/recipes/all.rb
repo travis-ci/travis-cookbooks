@@ -22,9 +22,7 @@
 # THE SOFTWARE.
 
 
-package 'libmysql++-dev' do
-  action :install
-end
+package 'libmysql++-dev'
 
 include_recipe "postgresql::client"
 

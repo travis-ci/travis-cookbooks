@@ -1,7 +1,6 @@
-#
 # Cookbook Name:: phpbuild
 # Recipe:: default
-# Copyright 2011-2013, Travis CI Development Team <contact@travis-ci.org>
+# Copyright 2011-2015, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,120 +20,86 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe "build-essential"
-include_recipe "networking_basic"
-
-include_recipe "apt"
-include_recipe "git"
-
-include_recipe "mysql::client"
-include_recipe "postgresql::client"
-
-include_recipe "libxml"
-include_recipe "libssl"
-
-case node[:platform]
-when "ubuntu", "debian"
-  %w{libbz2-dev libc-client2007e-dev libkrb5-dev libcurl4-gnutls-dev libfreetype6-dev libgmp3-dev libjpeg8-dev libmcrypt-dev libpng12-dev libt1-dev libmhash-dev libexpat1-dev libicu-dev libtidy-dev re2c lemon libldap2-dev libsasl2-dev}.each do |pkg|
-    package(pkg) { action :install }
-  end
-
-  link "/usr/lib/libpng.so" do
-    to "/usr/lib/#{node.phpbuild.arch}-linux-gnu/libpng.so"
-  end
-
-  link "/usr/lib/libkrb5.so" do
-    to "/usr/lib/#{node.phpbuild.arch}-linux-gnu/libkrb5.so"
-  end
-
-  link "/usr/lib/libldap.so" do
-    to "/usr/lib/#{node.phpbuild.arch}-linux-gnu/libldap.so"
-  end
-
-  link '/usr/include/freetype' do
-    to '/usr/include/freetype2'
-    not_if "test -e /usr/include/freetype"
-  end
-
-  link '/usr/include/gmp.h' do
-    to "/usr/include/#{node.phpbuild.arch}-linux-gnu/gmp.h"
-    not_if { node['lsb']['codename'] == 'precise' }
-  end
-
-  link "/usr/lib/libmysqlclient_r.so" do
-    to "/usr/lib/#{node.phpbuild.arch}-linux-gnu/libmysqlclient_r.so"
-    only_if { node[:platform_version].to_f >= 12.04 }
-  end
-
-  if node[:platform_version].to_f >= 11.10
-    package "libltdl-dev" do
-      action :install
-    end
-
-    # on 11.10+, we also have to symlink libjpeg and a bunch of other libraries
-    # because of the 32-bit/64-bit library directory separation. MK.
-    link "/usr/lib/libjpeg.so" do
-      to "/usr/lib/#{node.phpbuild.arch}-linux-gnu/libjpeg.so"
-    end
-
-    link "/usr/lib/libstdc++.so.6" do
-      to "/usr/lib/#{node.phpbuild.arch}-linux-gnu//usr/lib/libstdc++.so.6"
-    end
+unless Array(node['phpbuild']['prerequisite_recipes']).empty?
+  Array(node['phpbuild']['prerequisite_recipes']).each do |recipe_name|
+    include_recipe recipe_name
   end
 end
 
-phpbuild_path = "#{node.travis_build_environment.home}/.php-build"
+unless Array(node['phpbuild']['packages']).empty?
+  package Array(node['phpbuild']['packages'])
+end
+
+%w(
+  libpng.so
+  libkrb5.so
+  libldap.so
+  libmysqlclient_r.so
+  libjpeg.so
+  libstdc++.so.6
+).each do |lib|
+  link "/usr/lib/#{lib}" do
+    to "/usr/lib/#{node['phpbuild']['arch']}-linux-gnu/#{lib}"
+  end
+end
+
+link '/usr/include/freetype' do
+  to '/usr/include/freetype2'
+  not_if { File.exist?('/usr/include/freetype') }
+end
+
+link '/usr/include/gmp.h' do
+  to "/usr/include/#{node['phpbuild']['arch']}-linux-gnu/gmp.h"
+  not_if { node['lsb']['codename'] == 'precise' }
+end
+
+phpbuild_path = "#{node['travis_build_environment']['home']}/.php-build"
 
 git phpbuild_path do
-  user       node.travis_build_environment.user
-  group      node.travis_build_environment.group
-  repository node[:phpbuild][:git][:repository]
-  revision   node[:phpbuild][:git][:revision]
-  action     :checkout
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  repository node['phpbuild']['git']['repository']
+  revision node['phpbuild']['git']['revision']
+  action :sync
 end
 
 git "/tmp/php-build-plugin-phpunit" do
-  user       node.travis_build_environment.user
-  group      node.travis_build_environment.group
-  repository node[:phpbuild][:phpunit_plugin][:git][:repository]
-  revision   node[:phpbuild][:phpunit_plugin][:git][:revision]
-  action     :checkout
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  repository node['phpbuild']['phpunit_plugin']['git']['repository']
+  revision node['phpbuild']['phpunit_plugin']['git']['revision']
+  action :checkout
 end
 
-directory "#{phpbuild_path}/versions" do
-  owner  node.travis_build_environment.user
-  group  node.travis_build_environment.group
-  mode   "0755"
-  action :create
-end
-
-directory "#{phpbuild_path}/tmp" do
-  owner  node.travis_build_environment.user
-  group  node.travis_build_environment.group
-  mode   "0755"
-  action :create
+%w(tmp versions).each do |dirname|
+  directory "#{phpbuild_path}/#{dirname}" do
+    owner node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    mode 0755
+    action :create
+  end
 end
 
 cookbook_file "#{phpbuild_path}/share/php-build/after-install.d/phpunit" do
-  owner  node.travis_build_environment.user
-  group  node.travis_build_environment.group
-  mode   "0755"
-
-  source "after-install.d/phpunit.sh"
+  source 'after-install.d/phpunit.sh'
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0755
 end
 
 template "#{phpbuild_path}/share/php-build/default_configure_options" do
-  owner  node.travis_build_environment.user
-  group  node.travis_build_environment.group
-  source "default_configure_options.erb"
+  source 'default_configure_options.erb'
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0640
 end
 
 remote_directory "#{phpbuild_path}/share/php-build/definitions" do
-  owner       node.travis_build_environment.user
-  group       node.travis_build_environment.group
-  files_owner node.travis_build_environment.user
-  files_group node.travis_build_environment.group
-  files_mode  "0755"
-  source      "definitions"
+  source 'definitions'
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  files_owner node['travis_build_environment']['user']
+  files_group node['travis_build_environment']['group']
+  files_mode 0755
   only_if { node['lsb']['codename'] == 'precise' }
 end

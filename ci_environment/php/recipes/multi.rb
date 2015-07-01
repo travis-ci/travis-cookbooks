@@ -1,17 +1,17 @@
-include_recipe "bison"
-include_recipe "libreadline"
+unless Array(node['php']['multi']['prerequisite_recipes']).empty?
+  Array(node['php']['multi']['prerequisite_recipes']).each do |recipe_name|
+    include_recipe recipe_name
+  end
+end
 
-include_recipe "phpenv"
-include_recipe "phpbuild"
+phpbuild_path = "#{node['travis_build_environment']['home']}/.php-build"
+phpenv_path   = "#{node['travis_build_environment']['home']}/.phpenv"
 
-phpbuild_path = "#{node.travis_build_environment.home}/.php-build"
-phpenv_path   = "#{node.travis_build_environment.home}/.phpenv"
-
-node.php.multi.versions.each do |php_version|
+node['php']['multi']['versions'].each do |php_version|
   phpbuild_build "#{phpenv_path}/versions" do
     version   php_version
-    owner     node.travis_build_environment.user
-    group     node.travis_build_environment.group
+    owner     node['travis_build_environment']['user']
+    group     node['travis_build_environment']['group']
 
     action  :create
   end
@@ -21,14 +21,14 @@ node.php.multi.versions.each do |php_version|
   end
 end
 
-node.php.multi.aliases.each do |short_version, target_version|
+node['php']['multi']['aliases'].each do |short_version, target_version|
   link "#{phpenv_path}/versions/#{short_version}" do
     to "#{phpenv_path}/versions/#{target_version}"
   end
 end
 
-include_recipe "php::extensions"
-include_recipe "php::hhvm"
-include_recipe "php::hhvm-nightly"
-include_recipe "phpunit"
-include_recipe "composer"
+unless Array(node['php']['multi']['postrequisite_recipes']).empty?
+  Array(node['php']['multi']['postrequisite_recipes']).each do |recipe_name|
+    include_recipe recipe_name
+  end
+end

@@ -20,8 +20,7 @@
 case node[:platform]
 when "debian", "ubuntu"
   erlpkg = node[:erlang][:gui_tools] ? "erlang" : "erlang-nox"
-  package erlpkg
-  package "erlang-dev"
+  package %W(#{erlpkg} erlang-dev)
 else
   package "erlang"
 end

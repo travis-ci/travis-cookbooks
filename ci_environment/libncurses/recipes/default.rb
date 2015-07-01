@@ -25,7 +25,5 @@ package "libncursesw5-dev"
 
 case node['platform']
 when "ubuntu","debian"
-  %w{libncurses5-dev}.each do |pkg|
-    package(pkg) { action :install }
-  end # each
-end # case
+  package 'libncurses5-dev'
+end

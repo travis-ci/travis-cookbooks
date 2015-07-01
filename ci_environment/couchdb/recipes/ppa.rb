@@ -25,9 +25,7 @@ when "ubuntu" then
   include_recipe "couchdb::ubuntu_ppa"
 end
 
-package "couchdb" do
-  action :install
-end
+package 'couchdb'
 
 service "couchdb" do
   # intentionally disabled on boot. MK.

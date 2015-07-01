@@ -21,9 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package "lighttpd" do
-  action :install
-end
+package 'lighttpd'
 
 service "lighttpd" do
   supports :restart => true

@@ -16,9 +16,4 @@ package "tzdata" do
       node['lsb']['release'] == 'precise'
   end
 end
-package 'tzdata-java'
-
-
-package 'openjdk-6-jre-headless'
-package 'openjdk-6-jdk'
-package 'icedtea-6-plugin'
+package %w(tzdata-java openjdk-6-jre-headless openjdk-6-jdk icedtea-6-plugin)

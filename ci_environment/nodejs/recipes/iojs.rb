@@ -21,8 +21,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe "build-essential"
-include_recipe "networking_basic"
 include_recipe 'nodejs::multi'
 
 require "tmpdir"

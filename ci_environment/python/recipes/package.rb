@@ -28,9 +28,6 @@ python_pkgs = value_for_platform(
   "default" => ["python","python-dev","python3","python3-dev"]
 )
 
-python_pkgs.each do |pkg|
-  package pkg do
-    action :install
-  end
+unless python_pkgs.empty?
+  package python_pkgs
 end
-

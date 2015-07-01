@@ -16,8 +16,6 @@
 #
 
 case node['platform']
-when "ubuntu","debian"
-  package 'mingw32' do
-    action :install
-  end
+when "ubuntu", "debian"
+  package 'mingw32'
 end
