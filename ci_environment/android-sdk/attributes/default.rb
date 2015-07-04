@@ -23,6 +23,7 @@ default['android-sdk']['download_url']   = "http://dl.google.com/android/android
 default['android-sdk']['components']     = %w(platform-tools
                                               build-tools-22.0.1
                                               android-22
+                                              sys-img-armeabi-v7a-android-22
                                               android-21
                                               sys-img-armeabi-v7a-android-21
                                               android-20
