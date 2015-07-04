@@ -13,10 +13,12 @@ apt_repository "hhvm-repository" do
   components   ["main"]
   key          "http://dl.hhvm.com/conf/hhvm.gpg.key"
   action       :add
+  not_if { node['hhvm']['package']['disabled'] }
 end
 
 package node["hhvm"]["package"]["name"] do
   action  :install
   version node["hhvm"]["package"]["version"]
   options "--force-yes"
+  not_if { node['hhvm']['package']['disabled'] }
 end
