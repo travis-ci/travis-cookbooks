@@ -114,7 +114,7 @@ node['python']['pyenv']['pythons'].each do |py|
 
   execute "install packages #{py}" do
     command "#{virtualenv_root}/#{pyname}/bin/pip install --upgrade #{packages.join(' ')}"
-    owner node['travis_build_environment']['user']
+    user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment(
       'HOME' => node['travis_build_environment']['home']
