@@ -27,7 +27,7 @@ end
 bash "install-pip" do
   cwd Chef::Config[:file_cache_path]
   code <<-EOF
-  get-pip.py
+  python get-pip.py
   pip install --upgrade pip setuptools wheel
   EOF
   not_if "which pip"
