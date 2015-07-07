@@ -9,5 +9,8 @@ template '/etc/sysctl.d/30-travis-shm.conf' do
   owner 'root'
   group 'root'
   mode 0644
+  variables(
+    kernel_shmmax: node['sysctl']['kernel_shmmax']
+  )
   notifies :run, 'execute[update sysctl travis-shm]'
 end
