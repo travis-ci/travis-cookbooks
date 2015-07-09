@@ -5,6 +5,4 @@ license          "MIT"
 description      "Installs/Configures the Travis Go Worker"
 version          "0.0.1"
 
-%w{ packagecloud }.each do |cb|
-  depends cb
-end
+depends "packagecloud"
