@@ -2,6 +2,10 @@ packagecloud_repo "travisci/worker" do
   type "deb"
 end
 
+package "travis-worker" do
+  action :install
+end
+
 service "travis-worker" do
   provider Chef::Provider::Service::Upstart
   action :nothing
