@@ -7,6 +7,7 @@ default['java']['default_version'] = 'oraclejdk7'
 default['java']['alternate_versions'] = []
 default['java']['openjdk6']['jvm_name'] = "java-1.6.0-openjdk-#{node['java']['arch']}"
 default['java']['openjdk7']['jvm_name'] = "java-1.7.0-openjdk-#{node['java']['arch']}"
+default['java']['openjdk8']['jvm_name'] = "java-1.8.0-openjdk-#{node['java']['arch']}"
 default['java']['oraclejdk7']['jvm_name'] = 'java-7-oracle'
 default['java']['oraclejdk7']['install_jce_unlimited'] = true
 default['java']['oraclejdk7']['pinned_release'] = nil
