@@ -8,7 +8,7 @@ end
 
 service "travis-worker" do
   provider Chef::Provider::Service::Upstart
-  action :nothing
+  action :start
 end
 
 if node[:travis][:worker].key?(:branch)
