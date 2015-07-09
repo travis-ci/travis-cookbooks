@@ -3,6 +3,7 @@ packagecloud_repo "travisci/worker" do
 end
 
 service "travis-worker" do
+  provider Chef::Provider::Service::Upstart
   action :nothing
 end
 
