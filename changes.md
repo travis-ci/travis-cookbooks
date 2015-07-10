@@ -1,5 +1,7 @@
 ### Upcoming:
 
+- Update sbt-extras to access the new Typesafe releases repository (Eugene Yokota)
+
 - Update hhvm to 3.6.1 (Graham Campbell)
 
 - Update to PHP 5.4.40, 5.5.23, 5.6.8 (Hior Asari)
