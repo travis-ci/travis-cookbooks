@@ -28,7 +28,7 @@ template '/etc/default/travis-worker' do
   group 'root'
   mode 0644
   variables(
-    settings: node['travis']['worker']['settings']
+    environment: node['travis']['worker']['environment']
   )
 
   notifies :restart, 'service[travis-worker]'
