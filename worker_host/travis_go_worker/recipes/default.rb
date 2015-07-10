@@ -19,7 +19,7 @@ remote_file '/usr/local/bin/travis-worker' do
 
   notifies :restart, 'service[travis-worker]'
 
-  only_if { node['travis']['worker'].key?('branch') }
+  not_if { node['travis']['worker']['branch'].to_s.empty? }
 end
 
 template '/etc/default/travis-worker' do
