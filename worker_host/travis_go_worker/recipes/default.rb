@@ -16,7 +16,6 @@ remote_file '/usr/local/bin/travis-worker' do
   owner 'root'
   group 'root'
   mode 0755
-  verify '%{path} --version'
 
   notifies :restart, 'service[travis-worker]'
 
