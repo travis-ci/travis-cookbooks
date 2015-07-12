@@ -28,11 +28,11 @@ else
 fi
 
 if [[ -d "/usr/lib/jvm/java-8-openjdk-$ARCH_SUFFIX" ]] ; then
-  OPENJDK8_UJA_ALIAS="java-1.8.0-openjdk-$ARCH_SUFFIX"
-  OPENJDK8_JAVA_HOME="/usr/lib/jvm/java-8-openjdk-$ARCH_SUFFIX"
+    OPENJDK8_UJA_ALIAS="java-1.8.0-openjdk-$ARCH_SUFFIX"
+    OPENJDK8_JAVA_HOME="/usr/lib/jvm/java-8-openjdk-$ARCH_SUFFIX"
 else
-  OPENJDK8_UJA_ALIAS="java-1.7.0-openjdk"
-  OPENJDK8_JAVA_HOME="/usr/lib/jvm/java-7-openjdk"
+    OPENJDK8_UJA_ALIAS="java-1.8.0-openjdk"
+    OPENJDK8_JAVA_HOME="/usr/lib/jvm/java-8-openjdk"
 fi
 
 # The java::oraclejdk7 recipe from github.com/travis-ci/travis-cookbooks
