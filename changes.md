@@ -2,6 +2,8 @@
 
 - Add recipe to install OpenJDK8, not enabled yet (Gilles Cornu)
 
+- Update Gradle to 2.5 (Gilles Cornu)
+
 - Update sbt-extras to access the new Typesafe releases repository (Eugene Yokota)
 
 - Update hhvm to 3.6.1 (Graham Campbell)
