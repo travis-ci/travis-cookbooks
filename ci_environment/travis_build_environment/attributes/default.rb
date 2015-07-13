@@ -1,7 +1,7 @@
 default['travis_build_environment']['user'] = 'travis'
-default['travis_build_environment']['group'] = 'travis'
-default['travis_build_environment']['password'] = 'travis'
-default['travis_build_environment']['home'] = '/home/travis'
+default['travis_build_environment']['group'] = node['travis_build_environment']['user']
+default['travis_build_environment']['password'] = node['travis_build_environment']['user']
+default['travis_build_environment']['home'] = "/home/#{node['travis_build_environment']['user']}"
 default['travis_build_environment']['hosts'] = {}
 default['travis_build_environment']['update_hosts'] = true
 default['travis_build_environment']['builds_volume_size'] = '350m'
