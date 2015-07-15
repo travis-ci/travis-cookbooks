@@ -3,7 +3,7 @@ maintainer        "Travis CI Team"
 maintainer_email  "contact@travis-ci.org"
 license           "Apache 2.0"
 description       "Installs different Java Development Kits (JDK)"
-version           "2.0.0"
+version           "2.1.0"
 
 supports 'ubuntu', '>= 12.04'
 

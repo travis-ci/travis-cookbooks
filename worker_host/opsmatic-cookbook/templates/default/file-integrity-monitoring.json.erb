@@ -1,0 +1,15 @@
+{
+    "files": [
+    <% if node["opsmatic"]["file-monitor-list"] && !node["opsmatic"]["file-monitor-list"].empty? %>
+        <% node["opsmatic"]["file-monitor-list"].each_with_index do |filepath, index| %>
+        {
+        "path": "<%= filepath %>"
+        <% if index == node["opsmatic"]["file-monitor-list"].size - 1 %>
+        }
+        <% else %>
+        },
+    <% end %>
+    <% end %>
+    <% end %>
+    ]
+}

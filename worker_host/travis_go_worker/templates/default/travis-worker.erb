@@ -1,3 +1,4 @@
-<% @settings.each do |key, value| %>
-export <%= key.to_s.upcase %>=<%= value %>
+# Managed by Chef on <%= node.name %>, thanks! <3 <3 <3
+<% @environment.each do |key, value| %>
+export <%= key.to_s.upcase %>="<%= value %>"
 <% end %>
