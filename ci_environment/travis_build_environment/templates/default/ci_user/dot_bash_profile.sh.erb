@@ -1,3 +1,6 @@
-export PS1='$ '
+if [[ -z "$PS1" ]] ; then
+  export PS1='$ '
+fi
 
+[[ -s /etc/profile ]] && source /etc/profile
 [[ -s "$HOME/.bashrc" ]] && source "$HOME/.bashrc"
