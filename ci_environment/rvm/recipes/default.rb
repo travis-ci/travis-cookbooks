@@ -50,6 +50,7 @@ bash 'install RVM' do
 end
 
 cookbook_file '/etc/profile.d/rvm.sh' do
+  source 'rvm.sh'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode 0750
