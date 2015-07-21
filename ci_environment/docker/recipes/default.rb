@@ -11,15 +11,15 @@ include_recipe 'apt'
 include_recipe 'travis_build_environment'
 
 apt_repository 'docker' do
-  uri 'https://get.docker.io/ubuntu'
-  distribution 'docker'
+  uri 'https://apt.dockerproject.org/repo'
+  distribution 'ubuntu-trusty'
   components ['main']
-  key 'https://get.docker.io/gpg'
+  key 'https://apt.dockerproject.org/gpg'
   action :add
 end
 
-docker_pkg = 'lxc-docker'
-docker_pkg += "-#{node['docker']['version']}" if node['docker']['version']
+docker_pkg = 'docker-engine'
+# TODO docker_pkg += "-#{node['docker']['version']}" if node['docker']['version']
 
 package %W(linux-image-extra-#{`uname -r`.chomp} lxc #{docker_pkg})
 
