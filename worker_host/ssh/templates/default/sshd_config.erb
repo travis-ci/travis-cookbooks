@@ -86,9 +86,9 @@ Subsystem sftp /usr/lib/openssh/sftp-server
 # and ChallengeResponseAuthentication to 'no'.
 UsePAM yes
 
-PermitTunnel <%= node["sshd"]["permit_tunnel"] ? "yes" : "no" %>
-AllowTcpForwarding <%= node["sshd"]["allow_tcp_forwarding"] ? "yes" : "no" %>
+PermitTunnel <%= node['sshd']['permit_tunnel'] ? 'yes' : 'no' %>
+AllowTcpForwarding <%= node['sshd']['allow_tcp_forwarding'] ? 'yes' : 'no' %>
 
-<% if node["sshd"]["force_command"] %>
-ForceCommand <%= node["sshd"]["force_command"] %>
+<% if node['sshd']['force_command'] %>
+ForceCommand <%= node['sshd']['force_command'] %>
 <% end %>
