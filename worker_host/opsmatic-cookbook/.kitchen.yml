@@ -1,0 +1,28 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: ubuntu-12.04
+  - name: ubuntu-14.04
+  - name: centos-6.6
+  - name: centos-7.0
+
+suites:
+  - name: default
+    run_list:
+     - recipe[opsmatic::agent]
+      
+    attributes:
+      {
+        "opsmatic": {
+          "integration_token": "4f15f0b3-6881-41e0-a8a7-c1d9e85c8018",
+          "file-monitor-list": ['/etc/nginx/nginx.conf','/etc/ssh/sshd_config','/etc/rsyslog.conf','/etc/hosts','/etc/passwd'],
+          "host_alias": "chefcookbookhostname",
+          "groups": ["groupone", "anothergroup", "yetanothergroup"],
+          "ingest_http": "",
+        }
+      }
