@@ -18,8 +18,8 @@
 # limitations under the License.
 #
 
-remote_file "#{Chef::Config[:file_cache_path]}/ez_setup.py" do
-  source "https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py"
+remote_file "#{Chef::Config[:file_cache_path]}/get-pip.py" do
+  source "https://bootstrap.pypa.io/get-pip.py"
   mode "0644"
   not_if "which pip"
 end
@@ -27,8 +27,8 @@ end
 bash "install-pip" do
   cwd Chef::Config[:file_cache_path]
   code <<-EOF
-  python ez_setup.py
-  easy_install pip
+  python get-pip.py
+  pip install --upgrade pip setuptools wheel
   EOF
   not_if "which pip"
 end
