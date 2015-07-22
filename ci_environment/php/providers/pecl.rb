@@ -7,8 +7,8 @@ action :install do
     @run_context.include_recipe recipe
   end
 
-  new_resource.before_packages.each do |pkg|
-    package pkg do
+  unless new_resource.before_packages.empty?
+    package new_resource.before_packages do
       action :install
     end
   end

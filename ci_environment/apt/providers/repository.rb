@@ -1,8 +1,8 @@
-#
 # Cookbook Name:: apt
 # Provider:: repository
 #
 # Copyright 2010-2011, Opscode, Inc.
+# Copyright 2011-2015, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
 action :add do
   unless ::File.exists?("/etc/apt/sources.list.d/#{new_resource.repo_name}-source.list")
@@ -54,7 +53,7 @@ action :add do
       content repository + "\n"
       action :nothing
     end.run_action(:create)
-    execute "update package index" do
+    execute "update package index for #{new_resource.repo_name}" do
       command "apt-get update"
       action :nothing
     end.run_action(:run)

@@ -18,6 +18,6 @@
 # limitations under the License.
 #
 
-Array(node['ark']['package_dependencies']).each do |pkg|
-  package pkg
+unless Array(node['ark']['package_dependencies']).empty?
+  package node['ark']['package_dependencies']
 end

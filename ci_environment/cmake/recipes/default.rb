@@ -17,7 +17,5 @@
 
 case node['platform']
 when "ubuntu","debian"
-  package 'cmake' do
-    action :install
-  end
+  package 'cmake'
 end

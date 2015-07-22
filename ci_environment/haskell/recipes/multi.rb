@@ -76,13 +76,10 @@ apt_repository "cabal-install-ppa" do
   key          "9DF71E85"
   keyserver    "keyserver.ubuntu.com"
   action :add
+  only_if { node['lsb']['codename'] == 'precise' }
 end
 
-%w(cabal-install alex happy).each do |p|
-  package p do
-    action :install
-  end
-end
+package %w(cabal-install alex happy)
 
 cookbook_file "/etc/profile.d/cabal.sh" do
   owner node.travis_build_environment.user

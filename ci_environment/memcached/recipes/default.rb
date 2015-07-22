@@ -18,14 +18,8 @@
 # limitations under the License.
 #
 
-package "memcached" do
+package %w(memcached libmemcached-dev libsasl2-dev) do
   action :upgrade
-end
-
-%w(libmemcached-dev libsasl2-dev).each do |pkg|
-  package(pkg) do
-    action :upgrade
-  end
 end
 
 service "memcached" do

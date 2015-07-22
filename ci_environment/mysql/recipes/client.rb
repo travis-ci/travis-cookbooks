@@ -44,8 +44,8 @@ if platform?(%w{ debian ubuntu redhat centos fedora suse })
 
   package "mysql-ruby" do
     package_name value_for_platform(
-      [ "centos", "redhat", "suse", "fedora"] => { "default" => "ruby-mysql" },
-      ["debian", "ubuntu"] => { "default" => 'libmysql-ruby' },
+      [ "centos", "redhat", "suse", "fedora", "ubuntu" ] => { "default" => "ruby-mysql" },
+      [ "debian" ] => { "default" => 'libmysql-ruby' },
       "default" => 'libmysql-ruby'
     )
     action :install

@@ -1,1 +1,1 @@
-include_attribute "travis_build_environment::default"
+include_attribute 'travis_build_environment'

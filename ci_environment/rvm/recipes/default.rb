@@ -1,7 +1,6 @@
-#
 # Cookbook Name:: rvm
 # Recipe:: default
-# Copyright 2011-2013, Travis CI Development Team <contact@travis-ci.org>
+# Copyright 2011-2015, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,74 +20,71 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-# Make sure that the package list is up to date on Ubuntu/Debian.
-include_recipe "apt" if ['debian', 'ubuntu'].member? node[:platform]
-
-# Make sure we have all we need to compile ruby implementations:
-include_recipe "networking_basic"
-include_recipe "build-essential"
-include_recipe "git"
-include_recipe "libyaml"
-include_recipe "libgdbm"
-include_recipe "libreadline"
-include_recipe "libxml"
-include_recipe "libssl"
-include_recipe "libncurses"
-include_recipe "sqlite"
-node[:rvm][:pkg_requirements].each do |r|
-  package r
+unless node['rvm']['prerequisite_recipes'].empty?
+  node['rvm']['prerequisite_recipes'].each do |recipe_name|
+    include_recipe recipe_name
+  end
 end
 
+unless node['rvm']['pkg_requirements'].empty?
+  package node['rvm']['pkg_requirements']
+end
 
-bash "install RVM" do
-  user        node.travis_build_environment.user
-  group       node.travis_build_environment.group
-  cwd         node.travis_build_environment.home
-  environment Hash['HOME' => node.travis_build_environment.home, 'rvm_user_install_flag' => '1']
-  code        <<-SH
-  gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3 BF04FF17
-  curl -s https://raw.githubusercontent.com/wayneeseguin/rvm/master/binscripts/rvm-installer -o /tmp/rvm-installer &&
-  bash /tmp/rvm-installer #{node.rvm.version}
-  rm   /tmp/rvm-installer
-  ~/.rvm/bin/rvm version
+bash 'install RVM' do
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  cwd node['travis_build_environment']['home']
+  environment(
+    'HOME' => node['travis_build_environment']['home'],
+    'rvm_user_install_flag' => '1'
+  )
+  code <<-SH
+    set -e
+    gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3 BF04FF17
+    curl -s https://raw.githubusercontent.com/wayneeseguin/rvm/master/binscripts/rvm-installer -o /tmp/rvm-installer
+    bash /tmp/rvm-installer #{node['rvm']['version']}
+    rm /tmp/rvm-installer
+    ~/.rvm/bin/rvm version
   SH
-  not_if      "test -f #{node.travis_build_environment.home}/.rvm/scripts/rvm"
+  not_if "test -f #{node['travis_build_environment']['home']}/.rvm/scripts/rvm"
 end
 
-
-cookbook_file "/etc/profile.d/rvm.sh" do
-  owner node.travis_build_environment.user
-  group node.travis_build_environment.group
-  mode 0755
+cookbook_file '/etc/profile.d/rvm.sh' do
+  source 'rvm.sh'
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0750
 end
 
-
-template "#{node.travis_build_environment.home}/.rvmrc" do
-  owner node.travis_build_environment.user
-  group node.travis_build_environment.group
-  mode  0755
-
-  source "dot_rvmrc.sh.erb"
+template "#{node['travis_build_environment']['home']}/.rvmrc" do
+  source 'dot_rvmrc.sh.erb'
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0640
 end
 
-
-bundler_settings = File.join(node.travis_build_environment.home, ".bundle", "config")
+bundler_settings = "#{node['travis_build_environment']['home']}/.bundle/config"
 template bundler_settings do
-  owner  node.travis_build_environment.user
-  group  node.travis_build_environment.group
-
-  mode   0644
-
-  source "bundler_config.yml.erb"
-  variables Hash[:suffix => node.travis_build_environment.installation_suffix]
+  source 'bundler_config.yml.erb'
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0640
+  variables(
+    suffix: node['travis_build_environment']['installation_suffix']
+  )
   action :nothing
 end
 
+directory "#{node['travis_build_environment']['home']}/.bundle" do
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0750
+  notifies :create, "template[#{bundler_settings}]"
+end
 
-directory(File.join(node.travis_build_environment.home, ".bundle")) do
-  owner  node.travis_build_environment.user
-  group  node.travis_build_environment.group
-
-  action :create
-  notifies :create, resources(:template => bundler_settings)
+template "#{node['travis_build_environment']['home']}/.rvm/user/db" do
+  source 'rvm-user-db.erb'
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0640
 end

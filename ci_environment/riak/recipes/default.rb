@@ -1,11 +1,13 @@
 #
-# Use Basho APT repository
+# Use Basho via APT to PACKAGECLOUD repository
 #
-apt_repository 'basho' do
-  uri          'http://apt.basho.com'
-  distribution node['lsb']['codename']
+package 'apt-transport-https'
+
+apt_repository 'basho-riak' do
+  uri          'https://packagecloud.io/basho/riak/ubuntu/'
+  distribution node["lsb"]["codename"]
   components   ["main"]
-  key          'http://apt.basho.com/gpg/basho.apt.key'
+  key          'https://packagecloud.io/gpg.key'
 
   action :add
 end
@@ -17,19 +19,17 @@ package 'riak'
 # - Don't enable riak service at server boot time
 #
 service 'riak' do
+  supports :status => true, :restart => true
   action [:disable, :stop]
 end
 
-template "/etc/riak/app.config" do
-  source "app.config.erb"
+template "/etc/riak/riak.conf" do
+  source "riak.conf.erb"
   owner  'riak'
   group  'riak'
   mode   0644
 end
 
-template "/etc/riak/vm.args" do
-  source "vm.args.erb"
-  owner  'riak'
-  group  'riak'
-  mode   0644
+execute "remove Bashio APT package source" do
+  command "rm -f /etc/apt/sources.list.d/basho-riak-source.list"
 end

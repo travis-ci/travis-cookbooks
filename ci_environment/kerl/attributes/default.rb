@@ -1,1 +1,1 @@
-include_attribute "kerl::source"
+include_attribute "kerl::binary"

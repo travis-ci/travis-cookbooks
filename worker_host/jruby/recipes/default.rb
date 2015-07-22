@@ -21,10 +21,11 @@ execute "extract JRuby" do
   command "tar -C /opt/jruby --strip-components=1 -zxf /var/tmp/jruby-bin-#{node[:jruby][:version]}.tar.gz"
 end
 
-(node[:jruby][:gems] || %w{rake bundler}).each do |gem|
+(node[:jruby][:gems] || { 'rake' => nil, 'bundler' => nil }).each do |gem, gem_version|
   gem_package gem do
     gem_binary "/opt/jruby/bin/jgem"
     action :install
+    version gem_version unless gem_version.nil?
     options "--no-ri --no-rdoc"
   end
 end

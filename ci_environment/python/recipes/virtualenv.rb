@@ -28,6 +28,6 @@ end
 
 
 python_pip "virtualenv" do
-  version '1.11.6'
+  version '13.1.0'
   action :install
 end

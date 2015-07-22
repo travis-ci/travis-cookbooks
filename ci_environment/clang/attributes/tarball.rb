@@ -1,4 +1,4 @@
-default['clang']['version']       = '3.4'
-
-default['clang']['download_url']  = "http://llvm.org/releases/#{node['clang']['version']}/clang+llvm-#{node['clang']['version']}-x86_64-unknown-ubuntu12.04.tar.xz"
-default['clang']['checksum']      = 'de30cf4726bf82dd3ae9044e58a3de0c11561fec0c5ad5db96092fe369929c34'
+default['clang']['version'] = '3.5.0'
+default['clang']['download_url']  = "http://llvm.org/releases/#{node['clang']['version']}/clang+llvm-#{node['clang']['version']}-x86_64-linux-gnu-ubuntu-14.04.tar.xz"
+default['clang']['extension'] = 'tar.xz'
+default['clang']['checksum'] = 'b9b420b93d7681bb2b809c3271ebdf4389c9b7ca35a781c7189d07d483d8f201'

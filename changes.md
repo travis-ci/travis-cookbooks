@@ -1,12 +1,93 @@
 ### Upcoming:
 
+- Add recipe to install OpenJDK8, not enabled yet (Gilles Cornu)
+
+- Update Gradle to 2.5 (Gilles Cornu)
+
+- Update sbt-extras to access the new Typesafe releases repository (Eugene Yokota)
+
+- Update hhvm to 3.6.1 (Graham Campbell)
+
+- Update to PHP 5.4.40, 5.5.23, 5.6.8 (Hior Asari)
+
+- Update to Node.js 0.10.38 (Graham Campbell)
+
+- Update Sphinx to 2.2.8 (Hiro Asari)
+
+- Update to Go 1.4.2 (Hiro Asari)
+
+- Update MySQL to 5.6.23 with mysql.com packages (Hiro Asari)
+
+- Update Firefox to 31.6.0esr (Hiro Asari)
+
+- Update Maven 3.2.5 to 3.3.3 (Hiro Asari, Gilles Cornu)
+
+- Install PhantomJS 2.0.0 from custom-built archive in /usr/local/phantomjs-2.0.0/bin/phantomjs (Hiro Asari)
+
+- Add google-chrome-stable (Hiro Asari)
+
+- Add OTP Release 17.5 (Hiro Asari)
+
+- Update to Node.js 0.12.2, which is now the default (Hiro Asari)
+
+- Update io.js to 1.6.4 (Hiro Asari)
+
+- Update Python to 3.4.3 (Donald Stufft)
+
+- Update PyPy to 2.5.1 (Alex Gaynor)
+
+- Update Android SDK Tools to 24.1.2, Platform API to 22 (ardok)
+
+- Enable Erlang Query Server for CouchDB (Alexander Lang)
+
+- Add large index support to MySQL (Matthieu Paret)
+
+- Install Python 3 (currently 3.2.3) on all images via Ubuntu package (Franz Liedke)
+
+- Improve `/etc/mavenrc` to export `M2_HOME` and `MAVEN_OPTS` only when these
+  environment variables are not already defined (Gilles Cornu)
+
+### Production on 2015-02-03:
+
+- Update sbt-extras script to fix travis-ci/travis-ci#3140 (Gilles Cornu)
+
 - Update Gradle to 2.2.1 (Gilles Cornu)
 
 - Update Python to 2.7.9 (Alex Gaynor)
 
 - Drop Python 3.4.0, PyPy 2.3.1, PyPy3 2.3.1 (Donald Stufft)
 
-- Update to Go 1.4, make it default (Hiro Asari)
+- Update to Go 1.4.1 (Dan Buch)
+
+- Add Ruby 2.2.0 (Hiro Asari)
+
+- Update JRuby to 1.7.19 (Hiro Asari)
+
+- Pre-install JRuby 9.0.0.0.pre1 (Hiro Asari)
+
+- Update hhvm to 3.5.0 (Graham Campbell)
+
+- Install grunt-cli for Node.js 0.8.x and up (Hiro Asari)
+
+- Update Riak to 2.0 (Zeeshan Lakhani)
+
+- Replace OTP Release 17.3 with 17.4 (Hiro Asari)
+
+- Update Sphinx to 2.2.6, and make it default (Hiro Asari)
+
+- Update Scala to 2.11.5 and SBT to 0.13.7 (Gilles Cornu)
+
+- Update Android SDK Tools to 24.0.2 (@ardock)
+
+- Add PostgreSQL 9.4 (Gilles Cornu)
+
+- io.js support via nvm (Jordan Harband)
+
+- Node.js 0.11.15 (Graham Campbell)
+
+- Update to PHP 5.4.39, 5.5.21, 5.6.5 (Graham Campbell)
+
+- Drop PHP 5.2.17 (Hiro Asari)
 
 ### Production on .org on 09.12.2014
 

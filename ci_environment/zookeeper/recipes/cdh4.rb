@@ -35,13 +35,7 @@ apt_repository "cdh4" do
   action :add
 end
 
-package "zookeeper" do
-  action :install
-end
-
-package "zookeeper-server" do
-  action :install
-end
+package %w(zookeeper zookeeper-server)
 
 execute "sudo service zookeeper-server init --myid=travis1 --force"
 

@@ -1,6 +1,7 @@
-name             "sudo"
-maintainer       "Travis CI Development Team"
-license          "Apache v2.0"
-description      "Installs/Configures sudo"
+name 'sudo'
+maintainer 'Travis CI GmbH'
+license 'MIT'
+description 'Installs/Configures sudo, groups, users, :boom:'
+version '0.2.0'
 
-depends          "users"
+depends 'users'

@@ -25,9 +25,7 @@ when "ubuntu" then
   include_recipe "couchdb::ubuntu_ppa"
 end
 
-package "couchdb" do
-  action :install
-end
+package 'couchdb'
 
 service "couchdb" do
   # intentionally disabled on boot. MK.
@@ -39,4 +37,12 @@ file '/etc/init/couchdb.override' do
   group 'root'
   mode 0644
   content 'manual'
+end
+
+cookbook_file "/etc/couchdb/local.d/erlang_query_server.ini" do
+  source "erlang_query_server.ini"
+  owner "root"
+  group "root"
+  mode 0644
+  # notifies :restart, resources(:service => "couchdb")
 end

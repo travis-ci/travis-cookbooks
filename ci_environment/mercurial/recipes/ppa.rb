@@ -33,4 +33,4 @@ apt_repository "mercurial-ppa" do
   action :add
 end
 
-package "mercurial"
+package 'mercurial'

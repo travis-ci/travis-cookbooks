@@ -20,18 +20,18 @@
 # on Ubuntu 12.04. MK.
 #
 
-require "tmpdir"
+require 'tmpdir'
 
 tmp = Dir.tmpdir
-case node[:platform]
-when "debian", "ubuntu"
-  path = File.join(tmp, node.bison.filename)
+case node['platform']
+when 'debian', 'ubuntu'
+  path = File.join(tmp, node['bison']['filename'])
 
   remote_file(path) do
-    source node.bison.url
+    source node['bison']['url']
 
-    owner node.travis_build_environment.user
-    group node.travis_build_environment.group
+    owner node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
   end
 
   file(path) do
@@ -43,6 +43,6 @@ when "debian", "ubuntu"
     source   path
     provider Chef::Provider::Package::Dpkg
 
-    notifies :delete, resources(:file => path)
+    notifies :delete, "file[#{path}]"
   end
 end # case

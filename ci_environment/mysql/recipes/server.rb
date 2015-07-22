@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "mysql::client"
-
 # yes, for the CI environment, empty password is a good idea. VM is rolled back after eack run anyway.
 node.set_unless['mysql']['server_debian_password'] = ""
 node.set_unless['mysql']['server_root_password']   = ""
@@ -56,19 +54,12 @@ end
 
 # wipe out apparmor on 11.04 and later, it prevents MySQLd from restarting for now
 # good reasons (as far as CI goes). MK.
-package "apparmor" do
+package %w(apparmor apparmor-utils) do
   action :remove
   ignore_failure true
 end
 
-package "apparmor-utils" do
-  action :remove
-  ignore_failure true
-end
-
-package "mysql-server" do
-  action :install
-end
+package 'mysql-server'
 
 service "mysql" do
   service_name value_for_platform([ "centos", "redhat", "suse", "fedora" ] => {"default" => "mysqld"}, "default" => "mysql")

@@ -5,6 +5,7 @@ apt_repository "boost-backports" do
   keyserver    "keyserver.ubuntu.com"
   key          "5D50B6BA"
   action       :add
+  only_if { node["lsb"]["codename"] == 'precise' }
 end
 
 apt_repository "hhvm-repository" do
@@ -17,6 +18,6 @@ end
 
 package node["hhvm"]["package"]["name"] do
   action  :install
-  version node["hhvm"]["package"]["version"]
+  version [node["hhvm"]["package"]["version"], node['lsb']['codename']].join('~')
   options "--force-yes"
 end

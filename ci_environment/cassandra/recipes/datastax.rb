@@ -31,9 +31,7 @@ apt_repository "datastax" do
   action :add
 end
 
-package "cassandra" do
-  action :install
-end
+package 'cassandra'
 
 service "cassandra" do
   supports :restart => true, :status => true

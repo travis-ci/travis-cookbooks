@@ -7,7 +7,7 @@ Travis cookbooks are collections of Chef cookbooks used with [Chef Solo](http://
  * Anything else we may need to set up (for example, messaging broker nodes)
 
 The Chef `run-lists` that are used to build the different VM images for Travis CI environment are defined in YAML files, that are stored in `/vm_templates` subdirectory.
-This custom definition format is similar to Chef roles and is used by [travis-images](https://github.com/travis-ci/travis-images/tree/master/templates) tool.
+This custom definition format is similar to Chef roles and is used by [travis-images](https://github.com/travis-ci/travis-images) tool.
 
 ## Developing Cookbooks
 
@@ -50,6 +50,53 @@ $ vagrant up trusty64
 $ vagrant up win8
 # Starts experimental machines and tries to provision them...
 ```
+
+#### Dynamically defined VMs
+
+In addition, `Vagrantfile` dynamically defines VMs as provisioned
+for Travis CI.
+
+**HOWEVER, THESE VMS ARE CURRENTLY UNSUPPORTED**
+
+To use these VMs, you need to first clone https://github.com/BanzaiMan/travis-packer,
+https://github.com/opscode/bento, and
+https://github.com/travis-ci/travis-cookbooks to the same directory,
+then follow the instructions given in
+https://github.com/BanzaiMan/travis-packer/blob/master/README.md#usage
+to create the base standard boxes.
+
+```
+git clone https://github.com/BanzaiMan/travis-packer.git
+git clone https://github.com/opscode/bento.git
+cd travis-packer
+bundle install
+bundle exec ./generate > ../bento/packer/ubuntu-12.04-amd64-travis.json
+cd ../bento/packer
+vi ubuntu-12.04-amd64-travis.json
+packer build -parallel=false ubuntu-12.04-amd64-travis.json
+```
+
+Then add the resulting box as `travis-precise`.
+
+```
+vagrant box add --name travis-precise ../builds/vmware/travis_ubuntu-12.04_chef-latest.box
+```
+
+Then in `travis-cookbooks` directory, run `vagrant up`:
+
+```
+cd ../../travis-cookbooks
+vagrant up ruby-precise
+```
+
+This will run the rest of cookbooks for the Ruby image you can use.
+
+Other language VMs (Python, PHP, etc.) can be similarly created.
+
+Notice that some language VMs take longer to build, due to the requirement
+imposed by that image.
+You can try reducing the number of installed components in the recipes
+inside `travis-cookbooks`.
 
 #### Windows Image
 

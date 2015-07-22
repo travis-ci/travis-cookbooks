@@ -21,8 +21,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-node['firefox']['tarball']['package_dependencies'].each do |dep|
- package dep 
+unless node['firefox']['tarball']['package_dependencies'].empty?
+  package node['firefox']['tarball']['package_dependencies']
 end
 
 ark 'firefox' do

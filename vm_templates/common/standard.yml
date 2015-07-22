@@ -4,14 +4,14 @@ json:
     rubies:
       - name: 1.9.3
     gems:
-      - bundler
-      - rake
-  golang:
-    multi:
-      versions:
-        - go1.4
-      aliases: []
-      default_version: go1.4
+      - nokogiri
+  gimme:
+    versions:
+      - 1.4.2
+    default_version: 1.4.2
+  python:
+    pyenv:
+      pythons: []
   travis_build_environment:
     use_tmpfs_for_builds: false
 recipes:
@@ -22,12 +22,15 @@ recipes:
   - apt
   - package-updates
   - build-essential
+  - ccache
   - clang::tarball
-  - golang::multi
+  - gimme
+  - wget
   - networking_basic
   - openssl
   - sysctl
   - git::ppa
+  - git::lfs
   - mercurial
   - bazaar
   - subversion
@@ -45,6 +48,7 @@ recipes:
   - libncurses
   - libossp-uuid
   - libffi
+  - libicu
   - ragel
   - imagemagick
   - mingw32
@@ -69,8 +73,8 @@ recipes:
   #
   # Python and pip
   #
-  - python
-  - python::pip
+  - python::pyenv
+  - python::system
   #
   # Node.js
   #
@@ -102,7 +106,9 @@ recipes:
   - xserver
   - firefox::tarball
   - chromium
+  - google-chrome
   - phantomjs::tarball
+  - phantomjs::2.0
   #
   # Debugging & support
   #

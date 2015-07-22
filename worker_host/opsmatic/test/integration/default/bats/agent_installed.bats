@@ -25,6 +25,11 @@
 }
 
 @test "opsmatic-agent is running" {
-	result="$(initctl list | grep opsmatic-agent | grep running | wc -l)"
+	result="$(ps -ef | grep opsmatic-agent-bin | wc -l)"
 	[ "$result" -eq "1" ]
+}
+
+@test "opsmatic_http is absent when not configured" {
+	result="$(cat /etc/opsmatic-agent.conf | grep opsmatic_http | wc -l)"
+	[ "$result" -eq "0" ]
 }

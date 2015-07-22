@@ -2,7 +2,7 @@
 # Cookbook Name:: git
 # Recipe:: default
 #
-# Copyright 2011-2013, Travis CI Development Team <contact@travis-ci.org>
+# Copyright 2011-2015, Travis CI Development Team <contact@travis-ci.org>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,23 +16,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# 11.10 and 12.04 no longer use git-core and provide a recent version. So we
-# can just use standard packages. MK.
+include_recipe 'git::ppa'
 
-# package "git" do
-#   action :install
-# end
-
-# setting the default to the ppa recipe as it includes
-# a much more recent version of git
-include_recipe "git::ppa"
-
-gitconfig_path = File.join(node.travis_build_environment.home, '.gitconfig')
-
-file gitconfig_path do
-  owner node.travis_build_environment.user
-  group node.travis_build_environment.group
+file "#{node['travis_build_environment']['home']}/.gitconfig" do
   content "[core]\n  pager =\n"
-
-  not_if "test -f #{gitconfig_path}"
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0640
 end
