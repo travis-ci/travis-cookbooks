@@ -30,7 +30,7 @@ node['sudo']['groups'].each do |group|
   end
 end
 
-node['sudo']['users'].each do |user| -%>
+node['sudo']['users'].each do |user|
   file "/etc/sudoers.d/90-user-#{user}" do
     content <<-EOF.gsub(/^\s+> /, '')
       # # Managed by Chef on #{node.name}, thanks! <3 <3 <3
