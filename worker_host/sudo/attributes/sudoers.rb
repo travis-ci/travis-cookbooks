@@ -1,2 +1,2 @@
-default[:sudo][:groups] = []
-default[:sudo][:users] = []
+default['sudo']['groups'] = []
+default['sudo']['users'] = []
