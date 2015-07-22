@@ -1,4 +1,5 @@
-name             "ssh"
-maintainer       "Travis CI Development Team"
-license          "Apache v2.0"
-description      "Installs/Configures ssh"
+name 'ssh'
+maintainer 'Travis CI Development Team'
+license 'Apache v2.0'
+description 'Installs/Configures ssh'
+version '0.1.0'
