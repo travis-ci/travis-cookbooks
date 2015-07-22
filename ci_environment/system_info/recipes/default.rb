@@ -49,6 +49,7 @@ bash 'execute-system_info' do
     #{node['system_info']['use_bundler'] ? 'bundle exec' : ''} ./bin/system_info #{node['system_info']['cookbooks_sha'] || 'fffffff'}
   EOF
   environment(
+    'HOME' => node['travis_build_environment']['home'],
     'FORMATS' => 'human,json',
     'HUMAN_OUTPUT' => "#{system_info_dest}/system_info",
     'JSON_OUTPUT' => "#{system_info_dest}/system_info.json",
