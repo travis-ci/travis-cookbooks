@@ -1,10 +1,7 @@
-name             "users"
-maintainer       "The Travis CI Team"
-maintainer_email "mathias@travis-ci.org"
-license          "Apache 2.0"
-description      "User management"
-version          "0.0.1"
-
-%w{ ubuntu debian }.each do |os|
-  supports os
-end
+name 'users'
+maintainer 'Travis CI GmbH'
+maintainer_email 'contact+users-cookbook@travis-ci.com'
+license 'MIT'
+description 'Configures users for Travis CI servers'
+long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
+version '0.2.0'
