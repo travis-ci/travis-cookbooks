@@ -13,7 +13,6 @@ The **default** recipe of this Chef cookbook will:
 * Use RAMFS storage to reduce I/O impact (optional)
 * Tune some `postgresql.conf` parameters for performance optimization in a CI context (e.g. disable `fsync` data safety) (optional)
 * include **postgis** recipe to:
- * Add ubuntugis-stable PPA to backport libgdal1 (>= 1.9.0) on Ubuntu 12.04
  * Install the same PostGIS version from PGDG repository (e.g. 2.1) to all PostgreSQL instances (optional). Attention some combinations are not supported (e.g. PostGIS 2.1/PostgreSQL 8.4 or PostGIS 2.0/PostgreSQL 9.3)
 
 If you look for a more *"standard"* installation (e.g. for a productive database server), the [Opscode Community Cookbook](http://community.opscode.com/cookbooks/postgresql) and genuine [PostgreSQL Global Development Group (PGDG) packages](https://wiki.postgresql.org/wiki/Apt) may better fit your needs.
