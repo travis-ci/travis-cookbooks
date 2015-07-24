@@ -1,0 +1,19 @@
+# Have rsyslog watch specific application files
+#
+
+$ModLoad imfile
+
+<%- @watch_files.each_with_index do |wf, idx| %>
+
+# <%= wf[:tag] %>
+# <%= wf[:filename] %>
+#
+$InputFileName <%= wf[:filename] %>
+$InputFileTag <%= wf[:tag] %>
+$InputFileStateFile state_file_<%= wf[:sha] || idx %>
+#$InputFileSeverity error
+$InputFileFacility local7
+$InputRunFileMonitor
+$InputFilePollInterval 10
+
+<%- end %>

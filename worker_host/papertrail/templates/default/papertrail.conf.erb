@@ -1,0 +1,17 @@
+# Push system log to papertrailapp.com
+#
+
+$DefaultNetstreamDriverCAFile <%= @cert_file %> # trust these CAs
+$DefaultNetstreamDriver gtls # use gtls netstream driver
+$ActionSendStreamDriverMode 1 # require TLS
+$ActionSendStreamDriverAuthMode x509/name # authenticate by hostname
+
+<%- if @fixhostname %>
+
+*.*   @@<%= @host %>:<%= @port %>;FixHostname
+
+<%- else %>
+
+*.*   @@<%= @host %>:<%= @port %>
+
+<%- end %>
