@@ -1,0 +1,86 @@
+---
+driver_plugin: vagrant
+driver_plugin: digitalocean
+driver_config:
+  digitalocean_client_id: <%= ENV['DIGITAL_OCEAN_CLIENT_ID'] %>
+  digitalocean_api_key: <%= ENV['DIGITAL_OCEAN_API_KEY'] %>
+  aws_access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %> 
+  aws_secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+  aws_ssh_key_id: <%= ENV['AWS_KEYPAIR_NAME'] %>
+  ssh_key: <%= ENV['AWS_PRIVATE_KEY_PATH'] %>
+  rackspace_username: <%= ENV['RACKSPACE_USERNAME'] %>
+  rackspace_api_key: <%= ENV['RACKSPACE_API_KEY'] %>
+  require_chef_omnibus: latest
+
+platforms:
+# - name: omnios-r151006c
+#   driver_plugin: ec2
+#   driver_config:
+#     image_id: ami-35eb835c
+#     username: root
+
+- name: centos-5.8
+  driver_plugin: digitalocean
+  driver_config:
+    image_id: 1601
+    flavor_id: 63
+    region_id: 4
+    ssh_key_ids: <%= ENV['DIGITAL_OCEAN_SSH_KEY_IDS'] %>
+
+- name: centos-6.4
+  driver_plugin: digitalocean
+  driver_config:
+    image_id: 562354
+    flavor_id: 63
+    region_id: 4
+    ssh_key_ids: <%= ENV['DIGITAL_OCEAN_SSH_KEY_IDS'] %>
+
+# - name: amazon-2013.09
+#   driver_plugin: ec2
+#   driver_config:
+#     image_id: ami-3be4bc52
+#     username: ec2-user
+
+- name: ubuntu-1004
+  driver_plugin: digitalocean
+  driver_config:
+    image_id: 14097
+    flavor_id: 63
+    region_id: 4
+    ssh_key_ids: <%= ENV['DIGITAL_OCEAN_SSH_KEY_IDS'] %>
+  run_list:
+  - recipe[apt]
+
+- name: ubuntu-1204
+  driver_plugin: digitalocean
+  driver_config:
+    image_id: 1505447
+    flavor_id: 63
+    region_id: 4
+    ssh_key_ids: <%= ENV['DIGITAL_OCEAN_SSH_KEY_IDS'] %>
+  run_list:
+  - recipe[apt]
+
+suites:
+  - name: default
+    run_list:
+      - recipe[rsyslog::default]
+  - name: relp
+    run_list:
+      - recipe[rsyslog::default]
+    attributes:
+      rsyslog:
+        use_relp: true
+    # CentOS and OmniOS do not support relp
+    excludes:
+      - centos-5.8
+      - omnios-r151006c
+  - name: client
+    run_list:
+      - recipe[rsyslog::client]
+    attributes:
+      rsyslog:
+        server_ip: 10.0.0.50
+  - name: server
+    run_list:
+      - recipe[rsyslog::server]
