@@ -28,8 +28,6 @@ package "rsyslog-gnutls" do
 
   # Allow installation of rsyslog-gnutls from source
   not_if {File.exists?("/usr/lib/rsyslog/lmnsd_gtls.so")}
-
-  options "-o Dpkg::Options::='--force-confold'"
 end
 
 remote_file node['papertrail']['cert_file'] do
@@ -49,8 +47,7 @@ if node['papertrail']['watch_files'] && node['papertrail']['watch_files'].length
     node['papertrail']['watch_files'].each do |filename, tag|
       watch_file_array << {
         :filename => filename,
-        :tag      => tag,
-        :sha      => Digest::SHA1.hexdigest(filename)
+        :tag      => tag
       }
     end
 
@@ -80,7 +77,7 @@ hostname_name = node['papertrail']['hostname_name'].to_s
 hostname_cmd  = node['papertrail']['hostname_cmd'].to_s
 
 unless hostname_name.empty? && hostname_cmd.empty?
-  node['papertrail']['fixhostname'] = true
+  node.set['papertrail']['fixhostname'] = true
 
   if !hostname_name.empty?
     name = hostname_name

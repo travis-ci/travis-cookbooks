@@ -1,2 +1,2 @@
 # A template that renames our hostname
-$template FixHostname,"%timegenerated% <%= @name %> %syslogtag%%msg:::drop-last-lf%\n"
+$template FixHostname,"%timegenerated% <%= @name %> %syslogtag%%msg:::sp-if-no-1st-sp%%msg:::drop-last-lf%\n"

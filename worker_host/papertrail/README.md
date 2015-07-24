@@ -1,4 +1,3 @@
-
 ## DESCRIPTION:
 
 Cookbook to connect syslogging to [papertrailapp.com](https://papertrailapp.com/).
@@ -12,7 +11,7 @@ Cookbook to connect syslogging to [papertrailapp.com](https://papertrailapp.com/
 The easiest way to install this is to use [knife-github-cookbooks](https://github.com/websterclay/knife-github-cookbooks):
 
     gem install knife-github-cookbooks
-    knife github cookbook install librato/papertrail-cookbook
+    knife cookbook github install librato/papertrail-cookbook
 
 ## ATTRIBUTES:
 
@@ -23,9 +22,17 @@ node['papertrail']['remote_host'] - Papertrail host to send stats to. Defaults t
 
 node['papertrail']['remote_port'] - Port to use. No default.
 
-node['papertrail']['cert_file']   - Where to store papertrail cert file..
+node['papertrail']['cert_file']   - Where to store papertrail CA bundle. Defaults to '/etc/papertrail-bundle.pem'
 
-node['papertrail']['cert_url']    - URL to download certificate from.
+node['papertrail']['cert_url']    - URL to download CA bundle from. Defaults to 'https://papertrailapp.com/tools/papertrail-bundle.pem'
+
+node['papertrail']['resume_retry_count'] - Number of times to retry sending failed messages. Defaults to unlimited.
+
+node['papertrail']['queue_disk_space'] - Maximum disk space for queues. Defaults to 100M.
+
+node['papertrail']['queue_size'] - Maximum events to queue. Defaults to 100000.
+
+node['papertrail']['queue_file_name'] - Name of the disk queue. Defaults to 'papertrailqueue'.
 ```
 
 By default, this recipe will log to Papertrail using the system's
