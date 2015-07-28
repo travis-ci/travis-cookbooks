@@ -41,7 +41,7 @@ ruby_block 'Enable cgroup memory and swap accounting' do
     fe = Chef::Util::FileEdit.new('/etc/default/grub')
     fe.search_file_replace_line(
       /^GRUB_CMDLINE_LINUX=""/,
-      'GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"'
+      'GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1 apparmor=0"'
     )
     fe.write_file
   end
