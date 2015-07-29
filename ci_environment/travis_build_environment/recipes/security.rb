@@ -47,6 +47,7 @@ end
 
 execute 'update-rc.d disable-apparmor defaults' do
   action :nothing
+  only_if { node['travis_build_environment']['disable_apparmor'] }
 end
 
 template '/etc/init.d/disable-apparmor' do
@@ -55,6 +56,7 @@ template '/etc/init.d/disable-apparmor' do
   group 'root'
   mode 0750
   notifies :run, 'execute[update-rc.d disable-apparmor defaults]'
+  only_if { node['travis_build_environment']['disable_apparmor'] }
 end
 
 execute '/usr/sbin/update-ca-certificates -f'
