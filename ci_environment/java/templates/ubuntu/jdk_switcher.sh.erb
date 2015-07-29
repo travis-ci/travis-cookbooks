@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# Managed by Chef! :heart_eyes_cat:
 #
 # JDK switcher based on https://github.com/michaelklishin/jdk_switcher
 #
@@ -55,39 +56,36 @@ else
     ORACLEJDK8_JAVA_HOME="/usr/lib/jvm/java-8-oracle"
 fi
 
+UJA="update-java-alternatives"
+
 switch_to_openjdk6 () {
     echo "Switching to OpenJDK6 ($OPENJDK6_UJA_ALIAS), JAVA_HOME will be set to $OPENJDK6_JAVA_HOME"
-    remove_dir_from_path $JAVA_HOME/bin
+    sudo $UJA --set "$OPENJDK6_UJA_ALIAS"
     export JAVA_HOME="$OPENJDK6_JAVA_HOME"
-    export PATH=$JAVA_HOME/bin:$PATH
 }
 
 switch_to_openjdk7 () {
     echo "Switching to OpenJDK7 ($OPENJDK7_UJA_ALIAS), JAVA_HOME will be set to $OPENJDK7_JAVA_HOME"
-    remove_dir_from_path $JAVA_HOME/bin
+    sudo $UJA --set "$OPENJDK7_UJA_ALIAS"
     export JAVA_HOME="$OPENJDK7_JAVA_HOME"
-    export PATH=$JAVA_HOME/bin:$PATH
 }
 
 switch_to_openjdk8 () {
-  echo "Switching to OpenJDK8 ($OPENJDK8_UJA_ALIAS), JAVA_HOME will be set to $OPENJDK8_JAVA_HOME"
-  remove_dir_from_path $JAVA_HOME/bin
-  export JAVA_HOME="$OPENJDK8_JAVA_HOME"
-  export PATH=$JAVA_HOME/bin:$PATH
+    echo "Switching to OpenJDK8 ($OPENJDK8_UJA_ALIAS), JAVA_HOME will be set to $OPENJDK8_JAVA_HOME"
+    sudo $UJA --set "$OPENJDK8_UJA_ALIAS"
+    export JAVA_HOME="$OPENJDK8_JAVA_HOME"
 }
 
 switch_to_oraclejdk7 () {
     echo "Switching to Oracle JDK7 ($ORACLEJDK7_UJA_ALIAS), JAVA_HOME will be set to $ORACLEJDK7_JAVA_HOME"
-    remove_dir_from_path $JAVA_HOME/bin
+    sudo $UJA --set "$ORACLEJDK7_UJA_ALIAS"
     export JAVA_HOME="$ORACLEJDK7_JAVA_HOME"
-    export PATH=$JAVA_HOME/bin:$PATH
 }
 
 switch_to_oraclejdk8 () {
     echo "Switching to Oracle JDK8 ($ORACLEJDK8_UJA_ALIAS), JAVA_HOME will be set to $ORACLEJDK8_JAVA_HOME"
-    remove_dir_from_path $JAVA_HOME/bin
+    sudo $UJA --set "$ORACLEJDK8_UJA_ALIAS"
     export JAVA_HOME="$ORACLEJDK8_JAVA_HOME"
-    export PATH=$JAVA_HOME/bin:$PATH
 }
 
 print_home_of_openjdk6 () {
@@ -119,15 +117,7 @@ warn_jdk_not_known () {
 }
 
 warn_gcj_user () {
-    echo "We do not support GCJ." >&2
-}
-
-remove_dir_from_path() {
-    local target=$(echo $1 | sed -e 's:/*$::') # remove all occurrences of / at the end
-    PATH="$(echo :$PATH: | sed -e 's_/*:_:_g')"
-    PATH="${PATH//:$target:/:}"
-    PATH="${PATH#:}"
-    PATH="${PATH%:}"
+    echo "We do not support GCJ. I mean, come on. Are you Richard Stallman?" >&2
 }
 
 switch_jdk()
@@ -143,7 +133,7 @@ switch_jdk()
         openjdk7|jdk7|1.7.0|1.7|7.0)
             switch_to_openjdk7
             ;;
-         openjdk8|jdk8|1.8.0|1.8|8.0)
+        openjdk8|jdk8|1.8.0|1.8|8.0)
             switch_to_openjdk8
             ;;
         oraclejdk6|oraclejdk1.6|oraclejdk1.6.0|oracle6|oracle1.6.0|oracle6.0|sunjdk6|sun6)
@@ -157,7 +147,11 @@ switch_jdk()
             switch_to_oraclejdk8
             ;;
         default)
-            switch_to_<%= node.java.default_version %>
+            <% unless node['java']['default_version'].empty? %>
+            switch_to_<%= node['java']['default_version'] %>
+            <% else %>
+            switch_to_openjdk7
+            <% end %>
             ;;
         *)
             warn_jdk_not_known "$1"
@@ -195,7 +189,11 @@ print_java_home()
             print_home_of_oraclejdk8
             ;;
         default)
-            print_home_of_<%= node.java.default_version %>
+            <% unless node['java']['default_version'].empty? %>
+            print_home_of_<%= node['java']['default_version'] %>
+            <% else %>
+            print_home_of_openjdk7
+            <% end %>
             ;;
         *)
             warn_jdk_not_known "$JDK"
