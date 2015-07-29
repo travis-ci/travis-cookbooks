@@ -45,9 +45,16 @@ ruby_block 'require pam_limits.so for su' do
   end
 end
 
-package %w(apparmor apparmor-utils) do
-  action :remove
-  ignore_failure true
+execute 'update-rc.d disable-apparmor defaults' do
+  action :nothing
+end
+
+template '/etc/init.d/disable-apparmor' do
+  source 'etc/init.d/disable-apparmor.sh.erb'
+  owner 'root'
+  group 'root'
+  mode 0750
+  notifies :run, 'execute[update-rc.d disable-apparmor defaults]'
 end
 
 execute '/usr/sbin/update-ca-certificates -f'
