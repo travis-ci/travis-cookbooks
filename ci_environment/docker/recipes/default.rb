@@ -29,22 +29,17 @@ group 'docker' do
 end
 
 cookbook_file '/etc/default/docker' do
+  source 'etc/default/docker'
   owner 'root'
   group 'root'
   mode 0640
-
-  source 'etc/default/docker'
 end
 
-ruby_block 'Enable cgroup memory and swap accounting' do
-  block do
-    fe = Chef::Util::FileEdit.new('/etc/default/grub')
-    fe.search_file_replace_line(
-      /^GRUB_CMDLINE_LINUX=""/,
-      'GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1 apparmor=0"'
-    )
-    fe.write_file
-  end
+cookbook_file '/etc/default/grub.d/99-travis-settings.cfg' do
+  source 'etc/default/grub.d/99-travis-settings.cfg'
+  owner 'root'
+  group 'root'
+  mode 0640
 end
 
 execute 'update-grub'
