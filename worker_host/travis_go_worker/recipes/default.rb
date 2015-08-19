@@ -32,4 +32,5 @@ template '/etc/default/travis-worker' do
   )
 
   notifies :restart, 'service[travis-worker]'
+  not_if { node['travis']['worker']['disable_reconfiguration'] }
 end

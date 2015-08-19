@@ -1,6 +1,9 @@
 # Set this to a branch name to copy down a binary directly from S3
 default['travis']['worker']['branch'] = ''
 
+# Disables writing a new config, as with hosts configured via cloud-init
+default['travis']['worker']['disable_reconfiguration'] = false
+
 # This should be the exact env vars
 default['travis']['worker']['environment'] = {}
 
