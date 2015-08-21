@@ -43,8 +43,7 @@ There is a `Vagrantfile` in this project that includes a VirtualBox setup,
 though testing is possible with other [Vagrant
 providers](https://github.com/mitchellh/vagrant/wiki/Available-Vagrant-Plugins#providers).
 For VirtualBox, make sure to use Vagrant 1.6.2+ and VirtualBox 4.3.12+, or you
-might encounter [Vagrant
-#3341](https://github.com/mitchellh/vagrant/issues/3341).
+might encounter [Vagrant #3341](https://github.com/mitchellh/vagrant/issues/3341).
 
 The included `Vagrantfile` defines multiple machines, where each machine is a
 target worker platform:
