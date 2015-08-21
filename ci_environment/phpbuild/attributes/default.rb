@@ -1,7 +1,7 @@
 default['phpbuild']['git']['repository'] = 'git://github.com/php-build/php-build.git'
-default['phpbuild']['git']['revision'] = 'adac6156644f500476514e44656e31e6950913bb'
-default['phpbuild']['phpunit_plugin']['git']['repository'] = 'git://github.com/CHH/php-build-plugin-phpunit.git'
-default['phpbuild']['phpunit_plugin']['git']['revision'] = '2ee717c0e783809458f3073258c63f42500d1298'
+default['phpbuild']['git']['revision'] = 'edb42024864c7844523e3b5666e3088d116b5758'
+default['phpbuild']['phpunit_plugin']['git']['repository'] = 'git://github.com/php-build/phpunit-plugin.git'
+default['phpbuild']['phpunit_plugin']['git']['revision'] = 'f3edabe4498e4f2fbebdfa63d3ed7272eb129ba2'
 default['phpbuild']['custom']['php_ini']['memory_limit'] = '1G'
 default['phpbuild']['custom']['php_ini']['timezone'] = 'UTC'
 default['phpbuild']['arch'] = (kernel['machine'] =~ /x86_64/ ? 'x86_64' : 'i386')
