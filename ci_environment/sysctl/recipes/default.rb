@@ -12,5 +12,5 @@ template '/etc/sysctl.d/30-travis-shm.conf' do
   variables(
     kernel_shmmax: node['sysctl']['kernel_shmmax']
   )
-  notifies :run, 'execute[update sysctl travis-shm]'
+  notifies :run, 'execute[update sysctl travis-shm]', :immediately
 end
