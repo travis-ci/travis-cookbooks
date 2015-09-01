@@ -1,0 +1,4 @@
+# Managed by Chef on <%= node.name %>, thanks! :heart_eyes_cat:
+<% @environment.each do |key, value| %>
+export <%= key.to_s.upcase %>="<%= value %>"
+<% end %>
