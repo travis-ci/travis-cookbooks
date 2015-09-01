@@ -1,4 +1,4 @@
-name             'jupiter_brain'
+name             'travis_jupiter_brain'
 maintainer       'Travis CI GmbH'
 maintainer_email 'contact+jupiter-brain-cookbook@travis-ci.org'
 license          'MIT'
