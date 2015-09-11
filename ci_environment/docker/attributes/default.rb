@@ -1,2 +1,2 @@
-default['docker']['version'] = '1.7.0'
+default['docker']['version'] = '1.8.2-0~trusty'
 default['docker']['users'] = ['travis']

@@ -18,10 +18,14 @@ apt_repository 'docker' do
   action :add
 end
 
-docker_pkg = 'docker-engine'
-# TODO docker_pkg += "-#{node['docker']['version']}" if node['docker']['version']
+package %W(
+  linux-generic-lts-vivid
+  lxc
+)
 
-package %W(linux-image-extra-#{`uname -r`.chomp} lxc #{docker_pkg})
+package 'docker-engine' do
+  version node['docker']['version']
+end
 
 group 'docker' do
   members node['docker']['users']
