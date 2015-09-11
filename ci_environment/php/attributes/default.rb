@@ -14,15 +14,15 @@ default['php']['multi']['postrequisite_recipes'] = %w(
 )
 
 default['php']['multi']['versions'] = %w(
-  5.4.42
-  5.5.26
-  5.6.10
+  5.4.44
+  5.5.28
+  5.6.12
 )
 
 default['php']['multi']['aliases'] = {
-  '5.4' => '5.4.42',
-  '5.5' => '5.5.26',
-  '5.6' => '5.6.10'
+  '5.4' => '5.4.44',
+  '5.5' => '5.5.28',
+  '5.6' => '5.6.12'
 }
 
 default['php']['multi']['extensions'] = {
@@ -68,16 +68,16 @@ default['php']['multi']['extensions'] = {
 if node['lsb']['codename'] == 'precise'
   default['php']['multi']['versions'] = %w(
     5.3.29
-    5.4.40
+    5.4.44
     5.5.9
-    5.5.24
-    5.6.8
+    5.5.28
+    5.6.12
   )
   default['php']['multi']['aliases'] = {
     '5.3' => '5.3.29',
-    '5.4' => '5.4.40',
-    '5.5' => '5.5.24',
-    '5.6' => '5.6.8'
+    '5.4' => '5.4.44',
+    '5.5' => '5.5.28',
+    '5.6' => '5.6.12'
   }
 
   default['php']['multi']['extensions'] = {
