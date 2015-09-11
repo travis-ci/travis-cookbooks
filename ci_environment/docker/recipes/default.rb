@@ -19,7 +19,6 @@ apt_repository 'docker' do
 end
 
 package %W(
-  linux-image-extra-#{`uname -r`.chomp}
   linux-generic-lts-vivid
   lxc
 )
