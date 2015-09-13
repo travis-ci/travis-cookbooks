@@ -7,11 +7,13 @@ default['python']['pyenv']['revision'] = 'v20150913'
 default['python']['pyenv']['pythons'] = %w(
   2.7.10
   3.5.0
+  pypy-2.6.1
 )
 
 default['python']['pyenv']['aliases'] = {
   '2.7.10' => %w(2.7),
   '3.5.0' => %w(3.5),
+  'pypy-2.6.1' => %w(pypy),
 }
 
 default['python']['pip']['packages'] = {
