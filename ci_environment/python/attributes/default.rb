@@ -17,6 +17,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 default['python']['pyenv']['revision'] = "c452da8084a6236ce66411b7fc6036f8d38930dc"
 
 # Order matters for this list of Pythons. It will be used to construct the
@@ -30,7 +31,7 @@ default['python']['pyenv']['pythons'] = [
     "3.4.2",
     "3.3.5",
     "3.2.5",
-    "pypy-2.5.0",
+    "pypy-2.6.1",
     "pypy3-2.4.0",
 ]
 
@@ -41,7 +42,7 @@ default['python']['pyenv']['aliases'] = {
     "3.3.5" => ["3.3"],
     "3.4.2" => ["3.4"],
     "3.5.0" => ["3.5"],
-    "pypy-2.5.0" => ["pypy"],
+    "pypy-2.6.1" => ["pypy"],
     "pypy3-2.4.0" => ["pypy3"],
 }
 
