@@ -24,5 +24,5 @@ default['python']['pip']['packages'] = {
 
 default['python']['system']['pythons'] = %w(2.7 3.2)
 if node['lsb']['codename'] == 'trusty'
-  default['python']['system']['pythons'] = %w(2.7 3.5)
+  default['python']['system']['pythons'] = %w(2.7 3.4)
 end
