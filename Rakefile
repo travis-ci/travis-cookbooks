@@ -1,7 +1,6 @@
 require 'foodcritic'
-require 'rspec/core/rake_task'
 
-task :default => [:foodcritic, :spec]
+task default: [:foodcritic]
 
 FoodCritic::Rake::LintTask.new do |t|
   t.files = %w(ci_environment worker_host)
@@ -32,5 +31,3 @@ FoodCritic::Rake::LintTask.new do |t|
     ),
   }
 end
-
-RSpec::Core::RakeTask.new

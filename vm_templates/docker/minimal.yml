@@ -1,3 +1,0 @@
-json:
-  travis_build_environment:
-    update_hosts: false
