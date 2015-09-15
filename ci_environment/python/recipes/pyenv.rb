@@ -65,7 +65,26 @@ node['python']['pyenv']['pythons'].each do |py|
     pyname = py
   end
 
-  execute "python-build #{py} /opt/python/#{py}" do
+  bash "attempt download of #{py}" do
+    code <<-EOBASH.gsub(/^\s+> /, '')
+      > if [[ ! -f /opt/python/#{py} ]] ; then
+      >   curl -s -o #{Chef::Config[:file_cache_path]}/python-#{py}.tar.bz2 https://s3.amazonaws.com/travis-python-archives/$(lsb_release -rs)/python-#{py}.tar.bz2
+      >   if [[ -f #{Chef::Config[:file_cache_path]}/python-#{py}.tar.bz2 ]] ; then
+      >     sudo tar xjf #{Chef::Config[:file_cache_path]}/python-#{py}.tar.bz2 --directory /
+      >     rm #{Chef::Config[:file_cache_path]}/python-#{py}.tar.bz2
+      >   fi
+      > fi
+    EOBASH
+    creates "/opt/python/#{py}"
+    environment build_environment
+  end
+
+  bash "conditionally build #{py}" do
+    code <<-EOBASH.gsub(/^\s+> /, '')
+      > if [[ ! -f /opt/python/#{py} ]] ; then
+      >   python-build #{py} /opt/python/#{py}
+      > fi
+    EOBASH
     creates "/opt/python/#{py}"
     environment build_environment
   end
