@@ -16,5 +16,4 @@ addons:
     packages:
     - chefdk
 
-script:
-- foodcritic $FC_ARGS --tags $(cat .foodcritic-tags) $COOKBOOK_PATH
+script: ./run-foodcritic $COOKBOOK_PATH

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -o errexit
+
+[[ $# -ge 1 ]]
+
+COOKBOOK_PATH="$1"
+
+: ${FC_ARGS:=}
+: ${FC_TAGS:=.foodcritic-tags}
+
+for tag in $(cat ${FC_TAGS}) ; do
+  FC_ARGS="$FC_ARGS --tags $tag"
+done
+
+exec foodcritic $FC_ARGS $COOKBOOK_PATH
