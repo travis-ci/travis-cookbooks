@@ -1,8 +1,12 @@
-language: ruby
+language: generic
 
 rvm: 1.9.3
 
 sudo: false
+
+env:
+  global:
+  - PATH="/opt/chef/bin:$PATH"
 
 addons:
   apt:
