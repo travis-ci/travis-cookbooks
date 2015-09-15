@@ -1,4 +1,0 @@
-recipes:
-  - haskell::multi
-  - system_info
-  - sweeper
