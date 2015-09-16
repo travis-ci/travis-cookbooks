@@ -80,7 +80,7 @@ template "#{node['mysql']['conf_dir']}/my.cnf" do
   owner "root"
   group "root"
   mode "0644"
-  notifies :restart, "service[mysql]", :immediately
+  notifies :restart, "service[mysql]"
 end
 
 
@@ -94,6 +94,8 @@ unless platform?(%w{debian ubuntu})
   end
 
 end
+
+include_recipe "mysql::server_ssl"
 
 grants_path = "#{node['mysql']['conf_dir']}/mysql_grants.sql"
 
