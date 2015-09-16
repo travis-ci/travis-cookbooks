@@ -33,15 +33,19 @@ module Opscode
       end
 
       def unpack_command
-        case unpack_type
-        when "tar_xzf"
-          cmd = tar_command("xzf")
-        when "tar_xjf"
-          cmd = tar_command("xjf")
-        when "tar_xJf"
-          cmd = tar_command("xJf")
-        when "unzip"
-          cmd = unzip_command
+        if node['platform_family'] === 'windows'
+           cmd = sevenzip_command
+        else
+          case unpack_type
+          when "tar_xzf"
+            cmd = tar_command("xzf")
+          when "tar_xjf"
+            cmd = tar_command("xjf")
+          when "tar_xJf"
+            cmd = tar_command("xJf")
+          when "unzip"
+            cmd = unzip_command
+          end
         end
         Chef::Log.debug("DEBUG: cmd: #{cmd}")
         cmd
@@ -69,33 +73,74 @@ module Opscode
         end
       end
 
+      def sevenzip_command
+        if new_resource.strip_components > 0
+          require 'tmpdir'
+          tmpdir = Dir.mktmpdir
+          cmd = sevenzip_command_builder(tmpdir,'e')
+          cmd += " && "
+          currdir = tmpdir
+          var = 0
+          while var < new_resource.strip_components do
+            var += 1
+            cmd += "for /f %#{var} in ('dir /ad /b \"#{currdir.gsub! '/', '\\'}\"') do "
+            currdir += "\\%#{var}"
+          end
+          cmd += "xcopy \"#{currdir}\" \"#{new_resource.home_dir}\" /s /e"
+        else
+          cmd = sevenzip_command_builder(new_resource.path,'x')
+        end
+        cmd
+      end
+
+      def sevenzip_command_builder(dir, command)
+        cmd = "#{node['ark']['tar']} #{command} \"";
+        cmd += new_resource.release_file
+        cmd += "\" "
+        case parse_file_extension
+        when /tar.gz|tgz|tar.bz2|tbz|tar.xz|txz/
+          cmd += " -so | #{node['ark']['tar']} x -aoa -si -ttar"
+        end
+        cmd += " -o\"#{dir}\" -uy"
+        cmd
+      end
+
       def dump_command
-        case unpack_type
-        when "tar_xzf", "tar_xjf", "tar_xJf"
-          cmd = "tar -mxf \"#{new_resource.release_file}\" -C \"#{new_resource.path}\""
-        when "unzip"
-          cmd = "unzip  -j -q -u -o \"#{new_resource.release_file}\" -d \"#{new_resource.path}\""
+        if node['platform_family'] === 'windows'
+          cmd = sevenzip_command_builder(new_resource.path,'e')
+        else
+          case unpack_type
+          when "tar_xzf", "tar_xjf", "tar_xJf"
+            cmd = "tar -mxf \"#{new_resource.release_file}\" -C \"#{new_resource.path}\""
+          when "unzip"
+            cmd = "unzip  -j -q -u -o \"#{new_resource.release_file}\" -d \"#{new_resource.path}\""
+          end
         end
         Chef::Log.debug("DEBUG: cmd: #{cmd}")
         cmd
       end
 
       def cherry_pick_command
-        case unpack_type
-        when "tar_xzf"
-          cmd = cherry_pick_tar_command("xzf")
-        when "tar_xjf"
-          cmd = cherry_pick_tar_command("xjf")
-        when "tar_xJf"
-          cmd = cherry_pick_tar_command("xJf")
-        when "unzip"
-          cmd = "unzip -t #{new_resource.release_file} \"*/#{new_resource.creates}\" ; stat=$? ;"
-          cmd += "if [ $stat -eq 11 ] ; then "
-          cmd += "unzip  -j -o #{new_resource.release_file} \"#{new_resource.creates}\" -d #{new_resource.path} ;"
-          cmd += "elif [ $stat -ne 0 ] ; then false ;"
-          cmd += "else "
-          cmd += "unzip  -j -o #{new_resource.release_file} \"*/#{new_resource.creates}\" -d #{new_resource.path} ;"
-          cmd += "fi"
+        if node['platform_family'] === 'windows'
+          cmd = sevenzip_command_builder(new_resource.path,'e')
+          cmd += " -r #{new_resource.creates}"
+        else
+          case unpack_type
+          when "tar_xzf"
+            cmd = cherry_pick_tar_command("xzf")
+          when "tar_xjf"
+            cmd = cherry_pick_tar_command("xjf")
+          when "tar_xJf"
+            cmd = cherry_pick_tar_command("xJf")
+          when "unzip"
+            cmd = "unzip -t #{new_resource.release_file} \"*/#{new_resource.creates}\" ; stat=$? ;"
+            cmd += "if [ $stat -eq 11 ] ; then "
+            cmd += "unzip  -j -o #{new_resource.release_file} \"#{new_resource.creates}\" -d #{new_resource.path} ;"
+            cmd += "elif [ $stat -ne 0 ] ; then false ;"
+            cmd += "else "
+            cmd += "unzip  -j -o #{new_resource.release_file} \"*/#{new_resource.creates}\" -d #{new_resource.path} ;"
+            cmd += "fi"
+          end
         end
         Chef::Log.debug("DEBUG: cmd: #{cmd}")
         cmd
@@ -124,8 +169,12 @@ module Opscode
         # set effective paths
         new_resource.prefix_bin = prefix_bin
         new_resource.version ||= "1"  # initialize to one if nil
-        new_resource.path       = ::File.join(prefix_root, "#{new_resource.name}-#{new_resource.version}")
         new_resource.home_dir ||= default_home_dir
+        if node['platform_family'] === 'windows'
+          new_resource.path = new_resource.win_install_dir
+        else
+          new_resource.path = ::File.join(prefix_root, "#{new_resource.name}-#{new_resource.version}")
+        end
         Chef::Log.debug("path is #{new_resource.path}")
         new_resource.release_file     = ::File.join(Chef::Config[:file_cache_path],  "#{new_resource.name}-#{new_resource.version}.#{release_ext}")
       end
@@ -151,6 +200,15 @@ module Opscode
         if [true, false].include?(new_resource.strip_leading_dir)
           Chef::Log.warn("DEPRECATED: strip_leading_dir attribute was deprecated. Use strip_components instead.")
         end
+      end
+
+      def owner_command
+        if node['platform_family'] === 'windows'
+          cmd = "icacls #{new_resource.path}\\* /setowner #{new_resource.owner}"
+        else
+          cmd = "chown -R #{new_resource.owner}:#{new_resource.group} #{new_resource.path}"
+        end
+        cmd
       end
 
       # def unpacked?(path)

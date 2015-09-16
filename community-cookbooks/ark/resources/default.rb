@@ -46,6 +46,7 @@ attribute :prefix_home, :kind_of => String, :default => nil
 attribute :prefix_bin, :kind_of => String, :default => nil
 attribute :version, :kind_of => String, :default => nil
 attribute :home_dir, :kind_of => String, :default => nil
+attribute :win_install_dir, :kind_of => String, :default => nil
 attribute :environment, :kind_of => Hash, :default => {}
 attribute :autoconf_opts, :kind_of => Array, :default => []
 attribute :make_opts, :kind_of => Array, :default => []
