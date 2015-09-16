@@ -1,4 +1,3 @@
-name             "libevent"
 maintainer       "Takeshi KOMIYA"
 maintainer_email "i.tkomiya@gmail.com"
 license          "Apache 2.0"
