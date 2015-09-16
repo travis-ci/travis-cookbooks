@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: git
-# Recipe:: ppa
+# Recipe:: server
 #
-# Copyright 2011-2013, Travis CI Development Team <contact@travis-ci.org>
+# Copyright 2009, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,19 +15,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-# This recipe relies on a PPA package and is Ubuntu/Debian specific. Please
-# keep this in mind.
+include_recipe "git"
 
-apt_repository "git-ppa" do
-  uri          "http://ppa.launchpad.net/git-core/v1.8/ubuntu"
-  distribution node['lsb']['codename']
-  components   ["main"]
-  key          "E1DF1F24"
-  keyserver    "keyserver.ubuntu.com"
-
-  action :add
+directory "/srv/git" do
+  owner "root"
+  group "root"
+  mode 0755
 end
 
-package 'git'
+case node[:platform]
+when "debian", "ubuntu"
+  include_recipe "runit"
+  runit_service "git-daemon"
+else
+  log "Platform requires setting up a git daemon service script."
+  log "Hint: /usr/bin/git daemon --export-all --user=nobody --group=daemon --base-path=/srv/git"
+end

@@ -2,7 +2,7 @@
 # Cookbook Name:: git
 # Recipe:: default
 #
-# Copyright 2011-2015, Travis CI Development Team <contact@travis-ci.org>
+# Copyright 2008-2009, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,11 +16,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'git::ppa'
-
-file "#{node['travis_build_environment']['home']}/.gitconfig" do
-  content "[core]\n  pager =\n"
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  mode 0640
+case node[:platform]
+when "debian", "ubuntu"
+  package "git-core"
+else 
+  package "git"
 end
