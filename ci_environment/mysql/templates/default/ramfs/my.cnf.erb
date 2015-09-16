@@ -60,7 +60,7 @@ innodb_large_prefix
 #
 # * Fine Tuning
 #
-key_buffer              = <%= node['mysql']['tunable']['key_buffer'] %>
+key_buffer_size         = <%= node['mysql']['tunable']['key_buffer'] %>
 max_allowed_packet      = 16M
 thread_stack            = 256K
 thread_cache_size       = 8

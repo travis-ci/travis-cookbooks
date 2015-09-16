@@ -42,7 +42,11 @@ attribute "mysql/tunable",
   :type => "hash"
 
 attribute "mysql/tunable/key_buffer",
-  :display_name => "MySQL Tuntable Key Buffer",
+  :display_name => "MySQL Tunable Key Buffer for MySQL < 5.0.0",
+  :default => "250M"
+
+attribute "mysql/tunable/key_buffer_size",
+  :display_name => "MySQL Tunable Key Buffer for MySQL >= 5.0.0",
   :default => "250M"
 
 attribute "mysql/tunable/max_connections",
