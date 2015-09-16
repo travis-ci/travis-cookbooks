@@ -17,4 +17,3 @@
 # limitations under the License.
 #
 
-package 'openssl'
