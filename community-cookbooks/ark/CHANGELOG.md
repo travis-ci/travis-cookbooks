@@ -3,6 +3,11 @@ ark Cookbook CHANGELOG
 This file is used to list changes made in each version of the ark cookbook.
 
 
+v0.9.0 (2014-06-06)
+-------------------
+* [COOK-3642] Add Windows support
+
+
 v0.8.2 (2014-04-23)
 -------------------
 - [COOK-4514] - Support for SLES with the Ark cookbook

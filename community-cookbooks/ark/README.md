@@ -62,6 +62,8 @@ defaults.
   `prefix_bin` is not passed into the resource.
 * `node['ark']['prefix_home']` - default home location if the
   `prefix_home` is not passed into the resource.
+* `node['ark']['win_install_dir']` - directory where the files will
+  be put on windows
 * `node['ark']['package_dependencies']` - prerequisite system
   packages that need to be installed to support ark.
 
