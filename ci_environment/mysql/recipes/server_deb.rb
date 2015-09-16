@@ -57,6 +57,11 @@ if platform?(%w{debian ubuntu})
     recursive true
   end
 
+  directory "#{node['mysql']['conf_dir']}/conf.d" do
+    action :create
+    recursive true
+  end
+
   template "#{node['mysql']['conf_dir']}/debian.cnf" do
     source "debian.cnf.erb"
     owner "root"
@@ -88,7 +93,7 @@ service "mysql" do
   end
 end
 
-template "#{node['mysql']['conf_dir']}/my.cnf" do
+template "#{node['mysql']['conf_dir']}/conf.d/travis.cnf" do
   source "my.cnf.erb"
   owner "root"
   group "root"

@@ -61,7 +61,7 @@ bash "cp -R #{node['mysql']['data_dir']} #{node[:ramfs][:dir]}/mysql" do
 end
 
 # Now install a custom my.cnf that will use a ramfs directory for datadir.
-template "#{node['mysql']['conf_dir']}/my.cnf" do
+template "#{node['mysql']['conf_dir']}/conf.d/travis.cnf" do
   source "ramfs/my.cnf.erb"
 
   owner "root"

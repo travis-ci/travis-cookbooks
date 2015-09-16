@@ -75,7 +75,7 @@ service "mysql" do
   end
 end
 
-template "#{node['mysql']['conf_dir']}/my.cnf" do
+template "#{node['mysql']['conf_dir']}/conf.d/travis.cnf" do
   source "my.cnf.erb"
   owner "root"
   group "root"
