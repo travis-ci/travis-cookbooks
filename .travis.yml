@@ -7,7 +7,7 @@ env:
   - PATH="/opt/chef/bin:$PATH"
   matrix:
   - COOKBOOK_PATH="cookbooks"
-  - COOKBOOK_PATH="site-cookbooks"
+  - COOKBOOK_PATH="community-cookbooks"
 
 addons:
   apt:

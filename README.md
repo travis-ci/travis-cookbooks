@@ -16,7 +16,7 @@ repository.
 There are two cookbook path directories in this repository:
 
 - `cookbooks` authored by Travis CI
-- `site-cookbooks` vendored, authored elsewhere
+- `community-cookbooks` vendored community stuff
 
 ### Requirements
 
