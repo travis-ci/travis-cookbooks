@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: build-essential
-# Recipe:: default
+# Recipe:: omnios
 #
-# Copyright 2008-2009, Chef Software, Inc.
+# Copyright 2013, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,13 +17,17 @@
 # limitations under the License.
 #
 
-begin
-  include_recipe "build-essential::_#{node['platform_family']}"
-rescue Chef::Exceptions::RecipeNotFound
-  Chef::Log.warn <<-EOH
-A build-essential recipe does not exist for '#{node['platform_family']}'. This
-means the build-essential cookbook does not have support for the
-#{node['platform_family']} family. If you are not compiling gems with native
-extensions or building packages from source, this will likely not affect you.
-EOH
+potentially_at_compile_time do
+  package 'developer/gcc47'
+  package 'developer/object-file'
+  package 'developer/linker'
+  package 'developer/library/lint'
+  package 'developer/build/gnu-make'
+  package 'system/header'
+  package 'system/library/math/header-math'
 end
+
+# Per OmniOS documentation, the gcc bin dir isn't in the default
+# $PATH, so add it to the running process environment
+# http://omnios.omniti.com/wiki.php/DevEnv
+ENV['PATH'] = "#{ENV['PATH']}:/opt/gcc-4.7.2/bin"
