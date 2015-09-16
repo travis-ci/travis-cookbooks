@@ -65,9 +65,28 @@ node['python']['pyenv']['pythons'].each do |py|
     pyname = py
   end
 
-  execute "python-build #{py} /opt/python/#{py}" do
+  downloaded_tarball = "#{Chef::Config[:file_cache_path]}/python-#{py}.tar.bz2"
+
+  remote_file downloaded_tarball do
+    source "https://s3.amazonaws.com/travis-python-archives/#{node['lsb']['release']}/python-#{py}.tar.bz2"
+    owner 'root'
+    group 'root'
+    mode 0644
+    ignore_failure true
+  end
+
+  bash "extract #{downloaded_tarball}" do
+    code "tar -xjf #{downloaded_tarball} --directory /"
     creates "/opt/python/#{py}"
     environment build_environment
+    only_if { File.exists?(downloaded_tarball) }
+  end
+
+  bash "build #{py}" do
+    code "python-build #{py} /opt/python/#{py}"
+    creates "/opt/python/#{py}"
+    environment build_environment
+    not_if { File.exists?("/opt/python/#{py}") }
   end
 
   link "/opt/python/#{py}/bin/#{pyname}" do
