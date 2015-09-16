@@ -1,0 +1,17 @@
+
+[mysqld]
+
+ssl
+ssl-ca = /etc/mysql/ssl/ca.crt
+ssl-key = /etc/mysql/ssl/server.key
+ssl-cert = /etc/mysql/ssl/server.crt
+
+[client.ssl]
+
+user = travis_ssl
+password =  pass
+ssl
+ssl-verify-server-cert
+ssl-ca = /etc/mysql/ssl/ca.crt
+ssl-key = /etc/mysql/ssl/client.key
+ssl-cert = /etc/mysql/ssl/client.crt

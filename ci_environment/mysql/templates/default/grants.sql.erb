@@ -23,6 +23,10 @@ CREATE USER 'travis'@'%' IDENTIFIED BY '';          GRANT ALL PRIVILEGES ON *.* 
 CREATE USER 'travis'@'localhost' IDENTIFIED BY '';  GRANT ALL PRIVILEGES ON *.* TO 'travis'@'localhost';
 CREATE USER 'travis'@'127.0.0.1' IDENTIFIED BY '';  GRANT ALL PRIVILEGES ON *.* TO 'travis'@'127.0.0.1';
 
+CREATE USER 'travis_ssl'@'%' IDENTIFIED BY '';          GRANT ALL PRIVILEGES ON *.* TO 'travis_ssl'@'%' REQUIRE ISSUER '<%= client_certificate.issuer %>' AND SUBJECT '<%=  client_certificate.subject %>';
+CREATE USER 'travis_ssl'@'localhost' IDENTIFIED BY '';  GRANT ALL PRIVILEGES ON *.* TO 'travis_ssl'@'localhost' REQUIRE ISSUER '<%= client_certificate.issuer %>' AND SUBJECT '<%=  client_certificate.subject %>';
+CREATE USER 'travis_ssl'@'127.0.0.1' IDENTIFIED BY '';  GRANT ALL PRIVILEGES ON *.* TO 'travis_ssl'@'127.0.0.1' REQUIRE ISSUER '<%= client_certificate.issuer %>' AND SUBJECT '<%=  client_certificate.subject %>';
+
 CREATE USER 'vagrant'@'%' IDENTIFIED BY '';          GRANT ALL PRIVILEGES ON *.* TO 'vagrant'@'%';
 CREATE USER 'vagrant'@'localhost' IDENTIFIED BY '';  GRANT ALL PRIVILEGES ON *.* TO 'vagrant'@'localhost';
 CREATE USER 'vagrant'@'127.0.0.1' IDENTIFIED BY '';  GRANT ALL PRIVILEGES ON *.* TO 'vagrant'@'127.0.0.1';
