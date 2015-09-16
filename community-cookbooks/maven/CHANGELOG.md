@@ -3,15 +3,6 @@ maven Cookbook CHANGELOG
 This file is used to list changes made in each version of the maven cookbook.
 
 
-ADDITIONAL PATCH
-----------------
-
-The following change is not present in Chef Maven Cookbook up to version 1.3.0.
-
-- Allow to override /etc/mavenrc defaults
-  Fix https://github.com/opscode-cookbooks/maven/issues/44
-  Fix https://github.com/travis-ci/travis-ci/issues/1689
-
 v1.0.0
 ------
 ### Improvement

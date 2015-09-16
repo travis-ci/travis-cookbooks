@@ -23,14 +23,14 @@
 
 default['maven']['version'] = 3
 default['maven']['m2_home'] = '/usr/local/maven'
-default['maven']['mavenrc']['opts'] = '-Dmaven.repo.local=$HOME/.m2/repository -Xmx512m -XX:MaxPermSize=192m'
+default['maven']['mavenrc']['opts'] = '-Dmaven.repo.local=$HOME/.m2/repository -Xmx384m -XX:MaxPermSize=192m'
 default['maven']['2']['version'] = '2.2.1'
 default['maven']['2']['url'] = "http://apache.mirrors.tds.net/maven/maven-2/#{node['maven']['2']['version']}/binaries/apache-maven-#{node['maven']['2']['version']}-bin.tar.gz"
 default['maven']['2']['checksum'] = 'b9a36559486a862abfc7fb2064fd1429f20333caae95ac51215d06d72c02d376'
 default['maven']['2']['plugin_version'] = '2.4'
-default['maven']['3']['version'] = '3.3.3'
+default['maven']['3']['version'] = '3.1.0'
 default['maven']['3']['url'] = "http://apache.mirrors.tds.net/maven/maven-3/#{node['maven']['3']['version']}/binaries/apache-maven-#{node['maven']['3']['version']}-bin.tar.gz"
-default['maven']['3']['checksum'] = '3a8dc4a12ab9f3607a1a2097bbab0150c947ad6719d8f1bb6d5b47d0fb0c4779'
+default['maven']['3']['checksum'] = '59088c62c14b996d597bbd55e720866b0e13e36daed8a46a81c01058ee74bd54'
 default['maven']['3']['plugin_version'] = '2.4'
 default['maven']['repositories'] = ['http://repo1.maven.apache.org/maven2']
 default['maven']['setup_bin'] = false
