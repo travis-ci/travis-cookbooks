@@ -17,17 +17,29 @@
 # limitations under the License.
 #
 
-execute "apt-get update" do
-  action :run
-end
-
 case node['platform']
 when "ubuntu","debian"
-  package %w(build-essential binutils-doc)
+  %w{build-essential binutils-doc}.each do |pkg|
+    package pkg do
+      action :install
+    end
+  end
 when "centos","redhat","fedora"
-  package %w(gcc gcc-c++ kernel-devel make)
+  %w{gcc gcc-c++ kernel-devel make}.each do |pkg|
+    package pkg do
+      action :install
+    end
+  end
 end
 
-package %w(autoconf flex bison)
+package "autoconf" do
+  action :install
+end
 
-include_recipe "cmake"
+package "flex" do
+  action :install
+end
+
+package "bison" do
+  action :install
+end
