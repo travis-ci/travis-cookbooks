@@ -3,7 +3,6 @@
 # Recipe:: default
 #
 # Copyright 2009, Opscode, Inc.
-# Copyright 2011-2013, Travis CI Development Team <contact@travis-ci.org>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,17 +17,17 @@
 # limitations under the License.
 #
 
-package %w(memcached libmemcached-dev libsasl2-dev) do
+package "memcached" do
+  action :upgrade
+end
+
+package "libmemcache-dev" do
   action :upgrade
 end
 
 service "memcached" do
+  action :nothing
   supports :status => true, :start => true, :stop => true, :restart => true
-  if node[:memcached][:enabled]
-    action [:enable, :start]
-  else
-    action [:disable, :start]
-  end
 end
 
 template "/etc/memcached.conf" do
@@ -40,8 +39,7 @@ template "/etc/memcached.conf" do
     :listen => node[:memcached][:listen],
     :user => node[:memcached][:user],
     :port => node[:memcached][:port],
-    :memory => node[:memcached][:memory],
-    :sasl   => node.memcached.sasl
+    :memory => node[:memcached][:memory]
   )
   notifies :restart, resources(:service => "memcached"), :immediately
 end
