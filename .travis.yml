@@ -6,8 +6,8 @@ env:
   global:
   - PATH="/opt/chef/bin:$PATH"
   matrix:
-  - COOKBOOK_PATH="ci_environment"
-  - COOKBOOK_PATH="worker_host" FC_ARGS="--exclude ./worker-host/opsmatic-cookbook" 
+  - COOKBOOK_PATH="cookbooks"
+  - COOKBOOK_PATH="community-cookbooks"
 
 addons:
   apt:
