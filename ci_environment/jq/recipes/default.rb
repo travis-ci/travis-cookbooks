@@ -2,7 +2,7 @@
 # Cookbook Name:: jq
 # Recipe:: default
 #
-# Copyright 2014, Travis CI GmbH
+# Copyright 2015, Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -25,14 +25,9 @@
 #
 
 arch = node['kernel']['machine'] =~ /x86_64/ ? '64' : '32'
-os = case node['platform_family']
-     when 'mac_os_x' then 'osx'
-     when 'omnios', 'smartos', 'solaris2' then 'solaris11-'
-     else 'linux'
-     end
 
 remote_file node['jq']['install_dest'] do
-  source "http://stedolan.github.io/jq/download/#{os}#{arch}/jq"
+  source "https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux#{arch}"
   action :create_if_missing
   mode 0755
   owner node['jq']['owner']
