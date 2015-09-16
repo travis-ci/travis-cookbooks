@@ -2,7 +2,7 @@
 # Cookbook Name:: jq
 # Attributes:: default
 #
-# Copyright 2014, Travis CI GmbH
+# Copyright 2015, Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
