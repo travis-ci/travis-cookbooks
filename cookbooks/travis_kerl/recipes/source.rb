@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: kerl
+# Cookbook Name:: travis_kerl
 # Recipe:: source
 #
 # Copyright 2011-2012, Michael S. Klishin, Ward Bekker
@@ -31,7 +31,7 @@ directory(installation_root) do
   action :create
 end
 
-remote_file(node.kerl.path) do
+remote_file(node.travis_kerl.path) do
   source "https://raw.githubusercontent.com/spawngrid/kerl/master/kerl"
   mode "0755"
 end
@@ -55,7 +55,7 @@ end
 # updates list of available releases. Needed for kerl to recognize
 # R15B, for example. MK.
 execute "erlang.releases.update" do
-  command "#{node.kerl.path} update releases"
+  command "#{node.travis_kerl.path} update releases"
 
   user    node.travis_build_environment.user
   group   node.travis_build_environment.group
@@ -63,7 +63,7 @@ execute "erlang.releases.update" do
   environment(env)
 
   # run when kerl script is downloaded & installed
-  subscribes :run, resources(:remote_file => node.kerl.path)
+  subscribes :run, resources(:remote_file => node.travis_kerl.path)
 end
 
 cookbook_file "#{node.travis_build_environment.home}/.erlang.cookie" do
@@ -83,9 +83,9 @@ cookbook_file "#{node.travis_build_environment.home}/.build_plt" do
 end
 
 
-node.kerl.releases.each do |rel, build|
+node.travis_kerl.releases.each do |rel, build|
   execute "build Erlang #{rel}" do
-    command "#{node.kerl.path} build #{rel} #{rel}"
+    command "#{node.travis_kerl.path} build #{rel} #{rel}"
 
     user    node.travis_build_environment.user
     group   node.travis_build_environment.group
@@ -93,19 +93,31 @@ node.kerl.releases.each do |rel, build|
     environment(env)
 
     # make sure R14B02 won't cause R14B to be skipped. MK.
-    not_if "#{node.kerl.path} list builds | grep \"#{rel}$\"", :user => node.travis_build_environment.user, :environment => env
+    not_if "#{node.travis_kerl.path} list builds | grep \"#{rel}$\"", :user => node.travis_build_environment.user, :environment => env
   end
 
 
   execute "install Erlang #{rel}" do
     # cleanup is available starting with https://github.com/spawngrid/kerl/pull/28
-    command "#{node.kerl.path} install #{rel} #{installation_root}/#{rel} && #{node.kerl.path} cleanup #{rel} && rm -rf #{node.travis_build_environment.home}/.kerl/archives/*" # && ~/.build_plt #{installation_root}/#{rel} #{installation_root}/#{rel}/lib"
+    command "#{node.travis_kerl.path} install #{rel} #{installation_root}/#{rel} && #{node.travis_kerl.path} cleanup #{rel} && rm -rf #{node.travis_build_environment.home}/.kerl/archives/*"
 
     user    node.travis_build_environment.user
     group   node.travis_build_environment.group
 
     environment(env)
 
-    not_if "#{node.kerl.path} list installations | grep #{rel}", :user => node.travis_build_environment.user, :environment => env
+    not_if "#{node.travis_kerl.path} list installations | grep #{rel}", :user => node.travis_build_environment.user, :environment => env
+  end
+
+  execute "generate Erlang #{rel} Dialyzer PLT" do
+    command "~/.build_plt #{installation_root}/#{rel} #{installation_root}/#{rel}/lib"
+
+    user    node.travis_build_environment.user
+    group   node.travis_build_environment.group
+
+    environment(env)
+
+    only_if { node.travis_kerl.build_plt }
+    not_if "#{node.travis_kerl.path} list installations | grep #{rel} && test -f #{installation_root}/#{rel}/dialyzer.plt", :user => node.travis_build_environment.user, :environment => env
   end
 end
