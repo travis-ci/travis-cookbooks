@@ -2,10 +2,10 @@
 # Cookbook Name:: maven
 # Attributes:: default
 #
-# Author:: Seth Chisamore (<schisamo@opscode.com>)
+# Author:: Seth Chisamore (<schisamo@chef.io>)
 # Author:: Bryan W. Berry (<bryan.berry@gmail.com>)
 #
-# Copyright:: Copyright (c) 2010-2013, Opscode, Inc.
+# Copyright:: Copyright (c) 2010-2013, Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,9 +28,10 @@ default['maven']['2']['version'] = '2.2.1'
 default['maven']['2']['url'] = "http://apache.mirrors.tds.net/maven/maven-2/#{node['maven']['2']['version']}/binaries/apache-maven-#{node['maven']['2']['version']}-bin.tar.gz"
 default['maven']['2']['checksum'] = 'b9a36559486a862abfc7fb2064fd1429f20333caae95ac51215d06d72c02d376'
 default['maven']['2']['plugin_version'] = '2.4'
-default['maven']['3']['version'] = '3.1.0'
+default['maven']['3']['version'] = '3.1.1'
 default['maven']['3']['url'] = "http://apache.mirrors.tds.net/maven/maven-3/#{node['maven']['3']['version']}/binaries/apache-maven-#{node['maven']['3']['version']}-bin.tar.gz"
-default['maven']['3']['checksum'] = '59088c62c14b996d597bbd55e720866b0e13e36daed8a46a81c01058ee74bd54'
+default['maven']['3']['checksum'] = '077ed466455991d5abb4748a1d022e2d2a54dc4d557c723ecbacdc857c61d51b'
 default['maven']['3']['plugin_version'] = '2.4'
 default['maven']['repositories'] = ['http://repo1.maven.apache.org/maven2']
 default['maven']['setup_bin'] = false
+default['maven']['install_java'] = true

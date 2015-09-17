@@ -13,8 +13,9 @@ Requirements
 - CentOS
 - Red Hat
 - Fedora
+- Windows
 
-The following Opscode cookbooks are dependencies:
+The following Chef Software cookbooks are dependencies:
 - java - this cookbook not only depends on the java virtual machine but it also depends on the java_ark LWRP present in the java cookbooks
 - ark - used to unpack the maven tarball
 
@@ -30,6 +31,7 @@ Attributes
 * `node['maven']['repositories']` - an array of maven repositories to use; must be specified as an array. Used in the maven LWRP.
 * `node['maven']['setup_bin']` - Whether or not to put mvn on your system path, defaults to false
 * `node['maven']['mavenrc']['opts']` - Value of `MAVEN_OPTS` environment variable exported via `/etc/mavenrc` template, defaults to `-Dmaven.repo.local=$HOME/.m2/repository -Xmx384m -XX:MaxPermSize=192m`
+* `node['maven']['install_java']` - Whether or not to use the Java community cookbook to install Java. Defaults to `true`.
 
 
 Recipes
@@ -96,12 +98,12 @@ end
 
 License & Authors
 -----------------
-- Author:: Seth Chisamore (<schisamo@opscode.com>)
+- Author:: Seth Chisamore (<schisamo@chef.io>)
 - Author:: Bryan W. Berry (<bryan.berry@gmail.com>)
 - Author:: Leif Madsen (<lmadsen@thinkingphones.com>)
 
 ```text
-Copyright 2010-2013, Opscode, Inc.
+Copyright 2010-2013, Chef Software, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
