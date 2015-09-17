@@ -1,0 +1,36 @@
+{
+  "name": "libevent",
+  "description": "Installs libevent (from source)",
+  "long_description": "Description\n===========\n\nInstalls libevent (from source)\n\nRequirements\n============\n\n## Platform\n\n* Linux (I'd tested on CentOS 6.3)\n\nAttributes\n==========\n\n* `node['libevent']['version']` - version of libev. Default is 2.0.20 .\n* `node['libevent']['prefix']`  - prefix of install_path. Default is /usr .\n\nUsage\n=====\n\nSimply include the `libevent` and the libevent will be installed to your system.\n",
+  "maintainer": "Takeshi KOMIYA",
+  "maintainer_email": "i.tkomiya@gmail.com",
+  "license": "Apache 2.0",
+  "platforms": {
+    "fedora": ">= 0.0.0",
+    "redhat": ">= 0.0.0",
+    "centos": ">= 0.0.0",
+    "ubuntu": ">= 0.0.0",
+    "debian": ">= 0.0.0",
+    "amazon": ">= 0.0.0"
+  },
+  "dependencies": {
+    "build-essential": ">= 0.0.0"
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+  },
+  "groupings": {
+  },
+  "recipes": {
+  },
+  "version": "0.1.0"
+}

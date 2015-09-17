@@ -1,4 +1,3 @@
-name             "leiningen"
 maintainer       "Opscode + Sonian!"
 maintainer_email "phil@sonian.net"
 license          "Apache 2.0"

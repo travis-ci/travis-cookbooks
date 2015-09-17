@@ -2,7 +2,7 @@
 # Cookbook Name:: apt
 # Recipe:: unattended-upgrades
 #
-# Copyright 2014, Opscode, Inc.
+# Copyright 2014, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the 'License');
 # you may not use this file except in compliance with the License.
@@ -26,6 +26,10 @@
 package 'unattended-upgrades' do
   response_file 'unattended-upgrades.seed.erb'
   action :install
+end
+
+package 'bsd-mailx' do
+  only_if { node['apt']['unattended_upgrades']['mail'] }
 end
 
 template '/etc/apt/apt.conf.d/20auto-upgrades' do

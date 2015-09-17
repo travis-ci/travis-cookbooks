@@ -2,7 +2,7 @@
 # Cookbook Name:: build-essential
 # Recipe:: default
 #
-# Copyright 2008-2009, Opscode, Inc.
+# Copyright 2008-2009, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,17 +17,13 @@
 # limitations under the License.
 #
 
-execute "apt-get update" do
-  action :run
+begin
+  include_recipe "build-essential::_#{node['platform_family']}"
+rescue Chef::Exceptions::RecipeNotFound
+  Chef::Log.warn <<-EOH
+A build-essential recipe does not exist for '#{node['platform_family']}'. This
+means the build-essential cookbook does not have support for the
+#{node['platform_family']} family. If you are not compiling gems with native
+extensions or building packages from source, this will likely not affect you.
+EOH
 end
-
-case node['platform']
-when "ubuntu","debian"
-  package %w(build-essential binutils-doc)
-when "centos","redhat","fedora"
-  package %w(gcc gcc-c++ kernel-devel make)
-end
-
-package %w(autoconf flex bison)
-
-include_recipe "cmake"

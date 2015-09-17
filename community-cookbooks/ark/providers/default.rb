@@ -61,33 +61,37 @@ action :install do
   end
 
   # set_owner
+  _owner_command = owner_command
   execute "set owner on #{new_resource.path}" do
-    command "chown -R #{new_resource.owner}:#{new_resource.group} #{new_resource.path}"
+    command _owner_command
     action :nothing
   end
 
-  # symlink binaries
-  new_resource.has_binaries.each do |bin|
-    link ::File.join(new_resource.prefix_bin, ::File.basename(bin)) do
-      to ::File.join(new_resource.path, bin)
+  # usually on windows there is no central directory with executables where the applciations are linked
+  if not node['platform_family'] === 'windows'
+    # symlink binaries
+    new_resource.has_binaries.each do |bin|
+      link ::File.join(new_resource.prefix_bin, ::File.basename(bin)) do
+        to ::File.join(new_resource.path, bin)
+      end
     end
-  end
 
-  # action_link_paths
-  link new_resource.home_dir do
-    to new_resource.path
-  end
+    # action_link_paths
+    link new_resource.home_dir do
+      to new_resource.path
+    end
 
-  # Add to path for interactive bash sessions
-  template "/etc/profile.d/#{new_resource.name}.sh" do
-    cookbook 'ark'
-    source 'add_to_path.sh.erb'
-    owner 'root'
-    group 'root'
-    mode '0755'
-    cookbook 'ark'
-    variables(:directory => "#{new_resource.path}/bin")
-    only_if { new_resource.append_env_path }
+    # Add to path for interactive bash sessions
+    template "/etc/profile.d/#{new_resource.name}.sh" do
+      cookbook 'ark'
+      source 'add_to_path.sh.erb'
+      owner 'root'
+      group 'root'
+      mode '0755'
+      cookbook 'ark'
+      variables(:directory => "#{new_resource.path}/bin")
+      only_if { new_resource.append_env_path }
+    end
   end
 
   # Add to path for the current chef-client converge.
@@ -132,8 +136,9 @@ action :put do
   end
 
   # set_owner
+  _owner_command = owner_command
   execute "set owner on #{new_resource.path}" do
-    command "chown -R #{new_resource.owner}:#{new_resource.group} #{new_resource.path}"
+    command _owner_command
     action :nothing
   end
 end
@@ -171,8 +176,9 @@ action :dump do
   end
 
   # set_owner
+  _owner_command = owner_command
   execute "set owner on #{new_resource.path}" do
-    command "chown -R #{new_resource.owner}:#{new_resource.group} #{new_resource.path}"
+    command _owner_command
     action :nothing
   end
 end
@@ -210,8 +216,9 @@ action :unzip do
   end
 
   # set_owner
+  _owner_command = owner_command
   execute "set owner on #{new_resource.path}" do
-    command "chown -R #{new_resource.owner}:#{new_resource.group} #{new_resource.path}"
+    command _owner_command
     action :nothing
   end
 end
@@ -249,8 +256,9 @@ action :cherry_pick do
   end
 
   # set_owner
+  _owner_command = owner_command
   execute "set owner on #{new_resource.path}" do
-    command "chown -R #{new_resource.owner}:#{new_resource.group} #{new_resource.path}"
+    command _owner_command
     action :nothing
   end
 end
@@ -291,8 +299,9 @@ action :install_with_make do
   end
 
   # set_owner
+  _owner_command = owner_command
   execute "set owner on #{new_resource.path}" do
-    command "chown -R #{new_resource.owner}:#{new_resource.group} #{new_resource.path}"
+    command _owner_command
     action :nothing
   end
 
@@ -362,8 +371,9 @@ action :configure do
   end
 
   # set_owner
+  _owner_command = owner_command
   execute "set owner on #{new_resource.path}" do
-    command "chown -R #{new_resource.owner}:#{new_resource.group} #{new_resource.path}"
+    command _owner_command
     action :nothing
   end
 

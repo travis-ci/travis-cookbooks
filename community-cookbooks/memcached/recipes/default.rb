@@ -2,8 +2,7 @@
 # Cookbook Name:: memcached
 # Recipe:: default
 #
-# Copyright 2009, Opscode, Inc.
-# Copyright 2011-2013, Travis CI Development Team <contact@travis-ci.org>
+# Copyright 2009-2013, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,41 +17,5 @@
 # limitations under the License.
 #
 
-package %w(memcached libmemcached-dev libsasl2-dev) do
-  action :upgrade
-end
-
-service "memcached" do
-  supports :status => true, :start => true, :stop => true, :restart => true
-  if node[:memcached][:enabled]
-    action [:enable, :start]
-  else
-    action [:disable, :start]
-  end
-end
-
-template "/etc/memcached.conf" do
-  source "memcached.conf.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-  variables(
-    :listen => node[:memcached][:listen],
-    :user => node[:memcached][:user],
-    :port => node[:memcached][:port],
-    :memory => node[:memcached][:memory],
-    :sasl   => node.memcached.sasl
-  )
-  notifies :restart, resources(:service => "memcached"), :immediately
-end
-
-case node[:lsb][:codename]
-when "karmic"
-  template "/etc/default/memcached" do
-    source "memcached.default.erb"
-    owner "root"
-    group "root"
-    mode "0644"
-    notifies :restart, resources(:service => "memcached"), :immediately
-  end
-end
+include_recipe 'memcached::package'
+include_recipe 'memcached::configure'

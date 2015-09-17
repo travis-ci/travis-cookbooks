@@ -2,29 +2,32 @@ maven Cookbook CHANGELOG
 ========================
 This file is used to list changes made in each version of the maven cookbook.
 
+v1.3.0
+------
+- Adding Windows support
 
-ADDITIONAL PATCH
-----------------
+v1.2.0
+------
+- Adding flag to allow Java not to be managed by cookbook
 
-The following change is not present in Chef Maven Cookbook up to version 1.3.0.
+v1.1.0
+------
+[COOK-3849] - Update maven 3 to 3.1.1
 
-- Allow to override /etc/mavenrc defaults
-  Fix https://github.com/opscode-cookbooks/maven/issues/44
-  Fix https://github.com/travis-ci/travis-ci/issues/1689
 
 v1.0.0
 ------
 ### Improvement
-- **[COOK-3470](https://tickets.opscode.com/browse/COOK-3470)** - Improve `/etc/mavenrc` template
-- **[COOK-3459](https://tickets.opscode.com/browse/COOK-3459)** - Install Maven 3.1.0 by default
+- **[COOK-3470](https://tickets.chef.io/browse/COOK-3470)** - Improve `/etc/mavenrc` template
+- **[COOK-3459](https://tickets.chef.io/browse/COOK-3459)** - Install Maven 3.1.0 by default
 
 v0.16.4
 -------
 ### Improvement
-- **[COOK-3352](https://tickets.opscode.com/browse/COOK-3352)** - Improve `repository_root` attribute customization
+- **[COOK-3352](https://tickets.chef.io/browse/COOK-3352)** - Improve `repository_root` attribute customization
 
 ### Bug
-- **[COOK-2799](https://tickets.opscode.com/browse/COOK-2799)** - Fix idempotency in LWRP
+- **[COOK-2799](https://tickets.chef.io/browse/COOK-2799)** - Fix idempotency in LWRP
 
 v0.16.2
 -------

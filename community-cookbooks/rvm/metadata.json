@@ -1,0 +1,40 @@
+{
+  "name": "rvm",
+  "description": "Installs and configures RVM, optionally keeping it updated.",
+  "long_description": "",
+  "maintainer": "James Harton, Sociable Limited.",
+  "maintainer_email": "james@sociable.co.nz",
+  "license": "MIT",
+  "platforms": {
+  },
+  "dependencies": {
+    "apt": [
+
+    ],
+    "build-essential": [
+
+    ]
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+  },
+  "groupings": {
+  },
+  "recipes": {
+    "rvm": "Install system-wide RVM",
+    "rvm::install": "Install a ruby implementation based on attributes",
+    "rvm::ruby_192": "Helper recipe to install ruby 1.9.2",
+    "rvm::ruby_187": "Helper recipe to install ruby 1.8.7",
+    "rvm::ree": "Helper recipe to install ruby enterprise edition"
+  },
+  "version": "0.0.2"
+}

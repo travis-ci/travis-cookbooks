@@ -1,0 +1,2 @@
+APT::Get::Assume-Yes "<%= node['apt']['confd']['assume_yes'] ? true : false || false %>";
+APT::Get::force-yes "<%= node['apt']['confd']['force-yes'] ? true : false || false %>";
