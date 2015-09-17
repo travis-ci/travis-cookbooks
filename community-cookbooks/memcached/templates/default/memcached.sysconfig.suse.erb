@@ -1,0 +1,32 @@
+## Path:        Network/WWW/Memcached
+## Description: start parameters for memcached.
+## Type:        string
+## Default:     "-d -l 127.0.0.1"
+## Config:      memcached
+#
+# start parameters for memcached.
+#
+# see man 1 memcached for more
+#
+MEMCACHED_PARAMS="<%= "-l #{@listen} -c #{@maxconn} " +
+                      "-m #{@memory} -U #{@udp_port} -p #{@port} >> /var/log/#{@logfilename} 2>&1"%>"
+
+## Path:        Network/WWW/Memcached
+## Description: username memcached should run as
+## Type:        string
+## Default:     "memcached"
+## Config:      memcached
+#
+# username memcached should run as
+#
+MEMCACHED_USER="<%= @user %>"
+
+## Path:        Network/WWW/Memcached
+## Description: group memcached should be run as
+## Type:        string
+## Default:     "memcached"
+## Config:      memcached
+#
+# group memcached should be run as
+#
+MEMCACHED_GROUP="<%= @group %>"
