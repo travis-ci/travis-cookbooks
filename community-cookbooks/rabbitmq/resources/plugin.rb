@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: rabbitmq
-# Resource:: vhost
+# Resource:: plugin
 #
 # Copyright 2011, Chef Software, Inc.
 #
@@ -17,11 +17,7 @@
 # limitations under the License.
 #
 
-actions :add, :delete
+actions :enable, :disable
+default_action :enable
 
-attribute :vhost, :kind_of => String, :name_attribute => true
-
-def initialize(*args)
-  super
-  @action = :add
-end
+attribute :plugin, :kind_of => String, :name_attribute => true

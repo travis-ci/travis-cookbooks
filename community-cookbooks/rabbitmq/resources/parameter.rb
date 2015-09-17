@@ -1,8 +1,9 @@
 #
 # Cookbook Name:: rabbitmq
-# Resource:: vhost
+# Resource:: parameter
 #
-# Copyright 2011, Chef Software, Inc.
+# Author: Sean Porter <portertech@gmail.com>
+# Copyright 2015 by Sean Porter
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,11 +18,10 @@
 # limitations under the License.
 #
 
-actions :add, :delete
+actions :set, :clear, :list
+default_action :set
 
-attribute :vhost, :kind_of => String, :name_attribute => true
-
-def initialize(*args)
-  super
-  @action = :add
-end
+attribute :parameter, :kind_of => String, :name_attribute => true
+attribute :component, :kind_of => String
+attribute :vhost, :kind_of => String
+attribute :params, :kind_of => [Hash, Array], :default => {}

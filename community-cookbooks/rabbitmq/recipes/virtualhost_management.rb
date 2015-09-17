@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
 #
 # Cookbook Name:: rabbitmq
-# Resource:: vhost
+# Recipe:: virtualhost_management
 #
-# Copyright 2011, Chef Software, Inc.
+# Copyright 2013, Grégoire Seux
+# Copyright 2013, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,11 +19,16 @@
 # limitations under the License.
 #
 
-actions :add, :delete
+include_recipe 'rabbitmq::default'
 
-attribute :vhost, :kind_of => String, :name_attribute => true
+node['rabbitmq']['virtualhosts'].each do |virtualhost|
+  rabbitmq_vhost virtualhost do
+    action :add
+  end
+end
 
-def initialize(*args)
-  super
-  @action = :add
+node['rabbitmq']['disabled_virtualhosts'].each do |virtualhost|
+  rabbitmq_vhost virtualhost do
+    action :delete
+  end
 end
