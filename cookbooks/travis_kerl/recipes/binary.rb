@@ -1,8 +1,9 @@
 #
-# Cookbook Name:: kerl
-# Recipe:: source
+# Cookbook Name:: travis_kerl
+# Recipe:: binary
 #
 # Copyright 2011-2012, Michael S. Klishin, Ward Bekker
+# Copyright 2015, Travis CI GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,18 +32,19 @@ directory(installation_root) do
   action :create
 end
 
-remote_file(node.kerl.path) do
+remote_file(node.travis_kerl.path) do
   source "https://raw.githubusercontent.com/spawngrid/kerl/master/kerl"
   mode "0755"
 end
 
 
 home = "/home/#{node.travis_build_environment.user}"
+base_dir = "#{home}/.kerl"
 env  = {
   'HOME'               => home,
   'USER'               => node.travis_build_environment.user,
   'KERL_DISABLE_AGNER' => 'yes',
-  "KERL_BASE_DIR"      => "#{home}/.kerl",
+  "KERL_BASE_DIR"      => base_dir,
   'CPPFLAGS'           => "#{ENV['CPPFLAGS']} -DEPMD6"
 }
 
@@ -55,7 +57,7 @@ end
 # updates list of available releases. Needed for kerl to recognize
 # R15B, for example. MK.
 execute "erlang.releases.update" do
-  command "#{node.kerl.path} update releases"
+  command "#{node.travis_kerl.path} update releases"
 
   user    node.travis_build_environment.user
   group   node.travis_build_environment.group
@@ -63,7 +65,7 @@ execute "erlang.releases.update" do
   environment(env)
 
   # run when kerl script is downloaded & installed
-  subscribes :run, resources(:remote_file => node.kerl.path)
+  subscribes :run, resources(:remote_file => node.travis_kerl.path)
 end
 
 cookbook_file "#{node.travis_build_environment.home}/.erlang.cookie" do
@@ -83,29 +85,28 @@ cookbook_file "#{node.travis_build_environment.home}/.build_plt" do
 end
 
 
-node.kerl.releases.each do |rel, build|
-  execute "build Erlang #{rel}" do
-    command "#{node.kerl.path} build #{rel} #{rel}"
+node.travis_kerl.releases.each do |rel|
 
-    user    node.travis_build_environment.user
-    group   node.travis_build_environment.group
+  require 'tmpdir'
 
-    environment(env)
+  local_archive = File.join(Dir.tmpdir, "erlang-#{rel}-x86_64.tar.bz2")
 
-    # make sure R14B02 won't cause R14B to be skipped. MK.
-    not_if "#{node.kerl.path} list builds | grep \"#{rel}$\"", :user => node.travis_build_environment.user, :environment => env
+  remote_file local_archive do
+    source "https://s3.amazonaws.com/travis-otp-releases/#{node.platform}/#{node.platform_version}/erlang-#{rel}-x86_64.tar.bz2"
+    checksum node.travis_kerl.checksum[rel]
   end
 
+  bash "Expand Erlang #{rel} archive" do
+    user node.travis_build_environment.user
+    group node.travis_build_environment.group
 
-  execute "install Erlang #{rel}" do
-    # cleanup is available starting with https://github.com/spawngrid/kerl/pull/28
-    command "#{node.kerl.path} install #{rel} #{installation_root}/#{rel} && #{node.kerl.path} cleanup #{rel} && rm -rf #{node.travis_build_environment.home}/.kerl/archives/*" # && ~/.build_plt #{installation_root}/#{rel} #{installation_root}/#{rel}/lib"
+    code <<-EOF
+      tar xjf #{local_archive} --directory #{File.join(node.travis_build_environment.home, 'otp')}
+      echo #{rel} >> #{File.join(base_dir, 'otp_installations')}
+      echo #{rel},#{rel} >> #{File.join(base_dir, 'otp_builds')}
+    EOF
 
-    user    node.travis_build_environment.user
-    group   node.travis_build_environment.group
-
-    environment(env)
-
-    not_if "#{node.kerl.path} list installations | grep #{rel}", :user => node.travis_build_environment.user, :environment => env
+    not_if "test -f #{File.join(node.travis_build_environment.home, 'otp', rel)}"
   end
+
 end

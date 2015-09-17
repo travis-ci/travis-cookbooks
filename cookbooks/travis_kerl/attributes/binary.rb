@@ -1,4 +1,4 @@
-default[:kerl][:checksum] = {
+default[:travis_kerl][:checksum] = {
   '17.0'     => '48fc017ed0e9a6f65c94c40c62d4b7daa1cab264925ec6746005b77e4c880453',
   '17.1'     => '38a069e7419b4ad9bdeb992bf2721055492deb32ff6170514a4b9e8ee4a4a5c4',
   '17.3'     => '1284b182bfc185d5f094d70e21c566f0cd400a300e79779deed5b5a3d8d743d3',
@@ -18,6 +18,6 @@ default[:kerl][:checksum] = {
   'R16B'     => '6fdc6ae988adb3e68da3a91180cc0b6a3461701221e36c6d4b2cf4ce50c09547'
 }
 
-default[:kerl][:releases] = default[:kerl][:checksum].keys
+default[:travis_kerl][:releases] = default[:travis_kerl][:checksum].keys
 
-default[:kerl][:path]     = "/usr/local/bin/kerl"
+default[:travis_kerl][:path]     = "/usr/local/bin/kerl"

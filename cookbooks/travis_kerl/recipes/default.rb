@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: kerl
+# Cookbook Name:: travis_kerl
 # Recipe:: default
 #
 # Copyright 2011-2012, Michael S. Klishin, Ward Bekker
@@ -16,4 +16,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe "kerl::binary"
+include_recipe "travis_kerl::binary"
