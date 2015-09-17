@@ -1,10 +1,9 @@
 #
-# Author::  Joshua Timberman (<joshua@opscode.com>)
-# Author::  Seth Chisamore (<schisamo@opscode.com>)
+# Author::  Joshua Timberman (<joshua@getchef.com>)
 # Cookbook Name:: php
-# Recipe:: module_fileinfo
+# Libraries:: helpers
 #
-# Copyright 2009-2011, Opscode, Inc.
+# Copyright 2013, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,11 +18,6 @@
 # limitations under the License.
 #
 
-case node['platform']
-when "centos", "redhat", "fedora"
-  # enabled by default in php53
-when "debian", "ubuntu"
-  package "php5-fileinfo" do
-    action :upgrade
-  end
+def el5_range
+  (0..99).to_a.map { |i| "5.#{i}" }
 end

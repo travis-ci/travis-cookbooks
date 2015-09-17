@@ -43,7 +43,7 @@
 ; If you use constants in your value, and these constants belong to a
 ; dynamically loaded extension (either a PHP extension or a Zend extension),
 ; you may only use these constants *after* the line that loads the extension.
-; 
+;
 ;
 ;;;;;;;;;;;;;;;;;;;
 ; About this file ;
@@ -623,7 +623,7 @@ default_socket_timeout = 60
 ; needs to go here.  Specify the location of the extension with the
 ; extension_dir directive above.
 
-  
+
 ;;;;
 ; Note: packaged extension modules are now loaded via the .ini files
 ; found in the directory /etc/php.d; these are loaded by default.
@@ -1064,7 +1064,7 @@ mssql.secure_connection = Off
 ; FreeTDS defaults to 4096
 ;mssql.max_procs = -1
 
-; Specify client character set. 
+; Specify client character set.
 ; If empty or not set the client charset from freetds.comf is used
 ; This is only used when compiled with FreeTDS
 ;mssql.charset = "ISO-8859-1"
@@ -1212,10 +1212,14 @@ tidy.clean_output = Off
 soap.wsdl_cache_enabled=1
 ; Sets the directory name where SOAP extension will put cache files.
 soap.wsdl_cache_dir="/tmp"
-; (time to live) Sets the number of second while cached file will be used 
+; (time to live) Sets the number of second while cached file will be used
 ; instead of original one.
 soap.wsdl_cache_ttl=86400
 
 ; Local Variables:
 ; tab-width: 4
 ; End:
+
+<% @directives.sort_by { |key, val| key }.each do |directive, value| -%>
+<%= "#{directive}=#{value}" %>
+<% end -%>

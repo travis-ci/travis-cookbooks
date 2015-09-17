@@ -1,10 +1,10 @@
 #
-# Author::  Joshua Timberman (<joshua@opscode.com>)
-# Author::  Seth Chisamore (<schisamo@opscode.com>)
+# Author::  Joshua Timberman (<joshua@getchef.com>)
+# Author::  Seth Chisamore (<schisamo@getchef.com>)
 # Cookbook Name:: php
 # Recipe:: module_apc
 #
-# Copyright 2009-2011, Opscode, Inc.
+# Copyright 2009-2014, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,19 +19,19 @@
 # limitations under the License.
 #
 
-case node['platform']
-when "centos", "redhat", "fedora"
-  %w{ httpd-devel pcre pcre-devel }.each do |pkg|
+case node['platform_family']
+when 'rhel', 'fedora'
+  %w(httpd-devel pcre pcre-devel).each do |pkg|
     package pkg do
       action :install
     end
   end
-  php_pear "apc" do
+  php_pear 'APC' do
     action :install
-    directives(:shm_size => "128M", :enable_cli => 0)
+    directives(:shm_size => '128M', :enable_cli => 0)
   end
-when "debian", "ubuntu"
-  package "php-apc" do
+when 'debian'
+  package 'php-apc' do
     action :install
   end
 end

@@ -1,9 +1,10 @@
 #
-# Author::  Seth Chisamore (<schisamo@opscode.com>)
+# Author::  Seth Chisamore (<schisamo@getchef.com>)
+# Author::  Lucas Hansen (<lucash@getchef.com>)
 # Cookbook Name:: php
 # Recipe:: package
 #
-# Copyright 2011, Opscode, Inc.
+# Copyright 2013-2014, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,25 +19,48 @@
 # limitations under the License.
 #
 
-pkgs = value_for_platform(
-  [ "centos", "redhat", "fedora" ] => {
-    "default" => %w{ php53 php53-devel php53-cli php-pear }
-  },
-  [ "debian", "ubuntu" ] => {
-    "default" => %w{ php5-cgi php5 php5-dev php5-cli php-pear }
-  },
-  "default" => %w{ php5-cgi php5 php5-dev php5-cli php-pear }
-)
+if platform?('windows')
 
-pkgs.each do |pkg|
-  package pkg do
-    action :install
+  include_recipe 'iis::mod_cgi'
+
+  install_dir = File.expand_path(node['php']['conf_dir']).gsub('/', '\\')
+  windows_package node['php']['windows']['msi_name'] do
+    source node['php']['windows']['msi_source']
+    installer_type :msi
+
+    options %W(
+      /quiet
+      INSTALLDIR="#{install_dir}"
+      ADDLOCAL=#{node['php']['packages'].join(',')}
+    ).join(' ')
+  end
+
+  # WARNING: This is not the out-of-the-box go-pear.phar. It's been modified to patch this bug:
+  # http://pear.php.net/bugs/bug.php?id=16644
+  cookbook_file "#{node['php']['conf_dir']}/PEAR/go-pear.phar" do
+    source 'go-pear.phar'
+  end
+
+  template "#{node['php']['conf_dir']}/pear-options" do
+    source 'pear-options.erb'
+  end
+
+  execute 'install-pear' do
+    cwd node['php']['conf_dir']
+    command 'go-pear.bat < pear-options'
+    creates "#{node['php']['conf_dir']}/pear.bat"
+  end
+
+  ENV['PATH'] += ";#{install_dir}"
+  windows_path install_dir
+
+else
+  node['php']['packages'].each do |pkg|
+    package pkg do
+      action :install
+      options node['php']['package_options']
+    end
   end
 end
 
-template "#{node['php']['conf_dir']}/php.ini" do
-  source "php.ini.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-end
+include_recipe 'php::ini'

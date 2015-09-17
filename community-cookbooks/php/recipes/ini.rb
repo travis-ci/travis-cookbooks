@@ -1,10 +1,9 @@
 #
-# Author::  Joshua Timberman (<joshua@getchef.com>)
-# Author::  Seth Chisamore (<schisamo@getchef.com>)
+# Author::  Christo De Lange (<opscode@dldinternet.com>)
 # Cookbook Name:: php
-# Recipe:: module_ldap
+# Recipe:: ini
 #
-# Copyright 2009-2014, Chef Software, Inc.
+# Copyright 2011-2014, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,14 +18,13 @@
 # limitations under the License.
 #
 
-pkg = value_for_platform(
-  %w(centos redhat scientific fedora amazon oracle) => {
-    el5_range => 'php53-ldap',
-    'default' => 'php-ldap'
-  },
-  'default' => 'php5-ldap'
-)
-
-package pkg do
-  action :install
+template "#{node['php']['conf_dir']}/php.ini" do
+  source node['php']['ini']['template']
+  cookbook node['php']['ini']['cookbook']
+  unless platform?('windows')
+    owner 'root'
+    group node['root_group']
+    mode '0644'
+  end
+  variables(:directives => node['php']['directives'])
 end

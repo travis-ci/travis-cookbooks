@@ -1851,3 +1851,7 @@ ldap.max_links = -1
 ; Local Variables:
 ; tab-width: 4
 ; End:
+
+<% @directives.sort_by { |key, val| key }.each do |directive, value| -%>
+<%= "#{directive}=#{value}" %>
+<% end -%>

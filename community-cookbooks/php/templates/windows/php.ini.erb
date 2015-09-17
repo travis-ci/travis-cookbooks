@@ -19,7 +19,7 @@
 ; See the PHP docs for more specific information.
 ; http://php.net/configuration.file
 
-; The syntax of the file is extremely simple.  Whitespace and Lines
+; The syntax of the file is extremely simple.  Whitespace and lines
 ; beginning with a semicolon are silently ignored (as you probably guessed).
 ; Section headers (e.g. [Foo]) are also silently ignored, even though
 ; they might mean something in the future.
@@ -225,7 +225,7 @@ engine = On
 ; http://php.net/short-open-tag
 short_open_tag = Off
 
-; Allow ASP-style <% %> tags.
+; Allow ASP-style <%% %> tags.
 ; http://php.net/asp-tags
 asp_tags = Off
 
@@ -317,7 +317,7 @@ unserialize_callback_func =
 ; When floats & doubles are serialized store serialize_precision significant
 ; digits after the floating point. The default value ensures that when floats
 ; are decoded with unserialize, the data will remain the same.
-serialize_precision = 100
+serialize_precision = 17
 
 ; This directive allows you to enable and disable warnings which PHP will issue
 ; if you pass a value by reference at function call time. Passing values by
@@ -419,6 +419,10 @@ disable_classes =
 ; http://php.net/realpath-cache-ttl
 ;realpath_cache_ttl = 120
 
+; Enables or disables the circular reference collector.
+; http://php.net/zend.enable-gc
+zend.enable_gc = On
+
 ;;;;;;;;;;;;;;;;;
 ; Miscellaneous ;
 ;;;;;;;;;;;;;;;;;
@@ -437,7 +441,7 @@ expose_php = On
 ; Maximum execution time of each script, in seconds
 ; http://php.net/max-execution-time
 ; Note: This directive is hardcoded to 0 for the CLI SAPI
-max_execution_time = 30
+max_execution_time =300
 
 ; Maximum amount of time each script may spend parsing request data. It's a good
 ; idea to limit this time on productions servers in order to eliminate unexpectedly
@@ -452,6 +456,9 @@ max_input_time = 60
 ; Maximum input variable nesting level
 ; http://php.net/max-input-nesting-level
 ;max_input_nesting_level = 64
+
+; How many GET/POST/COOKIE input variables may be accepted
+; max_input_vars = 1000
 
 ; Maximum amount of memory a script may consume (128MB)
 ; http://php.net/memory-limit
@@ -477,7 +484,7 @@ memory_limit = 128M
 ; development and early testing.
 ;
 ; Error Level Constants:
-; E_ALL             - All errors and warnings (includes E_STRICT as of PHP 6.0.0)
+; E_ALL             - All errors and warnings (includes E_STRICT as of PHP 5.4.0)
 ; E_ERROR           - fatal run-time errors
 ; E_RECOVERABLE_ERROR  - almost fatal run-time errors
 ; E_WARNING         - run-time warnings (non-fatal errors)
@@ -549,7 +556,7 @@ display_startup_errors = Off
 ; Development Value: On
 ; Production Value: On
 ; http://php.net/log-errors
-log_errors = On
+log_errors =On
 
 ; Set maximum length of log_errors. In error_log information about the source is
 ; added. The default is 1024 and 0 allows to not apply any maximum length at all.
@@ -621,13 +628,13 @@ html_errors = Off
 ; this setting blank.
 ; http://php.net/error-prepend-string
 ; Example:
-;error_prepend_string = "<font color=#ff0000>"
+;error_prepend_string = "<span style='color: #ff0000'>"
 
 ; String to output after an error message. PHP's default behavior is to leave
 ; this setting blank.
 ; http://php.net/error-append-string
 ; Example:
-;error_append_string = "</font>"
+;error_append_string = "</span>"
 
 ; Log errors to specified file. PHP's default behavior is to leave this value
 ; empty.
@@ -636,6 +643,11 @@ html_errors = Off
 ;error_log = php_errors.log
 ; Log errors to syslog (Event Log on NT, not valid in Windows 95).
 ;error_log = syslog
+
+;windows.show_crt_warning
+; Default value: 0
+; Development value: 0
+; Production value: 0
 
 ;;;;;;;;;;;;;;;;;
 ; Data Handling ;
@@ -736,7 +748,7 @@ post_max_size = 8M
 ; enable the feature. We strongly recommend you use the escaping mechanisms
 ; designed specifically for the database your using instead of relying on this
 ; feature. Also note, this feature has been deprecated as of PHP 5.3.0 and is
-; scheduled for removal in PHP 6.
+; scheduled removed in PHP 5.4.
 ; Default Value: On
 ; Development Value: Off
 ; Production Value: Off
@@ -830,7 +842,7 @@ enable_dl = Off
 ; will look for to know it is OK to continue execution.  Setting this variable MAY
 ; cause security issues, KNOW WHAT YOU ARE DOING FIRST.
 ; http://php.net/cgi.redirect-status-env
-;cgi.redirect_status_env = ;
+;cgi.redirect_status_env =
 
 ; cgi.fix_pathinfo provides *real* PATH_INFO/PATH_TRANSLATED support for CGI.  PHP's
 ; previous behaviour was to set PATH_TRANSLATED to SCRIPT_FILENAME, and to not grok
@@ -847,7 +859,7 @@ enable_dl = Off
 ; does not currently support this feature (03/17/2002)
 ; Set to 1 if running under IIS.  Default is zero.
 ; http://php.net/fastcgi.impersonate
-;fastcgi.impersonate = 1;
+;fastcgi.impersonate = 1
 
 ; Disable logging through FastCGI connection. PHP's default behavior is to enable
 ; this feature.
@@ -905,6 +917,13 @@ allow_url_include = Off
 ; Default timeout for socket based streams (seconds)
 ; http://php.net/default-socket-timeout
 default_socket_timeout = 60
+upload_tmp_dir="C:\Windows\Temp"
+session.save_path="C:\Windows\Temp"
+error_log="C:\Windows\temp\php-errors.log"
+cgi.force_redirect=0
+fastcgi.impersonate=1
+fastcgi.logging=0
+extension_dir="ext"
 
 ; If your scripts have to deal with files from Macintosh systems,
 ; or you are running on a Mac and need to deal with files from
@@ -944,43 +963,10 @@ default_socket_timeout = 60
 ; extension folders as well as the separate PECL DLL download (PHP 5).
 ; Be sure to appropriately set the extension_dir directive.
 ;
-;extension=php_bz2.dll
-;extension=php_curl.dll
-;extension=php_fileinfo.dll
-;extension=php_gd2.dll
-;extension=php_gettext.dll
-;extension=php_gmp.dll
-;extension=php_intl.dll
-;extension=php_imap.dll
-;extension=php_interbase.dll
-;extension=php_ldap.dll
-;extension=php_mbstring.dll
-;extension=php_exif.dll      ; Must be after mbstring as it depends on it
-;extension=php_mysql.dll
-;extension=php_mysqli.dll
-;extension=php_oci8.dll      ; Use with Oracle 10gR2 Instant Client
-;extension=php_oci8_11g.dll  ; Use with Oracle 11g Instant Client
-;extension=php_openssl.dll
-;extension=php_pdo_firebird.dll
-;extension=php_pdo_mssql.dll
-;extension=php_pdo_mysql.dll
-;extension=php_pdo_oci.dll
-;extension=php_pdo_odbc.dll
-;extension=php_pdo_pgsql.dll
-;extension=php_pdo_sqlite.dll
-;extension=php_pgsql.dll
-;extension=php_pspell.dll
-;extension=php_shmop.dll
-;extension=php_snmp.dll
-;extension=php_soap.dll
-;extension=php_sockets.dll
-;extension=php_sqlite.dll
-;extension=php_sqlite3.dll
-;extension=php_sybase_ct.dll
-;extension=php_tidy.dll
-;extension=php_xmlrpc.dll
-;extension=php_xsl.dll
-;extension=php_zip.dll
+
+; The MIBS data available in the PHP distribution must be installed.
+; See http://www.php.net/manual/en/snmp.installation.php
+
 
 ;;;;;;;;;;;;;;;;;;;
 ; Module Settings ;
@@ -1291,12 +1277,12 @@ mysqli.default_pw =
 mysqli.reconnect = Off
 
 [mysqlnd]
-; Enable / Disable collection of general statstics by mysqlnd which can be
+; Enable / Disable collection of general statistics by mysqlnd which can be
 ; used to tune and monitor MySQL operations.
 ; http://php.net/mysqlnd.collect_statistics
 mysqlnd.collect_statistics = On
 
-; Enable / Disable collection of memory usage statstics by mysqlnd which can be
+; Enable / Disable collection of memory usage statistics by mysqlnd which can be
 ; used to tune and monitor MySQL operations.
 ; http://php.net/mysqlnd.collect_memory_statistics
 mysqlnd.collect_memory_statistics = Off
@@ -1363,7 +1349,7 @@ mysqlnd.collect_memory_statistics = Off
 ; http://php.net/oci8.old-oci-close-semantics
 ;oci8.old_oci_close_semantics = Off
 
-[PostgresSQL]
+[PostgreSQL]
 ; Allow or prevent persistent links.
 ; http://php.net/pgsql.allow-persistent
 pgsql.allow_persistent = On
@@ -1481,7 +1467,7 @@ session.use_cookies = 1
 ;session.cookie_secure =
 
 ; This option forces PHP to fetch and use a cookie for storing and maintaining
-; the session id. We encourage this operation as it's very helpful in combatting
+; the session id. We encourage this operation as it's very helpful in combating
 ; session hijacking when not specifying and managing your own session id. It is
 ; not the end all be all of session hijacking defense, but it's a good start.
 ; http://php.net/session.use-only-cookies
@@ -1611,7 +1597,7 @@ session.cache_expire = 180
 ; - User may send URL contains active session ID
 ;   to other person via. email/irc/etc.
 ; - URL that contains active session ID may be stored
-;   in publically accessible computer.
+;   in publicly accessible computer.
 ; - User may access your site with the same session ID
 ;   always using URL stored in browser's history or bookmarks.
 ; http://php.net/session.use-trans-sid
@@ -1698,7 +1684,7 @@ mssql.secure_connection = Off
 ;mssql.max_procs = -1
 
 ; Specify client character set.
-; If empty or not set the client charset from freetds.comf is used
+; If empty or not set the client charset from freetds.conf is used
 ; This is only used when compiled with FreeTDS
 ;mssql.charset = "ISO-8859-1"
 
@@ -1891,10 +1877,59 @@ ldap.max_links = -1
 [dba]
 ;dba.default_handler=
 
+[xsl]
+; Write operations from within XSLT are disabled by default.
+; XSL_SECPREF_CREATE_DIRECTORY | XSL_SECPREF_WRITE_NETWORK | XSL_SECPREF_WRITE_FILE = 44
+; Set it to 0 to allow all operations
+;xsl.security_prefs = 44
+
 ; Local Variables:
 ; tab-width: 4
 ; End:
+[PHP_BZ2]
+extension=php_bz2.dll
+[PHP_CURL]
+extension=php_curl.dll
+[PHP_GD2]
+extension=php_gd2.dll
+[PHP_GETTEXT]
+extension=php_gettext.dll
+[PHP_GMP]
+extension=php_gmp.dll
+[PHP_IMAP]
+extension=php_imap.dll
+[PHP_MBSTRING]
+extension=php_mbstring.dll
+[PHP_MYSQL]
+extension=php_mysql.dll
+[PHP_MYSQLI]
+extension=php_mysqli.dll
+[PHP_OPENSSL]
+extension=php_openssl.dll
+[PHP_PDO_MYSQL]
+extension=php_pdo_mysql.dll
+[PHP_PDO_ODBC]
+extension=php_pdo_odbc.dll
+[PHP_PDO_SQLITE]
+extension=php_pdo_sqlite.dll
+[PHP_PGSQL]
+extension=php_pgsql.dll
+[PHP_SOAP]
+extension=php_soap.dll
+[PHP_SOCKETS]
+extension=php_sockets.dll
+[PHP_SQLITE3]
+extension=php_sqlite3.dll
+[PHP_TIDY]
+extension=php_tidy.dll
+[PHP_XMLRPC]
+extension=php_xmlrpc.dll
+[PHP_EXIF]
+extension=php_exif.dll
 
-<% @directives.sort_by { |key, val| key }.each do |directive, value| -%>
+
+include_path=".;<%= node['php']['conf_dir'].gsub('/', '\\') %>"
+
+<% @directives.each do |directive, value| -%>
 <%= "#{directive}=#{value}" %>
 <% end -%>
