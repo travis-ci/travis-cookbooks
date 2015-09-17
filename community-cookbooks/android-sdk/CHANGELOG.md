@@ -1,11 +1,7 @@
 CHANGELOG for Android-SDK cookbook
 ==================================
 
-v0.2.1 (2014-08-01)
--------------------
-- Android SDK 23.0.2
-
-v0.2.0 (2014-07-30)
+v0.2.0 (upcoming)
 -------------------
 
 - Integrate by default with Android SDK 23.0.0

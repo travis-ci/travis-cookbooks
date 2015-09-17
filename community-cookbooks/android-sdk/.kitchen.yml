@@ -1,0 +1,60 @@
+---
+driver_plugin: vagrant
+
+platforms:
+
+- name: ubuntu-trusty
+  driver_config:
+    box: 'ubuntu/trusty64'
+    require_chef_omnibus: true
+    customize:
+      memory: 384
+    run_list:
+      - recipe[apt]
+
+- name: ubuntu-precise
+  driver_config:
+    box: 'ubuntu/precise64'
+    require_chef_omnibus: true
+    customize:
+      memory: 512
+    run_list:
+      - recipe[apt]
+
+- name: centos-6.4
+  driver_config:
+    box: opscode-centos-6.4
+    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_centos-6.4_provisionerless.box
+    require_chef_omnibus: true
+    customize:
+      memory: 512
+    run_list:
+      - recipe[yum]
+
+suites:
+
+- name: wip # be prepared to work on https://github.com/gildegoma/chef-android-sdk/issues/14 (maven-android-sdk-deployer)
+  run_list:
+    - recipe[git]
+    - recipe[maven]
+    - recipe[android-sdk]
+  attributes:
+    android-sdk:
+      owner: vagrant
+      group: vagrant
+    components:
+      - build-tools-19.1.0
+      - android-19
+      - sysimg-19
+    java:
+      jdk_version: 7
+
+- name: default
+  run_list:
+    - recipe[android-sdk]
+  attributes:
+    java:
+      jdk_version: 7
+    android-sdk:
+      components:
+        - build-tools-19.0.1
