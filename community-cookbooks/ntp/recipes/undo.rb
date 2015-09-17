@@ -1,10 +1,10 @@
 #
 # Cookbook Name:: ntp
-# Recipe:: undo 
-# Author:: Eric G. Wolfe 
+# Recipe:: undo
+# Author:: Eric G. Wolfe
 #
 # Copyright 2012, Eric G. Wolfe
-# Copyright 2009, Opscode, Inc
+# Copyright 2009-2013, Opscode, Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,9 +18,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Do not continue if trying to run this recipe on Windows
+return 'The ntp::undo recipe does not support Windows' if platform_family?('windows')
+
 service node['ntp']['service'] do
   supports :status => true, :restart => true
-  action [ :stop, :disable ]
+  action   [:stop, :disable]
 end
 
 node['ntp']['packages'].each do |ntppkg|
@@ -29,8 +32,9 @@ node['ntp']['packages'].each do |ntppkg|
   end
 end
 
-ruby_block "remove ntp::undo from run list" do
+ruby_block 'remove ntp::undo from run list' do
   block do
-    node.run_list.remove("recipe[ntp::undo]")
+    node.run_list.remove('recipe[ntp::undo]')
   end
+  only_if { node.run_list.include?('recipe[ntp::default]') }
 end

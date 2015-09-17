@@ -1,10 +1,9 @@
 #
 # Cookbook Name:: ntp
-# Attributes:: default
+# Recipe:: apparmor
+# Author:: Scott Lampert (<scott@lampert.org>)
 #
-# Author:: Joshua Timberman (<joshua@opscode.com>)
-#
-# Copyright 2009-2011, Opscode, Inc.
+# Copyright 2013, Scott Lampert
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,5 +16,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-default['ntp']['ntpdate']['disable'] = false 
+
+service 'apparmor' do
+  action :nothing
+end
+
+cookbook_file '/etc/apparmor.d/usr.sbin.ntpd' do
+  source 'usr.sbin.ntpd.apparmor'
+  owner 'root'
+  group 'root'
+  mode '0644'
+  notifies :restart, 'service[apparmor]'
+end
