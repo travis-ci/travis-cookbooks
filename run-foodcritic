@@ -13,4 +13,4 @@ for tag in $(cat ${FC_TAGS}) ; do
   FC_ARGS="$FC_ARGS --tags $tag"
 done
 
-exec foodcritic $FC_ARGS $COOKBOOK_PATH
+exec foodcritic --epic-fail any $FC_ARGS $COOKBOOK_PATH
