@@ -114,7 +114,7 @@ end
 
 cron "travis-worker-restart-1" do
   user 'root'
-  hour '23'
+  hour node['travis']['worker']['restart_begin_hour']
   mailto 'root@localhost'
   command %w(
     . /etc/default/travis-worker-restart &&
@@ -125,7 +125,7 @@ end
 
 cron "travis-worker-restart-2" do
   user 'root'
-  hour '01'
+  hour node['travis']['worker']['restart_begin_hour']+2
   mailto 'root@localhost'
   command %w(
     . /etc/default/travis-worker-restart &&
@@ -137,7 +137,7 @@ end
 
 cron "travis-worker-restart-3" do
   user 'root'
-  hour '03'
+  hour node['travis']['worker']['restart_begin_hour']+4
   mailto 'root@localhost'
   command %w(
     . /etc/default/travis-worker-restart &&

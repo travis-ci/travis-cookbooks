@@ -15,6 +15,7 @@ default[:travis][:worker][:log_level] = 'info'
 default[:travis][:worker][:workers] = 1
 default[:travis][:worker][:hosts] = {}
 default[:travis][:worker][:restart_sleep] = rand(0..900)
+default[:travis][:worker][:restart_begin_hour] = 2
 default[:papertrail][:watch_files] = {}
 
 1.upto(node[:travis][:worker][:workers]) do |num|
