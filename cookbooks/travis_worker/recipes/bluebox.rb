@@ -104,3 +104,44 @@ end
     notifies :run, resources(:execute => 'monit-reload')
   end
 end
+
+file '/etc/default/travis-worker-restart' do
+  content "TRAVIS_WORKER_RESTART_SLEEP=#{node['travis']['worker']['restart_sleep']}"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
+cron "travis-worker-restart-1" do
+  user 'root'
+  hour '23'
+  mailto 'root@localhost'
+  command %w(
+    . /etc/default/travis-worker-restart &&
+    sleep $TRAVIS_WORKER_RESTART_SLEEP &&
+    sv stop travis-worker-1
+  ).join(' ')
+end
+
+cron "travis-worker-restart-2" do
+  user 'root'
+  hour '01'
+  mailto 'root@localhost'
+  command %w(
+    . /etc/default/travis-worker-restart &&
+    sleep $TRAVIS_WORKER_RESTART_SLEEP &&
+    sv start travis-worker-1 &&
+    sv stop travis-worker-2
+  ).join(' ')
+end
+
+cron "travis-worker-restart-3" do
+  user 'root'
+  hour '03'
+  mailto 'root@localhost'
+  command %w(
+    . /etc/default/travis-worker-restart &&
+    sleep $TRAVIS_WORKER_RESTART_SLEEP &&
+    sv start travis-worker-2
+  ).join(' ')
+end
