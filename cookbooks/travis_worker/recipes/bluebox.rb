@@ -53,7 +53,6 @@ end
     action :sync
     user "travis"
     group "travis"
-    notifies :restart, resources(:service => service_name)
   end
 
   directory "#{home}/log" do
@@ -83,8 +82,6 @@ end
               :librato => node[:collectd_librato],
               :queue => queue,
               :vms => vms
-
-    notifies :restart, resources(:service => service_name)
   end
 
   runit_service "travis-worker-#{worker}" do
@@ -103,4 +100,46 @@ end
     variables :service_name => service_name
     notifies :run, resources(:execute => 'monit-reload')
   end
+end
+
+file '/etc/default/travis-worker-restart' do
+  content "TRAVIS_WORKER_RESTART_SLEEP=#{node['travis']['worker']['restart_sleep']}"
+  owner "root"
+  group "root"
+  mode 0644
+  not_if 'grep -E "TRAVIS_WORKER_RESTART_SLEEP=[0-9]+" /etc/default/travis-worker-restart'
+end
+
+cron "travis-worker-restart-1" do
+  user 'root'
+  hour node['travis']['worker']['restart_begin_hour']
+  mailto 'root@localhost'
+  command %w(
+    . /etc/default/travis-worker-restart &&
+    sleep $TRAVIS_WORKER_RESTART_SLEEP &&
+    sv stop travis-worker-1
+  ).join(' ')
+end
+
+cron "travis-worker-restart-2" do
+  user 'root'
+  hour node['travis']['worker']['restart_begin_hour']+2
+  mailto 'root@localhost'
+  command %w(
+    . /etc/default/travis-worker-restart &&
+    sleep $TRAVIS_WORKER_RESTART_SLEEP &&
+    sv start travis-worker-1 &&
+    sv stop travis-worker-2
+  ).join(' ')
+end
+
+cron "travis-worker-restart-3" do
+  user 'root'
+  hour node['travis']['worker']['restart_begin_hour']+4
+  mailto 'root@localhost'
+  command %w(
+    . /etc/default/travis-worker-restart &&
+    sleep $TRAVIS_WORKER_RESTART_SLEEP &&
+    sv start travis-worker-2
+  ).join(' ')
 end
