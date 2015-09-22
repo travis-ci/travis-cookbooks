@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: rvm
-# Recipe:: default
+# Recipe:: vagrant
 #
-# Copyright 2010, 2011, Fletcher Nichol
+# Copyright 2011, Fletcher Nichol
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,24 +17,21 @@
 # limitations under the License.
 #
 
-# install rvm api gem during chef compile phase
-chef_gem 'rvm' do
-  action :install
-  version '>= 1.11.3.6'
-end
-require 'rvm'
-
-create_rvm_shell_chef_wrapper
-create_rvm_chef_user_environment
-
-class Chef::Resource
-  # mix in #rvm_cmd_wrap helper into resources
-  include Chef::RVM::ShellHelpers
+template "/usr/local/bin/chef-client" do
+  source    "vagrant-chef-client-wrapper.erb"
+  owner     "root"
+  group     "root"
+  mode      "0755"
 end
 
-class Chef::Recipe
-  # mix in recipe helpers
-  include Chef::RVM::ShellHelpers
-  include Chef::RVM::RecipeHelpers
-  include Chef::RVM::StringHelpers
+template "/usr/local/bin/chef-solo" do
+  source    "vagrant-chef-solo-wrapper.erb"
+  owner     "root"
+  group     "root"
+  mode      "0755"
+end
+
+group "rvm" do
+  members ["vagrant"]
+  append  true
 end
