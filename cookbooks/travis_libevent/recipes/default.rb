@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: libevent
+# Cookbook Name:: travis_libevent
 # Recipe:: default
 #
 # Copyright 2012, Takeshi KOMIYA
@@ -17,21 +17,21 @@
 # limitations under the License.
 #
 
-include_recipe "build-essential"
+include_recipe 'build-essential'
 
-version = node['libevent']['version']
-prefix = node['libevent']['prefix']
+version = node['travis_libevent']['version']
+prefix = node['travis_libevent']['prefix']
 
 remote_file "#{Chef::Config[:file_cache_path]}/libevent-#{version}-stable.tar.gz" do
-  source "https://github.com/downloads/libevent/libevent/libevent-#{version}-stable.tar.gz"
+  source "https://github.com/libevent/libevent/releases/download/release-#{version}-stable/libevent-#{version}-stable.tar.gz"
   not_if {::File.exists?("#{prefix}/lib/libevent.a")}
-  notifies :run, "script[install-libevent]", :immediately
+  notifies :run, 'script[install-libevent]', :immediately
 end
 
-script "install-libevent" do
-  interpreter "bash"
+script 'install-libevent' do
+  interpreter 'bash'
   only_if {::File.exists?("#{Chef::Config[:file_cache_path]}/libevent-#{version}-stable.tar.gz")}
-  flags "-e -x"
+  flags '-e -x'
   code <<-EOH
     cd /usr/local/src
     tar xzf #{Chef::Config[:file_cache_path]}/libevent-#{version}-stable.tar.gz
@@ -42,7 +42,7 @@ script "install-libevent" do
   EOH
 end
 
-file "libevent-tarball-cleanup" do
+file 'libevent-tarball-cleanup' do
   path "#{Chef::Config[:file_cache_path]}/libevent-#{version}-stable.tar.gz"
   action :delete
 end

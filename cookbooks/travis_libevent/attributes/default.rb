@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: libevent
+# Cookbook Name:: travis_libevent
 # Attributes:: default
 #
 # Copyright 2012, Takeshi KOMIYA
@@ -17,6 +17,5 @@
 # limitations under the License.
 #
 
-default['libevent']['version'] = '2.0.20'
-default['libevent']['prefix']  = '/usr'
-
+default['travis_libevent']['version'] = '2.0.22'
+default['travis_libevent']['prefix']  = '/usr'
