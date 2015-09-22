@@ -107,6 +107,7 @@ file '/etc/default/travis-worker-restart' do
   owner "root"
   group "root"
   mode 0644
+  not_if 'grep -E "TRAVIS_WORKER_RESTART_SLEEP=[0-9]+" /etc/default/travis-worker-restart'
 end
 
 cron "travis-worker-restart-1" do
