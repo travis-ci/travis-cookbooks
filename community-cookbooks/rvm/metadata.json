@@ -36,5 +36,5 @@
     "rvm::ruby_187": "Helper recipe to install ruby 1.8.7",
     "rvm::ree": "Helper recipe to install ruby enterprise edition"
   },
-  "version": "0.0.2"
+  "version": "0.0.5"
 }

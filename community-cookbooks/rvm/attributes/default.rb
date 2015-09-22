@@ -18,3 +18,11 @@ default[:rvm][:version] = :stable
 # note: this will effectively inhibit
 # installation of :head.
 default[:rvm][:track_updates] = false
+
+
+case node[:platform_family]
+when "debian"
+  default[:rvm][:packages] = %w{ ruby-dev }
+when "rhel"
+  default[:rvm][:packages] = %w{ ruby-devel }
+end
