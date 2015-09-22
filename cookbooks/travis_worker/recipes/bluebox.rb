@@ -53,7 +53,6 @@ end
     action :sync
     user "travis"
     group "travis"
-    notifies :restart, resources(:service => service_name)
   end
 
   directory "#{home}/log" do
@@ -83,8 +82,6 @@ end
               :librato => node[:collectd_librato],
               :queue => queue,
               :vms => vms
-
-    notifies :restart, resources(:service => service_name)
   end
 
   runit_service "travis-worker-#{worker}" do
