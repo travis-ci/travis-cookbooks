@@ -17,9 +17,16 @@
 # limitations under the License.
 #
 
-case node['platform_family']
-when 'rhel'
-  package 'ImageMagick'
-when 'debian', 'mac_os_x'
-  package 'imagemagick'
-end
+include_recipe "imagemagick"
+
+dev_pkg = value_for_platform(
+  ["redhat", "centos", "fedora", "amazon"] => { "default" => "ImageMagick-devel" },
+  "debian" => { "default" => "libmagickwand-dev" },
+  "ubuntu" => {
+    "8.04" => "libmagick9-dev",
+    "8.10" => "libmagick9-dev",
+    "default" => "libmagickwand-dev"
+  }
+)
+
+package dev_pkg
