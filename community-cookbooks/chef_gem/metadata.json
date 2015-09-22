@@ -1,0 +1,29 @@
+{
+  "name": "chef_gem",
+  "description": "Provides proper chef_gem resource support for Chef versions < 0.10.12",
+  "long_description": "ChefGem\n=======\n\nThis cookbook is a transition cookbook aimed at helping move from the\npre-chef_gem era to the post chef_gem era. The chef_gem resource was\nintroducde in Chef 0.10.9, providing an easy mechanism for installing\nand using gems required by Chef internally. When used within an omnibus\ninstallation, chef_gems are installed within the embedded Ruby.\n\nWhat this cookbook provides\n----------------------------\n\nFor pre 0.10.9 Chef installations, it provides a chef_gem compatible resouce\nallowing cookbooks to be updated but not requiring full conversions. For installations\nunder 0.10.12, some patches are added to aid in proper omnibus functionality allowing\nchef_gem to work as expected. For Chef installations of 0.10.12 and beyond, this\ncookbook provides nothing. This means you will get consistent and expected behavior\nacross Chef versions.\n\nConfiguration\n-------------\n\nNotable attributes (note that these should only be required for special cases):\n\n* `node[:gem_binary] = '/usr/local/bin/gem'`\n* `node[:chef_gem_binary] = '/opt/opscode/embedded/bin/gem'`\n\nNotes\n-----\n\nWith the release of 0.10.12 this cookbook should be considered deprecated and used\nonly for compatibility with older installations.\n\nRepository\n----------\n\n* https://github.com/hw-cookbooks/chef_gem\n* IRC: Freenode @ #heavywater",
+  "maintainer": "Chris Roberts",
+  "maintainer_email": "chrisroberts.code@gmail.com",
+  "license": "Apache 2.0",
+  "platforms": {
+  },
+  "dependencies": {
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+  },
+  "groupings": {
+  },
+  "recipes": {
+  },
+  "version": "0.1.0"
+}
