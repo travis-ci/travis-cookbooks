@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: ant
-# Recipe:: default
+# Recipe:: install_package
 #
-# Copyright 2010-2012, Opscode, Inc.
+# Copyright 2012, Kyle Allan (<kallan@riotgames.com>)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,4 +17,12 @@
 # limitations under the License.
 #
 
-include_recipe "ant::install_#{node['ant']['install_method']}"
+include_recipe "java"
+
+ant_pkgs = ["ant","ant-contrib","ivy"]
+
+ant_pkgs.each do |pkg|
+  package pkg do
+    action :install
+  end
+end
