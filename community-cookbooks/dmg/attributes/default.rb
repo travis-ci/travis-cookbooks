@@ -1,8 +1,8 @@
+# Encoding: utf-8
+# Cookbook Name:: dmg
+# Attributes:: default
 #
-# Cookbook Name:: git
-# Recipe:: server
-#
-# Copyright 2009-2014, Chef Software, Inc.
+# Copyright 2011, Joshua Timberman
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,8 +15,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-git_service 'default' do
-  service_base_path node['git']['server']['base_path']
-  action :create
-end
+#
+default['dmg']['base_dir'] = '/Applications'
+default['dmg']['cache_dir'] = Chef::Config[:file_cache_path]

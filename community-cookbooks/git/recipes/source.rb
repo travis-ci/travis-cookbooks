@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: git
-# Recipe:: server
+# Recipe:: source
 #
-# Copyright 2009-2014, Chef Software, Inc.
+# Copyright 2012, Brian Flad, Fletcher Nichol
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-git_service 'default' do
-  service_base_path node['git']['server']['base_path']
-  action :create
+# drive version from node attributes
+git_client 'default' do
+  provider Chef::Provider::GitClient::Source
+  source_checksum node['git']['checksum']
+  source_prefix node['git']['prefix']
+  source_url node['git']['url']
+  source_use_pcre node['git']['use_pcre']
+  source_version node['git']['version']
+  action :install
 end

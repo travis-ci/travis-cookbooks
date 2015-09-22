@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: git
-# Recipe:: server
+# Cookbook Name:: imagemagick
+# Recipe:: default
 #
-# Copyright 2009-2014, Chef Software, Inc.
+# Copyright 2009, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,8 +15,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-git_service 'default' do
-  service_base_path node['git']['server']['base_path']
-  action :create
-end
+include_recipe "imagemagick"
+
+dev_pkg = value_for_platform(
+  ["redhat", "centos", "fedora", "amazon"] => { "default" => "ImageMagick-devel" },
+  "debian" => { "default" => "libmagickwand-dev" },
+  "ubuntu" => {
+    "8.04" => "libmagick9-dev",
+    "8.10" => "libmagick9-dev",
+    "default" => "libmagickwand-dev"
+  }
+)
+
+package dev_pkg
