@@ -1,43 +1,48 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ruby
 
-set -o errexit
+def main(argv: ARGV)
+  return 1 if argv.empty?
 
-[[ $# -ge 1 ]]
+  failed = []
 
-COOKBOOK_PATH="$1"
+  cookbook_path = argv.first
+  fc_args = %W(#{ENV['FC_ARGS']})
+  fc_tags = ENV['FC_TAGS'] || File.join(cookbook_path, '.foodcritic-tags')
+  quiet = !!ENV['QUIET']
 
-: ${FC_ARGS:=}
-: ${FC_TAGS:=$COOKBOOK_PATH/.foodcritic-tags}
+  if File.exist?(fc_tags)
+    fc_args += File.read(fc_tags).split.map { |t| "--tags #{t.strip}" }
+  end
 
-if [[ -f ${FC_TAGS} ]] ; then
-  for tag in $(cat ${FC_TAGS}) ; do
-    FC_ARGS="$FC_ARGS --tags $tag"
-  done
-fi
+  Dir.glob("#{cookbook_path}/*") do |cookbook|
+    next unless File.directory?(cookbook)
+    cookbook_name = File.basename(cookbook)
+    next if cookbook_name == 'cookbooks'
 
-FAILED=
+    foodcritic_command = %W(
+      foodcritic
+        --epic-fail any
+        #{fc_args.join(' ')}
+        #{cookbook}
+    ).join(' ')
 
-for cookbook in $(find $COOKBOOK_PATH -maxdepth 1 -type d | grep -v 'cookbooks$') ; do
-  cookbook_name=$(basename $cookbook)
-  foodcritic_command="foodcritic --epic-fail any $FC_ARGS $cookbook"
-  echo : $foodcritic_command
-  if $foodcritic_command ; then
-    echo "---> $cookbook_name ✔︎"
-  else
-    echo "---> $cookbook_name ✘"
-    FAILED="$FAILED $cookbook_name"
-  fi
-  echo
-done
+    puts "---> #{cookbook_name}: #{foodcritic_command}" unless quiet
 
-if [[ $FAILED ]] ; then
-  echo
-  echo "FAILED:"
-  echo
-  for cookbook in $FAILED ; do
-    echo $cookbook
-  done
-  exit 1
-else
-  exit 0
-fi
+    output = `#{foodcritic_command} 2>&1`.chomp
+    output = output.split(/[\r\n]/).map(&:strip).reject(&:empty?).join("\n")
+    puts output unless output.empty?
+
+    if $?.success?
+      puts "---> #{cookbook_name} ✔︎" unless quiet
+    else
+      puts "---> #{cookbook_name} ✘" unless quiet
+      failed << cookbook_name
+    end
+  end
+
+  puts "FAILED:\n#{failed.join(' ')}" unless failed.empty?
+
+  0
+end
+
+exit(main) if $PROGRAM_NAME == __FILE__
