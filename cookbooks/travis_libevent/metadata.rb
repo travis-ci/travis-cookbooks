@@ -1,4 +1,4 @@
-name 'libevent'
+name 'travis_libevent'
 # maintainer 'Takeshi KOMIYA'
 # maintainer_email 'i.tkomiya@gmail.com'
 maintainer 'Travis CI GmbH'
