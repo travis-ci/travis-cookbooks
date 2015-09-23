@@ -1,5 +1,4 @@
-#
-# Cookbook Name:: git
+# Cookbook Name:: travis_git
 # Recipe:: ppa
 #
 # Copyright 2011-2013, Travis CI Development Team <contact@travis-ci.org>
@@ -15,17 +14,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-# This recipe relies on a PPA package and is Ubuntu/Debian specific. Please
-# keep this in mind.
-
-apt_repository "git-ppa" do
-  uri          "http://ppa.launchpad.net/git-core/v1.8/ubuntu"
+apt_repository 'git-ppa' do
+  uri 'http://ppa.launchpad.net/git-core/v1.8/ubuntu'
   distribution node['lsb']['codename']
-  components   ["main"]
-  key          "E1DF1F24"
-  keyserver    "keyserver.ubuntu.com"
+  components ['main']
+  key 'E1DF1F24'
+  keyserver 'keyserver.ubuntu.com'
 
   action :add
 end
