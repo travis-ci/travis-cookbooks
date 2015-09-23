@@ -12,7 +12,7 @@ default['travis_build_environment']['apt']['timeout'] = 10
 default['travis_build_environment']['apt']['retries'] = 2
 
 default['travis_build_environment']['prerequisite_recipes'] = %w(
-  timezone
+  travis_timezone
   sysctl
   openssh
   unarchivers
