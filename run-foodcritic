@@ -15,7 +15,7 @@ if [[ -f ${FC_TAGS} ]] ; then
   done
 fi
 
-HAD_FAIL=
+FAILED=
 
 for cookbook in $(find $COOKBOOK_PATH -maxdepth 1 -type d | grep -v 'cookbooks$') ; do
   cookbook_name=$(basename $cookbook)
@@ -25,11 +25,18 @@ for cookbook in $(find $COOKBOOK_PATH -maxdepth 1 -type d | grep -v 'cookbooks$'
     echo "---> $cookbook_name ✔︎"
   else
     echo "---> $cookbook_name ✘"
-    HAD_FAIL=1
+    FAILED="$FAILED $cookbook_name"
   fi
+  echo
 done
 
-if [[ $HAD_FAIL ]] ; then
+if [[ $FAILED ]] ; then
+  echo
+  echo "FAILED:"
+  echo
+  for cookbook in $FAILED ; do
+    echo $cookbook
+  done
   exit 1
 else
   exit 0
