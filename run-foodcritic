@@ -42,7 +42,10 @@ def main(argv = ARGV)
     end
   end
 
-  puts "FAILED:\n#{failed.join(' ')}" unless failed.empty?
+  unless failed.empty?
+    puts "FAILED:\n#{failed.join(' ')}"
+    return 1
+  end
 
   0
 end
