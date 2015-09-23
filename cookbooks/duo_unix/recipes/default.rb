@@ -3,14 +3,8 @@
 # Recipe:: default
 #
 
-case node[:platform]
-when 'ubuntu'
-  package %w(libssl-dev libpam-dev) do
-    action :upgrade
-  end
-else
-  warn 'unsupported platform'
-  return
+package %w(libssl-dev libpam-dev) do
+  action :upgrade
 end
 
 apt_repository 'duosecurity' do

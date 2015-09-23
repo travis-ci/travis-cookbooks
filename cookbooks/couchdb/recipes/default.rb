@@ -1,7 +1,7 @@
 #
 # Cookbook Name:: couchdb
 # Recipe:: default
-# Copyright 2011-2013, Travis CI Development Team <contact@travis-ci.org>
+# Copyright 2011-2015, Travis CI Development Team <contact@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,6 @@
 
 # this must be in place: unless apt index is updated, xulrunner dependency will fail
 # to install thus failing couchdb installation or even the entire Chef run. MK.
-include_recipe "apt"
+include_recipe 'apt'
 
-list = case node.platform
-when "ubuntu", "debian" then
-  %w(couchdb)
-end # case
-
-list.each { |pkg| package(pkg) { action :install } }
+package 'couchdb'

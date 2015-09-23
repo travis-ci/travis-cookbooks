@@ -39,7 +39,7 @@ directory "#{node['gimme']['install_user_home']}/.gimme" do
 end
 
 file "#{node['gimme']['install_user_home']}/.gimme/version" do
-  content "#{node['gimme']['default_version']}"
+  content node['gimme']['default_version']
   owner node['gimme']['install_user']
   group node['gimme']['install_user']
   mode 0640

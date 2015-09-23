@@ -21,9 +21,4 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-list = case node.platform
-when "ubuntu", "debian" then
-  %w(firefox)
-end # case
-
-list.each { |pkg| package(pkg) { action :install } }
+package 'firefox'

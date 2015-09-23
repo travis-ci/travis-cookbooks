@@ -20,15 +20,14 @@
 # This recipe relies on a PPA package and is Ubuntu/Debian specific. Please
 # keep this in mind.
 
-case node[:platform]
-when "ubuntu" then
-  include_recipe "couchdb::ubuntu_ppa"
+case node['platform']
+when 'ubuntu' then
+  include_recipe 'couchdb::ubuntu_ppa'
 end
 
 package 'couchdb'
 
-service "couchdb" do
-  # intentionally disabled on boot. MK.
+service 'couchdb' do
   action [:disable, :start]
 end
 
@@ -39,10 +38,9 @@ file '/etc/init/couchdb.override' do
   content 'manual'
 end
 
-cookbook_file "/etc/couchdb/local.d/erlang_query_server.ini" do
-  source "erlang_query_server.ini"
-  owner "root"
-  group "root"
+cookbook_file '/etc/couchdb/local.d/erlang_query_server.ini' do
+  source 'erlang_query_server.ini'
+  owner 'root'
+  group 'root'
   mode 0644
-  # notifies :restart, resources(:service => "couchdb")
 end
