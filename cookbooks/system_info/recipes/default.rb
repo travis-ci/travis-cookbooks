@@ -7,7 +7,7 @@
 # MIT License
 #
 
-system_info_dir  = '/usr/local/system_info'
+system_info_dir = '/usr/local/system_info'
 system_info_dest = '/usr/share/travis'
 rvm_source = "#{node['travis_build_environment']['home']}/.rvm/scripts/rvm"
 
