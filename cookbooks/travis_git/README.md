@@ -1,24 +1,24 @@
-= DESCRIPTION:
+# DESCRIPTION:
 
 Installs git.
 
-= REQUIREMENTS:
+# REQUIREMENTS:
 
-== Cookbooks:
+## Cookbooks:
 
 Opscode Cookbooks (http://github.com/opscode/cookbooks/tree/master)
 
 * runit
 
-= USAGE:
+# USAGE:
 
 This cookbook primarily installs git core packages. It can also be used to serve git repositories.
 
-  include_recipe "git::server"
+    include_recipe "git::server"
 
 This creates the directory /srv/git and starts a git daemon, exporting all repositories found. Repositories need to be added manually, but will be available once they are created.
 
-= LICENSE and AUTHOR:
+# LICENSE and AUTHOR:
       
 Author:: Joshua Timberman (<joshua@opscode.com>)
 

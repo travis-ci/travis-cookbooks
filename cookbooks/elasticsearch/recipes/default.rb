@@ -26,15 +26,15 @@ include_recipe "java"
 require "tmpdir"
 
 tmp = Dir.tmpdir
-case node[:platform]
+case node['platform']
 when "debian", "ubuntu"
-  v = node.elasticsearch.version
+  v = node['elasticsearch']['version']
   ["elasticsearch-#{v}.deb"].each do |deb|
     path = File.join(tmp, deb)
 
     remote_file(path) do
-      owner  node.travis_build_environment.user
-      group  node.travis_build_environment.group
+      owner  node['travis_build_environment']['user']
+      group  node['travis_build_environment']['group']
       source "http://download.elasticsearch.org/elasticsearch/elasticsearch/#{deb}"
 
       not_if "which elasticsearch"
@@ -68,7 +68,7 @@ when "debian", "ubuntu"
   service "elasticsearch" do
     supports :restart => true, :status => true
 
-    if node.elasticsearch.service.enabled
+    if node['elasticsearch']['service']['enabled']
       action [:enable, :start]
     else
       action [:disable, :start]
