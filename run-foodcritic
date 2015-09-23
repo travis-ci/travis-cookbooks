@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
+# vim:fileencoding=utf-8
 
-def main(argv: ARGV)
+def main(argv = ARGV)
   return 1 if argv.empty?
 
   failed = []
@@ -9,6 +10,7 @@ def main(argv: ARGV)
   fc_args = %W(#{ENV['FC_ARGS']})
   fc_tags = ENV['FC_TAGS'] || File.join(cookbook_path, '.foodcritic-tags')
   quiet = !!ENV['QUIET']
+  foodcritic_exe = ENV['FOODCRITIC_EXE'] || 'foodcritic'
 
   if File.exist?(fc_tags)
     fc_args += File.read(fc_tags).split.map { |t| "--tags #{t.strip}" }
@@ -20,7 +22,7 @@ def main(argv: ARGV)
     next if cookbook_name == 'cookbooks'
 
     foodcritic_command = %W(
-      foodcritic
+      #{foodcritic_exe}
         --epic-fail any
         #{fc_args.join(' ')}
         #{cookbook}
