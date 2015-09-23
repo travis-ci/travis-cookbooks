@@ -7,7 +7,7 @@ version           "2.1.0"
 
 supports 'ubuntu', '>= 12.04'
 
-%w{ apt timezone }.each do |cb|
+%w(apt travis_timezone).each do |cb|
   depends cb
 end
 
