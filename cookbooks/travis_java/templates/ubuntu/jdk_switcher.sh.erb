@@ -147,8 +147,8 @@ switch_jdk()
             switch_to_oraclejdk8
             ;;
         default)
-            <% unless node['java']['default_version'].empty? %>
-            switch_to_<%= node['java']['default_version'] %>
+            <% unless node['travis_java']['default_version'].empty? %>
+            switch_to_<%= node['travis_java']['default_version'] %>
             <% else %>
             switch_to_openjdk7
             <% end %>
@@ -189,8 +189,8 @@ print_java_home()
             print_home_of_oraclejdk8
             ;;
         default)
-            <% unless node['java']['default_version'].empty? %>
-            print_home_of_<%= node['java']['default_version'] %>
+            <% unless node['travis_java']['default_version'].empty? %>
+            print_home_of_<%= node['travis_java']['default_version'] %>
             <% else %>
             print_home_of_openjdk7
             <% end %>

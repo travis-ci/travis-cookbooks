@@ -4,7 +4,7 @@
 # also 'java::openjdk6' recipe and 'travis_timezone' cookbook.
 include_recipe 'travis_timezone'
 
-node['java']['alternate_versions'].each do |java_version|
+node['travis_java']['alternate_versions'].each do |java_version|
   Chef::Log.info("Installing Java #{java_version}.")
   include_recipe "java::#{java_version}"
 end

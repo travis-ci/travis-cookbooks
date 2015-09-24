@@ -1,6 +1,6 @@
 #
 # Author:: Travis CI Development Team
-# Cookbook Name:: java
+# Cookbook Name:: travis_java
 # Recipe:: default
 #
 # Copyright 2008-2011, Opscode, Inc.
@@ -23,13 +23,13 @@ package 'unzip'
 
 default_jvm = nil
 
-unless node['java']['default_version'] == ''
-  Chef::Log.info("Installing Java #{node['java']['default_version']}.")
-  include_recipe "java::#{node['java']['default_version']}"
-  default_jvm = node['java'][node['java']['default_version']]['jvm_name']
+unless node['travis_java']['default_version'] == ''
+  Chef::Log.info("Installing Java #{node['travis_java']['default_version']}.")
+  include_recipe "java::#{node['travis_java']['default_version']}"
+  default_jvm = node['travis_java'][node['travis_java']['default_version']]['jvm_name']
 end
 
-unless Array(node['java']['alternate_versions']).empty?
+unless Array(node['travis_java']['alternate_versions']).empty?
   include_recipe 'java::multi'
 end
 
