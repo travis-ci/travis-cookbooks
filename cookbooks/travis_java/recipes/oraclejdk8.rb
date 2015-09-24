@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe 'java::webupd8'
+include_recipe 'travis_java::webupd8'
 
 # accept Oracle License v1.1, otherwise the package won't install
 bash 'accept oracle license v1.1' do

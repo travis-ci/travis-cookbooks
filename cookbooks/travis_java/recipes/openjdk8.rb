@@ -19,7 +19,7 @@
 
 # As of Ubuntu 14.10 (Vivid), OpenJDK is available in main Ubuntu package repository
 if Chef::VersionConstraint.new('<= 14.04').include?(node['platform_version'])
-  include_recipe 'java::openjdk-r'
+  include_recipe 'travis_java::openjdk-r'
 end
 
 package 'openjdk-8-jdk'

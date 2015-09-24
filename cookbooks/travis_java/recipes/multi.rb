@@ -6,7 +6,7 @@ include_recipe 'travis_timezone'
 
 node['travis_java']['alternate_versions'].each do |java_version|
   Chef::Log.info("Installing Java #{java_version}.")
-  include_recipe "java::#{java_version}"
+  include_recipe "travis_java::#{java_version}"
 end
 
 # provision jdk_switcher

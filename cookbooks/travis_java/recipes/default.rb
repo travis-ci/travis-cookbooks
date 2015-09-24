@@ -25,12 +25,12 @@ default_jvm = nil
 
 unless node['travis_java']['default_version'] == ''
   Chef::Log.info("Installing Java #{node['travis_java']['default_version']}.")
-  include_recipe "java::#{node['travis_java']['default_version']}"
+  include_recipe "travis_java::#{node['travis_java']['default_version']}"
   default_jvm = node['travis_java'][node['travis_java']['default_version']]['jvm_name']
 end
 
 unless Array(node['travis_java']['alternate_versions']).empty?
-  include_recipe 'java::multi'
+  include_recipe 'travis_java::multi'
 end
 
 execute "Set #{default_jvm} as default alternative" do
