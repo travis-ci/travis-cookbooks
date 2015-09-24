@@ -1,4 +1,4 @@
-include_recipe "php::multi"
+include_recipe 'travis_php::multi'
 
 phpenv_path = File.join(node.travis_build_environment.home, ".phpenv")
 

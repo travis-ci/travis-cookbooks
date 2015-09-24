@@ -1,0 +1,71 @@
+---
+driver_plugin: vagrant
+
+platforms:
+- name: ubuntu-12.04
+  driver_config:
+    box: opscode-ubuntu-12.04
+    box_url: https://opscode-vm.s3.amazonaws.com/vagrant/boxes/opscode-ubuntu-12.04.box
+  run_list:
+  - recipe[apt]
+- name: ubuntu-10.04
+  driver_config:
+    box: opscode-ubuntu-10.04
+    box_url: https://opscode-vm.s3.amazonaws.com/vagrant/boxes/opscode-ubuntu-10.04.box
+  run_list:
+  - recipe[apt]
+- name: centos-6.3
+  driver_config:
+    box: opscode-centos-6.3
+    box_url: https://opscode-vm.s3.amazonaws.com/vagrant/boxes/opscode-centos-6.3.box
+  run_list:
+  - recipe[yum::epel]
+
+suites:
+- name: stock_system_and_user
+  run_list:
+  - recipe[user::data_bag]
+  - recipe[rvm::system]
+  - recipe[rvm::user]
+  attributes:
+    users:
+    - wigglebottom
+    rvm:
+      user_installs:
+      - user: wigglebottom
+        default_ruby: 1.8.7
+- name: rubies
+  run_list:
+  - recipe[java]
+  - recipe[rvm::system]
+  attributes:
+    rvm:
+      default_ruby: system
+      rubies:
+      - 1.9.3
+      - version: 1.9.3-p327
+        patch: railsexpress
+      - version: 1.8.7
+        rubygems_version: 1.6.0
+      - jruby
+      - ree
+- name: rbx
+  run_list:
+  - recipe[rvm::system]
+  attributes:
+    rvm:
+      default_ruby: rbx
+- name: rvm_versions
+  run_list:
+  - recipe[user::data_bag]
+  - recipe[rvm::user_install]
+  attributes:
+    users:
+    - virgil1
+    - virgil2
+    rvm:
+      user_installs:
+      - user: virgil1
+        version: 1.17.10
+      - user: virgil2
+        version: 1.16.20
