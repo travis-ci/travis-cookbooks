@@ -27,7 +27,7 @@ action :create do
     template "#{target_path}/etc/conf.d/travis.ini" do
       owner new_resource.owner
       group new_resource.group
-      cookbook 'phpbuild'
+      cookbook 'travis_phpbuild'
       source 'travis.ini.erb'
       variables(
         timezone: node['travis_phpbuild']['custom']['php_ini']['timezone'],
@@ -42,7 +42,6 @@ end
 action :delete do
   if exists?
     Chef::Log.info("Uninstalling PHP #{@new_resource.version} from php-build")
-    phpbuild_path = "#{node['travis_build_environment']['home']}/.php-build"
     target_path = "#{@new_resource.path}/#{@new_resource.version}"
 
     FileUtils.rm_rf(target_path)

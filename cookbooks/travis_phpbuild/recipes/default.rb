@@ -1,4 +1,4 @@
-# Cookbook Name:: phpbuild
+# Cookbook Name:: travis_phpbuild
 # Recipe:: default
 # Copyright 2011-2015, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
 #
