@@ -1,6 +1,6 @@
 ENV['PATH'] = "#{ENV['PATH']}:/opt/jruby/bin"
 
-include_recipe "java"
+include_recipe 'travis_java'
 
 package "libjffi-jni" do
   action :install

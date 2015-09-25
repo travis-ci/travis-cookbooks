@@ -20,7 +20,7 @@
 # This recipe relies on a PPA package and is Ubuntu/Debian specific. Please
 # keep this in mind.
 
-include_recipe "java"
+include_recipe 'travis_java'
 
 apt_repository "datastax" do
   uri          "http://debian.datastax.com/community"

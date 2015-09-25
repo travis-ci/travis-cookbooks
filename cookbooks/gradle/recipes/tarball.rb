@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-include_recipe "java"
+include_recipe 'travis_java'
 
 package %w(groovy unzip)
 

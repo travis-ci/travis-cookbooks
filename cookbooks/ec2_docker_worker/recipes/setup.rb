@@ -12,7 +12,7 @@ include_recipe 'ntp'
 include_recipe 'users'
 include_recipe 'sudo'
 include_recipe 'ssh::sshd'
-include_recipe 'java'
+include_recipe 'travis_java'
 include_recipe 'jruby'
 
 template '/etc/profile.d/jruby.sh' do
