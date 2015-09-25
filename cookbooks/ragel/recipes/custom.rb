@@ -21,10 +21,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-require "tmpdir"
 require "rbconfig"
 
-tmp = Dir.tmpdir
 case node[:platform]
 when "debian", "ubuntu"
   pkg = if RbConfig::CONFIG['arch'] =~ /64/
@@ -33,7 +31,7 @@ when "debian", "ubuntu"
               "ragel_6.7-1_i386.deb"
             end
 
-  path = File.join(tmp, pkg)
+  path = File.join(Chef::Config[:file_cache_path], pkg)
 
   remote_file(path) do
     source "http://files.travis-ci.org/packages/deb/ragel/#{pkg}"

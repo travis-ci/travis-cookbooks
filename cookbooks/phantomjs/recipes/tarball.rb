@@ -21,27 +21,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-# This recipe provides Phantom.js using official tarball for Linux.
-package "libfontconfig1"
+package 'libfontconfig1'
 
-# 1. Download the tarball
-require "tmpdir"
+tmp = File.join(Chef::Config[:file_cache_path], "phantomjs-#{node['phantomjs']['version']}.tar.gz")
+tarball_dir = File.join(Chef::Config[:file_cache_path], "phantomjs-#{node['phantomjs']['version']}-linux-#{node['phantomjs']['arch']}")
 
-td          = Dir.tmpdir
-tmp         = File.join(td, "phantomjs-#{node.phantomjs.version}.tar.gz")
-tarball_dir = File.join(td, "phantomjs-#{node.phantomjs.version}-linux-#{node.phantomjs.arch}")
+remote_file tmp do
+  source node['phantomjs']['tarball']['url']
 
-remote_file(tmp) do
-  source node.phantomjs.tarball.url
-
-  not_if "which phantomjs && [[ `phantomjs --version` == \"#{node.phantomjs.version}\" ]]"
+  not_if "which phantomjs && [[ `phantomjs --version` == \"#{node['phantomjs']['version']}\" ]]"
 end
 
-# 2. Extract it
-# 3. Copy to /usr/local/phantomjs
 bash "extract #{tmp}, move it to /usr/local/phantomjs" do
-  user "root"
-  cwd  "/tmp"
+  user 'root'
+  cwd  '/tmp'
 
   code <<-EOS
     rm -rf /usr/local/phantomjs
@@ -49,21 +42,19 @@ bash "extract #{tmp}, move it to /usr/local/phantomjs" do
     mv --force #{tarball_dir} /usr/local/phantomjs
   EOS
 
-  creates "/usr/local/phantomjs/bin/phantomjs"
+  creates '/usr/local/phantomjs/bin/phantomjs'
 end
 
-cookbook_file "/etc/profile.d/phantomjs.sh" do
-  owner "root"
-  group "root"
+cookbook_file '/etc/profile.d/phantomjs.sh' do
+  source 'etc/profile.d/phantomjs.sh'
+  owner 'root'
+  group 'root'
   mode 0644
-
-  source "etc/profile.d/phantomjs.sh"
 end
 
-link "/usr/local/bin/phantomjs" do
-  to "/usr/local/phantomjs/bin/phantomjs"
-
-  owner "root"
-  group "root"
+link '/usr/local/bin/phantomjs' do
+  to '/usr/local/phantomjs/bin/phantomjs'
+  owner 'root'
+  group 'root'
   mode 0644
 end
