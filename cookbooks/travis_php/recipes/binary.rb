@@ -1,8 +1,8 @@
 include_recipe "bison"
 include_recipe "libreadline"
 
-include_recipe "phpenv"
-include_recipe "phpbuild"
+include_recipe "travis_phpenv"
+include_recipe "travis_phpbuild"
 
 # This recipe downloads our own 5.2.17 archive for Precise
 

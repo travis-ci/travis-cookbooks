@@ -7,7 +7,7 @@ version '1.0.0'
 
 depends 'apt'
 depends 'build-essential'
-depends 'git'
+depends 'travis_git'
 depends 'libssl'
 depends 'libxml'
 depends 'mysql'
