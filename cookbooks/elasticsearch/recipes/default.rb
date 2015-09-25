@@ -23,14 +23,11 @@
 
 include_recipe 'travis_java'
 
-require "tmpdir"
-
-tmp = Dir.tmpdir
 case node['platform']
 when "debian", "ubuntu"
   v = node['elasticsearch']['version']
   ["elasticsearch-#{v}.deb"].each do |deb|
-    path = File.join(tmp, deb)
+    path = File.join(Chef::Config[:file_cache_path], deb)
 
     remote_file(path) do
       owner  node['travis_build_environment']['user']

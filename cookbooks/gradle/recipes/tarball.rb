@@ -22,15 +22,10 @@ include_recipe 'travis_java'
 
 package %w(groovy unzip)
 
-# 1. Download the tarball to /tmp
-require "tmpdir"
+tmp = File.join(Chef::Config[:file_cache_path], "gradle-#{node.gradle.version}-bin.zip")
+tarball_dir = File.join(Chef::Config[:file_cache_path], "gradle-#{node.gradle.version}")
 
-td          = Dir.tmpdir
-tmp         = File.join(td, "gradle-#{node.gradle.version}-bin.zip")
-tarball_dir = File.join(td, "gradle-#{node.gradle.version}")
-
-
-remote_file(tmp) do
+remote_file tmp do
   source node.gradle.tarball.url
 
   not_if "which gradle"

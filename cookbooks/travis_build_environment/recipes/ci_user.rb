@@ -68,7 +68,7 @@ end
     source "ci_user/#{entry[:src]}"
     owner node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    mode (node[:mode] || 0400)
+    mode (entry[:mode] || 0400)
   end
 end
 

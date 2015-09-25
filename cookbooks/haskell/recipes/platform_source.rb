@@ -28,13 +28,10 @@ when ["ubuntu", "12.04"] then
   include_recipe "haskell::ghc::package"
 end
 
-require "tmpdir"
-
-td            = Dir.tmpdir
-local_tarball = File.join(td, "haskell-platform-#{node.haskell.platform.version}.tar.gz")
+local_tarball = File.join(Chef::Config[:file_cache_path], "haskell-platform-#{node['haskell']['platform']['version']}.tar.gz")
 
 remote_file(local_tarball) do
-  source "http://lambda.haskell.org/platform/download/#{node.haskell.platform.version}/haskell-platform-#{node.haskell.platform.version}.tar.gz"
+  source "http://lambda.haskell.org/platform/download/#{node['haskell']['platform']['version']}/haskell-platform-#{node['haskell']['platform']['version']}.tar.gz"
 
   not_if "test -f #{local_tarball}"
 end

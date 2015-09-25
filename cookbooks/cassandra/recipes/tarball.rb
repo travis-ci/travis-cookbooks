@@ -42,14 +42,10 @@ group node['cassandra']['user'] do
   action :create
 end
 
-# 1. Download the tarball to /tmp
-require 'tmpdir'
+tmp = File.join(Chef::Config[:file_cache_path], "apache-cassandra-#{node['cassandra']['version']}-bin.tar.gz")
+tarball_dir = File.join(Chef::Config[:file_cache_path], "apache-cassandra-#{node['cassandra']['version']}")
 
-td          = Dir.tmpdir
-tmp         = File.join(td, "apache-cassandra-#{node['cassandra']['version']}-bin.tar.gz")
-tarball_dir = File.join(td, "apache-cassandra-#{node['cassandra']['version']}")
-
-remote_file(tmp) do
+remote_file tmp do
   source node['cassandra']['tarball']['url']
 
   not_if 'which cassandra'

@@ -17,38 +17,33 @@
 # limitations under the License.
 #
 
-# 1. Download the tarball to /tmp
-require "tmpdir"
-
-td          = Dir.tmpdir
-tmp         = File.join(td, node.pypy.tarball.filename)
-tarball_dir = File.join(td, node.pypy.tarball.dirname)
+tmp = File.join(Chef::Config[:file_cache_path], node['pypy']['tarball']['filename'])
+tarball_dir = File.join(Chef::Config[:file_cache_path], node['pypy']['tarball']['dirname'])
 
 
-remote_file(tmp) do
-  source node.pypy.tarball.url
+remote_file tmp do
+  source node['pypy']['tarball']['url']
 
-  not_if "which pypy"
+  not_if 'which pypy'
 end
 
-bash "extract #{tmp}, move it to #{node.pypy.tarball.installation_dir}" do
-  user "root"
-  cwd  "/tmp"
+bash "extract #{tmp}, move it to #{node['pypy']['tarball']['installation_dir']}" do
+  user 'root'
+  cwd  '/tmp'
 
   code <<-EOS
     tar xjfp #{tmp}
-    rm -rf #{node.pypy.tarball.installation_dir}
-    mv --force #{tarball_dir} #{node.pypy.tarball.installation_dir}
+    rm -rf #{node['pypy']['tarball']['installation_dir']}
+    mv --force #{tarball_dir} #{node['pypy']['tarball']['installation_dir']}
   EOS
 
-  creates "#{node.pypy.tarball.installation_dir}/bin/pypy"
+  creates "#{node['pypy']['tarball']['installation_dir']}/bin/pypy"
 end
 
 
-cookbook_file "/etc/profile.d/pypy.sh" do
-  owner "root"
-  group "root"
+cookbook_file '/etc/profile.d/pypy.sh' do
+  source 'etc/profile.d/pypy.sh'
+  owner 'root'
+  group 'root'
   mode 0644
-
-  source "etc/profile.d/pypy.sh"
 end

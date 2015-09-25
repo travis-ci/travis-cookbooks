@@ -25,11 +25,11 @@ action :install do
   versions.each do |php_version|
     if new_resource.script && !new_resource.script.empty?
       bash "manually install PECL extension #{extension} for PHP #{php_version}" do
-        user        new_resource.owner
-        group       new_resource.group
-        cwd         "/tmp"
-        environment Hash["HOME" => node.travis_build_environment.home]
-        code        <<-EOF
+        user new_resource.owner
+        group new_resource.group
+        cwd '/tmp'
+        environment('HOME' => node['travis_build_environment']['home'])
+        code <<-EOF
           source /etc/profile.d/phpenv.sh
           phpenv global #{php_version}
           #{new_resource.script}
@@ -37,10 +37,10 @@ action :install do
       end
     else
       bash "install PECL extension #{extension} for PHP #{php_version}" do
-        user        new_resource.owner
-        group       new_resource.group
-        environment Hash["HOME" => node.travis_build_environment.home]
-        code        <<-EOF
+        user new_resource.owner
+        group new_resource.group
+        environment('HOME' => node['travis_build_environment']['home'])
+        code <<-EOF
           source /etc/profile.d/phpenv.sh
           phpenv global #{php_version}
 
