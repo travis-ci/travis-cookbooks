@@ -1,0 +1,6 @@
+<% unless @jvmopts.empty? %>
+export JVM_OPTS='@<%= @jvmopts %>'
+<% end %>
+<% unless @sbtopts.empty? %>
+export SBT_OPTS='@<%= @sbtopts %>'
+<% end %>

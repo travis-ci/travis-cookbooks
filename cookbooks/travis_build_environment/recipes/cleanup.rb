@@ -1,5 +1,5 @@
 # Cookbook Name:: travis_build_environment
-# Recipe:: default
+# Recipe:: cleanup
 # Copyright 2011-2015, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy

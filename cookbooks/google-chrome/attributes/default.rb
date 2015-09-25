@@ -2,13 +2,18 @@ default['google-chrome']['pkg']['url'] = 'https://dl.google.com/linux/direct/goo
 
 default['google-chrome']['deps'] = %w(
   gconf-service
+  libappindicator1
   libasound2
   libcairo2
   libcups2
+  libcurl3
+  libdbusmenu-glib4
+  libdbusmenu-gtk4
   libfontconfig1
   libgconf-2-4
   libgdk-pixbuf2.0-0
   libgtk2.0-0
+  libindicator7
   libnspr4
   libnss3
   libpango1.0-0
@@ -23,10 +28,5 @@ default['google-chrome']['deps'] = %w(
   libxrender1
   libxss1
   libxtst6
-  libdbusmenu-glib4
-  libdbusmenu-gtk4
-  libindicator7
-  libappindicator1
-  libcurl3
   xdg-utils
 )

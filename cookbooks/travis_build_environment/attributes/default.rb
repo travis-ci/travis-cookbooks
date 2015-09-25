@@ -26,4 +26,4 @@ if kernel['machine'] =~ /x86_64/
   default['travis_build_environment']['arch'] = 'amd64'
 end
 
-default['java']['default_version'] = ''
+default['travis_java']['default_version'] = ''
