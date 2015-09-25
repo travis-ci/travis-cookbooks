@@ -24,7 +24,7 @@ include_recipe 'rvm::system'
 include_recipe 'travis_java'
 include_recipe 'ant'
 
-gems = (node['travis_rvm']['gems'] || ['bundler', 'rake'])
+gems = (node['travis_rvm']['gems'] || %w(bundler rake))
 rvm  = 'source /usr/local/rvm/scripts/rvm && rvm'
 
 node['travis_rvm']['rubies'].each do |ruby|

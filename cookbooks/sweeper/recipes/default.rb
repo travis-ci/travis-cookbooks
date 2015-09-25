@@ -24,15 +24,15 @@
 # This cookbook is supposed to be the last one on the run_list.
 # It cleans up unused apt packages and so on.
 
-execute "apt-get -y clean autoremove" do
+execute 'apt-get -y clean autoremove' do
   action :run
 end
 
-execute "rm -rf /tmp/php*" do
+execute 'rm -rf /tmp/php*' do
   action :run
 end
 
-execute "rm -rf /var/tmp/php*" do
+execute 'rm -rf /var/tmp/php*' do
   action :run
 end
 

@@ -20,4 +20,4 @@ default[:travis_kerl][:checksum] = {
 
 default[:travis_kerl][:releases] = default[:travis_kerl][:checksum].keys
 
-default[:travis_kerl][:path]     = "/usr/local/bin/kerl"
+default[:travis_kerl][:path]     = '/usr/local/bin/kerl'

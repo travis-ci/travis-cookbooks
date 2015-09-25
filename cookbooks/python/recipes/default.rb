@@ -18,4 +18,4 @@
 # limitations under the License.
 #
 
-include_recipe "python::package"
+include_recipe 'python::package'

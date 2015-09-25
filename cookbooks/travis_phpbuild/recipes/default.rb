@@ -63,7 +63,7 @@ git phpbuild_path do
   action :sync
 end
 
-git "/tmp/php-build-plugin-phpunit" do
+git '/tmp/php-build-plugin-phpunit' do
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   repository node['travis_phpbuild']['phpunit_plugin']['git']['repository']

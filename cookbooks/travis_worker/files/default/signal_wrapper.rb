@@ -1,15 +1,15 @@
 #!/usr/bin/env ruby
 
 if ARGV.empty?
-  puts "Requires at least one argument"
+  puts 'Requires at least one argument'
   exit 1
 end
 
 child_pid = nil
 
-%w{INT TERM}.each do |signal|
+%w(INT TERM).each do |signal|
   trap signal do
-    puts "Terminating child"
+    puts 'Terminating child'
     Process.kill(:TERM, child_pid)
     exit
   end

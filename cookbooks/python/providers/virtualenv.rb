@@ -29,7 +29,7 @@ action :create do
       user new_resource.owner if new_resource.owner
       group new_resource.group if new_resource.group
 
-      environment({ "VIRTUAL_ENV_DISABLE_PROMPT" => "true" })
+      environment('VIRTUAL_ENV_DISABLE_PROMPT' => 'true')
     end
     new_resource.updated_by_last_action(true)
   end
@@ -59,7 +59,7 @@ private
 
 def exists?
   ::File.exist?(@current_resource.path) && ::File.directory?(@current_resource.path) \
-    && ::File.exists?("#{@current_resource.path}/bin/activate")
+    && ::File.exist?("#{@current_resource.path}/bin/activate")
 end
 
 def maybe_system_site_packages
@@ -71,8 +71,8 @@ def maybe_system_site_packages
 end
 
 def py
-  if @new_resource.interpreter.to_s.downcase == "pypy"
-    ::File.join(node.pypy.tarball.installation_dir, "bin", "pypy")
+  if @new_resource.interpreter.to_s.downcase == 'pypy'
+    ::File.join(node.pypy.tarball.installation_dir, 'bin', 'pypy')
   else
     @new_resource.interpreter
   end

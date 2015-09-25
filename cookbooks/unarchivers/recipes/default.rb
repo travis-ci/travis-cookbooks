@@ -22,7 +22,7 @@
 # THE SOFTWARE.
 
 package_names = case node.platform
-       when "ubuntu", "debian" then
+       when 'ubuntu', 'debian' then
          %w(gzip bzip2 zip unzip libbz2-dev)
        else
          []

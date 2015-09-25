@@ -8,8 +8,7 @@
 # Apache 2.0 License.
 #
 
-
-if ['debian', 'ubuntu'].member? node['platform']
+if %w(debian ubuntu).member? node['platform']
   package 'tzdata'
 
   bash 'dpkg-reconfigure tzdata' do

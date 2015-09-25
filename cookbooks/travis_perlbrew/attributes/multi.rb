@@ -6,10 +6,10 @@ default['travis_perlbrew']['perls'] = [
   { name: '5.18', version: 'perl-5.18.2' },
   { name: '5.20', version: 'perl-5.20.0'  },
   { name: '5.20-extras', version: 'perl-5.20.0',
-    arguments: '-Duseshrplib -Duseithreads', alias: '5.20-shrplib'},
+    arguments: '-Duseshrplib -Duseithreads', alias: '5.20-shrplib' },
   { name: '5.22', version: 'perl-5.22.0'  },
   { name: '5.22-extras', version: 'perl-5.22.0',
-    arguments: '-Duseshrplib -Duseithreads', alias: '5.22-shrplib'},
+    arguments: '-Duseshrplib -Duseithreads', alias: '5.22-shrplib' },
   { name: '5.8',  version: 'perl-5.8.8'  }
 ]
 

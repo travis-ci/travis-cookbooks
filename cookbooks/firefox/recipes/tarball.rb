@@ -26,11 +26,10 @@ unless node['firefox']['tarball']['package_dependencies'].empty?
 end
 
 ark 'firefox' do
-  url     node['firefox']['tarball']['download_url']
+  url node['firefox']['tarball']['download_url']
   version node['firefox']['tarball']['version']
-  owner   node['travis_build_environment']['user']
-  group   node['travis_build_environment']['group']
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
 
   has_binaries %w(firefox firefox-bin)
 end
-

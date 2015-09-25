@@ -22,25 +22,25 @@
 # THE SOFTWARE.
 
 case node['platform']
-when "ubuntu"
+when 'ubuntu'
   if node[:platform_version].to_f < 11.10
-    apt_repository "mbeloborodiy_haskell_platform" do
-      uri          "http://ppa.launchpad.net/mbeloborodiy/ppa/ubuntu/"
+    apt_repository 'mbeloborodiy_haskell_platform' do
+      uri 'http://ppa.launchpad.net/mbeloborodiy/ppa/ubuntu/'
       distribution node['lsb']['codename']
-      components   ['main']
+      components ['main']
 
-      key          "F6B6FC93"
-      keyserver    "keyserver.ubuntu.com"
+      key 'F6B6FC93'
+      keyserver 'keyserver.ubuntu.com'
 
       action :add
     end
   end
 end
 
-script "initialize cabal" do
-  interpreter "bash"
+script 'initialize cabal' do
+  interpreter 'bash'
   user node.travis_build_environment.user
-  cwd  node.travis_build_environment.home
+  cwd node.travis_build_environment.home
 
   environment Hash['HOME' => node.travis_build_environment.home]
 
@@ -55,13 +55,13 @@ script "initialize cabal" do
   ignore_failure true
 end
 
-package "haskell-platform" do
+package 'haskell-platform' do
   action :install
 
-  notifies :run, resources(:script => "initialize cabal")
+  notifies :run, resources(script: 'initialize cabal')
 end
 
-cookbook_file "/etc/profile.d/cabal.sh" do
+cookbook_file '/etc/profile.d/cabal.sh' do
   owner node.travis_build_environment.user
   group node.travis_build_environment.group
   mode 0755

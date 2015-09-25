@@ -20,7 +20,6 @@
 tmp = File.join(Chef::Config[:file_cache_path], node['pypy']['tarball']['filename'])
 tarball_dir = File.join(Chef::Config[:file_cache_path], node['pypy']['tarball']['dirname'])
 
-
 remote_file tmp do
   source node['pypy']['tarball']['url']
 
@@ -29,7 +28,7 @@ end
 
 bash "extract #{tmp}, move it to #{node['pypy']['tarball']['installation_dir']}" do
   user 'root'
-  cwd  '/tmp'
+  cwd '/tmp'
 
   code <<-EOS
     tar xjfp #{tmp}
@@ -39,7 +38,6 @@ bash "extract #{tmp}, move it to #{node['pypy']['tarball']['installation_dir']}"
 
   creates "#{node['pypy']['tarball']['installation_dir']}/bin/pypy"
 end
-
 
 cookbook_file '/etc/profile.d/pypy.sh' do
   source 'etc/profile.d/pypy.sh'

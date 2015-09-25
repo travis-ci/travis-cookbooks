@@ -1,4 +1,4 @@
-virtualenv_root = File.join(node.travis_build_environment.home, "virtualenv")
+virtualenv_root = File.join(node.travis_build_environment.home, 'virtualenv')
 
 # Install Python2 and Python3
 package %w(python-dev python3-dev)
@@ -7,7 +7,7 @@ package %w(python-dev python3-dev)
 directory virtualenv_root do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode  "0755"
+  mode '0755'
 
   action :create
 end
@@ -27,7 +27,7 @@ node['python']['system']['pythons'].each do |py|
 
   # Build a list of packages up so that we can install them
   packages = []
-  node.python.pyenv.aliases.fetch(py, []).concat(["default", py]).each do |name|
+  node.python.pyenv.aliases.fetch(py, []).concat(['default', py]).each do |name|
     packages.concat node.python.pip.packages.fetch(name, [])
   end
 

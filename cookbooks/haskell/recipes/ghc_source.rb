@@ -28,22 +28,21 @@
 end
 
 case [node.platform, node.platform_version]
-when ["ubuntu", "11.10"] then
-  link "/usr/lib/libgmp.so.3" do
-    to "/usr/lib/libgmp.so"
+when ['ubuntu', '11.10'] then
+  link '/usr/lib/libgmp.so.3' do
+    to '/usr/lib/libgmp.so'
 
-    not_if "test -L /usr/lib/libgmp.so.3"
+    not_if 'test -L /usr/lib/libgmp.so.3'
   end
-when ["ubuntu", "12.04"] then
-  package "libgmp3c2"
+when ['ubuntu', '12.04'] then
+  package 'libgmp3c2'
 
-  link "/usr/lib/libgmp.so.3" do
-    to "/usr/lib/libgmp.so.3.5.2"
+  link '/usr/lib/libgmp.so.3' do
+    to '/usr/lib/libgmp.so.3.5.2'
 
-    not_if "test -L /usr/lib/libgmp.so.3"
+    not_if 'test -L /usr/lib/libgmp.so.3'
   end
 end
-
 
 local_tarball = File.join(Chef::Config[:file_cache_path], "ghc-#{node.ghc.version}-#{node.ghc.arch}-unknown-linux.tar.bz2")
 
@@ -55,9 +54,9 @@ end
 
 # 2. Extract it
 # 3. configure, make install
-bash "build and install GHC" do
-  user "root"
-  cwd  "/tmp"
+bash 'build and install GHC' do
+  user 'root'
+  cwd '/tmp'
 
   code <<-EOS
     tar jfx #{local_tarball}
@@ -70,6 +69,6 @@ bash "build and install GHC" do
     rm #{local_tarball}
   EOS
 
-  creates "/usr/local/bin/ghc"
+  creates '/usr/local/bin/ghc'
   not_if "ghc --version | grep #{node.ghc.version}"
 end

@@ -10,10 +10,10 @@
 
 # Create base directory on RAMFS before creating cluster
 #
-include_recipe "ramfs" if node['postgresql']['data_on_ramfs']
+include_recipe 'ramfs' if node['postgresql']['data_on_ramfs']
 
 create_superusers_script = File.join(Chef::Config[:file_cache_path], 'postgresql_create_superusers.sql')
-if not node['postgresql']['superusers'].to_a.empty? and not File.exists?(create_superusers_script)
+if !node['postgresql']['superusers'].to_a.empty? && !File.exist?(create_superusers_script)
 
   #
   # Following steps require that all PostgreSQL instances are running at the same time.
@@ -23,14 +23,14 @@ if not node['postgresql']['superusers'].to_a.empty? and not File.exists?(create_
   end
 
   template create_superusers_script do
-    source "create_superusers.sql.erb"
-    owner  'postgres'
+    source 'create_superusers.sql.erb'
+    owner 'postgres'
   end
 
   Range.new(node['postgresql']['port'], node['postgresql']['port'] + node['postgresql']['alternate_versions'].length).each do |pg_port|
-    execute "Execute SQL script to create additional superusers" do
+    execute 'Execute SQL script to create additional superusers' do
       command "psql --port=#{pg_port} --file=#{create_superusers_script}"
-      user    'postgres'
+      user 'postgres'
     end
   end
 
@@ -49,35 +49,30 @@ end
 # 2) Control that only one postgres instance is running at the same time
 #    (all instances are configured to listen on the same TCP port)
 #
-template "/etc/init.d/postgresql" do
-  source "initd_postgresql.erb"
-  owner  'root'
-  group  'root'
-  mode   0755
+template '/etc/init.d/postgresql' do
+  source 'initd_postgresql.erb'
+  owner 'root'
+  group 'root'
+  mode 0755
 end
-
 
 #
 # Tune PostgreSQL settings
 #
 ([node['postgresql']['default_version']] + node['postgresql']['alternate_versions']).each do |pg_version|
-
   # postgresql.conf template is specific to PostgreSQL version installed
   template "/etc/postgresql/#{pg_version}/main/postgresql.conf" do
     source "#{pg_version}/postgresql.conf.erb"
-    owner  'postgres'
-    group  'postgres'
-    mode   0644        # apply same permissions as in 'pdpg' packages
+    owner 'postgres'
+    group 'postgres'
+    mode 0644        # apply same permissions as in 'pdpg' packages
   end
 
   # pg_hba.conf template is the same for all PostgreSQL versions (so far)
   template "/etc/postgresql/#{pg_version}/main/pg_hba.conf" do
-    source "pg_hba.conf.erb"
-    owner  'postgres'
-    group  'postgres'
-    mode   0640        # apply same permissions as in 'pdpg' packages
+    source 'pg_hba.conf.erb'
+    owner 'postgres'
+    group 'postgres'
+    mode 0640        # apply same permissions as in 'pdpg' packages
   end
-
 end
-
-

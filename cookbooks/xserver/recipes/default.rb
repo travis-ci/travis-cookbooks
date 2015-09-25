@@ -22,16 +22,16 @@
 # THE SOFTWARE.
 
 list = case node.platform
-when "ubuntu", "debian" then
+when 'ubuntu', 'debian' then
   %w(xserver-xorg-core xvfb)
 end # case
 
 list.each { |pkg| package(pkg) { action :install } }
 
-cookbook_file "/etc/init.d/xvfb" do
-  owner "root"
-  group "root"
-  mode  0644
+cookbook_file '/etc/init.d/xvfb' do
+  owner 'root'
+  group 'root'
+  mode 0644
 
-  source "etc/init.d/xvfb.sh"
+  source 'etc/init.d/xvfb.sh'
 end

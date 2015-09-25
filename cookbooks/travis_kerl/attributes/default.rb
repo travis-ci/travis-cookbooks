@@ -1,1 +1,1 @@
-include_attribute "travis_kerl::binary"
+include_attribute 'travis_kerl::binary'

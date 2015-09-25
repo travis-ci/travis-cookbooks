@@ -21,18 +21,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-cookbook_file "/etc/profile.d/cabal.sh" do
+cookbook_file '/etc/profile.d/cabal.sh' do
   owner node.travis_build_environment.user
   group node.travis_build_environment.group
   mode 0755
 end
 
 case [node.platform, node.platform_version]
-when ["ubuntu", "11.10"] then
-  include_recipe "haskell::ghc_source"
-  include_recipe "haskell::platform_source"
-when ["ubuntu", "12.04"] then
-  include_recipe "haskell::ghc_package"
-  include_recipe "haskell::platform_package"
+when ['ubuntu', '11.10'] then
+  include_recipe 'haskell::ghc_source'
+  include_recipe 'haskell::platform_source'
+when ['ubuntu', '12.04'] then
+  include_recipe 'haskell::ghc_package'
+  include_recipe 'haskell::platform_package'
 end
-

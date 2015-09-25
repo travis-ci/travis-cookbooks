@@ -22,10 +22,10 @@
 # THE SOFTWARE.
 
 case [node[:platform_name], node[:platform_version]]
-when ["ubuntu", "11.10"] then
-  include_recipe "haskell::ghc::source"
-when ["ubuntu", "12.04"] then
-  include_recipe "haskell::ghc::package"
+when ['ubuntu', '11.10'] then
+  include_recipe 'haskell::ghc::source'
+when ['ubuntu', '12.04'] then
+  include_recipe 'haskell::ghc::package'
 end
 
 local_tarball = File.join(Chef::Config[:file_cache_path], "haskell-platform-#{node['haskell']['platform']['version']}.tar.gz")
@@ -38,9 +38,9 @@ end
 
 # 2. Extract it
 # 3. configure, make install
-bash "build and install Haskell Platform" do
-  user "root"
-  cwd  "/tmp"
+bash 'build and install Haskell Platform' do
+  user 'root'
+  cwd '/tmp'
 
   code <<-EOS
     tar zfx #{local_tarball}
@@ -60,5 +60,5 @@ bash "build and install Haskell Platform" do
     cabal install hunit c2hs
   EOS
 
-  creates "/usr/local/bin/cabal"
+  creates '/usr/local/bin/cabal'
 end

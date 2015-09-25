@@ -31,9 +31,9 @@ package 'jsvc'
 
 user node['cassandra']['user'] do
   comment 'Cassandra Server user'
-  home    node['cassandra']['installation_dir']
-  shell   '/bin/bash'
-  action  :create
+  home node['cassandra']['installation_dir']
+  shell '/bin/bash'
+  action :create
 end
 
 group node['cassandra']['user'] do
@@ -55,7 +55,7 @@ end
 # 3. Copy to /usr/local/cassandra, update permissions
 bash "extract #{tmp}, move it to #{node['cassandra']['installation_dir']}" do
   user 'root'
-  cwd  '/tmp'
+  cwd '/tmp'
 
   code <<-EOS
     rm -rf #{node['cassandra']['installation_dir']}
@@ -68,10 +68,10 @@ end
 
 [node['cassandra']['data_root_dir'], node['cassandra']['log_dir']].each do |dir|
   directory dir do
-    owner     node['cassandra']['user']
-    group     node['cassandra']['user']
+    owner node['cassandra']['user']
+    group node['cassandra']['user']
     recursive true
-    action    :create
+    action :create
   end
 end
 
@@ -89,14 +89,13 @@ end
   end
 end
 
-
 # 4. Install config files and binaries
 %w(cassandra.yaml cassandra-env.sh).each do |f|
   template File.join(node['cassandra']['conf_dir'], f) do
     source "#{f}.erb"
     owner node['cassandra']['user']
     group node['cassandra']['user']
-    mode  0644
+    mode 0644
   end
 end
 
@@ -104,26 +103,24 @@ template File.join(node['cassandra']['bin_dir'], 'cassandra-cli') do
   source 'cassandra-cli.erb'
   owner node['cassandra']['user']
   group node['cassandra']['user']
-  mode  0755
+  mode 0755
 end
-
 
 # 5. Symlink
 %w(cassandra cassandra-cli cqlsh debug-cql json2sstable nodetool sstable2json sstablekeys sstableloader sstablescrub sstablesplit sstableupgrade).each do |f|
   link "/usr/local/bin/#{f}" do
     owner node['cassandra']['user']
     group node['cassandra']['user']
-    to    "#{node['cassandra']['installation_dir']}/bin/#{f}"
-    not_if  "test -L /usr/local/bin/#{f}"
+    to "#{node['cassandra']['installation_dir']}/bin/#{f}"
+    not_if "test -L /usr/local/bin/#{f}"
   end
 end
-
 
 # 6. Know Your Limits
 template "/etc/security/limits.d/#{node['cassandra']['user']}.conf" do
   source 'cassandra-limits.conf.erb'
   owner node['cassandra']['user']
-  mode  0644
+  mode 0644
 end
 
 ruby_block 'make sure pam_limits.so is required' do
@@ -138,11 +135,11 @@ end
 template '/etc/init.d/cassandra' do
   source 'cassandra.init.erb'
   owner 'root'
-  mode  0755
+  mode 0755
 end
 
 service 'cassandra' do
-  supports :start => true, :stop => true, :restart => true
+  supports start: true, stop: true, restart: true
 
   if node['cassandra']['service']['enabled']
     action [:enable, :stop]

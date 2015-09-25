@@ -85,7 +85,7 @@ template "/etc/profile.d/#{node['travis_sbt_extras']['script_name']}.sh" do
 
   only_if do
     node['travis_sbt_extras']['system_wide_defaults'] && (
-      File.exists?(jvmopts_path) || File.exists?(sbtopts_path)
+      File.exist?(jvmopts_path) || File.exist?(sbtopts_path)
     )
   end
 end
@@ -98,7 +98,6 @@ if node['travis_sbt_extras']['user_setup']
   node['travis_sbt_extras']['user_setup'].keys.each do |sbt_user|
     node['travis_sbt_extras']['user_setup'][sbt_user]['sbt'].each do |sbt_version|
       node['travis_sbt_extras']['user_setup'][sbt_user]['scala'].each do |scala_version|
-
         directory File.join(tmp_project_dir, 'project') do
           recursive true
           owner sbt_user

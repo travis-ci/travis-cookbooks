@@ -16,4 +16,10 @@ addons:
     packages:
     - chefdk
 
-script: ./run-foodcritic $COOKBOOK_PATH
+install:
+- rvm use 2.1.7 --install --binary --fuzzy
+- gem install rubocop
+
+script:
+- "if [[ -f $COOKBOOK_PATH/.rubocop.yml ]] ; then (cd $COOKBOOK_PATH && rubocop) ; fi"
+- "./run-foodcritic $COOKBOOK_PATH"

@@ -14,9 +14,9 @@ action :install do
   end
 
   bash "before installing PECL extension #{extension} script" do
-    user    "root"
-    cwd     "/tmp"
-    code    new_resource.before_script
+    user 'root'
+    cwd '/tmp'
+    code new_resource.before_script
     only_if do
       new_resource.before_script && !new_resource.before_script.empty?
     end
@@ -77,9 +77,9 @@ action :uninstall do
 
   versions.each do |php_version|
     bash "uninstall PECL extension #{extension} for PHP #{php_version}" do
-      user  new_resource.owner
+      user new_resource.owner
       group new_resource.group
-      code  <<-EOF
+      code <<-EOF
       pecl uninstall #{extension}
       EOF
     end

@@ -13,13 +13,13 @@ default['python']['pyenv']['pythons'] = %w(
 default['python']['pyenv']['aliases'] = {
   '2.7.10' => %w(2.7),
   '3.5.0' => %w(3.5),
-  'pypy-2.6.1' => %w(pypy),
+  'pypy-2.6.1' => %w(pypy)
 }
 
 default['python']['pip']['packages'] = {
   'default' => %w(nose pytest mock wheel),
   '2.7' => %w(numpy),
-  '3.5' => %w(numpy),
+  '3.5' => %w(numpy)
 }
 
 default['python']['system']['pythons'] = %w(2.7 3.2)

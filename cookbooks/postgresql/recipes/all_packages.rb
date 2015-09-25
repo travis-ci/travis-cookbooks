@@ -20,4 +20,3 @@ end
 # Install Optional Add-Ons
 #
 include_recipe 'postgresql::postgis' if node['postgresql']['postgis_version']
-

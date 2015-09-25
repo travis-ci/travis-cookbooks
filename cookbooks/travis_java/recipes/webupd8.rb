@@ -13,7 +13,6 @@ apt_repository 'webupd8team-java-ppa' do
   action :add
 end
 
-
 # Ensure that the Ubuntu Java keystore is installed, so that
 # we can symlink it from Oracle JDKs and thus having all JDKs
 # behave the same when reaching HTTPS sites (e.g. repositories).

@@ -80,6 +80,6 @@ template '/etc/monit/conf.d/travis-worker.monitrc' do
   owner 'root'
   group 'root'
   mode 0644
-  variables :service_name => service_name
-  notifies :run, resources(:execute => 'monit-reload')
+  variables service_name: service_name
+  notifies :run, resources(execute: 'monit-reload')
 end

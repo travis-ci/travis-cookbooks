@@ -6,7 +6,7 @@ apt_repository 'docker' do
   action :add
 end
 
-package %W(
+package %w(
   linux-generic-lts-vivid
   lxc
 )

@@ -74,21 +74,21 @@ end
     owner 'travis'
     group 'travis'
     mode 0600
-    variables :amqp => node['travis']['worker']['amqp'],
-              :worker => node['travis']['worker'],
-              :hostname => host_name,
-              :bluebox => node['bluebox'],
-              :open_stack => node['open_stack'],
-              :librato => node['collectd_librato'],
-              :queue => queue,
-              :vms => vms
+    variables amqp: node['travis']['worker']['amqp'],
+              worker: node['travis']['worker'],
+              hostname: host_name,
+              bluebox: node['bluebox'],
+              open_stack: node['open_stack'],
+              librato: node['collectd_librato'],
+              queue: queue,
+              vms: vms
   end
 
   runit_service "travis-worker-#{worker}" do
-    options :jruby => node['jruby']['bin'],
-            :worker_home => home,
-            :user => 'travis',
-            :group => 'travis'
+    options jruby: node['jruby']['bin'],
+            worker_home: home,
+            user: 'travis',
+            group: 'travis'
     template_name 'travis-worker'
   end
 
@@ -97,8 +97,8 @@ end
     owner 'root'
     group 'root'
     mode 0644
-    variables :service_name => service_name
-    notifies :run, resources(:execute => 'monit-reload')
+    variables service_name: service_name
+    notifies :run, resources(execute: 'monit-reload')
   end
 end
 
@@ -123,7 +123,7 @@ end
 
 cron 'travis-worker-restart-2' do
   user 'root'
-  hour node['travis']['worker']['restart_begin_hour']+2
+  hour node['travis']['worker']['restart_begin_hour'] + 2
   mailto 'root@localhost'
   command %w(
     . /etc/default/travis-worker-restart &&
@@ -135,7 +135,7 @@ end
 
 cron 'travis-worker-restart-3' do
   user 'root'
-  hour node['travis']['worker']['restart_begin_hour']+4
+  hour node['travis']['worker']['restart_begin_hour'] + 4
   mailto 'root@localhost'
   command %w(
     . /etc/default/travis-worker-restart &&

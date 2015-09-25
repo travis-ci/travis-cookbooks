@@ -21,6 +21,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package "libfontconfig1"
+package 'libfontconfig1'
 
-include_recipe "phantomjs::tarball"
+include_recipe 'phantomjs::tarball'

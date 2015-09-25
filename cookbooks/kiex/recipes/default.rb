@@ -15,7 +15,7 @@ env  = {
 bash 'install kiex' do
   code '\curl -sSL https://raw.githubusercontent.com/taylor/kiex/master/install | bash -s'
   user node.travis_build_environment.user
-  cwd  node.travis_build_environment.home
+  cwd node.travis_build_environment.home
   group node.travis_build_environment.group
   creates "#{node.travis_build_environment.home}/.kiex/bin/kiex"
   environment(env)
@@ -25,7 +25,7 @@ cookbook_file 'kiex.sh' do
   path '/etc/profile.d/kiex.sh'
 end
 
-node.kiex.elixir_versions.each do |elixir, otp|
+node.kiex.elixir_versions.each do |elixir, _otp|
   bash "install elixir version #{elixir} with kiex" do
     user node.travis_build_environment.user
     group node.travis_build_environment.group
