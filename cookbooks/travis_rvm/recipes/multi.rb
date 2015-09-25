@@ -21,7 +21,7 @@
 # THE SOFTWARE.
 
 include_recipe 'rvm::system'
-include_recipe 'java'
+include_recipe 'travis_java'
 include_recipe 'ant'
 
 gems = (node['travis_rvm']['gems'] || ['bundler', 'rake'])
