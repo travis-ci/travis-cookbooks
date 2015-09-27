@@ -46,7 +46,7 @@ when 'debian', 'ubuntu'
       source path
       provider Chef::Provider::Package::Dpkg
 
-      notifies :delete, resources(file: path)
+      notifies :delete, "file[#{path}]"
       notifies :create, 'ruby_block[create-symbolic-links]'
 
       not_if 'which elasticsearch'

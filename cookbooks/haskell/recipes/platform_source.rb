@@ -1,7 +1,6 @@
-#
 # Cookbook Name:: haskell
-# Recipe:: platform::source
-# Copyright 2012-2013, Travis CI Development Team <contact@travis-ci.org>
+# Recipe:: platform_source
+# Copyright 2012-2015, Travis CI Development Team <contact@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,23 +20,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-case [node[:platform_name], node[:platform_version]]
-when ['ubuntu', '11.10'] then
-  include_recipe 'haskell::ghc::source'
-when ['ubuntu', '12.04'] then
-  include_recipe 'haskell::ghc::package'
-end
+include_recipe 'haskell::ghc_package'
 
-local_tarball = File.join(Chef::Config[:file_cache_path], "haskell-platform-#{node['haskell']['platform']['version']}.tar.gz")
+local_tarball = File.join(
+  Chef::Config[:file_cache_path],
+  "haskell-platform-#{node['haskell']['platform']['version']}.tar.gz"
+)
 
-remote_file(local_tarball) do
+remote_file local_tarball do
   source "http://lambda.haskell.org/platform/download/#{node['haskell']['platform']['version']}/haskell-platform-#{node['haskell']['platform']['version']}.tar.gz"
 
   not_if "test -f #{local_tarball}"
 end
 
-# 2. Extract it
-# 3. configure, make install
 bash 'build and install Haskell Platform' do
   user 'root'
   cwd '/tmp'

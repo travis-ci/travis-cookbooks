@@ -142,5 +142,5 @@ template '/etc/monit/conf.d/travis-worker.monitrc' do
   variables(
     home: node['travis']['worker']['home']
   )
-  notifies :run, resources(execute: 'monit-reload')
+  notifies :run, 'execute[monit-reload]'
 end

@@ -1,4 +1,3 @@
-#
 # Cookbook Name:: haskell
 # Recipe:: source
 # Copyright 2012-2013, Travis CI Development Team <contact@travis-ci.org>

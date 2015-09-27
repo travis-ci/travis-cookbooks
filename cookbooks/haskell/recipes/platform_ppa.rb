@@ -1,7 +1,6 @@
-#
 # Cookbook Name:: haskell
 # Recipe:: platform_ppa
-# Copyright 2012-2013, Travis CI Development Team <contact@travis-ci.org>
+# Copyright 2012-2015, Travis CI Development Team <contact@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,48 +20,30 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-case node['platform']
-when 'ubuntu'
-  if node[:platform_version].to_f < 11.10
-    apt_repository 'mbeloborodiy_haskell_platform' do
-      uri 'http://ppa.launchpad.net/mbeloborodiy/ppa/ubuntu/'
-      distribution node['lsb']['codename']
-      components ['main']
-
-      key 'F6B6FC93'
-      keyserver 'keyserver.ubuntu.com'
-
-      action :add
-    end
-  end
-end
-
 script 'initialize cabal' do
   interpreter 'bash'
-  user node.travis_build_environment.user
-  cwd node.travis_build_environment.home
+  user node['travis_build_environment']['user']
+  cwd node['travis_build_environment']['home']
 
-  environment Hash['HOME' => node.travis_build_environment.home]
+  environment('HOME' => node['travis_build_environment']['home'])
 
   code <<-SH
-  cabal update
-  cabal install c2hs
+    cabal update
+    cabal install c2hs
   SH
 
-  # triggered by haskell-platform installation
   action :nothing
-  # until http://haskell.1045720.n5.nabble.com/Cabal-install-fails-due-to-recent-HUnit-tt5715081.html#none is resolved :( MK.
   ignore_failure true
 end
 
 package 'haskell-platform' do
   action :install
 
-  notifies :run, resources(script: 'initialize cabal')
+  notifies :run, 'script[initialize cabal]')
 end
 
 cookbook_file '/etc/profile.d/cabal.sh' do
-  owner node.travis_build_environment.user
-  group node.travis_build_environment.group
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
   mode 0755
 end

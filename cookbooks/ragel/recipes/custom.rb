@@ -48,7 +48,7 @@ when 'debian', 'ubuntu'
     source path
     provider Chef::Provider::Package::Dpkg
 
-    notifies :delete, resources(file: path)
+    notifies :delete, "file[#{path}]"
     not_if 'which ragel'
   end
 end
