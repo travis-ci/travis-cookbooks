@@ -1,5 +1,5 @@
 # Cookbook Name:: gradle
-# Recipe:: tarball
+# Recipe:: default
 #
 # Copyright 2012, Michael S. Klishin.
 # Copyright 2013-2015, Travis CI GmbH
@@ -16,42 +16,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'travis_java'
-
 package %w(
   groovy
   unzip
 )
 
-zip_dest = File.join(
-  Chef::Config[:file_cache_path],
-  "gradle-#{node['gradle']['version']}-bin.zip"
-)
-
-unzipped_dir = File.join(
-  Chef::Config[:file_cache_path],
-  "gradle-#{node['gradle']['version']}"
-)
-
-remote_file zip_dest do
-  source node['gradle']['tarball']['url']
-
-  not_if do
-    File.exist?("#{node['gradle']['installation_dir']}/bin/gradle")
-  end
-end
-
-bash "extract #{zip_dest} to #{node['gradle']['installation_dir']}" do
-  user 'root'
-  cwd '/tmp'
-
-  code <<-EOS
-    unzip #{zip_dest}
-    rm -rf #{node['gradle']['installation_dir']}
-    mv --force #{unzipped_dir} #{node['gradle']['installation_dir']}
-  EOS
-
-  creates "#{node['gradle']['installation_dir']}/bin/gradle"
+ark 'gradle' do
+  url node['gradle']['url']
+  version node['gradle']['version']
+  checksum node['gradle']['checksum']
+  path node['gradle']['installation_dir']
+  owner 'root'
 end
 
 cookbook_file '/etc/profile.d/gradle.sh' do

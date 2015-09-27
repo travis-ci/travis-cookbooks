@@ -12,7 +12,7 @@ your needse.
 
 ## Recipes
 
-Main recipe is `gradle::tarball`.
+Main recipe is `gradle::default`.
 
 ## Supported OSes
 
