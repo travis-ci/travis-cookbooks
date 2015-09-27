@@ -9,8 +9,8 @@ shopt -s histappend
 export HISTSIZE='1000'
 export HISTFILESIZE='2000'
 
-<% unless node['java']['default_version'].empty? -%>
-export JAVA_HOME="<%= node['java']['jvm_base_dir'] -%>/<%= node['java'][node['java']['default_version']]['jvm_name'] -%>"
+<% unless node['travis_java']['default_version'].empty? -%>
+export JAVA_HOME="<%= node['travis_java']['jvm_base_dir'] -%>/<%= node['travis_java'][node['travis_java']['default_version']]['jvm_name'] -%>"
 <% end -%>
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"

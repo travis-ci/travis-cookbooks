@@ -19,15 +19,13 @@
 #
 
 python_pkgs = value_for_platform(
-  ["debian","ubuntu"] => {
-    "default" => ["python","python-dev","python3","python3-dev"]
+  %w(debian ubuntu) => {
+    'default' => ['python', 'python-dev', 'python3', 'python3-dev']
   },
-  ["centos","redhat","fedora"] => {
-    "default" => ["python26","python26-devel","python3","python3-devel"]
+  %w(centos redhat fedora) => {
+    'default' => ['python26', 'python26-devel', 'python3', 'python3-devel']
   },
-  "default" => ["python","python-dev","python3","python3-dev"]
+  'default' => ['python', 'python-dev', 'python3', 'python3-dev']
 )
 
-unless python_pkgs.empty?
-  package python_pkgs
-end
+package python_pkgs unless python_pkgs.empty?

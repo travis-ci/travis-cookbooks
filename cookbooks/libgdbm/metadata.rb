@@ -1,6 +1,6 @@
-maintainer       "Travis CI Development Team"
-license          "Apache v2.0"
-name             "libgdbm"
-version          "1.0.0"
-description      "libgdbm"
-long_description "Installs/Configures libgdbm"
+maintainer 'Travis CI Development Team'
+license 'Apache v2.0'
+name 'libgdbm'
+version '1.0.0'
+description 'libgdbm'
+long_description 'Installs/Configures libgdbm'

@@ -1,3 +1,0 @@
-<% unless node['java']['default_version'].empty? -%>
-export JAVA_HOME=<%= node['java']['jvm_base_dir'] -%>/<%= node['java'][node['java']['default_version']]['jvm_name'] -%>
-<% end -%>

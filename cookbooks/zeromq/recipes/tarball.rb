@@ -25,9 +25,9 @@
 # Download and setup zeromq tarball package
 #
 ark 'zeromq' do
-  url           node['zeromq']['download_url']
-  checksum      node['zeromq']['checksum']
-  version       node['zeromq']['version']
+  url node['zeromq']['download_url']
+  checksum node['zeromq']['checksum']
+  version node['zeromq']['version']
 
   append_env_path true
 end

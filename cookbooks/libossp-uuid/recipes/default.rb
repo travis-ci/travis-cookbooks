@@ -22,6 +22,6 @@
 # THE SOFTWARE.
 
 case node[:platform]
-when "ubuntu", "debian"
-  package "libossp-uuid-dev"
+when 'ubuntu', 'debian'
+  package 'libossp-uuid-dev'
 end

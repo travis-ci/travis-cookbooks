@@ -12,7 +12,7 @@ include_recipe 'ntp'
 include_recipe 'users'
 include_recipe 'sudo'
 include_recipe 'ssh::sshd'
-include_recipe 'java'
+include_recipe 'travis_java'
 include_recipe 'jruby'
 
 template '/etc/profile.d/jruby.sh' do
@@ -30,7 +30,7 @@ include_recipe 'travis_worker::ec2-docker'
 include_recipe 'papertrail'
 
 template '/etc/cloud/cloud.cfg' do
-  source  'cloud.cfg.erb'
+  source 'cloud.cfg.erb'
   owner 'root'
   group 'root'
   mode 0644
@@ -38,4 +38,4 @@ end
 
 include_recipe 'ec2_docker_worker::volume_post'
 include_recipe 'ec2_docker_worker::docker_preseed' \
-  if !!node['ec2_docker_worker']['docker']['preseed']
+  if node['ec2_docker_worker']['docker']['preseed']

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -o errexit
+
+: ${COOKBOOK_PATH:=cookbooks}
+
+unset GEM_PATH
+
+cd "$(dirname ${BASH_SOURCE[0]})"
+
+if [[ -f $COOKBOOK_PATH/.rubocop.yml ]] ; then
+  (cd $COOKBOOK_PATH && rubocop)
+fi
+
+./run-foodcritic $COOKBOOK_PATH

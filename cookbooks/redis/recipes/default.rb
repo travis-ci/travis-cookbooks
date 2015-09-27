@@ -21,27 +21,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-apt_repository "rwky-redis" do
-  uri          "http://ppa.launchpad.net/rwky/redis/ubuntu"
+apt_repository 'rwky-redis' do
+  uri 'http://ppa.launchpad.net/rwky/redis/ubuntu'
   distribution node['lsb']['codename']
-  components   ["main"]
-  key          "5862E31D"
-  keyserver    "keyserver.ubuntu.com"
+  components ['main']
+  key '5862E31D'
+  keyserver 'keyserver.ubuntu.com'
 
   action :add
 end
 
-package "redis-server" do
+package 'redis-server' do
   action :install
 end
 
-service "redis-server" do
+service 'redis-server' do
   provider Chef::Provider::Service::Upstart
-  supports :restart => true, :status => true, :reload => true
+  supports restart: true, status: true, reload: true
   if node.redis.service.enabled
     action [:enable, :start]
   else
     action [:disable, :start]
   end
 end
-

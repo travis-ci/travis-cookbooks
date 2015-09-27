@@ -24,13 +24,13 @@ prefix = node['travis_libevent']['prefix']
 
 remote_file "#{Chef::Config[:file_cache_path]}/libevent-#{version}-stable.tar.gz" do
   source "https://github.com/libevent/libevent/releases/download/release-#{version}-stable/libevent-#{version}-stable.tar.gz"
-  not_if {::File.exists?("#{prefix}/lib/libevent.a")}
+  not_if { ::File.exist?("#{prefix}/lib/libevent.a") }
   notifies :run, 'script[install-libevent]', :immediately
 end
 
 script 'install-libevent' do
   interpreter 'bash'
-  only_if {::File.exists?("#{Chef::Config[:file_cache_path]}/libevent-#{version}-stable.tar.gz")}
+  only_if { ::File.exist?("#{Chef::Config[:file_cache_path]}/libevent-#{version}-stable.tar.gz") }
   flags '-e -x'
   code <<-EOH
     cd /usr/local/src

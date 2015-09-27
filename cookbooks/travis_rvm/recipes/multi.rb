@@ -1,4 +1,3 @@
-#
 # Cookbook Name:: travis_rvm
 # Recipe:: multi
 # Copyright 2011-2015, Travis CI Development Team <contact@travis-ci.org>
@@ -21,11 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe 'rvm'
-include_recipe 'java'
+include_recipe 'rvm::system'
+include_recipe 'travis_java'
 include_recipe 'ant'
 
-gems = (node['travis_rvm']['gems'] || ['bundler', 'rake'])
+gems = (node['travis_rvm']['gems'] || %w(bundler rake))
 rvm  = 'source /usr/local/rvm/scripts/rvm && rvm'
 
 node['travis_rvm']['rubies'].each do |ruby|

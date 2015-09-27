@@ -21,8 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-
 case node.platform
-when "ubuntu", "debian" then
+when 'ubuntu', 'debian' then
   package %w(libssl-dev libxml2-dev libxslt1-dev libxslt-dev zlib1g-dev)
 end

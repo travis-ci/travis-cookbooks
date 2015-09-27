@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-permissions_setup = Proc.new do |resource|
+permissions_setup = proc do |resource|
   resource.owner node['travis_build_environment']['user']
   resource.group node['travis_build_environment']['group']
   resource.mode 0750
@@ -48,7 +48,7 @@ node['nodejs']['versions'].each do |version|
     creates "#{node.travis_build_environment.home}/.nvm/v#{version}"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    cwd  node['travis_build_environment']['home']
+    cwd node['travis_build_environment']['home']
     environment(
       'HOME' => node['travis_build_environment']['home']
     )

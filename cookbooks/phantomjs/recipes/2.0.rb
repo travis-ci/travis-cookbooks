@@ -24,7 +24,7 @@ directory local_dir do
   recursive true
 end
 
-bash "expand phantomjs archive" do
+bash 'expand phantomjs archive' do
   user 'root'
   group 'root'
   code "tar xjf #{archive_path} -C #{local_dir}"

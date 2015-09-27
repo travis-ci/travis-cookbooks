@@ -1,0 +1,4 @@
+language: ruby
+rvm:
+  - 1.9.3-p484
+bundler_args: --without integration development

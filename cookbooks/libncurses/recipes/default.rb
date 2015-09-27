@@ -21,9 +21,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package "libncursesw5-dev"
+package 'libncursesw5-dev'
 
 case node['platform']
-when "ubuntu","debian"
+when 'ubuntu', 'debian'
   package 'libncurses5-dev'
 end

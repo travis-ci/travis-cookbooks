@@ -4,7 +4,7 @@ sudo: false
 
 env:
   global:
-  - PATH="/opt/chef/bin:$PATH"
+  - PATH="/opt/chefdk/bin:/opt/chef/bin:$PATH"
   matrix:
   - COOKBOOK_PATH="cookbooks"
   - COOKBOOK_PATH="community-cookbooks"
@@ -16,4 +16,4 @@ addons:
     packages:
     - chefdk
 
-script: ./run-foodcritic $COOKBOOK_PATH
+script: ./runtests

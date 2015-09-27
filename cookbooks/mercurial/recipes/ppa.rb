@@ -21,14 +21,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe "python::package"
+include_recipe 'python::package'
 
-apt_repository "mercurial-ppa" do
-  uri          "http://ppa.launchpad.net/mercurial-ppa/releases/ubuntu"
+apt_repository 'mercurial-ppa' do
+  uri 'http://ppa.launchpad.net/mercurial-ppa/releases/ubuntu'
   distribution node['lsb']['codename']
-  components   ["main"]
-  key          "323293EE"
-  keyserver    "keyserver.ubuntu.com"
+  components ['main']
+  key '323293EE'
+  keyserver 'keyserver.ubuntu.com'
 
   action :add
 end

@@ -1,4 +1,3 @@
-#
 # Cookbook Name:: xserver
 # Recipe:: default
 # Copyright 2011-2013, Travis CI Development Team <contact@travis-ci.org>
@@ -21,17 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-list = case node.platform
-when "ubuntu", "debian" then
-  %w(xserver-xorg-core xvfb)
-end # case
+package %w(
+  xserver-xorg-core
+  xvfb
+)
 
-list.each { |pkg| package(pkg) { action :install } }
+cookbook_file '/etc/init.d/xvfb' do
+  owner 'root'
+  group 'root'
+  mode 0644
 
-cookbook_file "/etc/init.d/xvfb" do
-  owner "root"
-  group "root"
-  mode  0644
-
-  source "etc/init.d/xvfb.sh"
+  source 'etc/init.d/xvfb.sh'
 end

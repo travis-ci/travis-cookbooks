@@ -18,10 +18,8 @@
 #
 
 case node['platform']
-when "ubuntu"
-  package "libzmq3" do
+when 'ubuntu'
+  package 'libzmq3' do
     action :install
   end
 end
-
-

@@ -22,6 +22,6 @@
 # THE SOFTWARE.
 
 case node[:platform]
-when "debian", "ubuntu"
+when 'debian', 'ubuntu'
   package %w(libssl0.9.8 libssl-dev)
 end

@@ -20,12 +20,12 @@
 # This recipe relies on a PPA package and is Ubuntu/Debian specific. Please
 # keep this in mind.
 
-apt_repository "pypy" do
-  uri          "http://ppa.launchpad.net/pypy/ppa/ubuntu"
+apt_repository 'pypy' do
+  uri 'http://ppa.launchpad.net/pypy/ppa/ubuntu'
   distribution node['lsb']['codename']
-  components   ["main"]
-  key          "68854915"
-  keyserver    "keyserver.ubuntu.com"
+  components ['main']
+  key '68854915'
+  keyserver 'keyserver.ubuntu.com'
 
   action :add
 end

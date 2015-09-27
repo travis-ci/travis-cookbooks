@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe 'java'
+include_recipe 'travis_java'
 
 package 'jsvc'
 
@@ -31,9 +31,9 @@ package 'jsvc'
 
 user node['cassandra']['user'] do
   comment 'Cassandra Server user'
-  home    node['cassandra']['installation_dir']
-  shell   '/bin/bash'
-  action  :create
+  home node['cassandra']['installation_dir']
+  shell '/bin/bash'
+  action :create
 end
 
 group node['cassandra']['user'] do
@@ -42,14 +42,10 @@ group node['cassandra']['user'] do
   action :create
 end
 
-# 1. Download the tarball to /tmp
-require 'tmpdir'
+tmp = File.join(Chef::Config[:file_cache_path], "apache-cassandra-#{node['cassandra']['version']}-bin.tar.gz")
+tarball_dir = File.join(Chef::Config[:file_cache_path], "apache-cassandra-#{node['cassandra']['version']}")
 
-td          = Dir.tmpdir
-tmp         = File.join(td, "apache-cassandra-#{node['cassandra']['version']}-bin.tar.gz")
-tarball_dir = File.join(td, "apache-cassandra-#{node['cassandra']['version']}")
-
-remote_file(tmp) do
+remote_file tmp do
   source node['cassandra']['tarball']['url']
 
   not_if 'which cassandra'
@@ -59,7 +55,7 @@ end
 # 3. Copy to /usr/local/cassandra, update permissions
 bash "extract #{tmp}, move it to #{node['cassandra']['installation_dir']}" do
   user 'root'
-  cwd  '/tmp'
+  cwd '/tmp'
 
   code <<-EOS
     rm -rf #{node['cassandra']['installation_dir']}
@@ -72,10 +68,10 @@ end
 
 [node['cassandra']['data_root_dir'], node['cassandra']['log_dir']].each do |dir|
   directory dir do
-    owner     node['cassandra']['user']
-    group     node['cassandra']['user']
+    owner node['cassandra']['user']
+    group node['cassandra']['user']
     recursive true
-    action    :create
+    action :create
   end
 end
 
@@ -93,14 +89,13 @@ end
   end
 end
 
-
 # 4. Install config files and binaries
 %w(cassandra.yaml cassandra-env.sh).each do |f|
   template File.join(node['cassandra']['conf_dir'], f) do
     source "#{f}.erb"
     owner node['cassandra']['user']
     group node['cassandra']['user']
-    mode  0644
+    mode 0644
   end
 end
 
@@ -108,26 +103,24 @@ template File.join(node['cassandra']['bin_dir'], 'cassandra-cli') do
   source 'cassandra-cli.erb'
   owner node['cassandra']['user']
   group node['cassandra']['user']
-  mode  0755
+  mode 0755
 end
-
 
 # 5. Symlink
 %w(cassandra cassandra-cli cqlsh debug-cql json2sstable nodetool sstable2json sstablekeys sstableloader sstablescrub sstablesplit sstableupgrade).each do |f|
   link "/usr/local/bin/#{f}" do
     owner node['cassandra']['user']
     group node['cassandra']['user']
-    to    "#{node['cassandra']['installation_dir']}/bin/#{f}"
-    not_if  "test -L /usr/local/bin/#{f}"
+    to "#{node['cassandra']['installation_dir']}/bin/#{f}"
+    not_if "test -L /usr/local/bin/#{f}"
   end
 end
-
 
 # 6. Know Your Limits
 template "/etc/security/limits.d/#{node['cassandra']['user']}.conf" do
   source 'cassandra-limits.conf.erb'
   owner node['cassandra']['user']
-  mode  0644
+  mode 0644
 end
 
 ruby_block 'make sure pam_limits.so is required' do
@@ -142,11 +135,11 @@ end
 template '/etc/init.d/cassandra' do
   source 'cassandra.init.erb'
   owner 'root'
-  mode  0755
+  mode 0755
 end
 
 service 'cassandra' do
-  supports :start => true, :stop => true, :restart => true
+  supports start: true, stop: true, restart: true
 
   if node['cassandra']['service']['enabled']
     action [:enable, :stop]
