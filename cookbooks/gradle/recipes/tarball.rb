@@ -23,30 +23,32 @@ package %w(
   unzip
 )
 
-tmp = File.join(
+zip_dest = File.join(
   Chef::Config[:file_cache_path],
   "gradle-#{node['gradle']['version']}-bin.zip"
 )
 
-tarball_dir = File.join(
+unzipped_dir = File.join(
   Chef::Config[:file_cache_path],
   "gradle-#{node['gradle']['version']}"
 )
 
-remote_file tmp do
+remote_file zip_dest do
   source node['gradle']['tarball']['url']
 
-  not_if { File.exist?("#{node['gradle']['installation_dir']}/bin/gradle") }
+  not_if do
+    File.exist?("#{node['gradle']['installation_dir']}/bin/gradle")
+  end
 end
 
-bash "extract #{tmp}, move it to #{node['gradle']['installation_dir']}" do
+bash "extract #{zip_dest} to #{node['gradle']['installation_dir']}" do
   user 'root'
   cwd '/tmp'
 
   code <<-EOS
-    unzip #{tmp}
+    unzip #{zip_dest}
     rm -rf #{node['gradle']['installation_dir']}
-    mv --force #{tarball_dir} #{node['gradle']['installation_dir']}
+    mv --force #{unzipped_dir} #{node['gradle']['installation_dir']}
   EOS
 
   creates "#{node['gradle']['installation_dir']}/bin/gradle"
