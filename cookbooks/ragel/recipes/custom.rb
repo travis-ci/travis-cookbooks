@@ -29,7 +29,7 @@ when 'debian', 'ubuntu'
           'ragel_6.7-1_amd64.deb'
         else
           'ragel_6.7-1_i386.deb'
-            end
+        end
 
   path = File.join(Chef::Config[:file_cache_path], pkg)
 

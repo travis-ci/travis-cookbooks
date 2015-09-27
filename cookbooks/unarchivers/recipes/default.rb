@@ -1,7 +1,6 @@
-#
 # Cookbook Name:: unarchivers
 # Recipe:: default
-# Copyright 2012-2013, Travis CI Development Team <contact@travis-ci.org>
+# Copyright 2012-2015, Travis CI Development Team <contact@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,11 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package_names = case node.platform
-                when 'ubuntu', 'debian' then
-                  %w(gzip bzip2 zip unzip libbz2-dev)
-                else
-                  []
-       end # case
-
-package package_names unless package_names.empty?
+package %w(
+  bzip2
+  gzip
+  libbz2-dev
+  unzip
+  zip
+)
