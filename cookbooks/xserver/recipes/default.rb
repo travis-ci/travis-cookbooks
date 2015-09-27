@@ -22,8 +22,8 @@
 # THE SOFTWARE.
 
 list = case node.platform
-when 'ubuntu', 'debian' then
-  %w(xserver-xorg-core xvfb)
+       when 'ubuntu', 'debian' then
+         %w(xserver-xorg-core xvfb)
 end # case
 
 list.each { |pkg| package(pkg) { action :install } }

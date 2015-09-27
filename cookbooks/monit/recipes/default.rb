@@ -27,7 +27,7 @@ template '/etc/monit/monitrc' do
   group 'root'
   mode '0600'
   variables monit: node['monit']
-  notifies :run, 'execute[monit-reload]')
+  notifies :run, 'execute[monit-reload]'
 end
 
 if node['monit']['checks']['enabled'].any?
@@ -38,7 +38,7 @@ if node['monit']['checks']['enabled'].any?
       group 'root'
       mode '0600'
       variables alerts: node['monit']['alerts']
-      notifies :run, 'execute[monit-reload]')
+      notifies :run, 'execute[monit-reload]'
     end
   end
 
@@ -50,7 +50,7 @@ if node['monit']['checks']['enabled'].any?
       owner 'root'
       group 'root'
       variables data: data
-      notifies :run, 'execute[monit-reload]')
+      notifies :run, 'execute[monit-reload]'
     end
   end
 end

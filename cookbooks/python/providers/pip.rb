@@ -38,9 +38,7 @@ action :install do
   if install_version
     Chef::Log.info("Installing #{@new_resource} version #{install_version}")
     status = install_package(@new_resource.package_name, install_version)
-    if status
-      @new_resource.updated_by_last_action(true)
-    end
+    @new_resource.updated_by_last_action(true) if status
   end
 end
 
@@ -49,9 +47,7 @@ action :upgrade do
     orig_version = @current_resource.version || 'uninstalled'
     Chef::Log.info("Upgrading #{@new_resource} version from #{orig_version} to #{candidate_version}")
     status = upgrade_package(@new_resource.package_name, candidate_version)
-    if status
-      @new_resource.updated_by_last_action(true)
-    end
+    @new_resource.updated_by_last_action(true) if status
   end
 end
 
@@ -60,7 +56,6 @@ action :remove do
     Chef::Log.info("Removing #{@new_resource}")
     remove_package(@current_resource.package_name, @new_resource.version)
     @new_resource.updated_by_last_action(true)
-  else
   end
 end
 
@@ -139,7 +134,7 @@ def expand_virtualenv(virtualenv)
   virtualenv && " --environment=#{virtualenv}"
 end
 
-# TODO remove when provider is moved into Chef core
+# TODO: remove when provider is moved into Chef core
 # this allows PythonPip to work with Chef::Resource::Package
 def can_haz_virtualenv(nr)
   nr.respond_to?('virtualenv') ? nr.virtualenv : nil

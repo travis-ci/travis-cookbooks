@@ -39,7 +39,7 @@ end
 package 'haskell-platform' do
   action :install
 
-  notifies :run, 'script[initialize cabal]')
+  notifies :run, 'script[initialize cabal]'
 end
 
 cookbook_file '/etc/profile.d/cabal.sh' do

@@ -21,9 +21,9 @@ default['travis_sbt_extras']['config_dir'] = '/etc/sbt'
 #
 
 default['travis_sbt_extras']['sbtopts']['filename'] = 'sbtopts'
-default['travis_sbt_extras']['sbtopts']['verbose'] = true      # in Travis CI: helpful to show how sbt-extras is working
-default['travis_sbt_extras']['sbtopts']['batch'] = true      # in Travis CI: never prompt!
-default['travis_sbt_extras']['sbtopts']['no-colors'] = false     # As for other languages, colored output looks nice in Travis CI Web UI, but
+default['travis_sbt_extras']['sbtopts']['verbose'] = true # in Travis CI: helpful to show how sbt-extras is working
+default['travis_sbt_extras']['sbtopts']['batch'] = true # in Travis CI: never prompt!
+default['travis_sbt_extras']['sbtopts']['no-colors'] = false # As for other languages, colored output looks nice in Travis CI Web UI, but
 # some users may prefer to disable colors for easier log parsing
 # (see for instance https://github.com/travis-ci/travis-ci/issues/1230)
 
@@ -32,7 +32,7 @@ default['travis_sbt_extras']['jvmopts']['filename'] = 'jvmopts'
 # default['travis_sbt_extras']['jvmopts']['total_memory'] = 3072      # in megabytes, total memory available (used to define options like -Xmx, -Xms and so on)
 # default['travis_sbt_extras']['jvmopts']['thread_stack_size'] = 6         # in megabytes, used to defined -Xss option
 
-default['travis_sbt_extras']['system_wide_defaults'] = false     # if enabled, SBT_OPTS and JVM_OPTS will be exported via /etc/profile.d mechanism
+default['travis_sbt_extras']['system_wide_defaults'] = false # if enabled, SBT_OPTS and JVM_OPTS will be exported via /etc/profile.d mechanism
 # in Travis CI: JVM_OPTS can conflict with other JVM software.
 #               These variables are thus managed by travis-build.
 #               (see travis-ci/travis-cookbooks#234)

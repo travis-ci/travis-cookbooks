@@ -56,7 +56,7 @@ node['haskell']['multi']['ghcs'].each do |ghc_version|
     action :create
   end
 
-  remote_file ghc_local_tarball  do
+  remote_file ghc_local_tarball do
     source "http://www.haskell.org/ghc/dist/#{ghc_version}/#{ghc_tarball_name}"
     not_if "test -f #{ghc_local_tarball}"
   end

@@ -28,6 +28,4 @@ python_pkgs = value_for_platform(
   'default' => ['python', 'python-dev', 'python3', 'python3-dev']
 )
 
-unless python_pkgs.empty?
-  package python_pkgs
-end
+package python_pkgs unless python_pkgs.empty?

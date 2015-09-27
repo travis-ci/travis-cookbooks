@@ -7,7 +7,7 @@
 
 include_recipe 'kerl::binary'
 
-env  = {
+env = {
   'HOME'               => "/home/#{node.travis_build_environment.user}",
   'USER'               => node.travis_build_environment.user
 }
