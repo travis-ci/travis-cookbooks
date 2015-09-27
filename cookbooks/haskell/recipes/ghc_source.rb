@@ -1,7 +1,6 @@
-#
 # Cookbook Name:: haskell
-# Recipe:: ghc
-# Copyright 2012-2013, Travis CI Development Team <contact@travis-ci.org>
+# Recipe:: ghc_source
+# Copyright 2012-2015, Travis CI Development Team <contact@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,43 +20,33 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-%w(libgmp3-dev freeglut3 freeglut3-dev).each do |pkg|
-  package(pkg) do
-    action :install
-  end
+package %w(
+  freeglut3
+  freeglut3-dev
+  libgmp3-dev
+  libgmp3c2
+)
+
+link '/usr/lib/libgmp.so.3' do
+  to '/usr/lib/libgmp.so.3.5.2'
+
+  not_if 'test -L /usr/lib/libgmp.so.3'
 end
 
-case [node.platform, node.platform_version]
-when ["ubuntu", "11.10"] then
-  link "/usr/lib/libgmp.so.3" do
-    to "/usr/lib/libgmp.so"
+local_tarball = File.join(
+  Chef::Config[:file_cache_path],
+  "ghc-#{node.ghc.version}-#{node.ghc.arch}-unknown-linux.tar.bz2"
+)
 
-    not_if "test -L /usr/lib/libgmp.so.3"
-  end
-when ["ubuntu", "12.04"] then
-  package "libgmp3c2"
-
-  link "/usr/lib/libgmp.so.3" do
-    to "/usr/lib/libgmp.so.3.5.2"
-
-    not_if "test -L /usr/lib/libgmp.so.3"
-  end
-end
-
-
-local_tarball = File.join(Chef::Config[:file_cache_path], "ghc-#{node.ghc.version}-#{node.ghc.arch}-unknown-linux.tar.bz2")
-
-remote_file(local_tarball) do
+remote_file local_tarball do
   source "http://www.haskell.org/ghc/dist/#{node.ghc.version}/ghc-#{node.ghc.version}-#{node.ghc.arch}-unknown-linux.tar.bz2"
 
   not_if "test -f #{local_tarball}"
 end
 
-# 2. Extract it
-# 3. configure, make install
-bash "build and install GHC" do
-  user "root"
-  cwd  "/tmp"
+bash 'build and install GHC' do
+  user 'root'
+  cwd '/tmp'
 
   code <<-EOS
     tar jfx #{local_tarball}
@@ -70,6 +59,6 @@ bash "build and install GHC" do
     rm #{local_tarball}
   EOS
 
-  creates "/usr/local/bin/ghc"
+  creates '/usr/local/bin/ghc'
   not_if "ghc --version | grep #{node.ghc.version}"
 end

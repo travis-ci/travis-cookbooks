@@ -9,11 +9,11 @@ phpenv_path   = "#{node['travis_build_environment']['home']}/.phpenv"
 
 node['travis_php']['multi']['versions'].each do |php_version|
   travis_phpbuild_build "#{phpenv_path}/versions" do
-    version   php_version
-    owner     node['travis_build_environment']['user']
-    group     node['travis_build_environment']['group']
+    version php_version
+    owner node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
 
-    action  :create
+    action :create
   end
 
   link "#{phpenv_path}/versions/#{php_version}/bin/php-fpm" do

@@ -1,7 +1,5 @@
 default['travis_java']['arch'] = 'i386'
-if kernel['machine'] =~ /x86_64/
-  default['travis_java']['arch'] = 'amd64'
-end
+default['travis_java']['arch'] = 'amd64' if kernel['machine'] =~ /x86_64/
 default['travis_java']['jvm_base_dir'] = '/usr/lib/jvm'
 default['travis_java']['default_version'] = 'oraclejdk7'
 default['travis_java']['alternate_versions'] = []

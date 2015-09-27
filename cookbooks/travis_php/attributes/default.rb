@@ -26,7 +26,7 @@ default['travis_php']['multi']['aliases'] = {
 }
 
 default['travis_php']['multi']['extensions'] = {
-  'apc'       => {
+  'apc' => {
     'versions' => default['travis_php']['multi']['versions'].select { |version| version.start_with?('5.4') }
   },
   'memcached' => {
@@ -37,7 +37,7 @@ default['travis_php']['multi']['extensions'] = {
       cd libmemcached-1.0.18
       ./configure && make && make install
     EOF
-    'script'   => <<-EOF,
+    'script' => <<-EOF,
       pecl download memcached-2.2.0
       tar zxvf memcached*.tgz && cd memcached*
       make clean

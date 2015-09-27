@@ -1,3 +1,3 @@
-package "scons" do
+package 'scons' do
   action :upgrade
 end

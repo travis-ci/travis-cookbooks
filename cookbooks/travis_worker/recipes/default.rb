@@ -7,12 +7,12 @@ users = if Chef::Config[:solo]
           search(:users)
         end
 
-execute "monit-reload" do
+execute 'monit-reload' do
   action :nothing
-  command "monit reload"
+  command 'monit reload'
 end
 
-service "travis-worker" do
+service 'travis-worker' do
   action :nothing
 end
 
@@ -28,22 +28,22 @@ git node['travis']['worker']['home'] do
   repository node['travis']['worker']['repository']
   reference node['travis']['worker']['ref']
   action :sync
-  user "travis"
-  group "travis"
+  user 'travis'
+  group 'travis'
 end
 
 directory "#{node['travis']['worker']['home']}/log" do
   action :create
-  owner "travis"
-  group "travis"
-  mode "0755"
+  owner 'travis'
+  group 'travis'
+  mode '0755'
 end
 
 directory "#{node['travis']['worker']['home']}/.VirtualBox" do
   action :create
-  owner "travis"
-  group "travis"
-  mode "0755"
+  owner 'travis'
+  group 'travis'
+  mode '0755'
 end
 
 home = if node['etc']['passwd']['travis']
@@ -59,7 +59,7 @@ link "#{node['travis']['worker']['home']}/.VirtualBox/VirtualBox.xml" do
   owner 'travis'
   group 'travis'
   not_if do
-    File.exists?("#{node['travis']['worker']['home']}/.VirtualBox/VirtualBox.xml")
+    File.exist?("#{node['travis']['worker']['home']}/.VirtualBox/VirtualBox.xml")
   end
 end
 
@@ -86,12 +86,12 @@ bash 'download VirtualBox images' do
   if node['travis']['worker']['box']
     code "#{node['jruby']['bin']} ./bin/thor travis:vms:download #{node['travis']['worker']['box']} 2>/dev/null"
     not_if do
-      File.exists?("#{node['travis']['worker']['home']}/boxes/travis-#{node['travis']['worker']['env']}-pro.box")
+      File.exist?("#{node['travis']['worker']['home']}/boxes/travis-#{node['travis']['worker']['env']}-pro.box")
     end
   else
     code "#{node['jruby']['bin']} ./bin/thor travis:vms:download 2>/dev/null"
     not_if do
-      File.exists?("#{node['travis']['worker']['home']}/boxes/travis-#{node['travis']['worker']['env']}.box")
+      File.exist?("#{node['travis']['worker']['home']}/boxes/travis-#{node['travis']['worker']['env']}.box")
     end
   end
 
@@ -107,10 +107,10 @@ bash 'copy box image' do
   group 'travis'
   cwd node['travis']['worker']['home']
   not_if do
-    File.exists?("#{node['travis']['worker']['home']}/boxes/travis-#{node['travis']['worker']['env']}.box")
+    File.exist?("#{node['travis']['worker']['home']}/boxes/travis-#{node['travis']['worker']['env']}.box")
   end
   only_if do
-    File.exists?("#{node['travis']['worker']['home']}/boxes/travis-#{node['travis']['worker']['env']}-pro.box")
+    File.exist?("#{node['travis']['worker']['home']}/boxes/travis-#{node['travis']['worker']['env']}-pro.box")
   end
 end
 
@@ -121,7 +121,7 @@ bash 'create VirtualBox images' do
   cwd node['travis']['worker']['home']
   environment('HOME' => home)
   not_if do
-    File.exists?("#{node['travis']['worker']['home']}/../VirtualBox VMs/travis-#{node['travis']['worker']['env']}-1")
+    File.exist?("#{node['travis']['worker']['home']}/../VirtualBox VMs/travis-#{node['travis']['worker']['env']}-1")
   end
 end
 
@@ -142,5 +142,5 @@ template '/etc/monit/conf.d/travis-worker.monitrc' do
   variables(
     home: node['travis']['worker']['home']
   )
-  notifies :run, resources(:execute => 'monit-reload')
+  notifies :run, 'execute[monit-reload]'
 end

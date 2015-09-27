@@ -1,6 +1,6 @@
 virtualenv_root = "#{node['travis_build_environment']['home']}/virtualenv"
 
-include_recipe "python::virtualenv"
+include_recipe 'python::virtualenv'
 
 package %w(
   build-essential
@@ -55,7 +55,7 @@ build_environment = {
     --param=ssp-buffer-size=4
     -Wformat
     -Werror=format-security
-  ).join(' '),
+  ).join(' ')
 }
 
 node['python']['pyenv']['pythons'].each do |py|
@@ -79,14 +79,14 @@ node['python']['pyenv']['pythons'].each do |py|
     code "tar -xjf #{downloaded_tarball} --directory /"
     creates "/opt/python/#{py}"
     environment build_environment
-    only_if { File.exists?(downloaded_tarball) }
+    only_if { File.exist?(downloaded_tarball) }
   end
 
   bash "build #{py}" do
     code "python-build #{py} /opt/python/#{py}"
     creates "/opt/python/#{py}"
     environment build_environment
-    not_if { File.exists?("/opt/python/#{py}") }
+    not_if { File.exist?("/opt/python/#{py}") }
   end
 
   link "/opt/python/#{py}/bin/#{pyname}" do
@@ -148,7 +148,7 @@ template '/etc/profile.d/pyenv.sh' do
   mode 0644
   variables(
     bindirs: bindirs,
-    build_environment: build_environment,
+    build_environment: build_environment
   )
   backup false
 end

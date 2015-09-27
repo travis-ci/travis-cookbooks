@@ -34,7 +34,7 @@ end
 
 bash "extract #{tmp}, move it to /usr/local/phantomjs" do
   user 'root'
-  cwd  '/tmp'
+  cwd '/tmp'
 
   code <<-EOS
     rm -rf /usr/local/phantomjs

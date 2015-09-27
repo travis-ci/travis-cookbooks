@@ -22,6 +22,6 @@
 # THE SOFTWARE.
 
 case node[:platform]
-when "debian", "ubuntu"
-  package "libicu-dev"
+when 'debian', 'ubuntu'
+  package 'libicu-dev'
 end

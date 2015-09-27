@@ -19,22 +19,22 @@
 
 package 'openssh-server'
 
-service "ssh" do
+service 'ssh' do
   action [:start, :enable]
 end
 
-cookbook_file "/etc/ssh/sshd_config" do
-  owner "root"
-  group "root"
+cookbook_file '/etc/ssh/sshd_config' do
+  owner 'root'
+  group 'root'
   mode 0644
 end
 
 # installs a fix that makes ssh wait for the network to
 # start up (see http://blog.roberthallam.org/2010/06/sshd-not-running-at-startup/). MK.
-cookbook_file "/etc/init.d/ssh" do
-  owner "root"
-  group "root"
-  mode  0755
+cookbook_file '/etc/init.d/ssh' do
+  owner 'root'
+  group 'root'
+  mode 0755
 
-  source "ssh_init.sh"
+  source 'ssh_init.sh'
 end

@@ -36,7 +36,6 @@ remote_file node['travis_kerl']['path'] do
   mode 0755
 end
 
-
 home = "/home/#{node['travis_build_environment']['user']}"
 base_dir = "#{home}/.kerl"
 env = {
@@ -49,7 +48,7 @@ env = {
 
 case [node['platform'], node['platform_version']]
 when ['ubuntu', '11.04'] then
-    # fixes compilation with Ubuntu 11.04 zlib. MK.
+  # fixes compilation with Ubuntu 11.04 zlib. MK.
   env['KERL_CONFIGURE_OPTIONS'] = '--enable-dynamic-ssl-lib --enable-hipe'
 end
 
@@ -58,8 +57,8 @@ end
 execute 'erlang.releases.update' do
   command "#{node['travis_kerl']['path']} update releases"
 
-  user    node['travis_build_environment']['user']
-  group   node['travis_build_environment']['group']
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
 
   environment(env)
 
@@ -82,7 +81,6 @@ cookbook_file "#{node['travis_build_environment']['home']}/.build_plt" do
 
   source 'build_plt'
 end
-
 
 node['travis_kerl']['releases'].each do |rel|
   local_archive = File.join(Chef::Config[:file_cache_path], "erlang-#{rel}-x86_64.tar.bz2")

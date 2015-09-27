@@ -30,11 +30,11 @@ node['iojs']['versions'].each do |version|
 
   bash "installing io.js version #{version}" do
     creates iojs_version_dir
-    user  node['travis_build_environment']['user']
+    user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    cwd   node['travis_build_environment']['home']
+    cwd node['travis_build_environment']['home']
     environment('HOME' => "#{node['travis_build_environment']['home']}")
-    code  "#{nvm} install iojs-v#{version}"
+    code "#{nvm} install iojs-v#{version}"
   end
 
   bash 'update npm to the latest version' do
@@ -44,9 +44,9 @@ node['iojs']['versions'].each do |version|
   node['iojs']['default_modules'].each do |mod|
     bash "install #{mod} for io.js version #{version}" do
       creates "#{iojs_version_dir}/lib/node_modules/#{mod}"
-      user  node['travis_build_environment']['user']
+      user node['travis_build_environment']['user']
       group node['travis_build_environment']['group']
-      cwd   node['travis_build_environment']['home']
+      cwd node['travis_build_environment']['home']
       environment('HOME' => "#{node['travis_build_environment']['home']}")
       code "#{nvm} use iojs-v#{version}; npm install -g #{mod}"
     end

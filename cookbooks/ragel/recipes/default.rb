@@ -22,7 +22,7 @@
 # THE SOFTWARE.
 
 if node[:platform_version].to_f >= 12.04
-  package "ragel"
+  package 'ragel'
 else
-  include_recipe "ragel::custom"
+  include_recipe 'ragel::custom'
 end

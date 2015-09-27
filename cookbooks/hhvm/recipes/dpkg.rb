@@ -8,8 +8,8 @@ package %w(libtcmalloc-minimal0 libboost-thread1.48.0 libunwind7)
 
 remote_file package_path do
   source node['hhvm']['package']['url']
-  owner  node['travis_build_environment']['user']
-  group  node['travis_build_environment']['group']
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
 end
 
 package package_path do

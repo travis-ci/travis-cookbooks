@@ -22,6 +22,6 @@
 # THE SOFTWARE.
 
 case node[:platform]
-when "ubuntu", "debian"
-  package "libgdbm-dev"
+when 'ubuntu', 'debian'
+  package 'libgdbm-dev'
 end

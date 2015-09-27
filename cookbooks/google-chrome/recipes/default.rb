@@ -10,7 +10,7 @@ remote_file chrome_file do
   source node['google-chrome']['pkg']['url']
 end
 
-dpkg_package "google-chrome-stable" do
+dpkg_package 'google-chrome-stable' do
   source chrome_file
   action :install
 end

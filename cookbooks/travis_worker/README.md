@@ -1,1 +1,1 @@
-# travis_worker cookbook
+# `travis_worker` cookbook

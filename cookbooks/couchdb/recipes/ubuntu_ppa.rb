@@ -15,12 +15,12 @@
 
 # https://launchpad.net/~couchdb/+archive/stable
 
-apt_repository "couchdb-ppa" do
-  uri          "http://ppa.launchpad.net/couchdb/stable/ubuntu"
+apt_repository 'couchdb-ppa' do
+  uri 'http://ppa.launchpad.net/couchdb/stable/ubuntu'
   distribution node['lsb']['codename']
-  components   ["main"]
-  key          "C17EAB57"
-  keyserver    "keyserver.ubuntu.com"
+  components ['main']
+  key 'C17EAB57'
+  keyserver 'keyserver.ubuntu.com'
 
   action :add
 end

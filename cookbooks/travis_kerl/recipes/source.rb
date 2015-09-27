@@ -36,7 +36,6 @@ remote_file node['travis_kerl']['path'] do
   mode 0755
 end
 
-
 home = "/home/#{node['travis_build_environment']['user']}"
 env = {
   'HOME' => home,
@@ -48,7 +47,7 @@ env = {
 
 case [node[:platform], node[:platform_version]]
 when ['ubuntu', '11.04'] then
-    # fixes compilation with Ubuntu 11.04 zlib. MK.
+  # fixes compilation with Ubuntu 11.04 zlib. MK.
   env['KERL_CONFIGURE_OPTIONS'] = '--enable-dynamic-ssl-lib --enable-hipe'
 end
 
@@ -82,8 +81,7 @@ cookbook_file "#{node['travis_build_environment']['home']}/.build_plt" do
   source 'build_plt'
 end
 
-
-node['travis_kerl']['releases'].each do |rel, build|
+node['travis_kerl']['releases'].each do |rel, _build|
   execute "build Erlang #{rel}" do
     command "#{node['travis_kerl']['path']} build #{rel} #{rel}"
 
@@ -99,7 +97,6 @@ node['travis_kerl']['releases'].each do |rel, build|
       environment: env
     )
   end
-
 
   execute "install Erlang #{rel}" do
     # cleanup is available starting with https://github.com/spawngrid/kerl/pull/28

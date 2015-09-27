@@ -4,10 +4,10 @@
 package 'apt-transport-https'
 
 apt_repository 'basho-riak' do
-  uri          'https://packagecloud.io/basho/riak/ubuntu/'
-  distribution node["lsb"]["codename"]
-  components   ["main"]
-  key          'https://packagecloud.io/gpg.key'
+  uri 'https://packagecloud.io/basho/riak/ubuntu/'
+  distribution node['lsb']['codename']
+  components ['main']
+  key 'https://packagecloud.io/gpg.key'
 
   action :add
 end
@@ -19,17 +19,17 @@ package 'riak'
 # - Don't enable riak service at server boot time
 #
 service 'riak' do
-  supports :status => true, :restart => true
+  supports status: true, restart: true
   action [:disable, :stop]
 end
 
-template "/etc/riak/riak.conf" do
-  source "riak.conf.erb"
-  owner  'riak'
-  group  'riak'
-  mode   0644
+template '/etc/riak/riak.conf' do
+  source 'riak.conf.erb'
+  owner 'riak'
+  group 'riak'
+  mode 0644
 end
 
-execute "remove Bashio APT package source" do
-  command "rm -f /etc/apt/sources.list.d/basho-riak-source.list"
+execute 'remove Bashio APT package source' do
+  command 'rm -f /etc/apt/sources.list.d/basho-riak-source.list'
 end

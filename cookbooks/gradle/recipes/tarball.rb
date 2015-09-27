@@ -28,12 +28,12 @@ tarball_dir = File.join(Chef::Config[:file_cache_path], "gradle-#{node.gradle.ve
 remote_file tmp do
   source node.gradle.tarball.url
 
-  not_if "which gradle"
+  not_if 'which gradle'
 end
 
 bash "extract #{tmp}, move it to #{node.gradle.installation_dir}" do
-  user "root"
-  cwd  "/tmp"
+  user 'root'
+  cwd '/tmp'
 
   code <<-EOS
     unzip #{tmp}
@@ -44,11 +44,10 @@ bash "extract #{tmp}, move it to #{node.gradle.installation_dir}" do
   creates "#{node.gradle.installation_dir}/bin/gradle"
 end
 
-
-cookbook_file "/etc/profile.d/gradle.sh" do
-  owner "root"
-  group "root"
+cookbook_file '/etc/profile.d/gradle.sh' do
+  owner 'root'
+  group 'root'
   mode 0644
 
-  source "etc/profile.d/gradle.sh"
+  source 'etc/profile.d/gradle.sh'
 end

@@ -59,7 +59,7 @@ end
 install_env = {
   'GIMME_ENV_PREFIX' => "#{node['gimme']['install_user_home']}/.gimme/envs",
   'GIMME_VERSION_PREFIX' => "#{node['gimme']['install_user_home']}/.gimme/versions",
-  'HOME' => node['gimme']['install_user_home'],
+  'HOME' => node['gimme']['install_user_home']
 }
 
 install_env['GIMME_DEBUG'] = '1' if node['gimme']['debug']
