@@ -54,6 +54,9 @@ private
 def exists?
   target_path = "#{@new_resource.path}/#{@new_resource.version}"
 
-  ::File.exist?(target_path) && ::File.directory?(target_path) \
-    && ::File.exist?("#{target_path}/bin/php")
+  (
+    ::File.exist?(target_path) &&
+    ::File.directory?(target_path) &&
+    ::File.exist?("#{target_path}/bin/php")
+  )
 end

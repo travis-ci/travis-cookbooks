@@ -35,7 +35,7 @@ node['sudo']['users'].each do |user|
     content <<-EOF.gsub(/^\s+> /, '')
       > # Managed by Chef on #{node.name}, thanks! <3 <3 <3
       > # User #{user['name'].inspect} may gain root priveleges, woop!
-      > #{user['name']} ALL=(#{user['target_user'] || 'ALL' }) #{user['nopassword'] ? 'NOPASSWD: ' : ''} #{user['command'] || 'ALL'}
+      > #{user['name']} ALL=(#{user['target_user'] || 'ALL'}) #{user['nopassword'] ? 'NOPASSWD: ' : ''} #{user['command'] || 'ALL'}
     EOF
     mode 0440
     owner 'root'

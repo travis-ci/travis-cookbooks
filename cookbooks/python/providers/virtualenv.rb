@@ -58,8 +58,11 @@ end
 private
 
 def exists?
-  ::File.exist?(@current_resource.path) && ::File.directory?(@current_resource.path) \
-    && ::File.exist?("#{@current_resource.path}/bin/activate")
+  (
+    ::File.exist?(@current_resource.path) &&
+    ::File.directory?(@current_resource.path) &&
+    ::File.exist?("#{@current_resource.path}/bin/activate")
+  )
 end
 
 def maybe_system_site_packages
