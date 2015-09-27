@@ -6,7 +6,7 @@
 
 # Enable verbose runner
 #
-<% if node['sbt-extras']['sbtopts']['verbose'] %>
+<% if node['travis_sbt_extras']['sbtopts']['verbose'] %>
 -v
 <% else %>
 #-v
@@ -14,7 +14,7 @@
 
 # Disable interactive mode
 #
-<% if node['sbt-extras']['sbtopts']['batch'] %>
+<% if node['travis_sbt_extras']['sbtopts']['batch'] %>
 -batch
 <% else %>
 #-batch
@@ -22,7 +22,7 @@
 
 # Disable ANSI color codes
 #
-<% if node['sbt-extras']['sbtopts']['no-colors'] %>
+<% if node['travis_sbt_extras']['sbtopts']['no-colors'] %>
 -no-colors
 <% else %>
 #-no-colors
