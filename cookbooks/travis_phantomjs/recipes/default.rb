@@ -22,7 +22,7 @@
 
 package 'libfontconfig1'
 
-ark "phantom-#{node['travis_phantomjs']['version']}" do
+ark 'phantomjs' do
   url node['travis_phantomjs']['tarball']['url']
   version node['travis_phantomjs']['version']
   checksum node['travis_phantomjs']['tarball']['checksum']
