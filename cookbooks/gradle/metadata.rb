@@ -4,3 +4,4 @@ license 'Apache v2.0'
 description 'Installs/Configures gradle'
 
 depends 'ark'
+depends 'travis_groovy'
