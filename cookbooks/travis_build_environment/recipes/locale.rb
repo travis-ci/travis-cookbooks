@@ -20,15 +20,23 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+ruby_block 'reconfigure-locale' do
+  block do
+    Travis::BuildEnvironment::Locale.generate_locales(
+      Array(node['travis_build_environment']['language_codes']),
+      node['travis_build_environment']['i18n_supported_file']
+    )
+  end
+end
+
+execute 'dpkg-reconfigure locales' do
+  action :nothing
+end
+
 cookbook_file '/etc/default/locale' do
   source 'etc/default/locale.sh'
   owner 'root'
   group 'root'
   mode 0644
-  notifies :run, 'execute[reconfigure-locale]', :immediately
-end
-
-execute 'reconfigure-locale' do
-  command 'locale-gen en_US.UTF-8 && dpkg-reconfigure locales'
-  action :nothing
+  notifies :run, 'execute[dpkg-reconfigure locales]', :immediately
 end

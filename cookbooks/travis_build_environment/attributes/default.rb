@@ -10,7 +10,19 @@ default['travis_build_environment']['installation_suffix'] = 'org'
 default['travis_build_environment']['disable_apparmor'] = false
 default['travis_build_environment']['apt']['timeout'] = 10
 default['travis_build_environment']['apt']['retries'] = 2
-
+default['travis_build_environment']['i18n_supported_file'] = '/usr/share/i18n/SUPPORTED'
+default['travis_build_environment']['language_codes'] = %w(
+  ar
+  de
+  en
+  es
+  fr
+  ja
+  ms
+  pt
+  ru
+  zh
+)
 default['travis_build_environment']['prerequisite_recipes'] = %w(
   travis_timezone
   sysctl
