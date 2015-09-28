@@ -1,7 +1,6 @@
-#
-# Cookbook Name:: phantomjs
+# Cookbook Name:: travis_phantomjs
 # Recipe:: default
-# Copyright 2012-2013, Travis CI Development Team <contact@travis-ci.org>
+# Copyright 2012-2015, Travis CI Development Team <contact@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -23,4 +22,18 @@
 
 package 'libfontconfig1'
 
-include_recipe 'phantomjs::tarball'
+ark "phantom-#{node['travis_phantomjs']['version']}" do
+  url node['travis_phantomjs']['tarball']['url']
+  version node['travis_phantomjs']['version']
+  checksum node['travis_phantomjs']['tarball']['checksum']
+  path '/usr/local/phantomjs-1.9.8'
+  has_binaries %w(bin/phantomjs)
+  owner 'root'
+end
+
+cookbook_file '/etc/profile.d/phantomjs.sh' do
+  source 'etc/profile.d/phantomjs.sh'
+  owner 'root'
+  group 'root'
+  mode 0644
+end
