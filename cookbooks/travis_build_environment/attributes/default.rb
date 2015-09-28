@@ -10,9 +10,36 @@ default['travis_build_environment']['installation_suffix'] = 'org'
 default['travis_build_environment']['disable_apparmor'] = false
 default['travis_build_environment']['apt']['timeout'] = 10
 default['travis_build_environment']['apt']['retries'] = 2
-
+default['travis_build_environment']['i18n_supported_file'] = '/usr/share/i18n/SUPPORTED'
+default['travis_build_environment']['language_codes'] = %w(
+  ar_AE
+  ar_EG
+  de_AT
+  de_BE
+  de_CH
+  de_DE
+  en_AU
+  en_GB
+  en_US
+  es_ES
+  es_MX
+  fr_BE
+  fr_CH
+  fr_FR
+  he_IL
+  hi_IN
+  ja_JP
+  ko_KR
+  ms_MY
+  pt_BR
+  ru_RU
+  ru_UA
+  uk_UA
+  zh_CN
+  zh_TW
+).map { |l| "#{l}.UTF-8" }
 default['travis_build_environment']['prerequisite_recipes'] = %w(
-  timezone
+  travis_timezone
   sysctl
   openssh
   unarchivers
@@ -26,4 +53,4 @@ if kernel['machine'] =~ /x86_64/
   default['travis_build_environment']['arch'] = 'amd64'
 end
 
-default['java']['default_version'] = ''
+default['travis_java']['default_version'] = ''

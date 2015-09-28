@@ -1,5 +1,4 @@
-#
-# Cookbook Name:: git
+# Cookbook Name:: travis_git
 # Recipe:: default
 #
 # Copyright 2011-2015, Travis CI Development Team <contact@travis-ci.org>
@@ -16,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'git::ppa'
+include_recipe 'travis_git::ppa'
 
 file "#{node['travis_build_environment']['home']}/.gitconfig" do
   content "[core]\n  pager =\n"

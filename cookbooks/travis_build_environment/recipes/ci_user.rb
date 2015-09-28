@@ -36,25 +36,25 @@ end
   { name: node['travis_build_environment']['home'] },
   { name: "#{node['travis_build_environment']['home']}/.ssh" },
   { name: "#{node['travis_build_environment']['home']}/builds", perms: 0755 },
-  { name: "#{node['travis_build_environment']['home']}/.m2" },
+  { name: "#{node['travis_build_environment']['home']}/.m2" }
 ].each do |entry|
   directory entry[:name] do
     owner node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    mode (entry[:perms] || 0750)
+    mode(entry[:perms] || 0750)
   end
 end
 
 [
   { src: 'dot_bashrc.sh.erb', dest: '.bashrc', mode: 0640 },
   { src: 'dot_bash_profile.sh.erb', dest: '.bash_profile', mode: 0640 },
-  { src: 'ci_environment_metadata.yml.erb', dest: '.travis_ci_environment.yml', mode: 0640 },
+  { src: 'ci_environment_metadata.yml.erb', dest: '.travis_ci_environment.yml', mode: 0640 }
 ].each do |entry|
   template "#{node['travis_build_environment']['home']}/#{entry[:dest]}" do
     source "ci_user/#{entry[:src]}"
     owner node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    mode (entry[:mode] || 0640)
+    mode(entry[:mode] || 0640)
   end
 end
 
@@ -68,7 +68,7 @@ end
     source "ci_user/#{entry[:src]}"
     owner node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    mode (node[:mode] || 0400)
+    mode(entry[:mode] || 0400)
   end
 end
 

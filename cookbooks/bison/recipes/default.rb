@@ -20,12 +20,9 @@
 # on Ubuntu 12.04. MK.
 #
 
-require 'tmpdir'
-
-tmp = Dir.tmpdir
 case node['platform']
 when 'debian', 'ubuntu'
-  path = File.join(tmp, node['bison']['filename'])
+  path = File.join(Chef::Config[:file_cache_path], node['bison']['filename'])
 
   remote_file(path) do
     source node['bison']['url']
@@ -39,8 +36,8 @@ when 'debian', 'ubuntu'
   end
 
   package(path) do
-    action   :install
-    source   path
+    action :install
+    source path
     provider Chef::Provider::Package::Dpkg
 
     notifies :delete, "file[#{path}]"

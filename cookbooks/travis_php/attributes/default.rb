@@ -1,11 +1,11 @@
-default['php']['multi']['prerequisite_recipes'] = %w(
+default['travis_php']['multi']['prerequisite_recipes'] = %w(
   bison
   libreadline
-  phpenv
-  phpbuild
+  travis_phpenv
+  travis_phpbuild
 )
 
-default['php']['multi']['postrequisite_recipes'] = %w(
+default['travis_php']['multi']['postrequisite_recipes'] = %w(
   travis_php::extensions
   travis_php::hhvm
   travis_php::hhvm-nightly
@@ -13,21 +13,21 @@ default['php']['multi']['postrequisite_recipes'] = %w(
   composer
 )
 
-default['php']['multi']['versions'] = %w(
+default['travis_php']['multi']['versions'] = %w(
   5.4.45
   5.5.29
   5.6.13
 )
 
-default['php']['multi']['aliases'] = {
+default['travis_php']['multi']['aliases'] = {
   '5.4' => '5.4.45',
   '5.5' => '5.5.29',
   '5.6' => '5.6.13'
 }
 
-default['php']['multi']['extensions'] = {
-  'apc'       => {
-    'versions' => default['php']['multi']['versions'].select { |version| version.start_with?('5.4') }
+default['travis_php']['multi']['extensions'] = {
+  'apc' => {
+    'versions' => default['travis_php']['multi']['versions'].select { |version| version.start_with?('5.4') }
   },
   'memcached' => {
     'before_packages' => %w(libevent-dev libcloog-ppl1),
@@ -37,14 +37,14 @@ default['php']['multi']['extensions'] = {
       cd libmemcached-1.0.18
       ./configure && make && make install
     EOF
-    'script'   => <<-EOF,
+    'script' => <<-EOF,
       pecl download memcached-2.2.0
       tar zxvf memcached*.tgz && cd memcached*
       make clean
       phpize
       ./configure --with-libmemcached-dir=/usr/local && make && make install
     EOF
-    'versions' => default['php']['multi']['versions']
+    'versions' => default['travis_php']['multi']['versions']
   },
   'mongo'     => {},
   'amqp'      => {
@@ -58,7 +58,7 @@ default['php']['multi']['extensions'] = {
     EOF
   },
   'zmq-beta' => {
-    'versions' => default['php']['multi']['versions'],
+    'versions' => default['travis_php']['multi']['versions'],
     'before_recipes'  => %w(zeromq::ppa),
     'before_packages' => %w(libzmq3-dev)
   },
@@ -66,14 +66,14 @@ default['php']['multi']['extensions'] = {
 }
 
 if node['lsb']['codename'] == 'precise'
-  default['php']['multi']['versions'] = %w(
+  default['travis_php']['multi']['versions'] = %w(
     5.3.29
     5.4.45
     5.5.9
     5.5.29
     5.6.13
   )
-  default['php']['multi']['aliases'] = {
+  default['travis_php']['multi']['aliases'] = {
     '5.3' => '5.3.29',
     '5.4' => '5.4.45',
     '5.5' => '5.5.29',

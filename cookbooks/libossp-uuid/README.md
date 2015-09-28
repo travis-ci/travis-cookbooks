@@ -1,0 +1,1 @@
+# libossp-uuid cookbook

@@ -23,39 +23,37 @@
 
 include_recipe 'nodejs::multi'
 
-require "tmpdir"
+nvm = "source #{node['travis_build_environment']['home']}/.nvm/nvm.sh; nvm"
 
-nvm = "source #{node.travis_build_environment.home}/.nvm/nvm.sh; nvm"
-
-node[:iojs][:versions].each do |version|
-  iojs_version_dir = "#{node.travis_build_environment.home}/.nvm/versions/io.js/v#{version}"
+node['iojs']['versions'].each do |version|
+  iojs_version_dir = "#{node['travis_build_environment']['home']}/.nvm/versions/io.js/v#{version}"
 
   bash "installing io.js version #{version}" do
     creates iojs_version_dir
-    user  node.travis_build_environment.user
-    group node.travis_build_environment.group
-    cwd   node.travis_build_environment.home
-    environment({'HOME' => "#{node.travis_build_environment.home}"})
-    code  "#{nvm} install iojs-v#{version}"
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    cwd node['travis_build_environment']['home']
+    environment('HOME' => "#{node['travis_build_environment']['home']}")
+    code "#{nvm} install iojs-v#{version}"
   end
 
-  bash "update npm to the latest version" do
-    code "nvm_download -L https://npmjs.org/install.sh -o - | clean=yes sh"
+  bash 'update npm to the latest version' do
+    code 'nvm_download -L https://npmjs.org/install.sh -o - | clean=yes sh'
   end
 
-  node[:iojs][:default_modules].each do |mod|
+  node['iojs']['default_modules'].each do |mod|
     bash "install #{mod} for io.js version #{version}" do
       creates "#{iojs_version_dir}/lib/node_modules/#{mod}"
-      user  node.travis_build_environment.user
-      group node.travis_build_environment.group
-      cwd   node.travis_build_environment.home
-      environment({'HOME' => "#{node.travis_build_environment.home}"})
+      user node['travis_build_environment']['user']
+      group node['travis_build_environment']['group']
+      cwd node['travis_build_environment']['home']
+      environment('HOME' => "#{node['travis_build_environment']['home']}")
       code "#{nvm} use iojs-v#{version}; npm install -g #{mod}"
     end
   end
 end
 
-bash "clean up build artifacts & sources" do
-  user node.travis_build_environment.user
-  code "rm -rf #{File.join(node.travis_build_environment.home, '.nvm', 'src')}"
+bash 'clean up build artifacts & sources' do
+  user node['travis_build_environment']['user']
+  code "rm -rf #{File.join(node['travis_build_environment']['home'], '.nvm', 'src')}"
 end

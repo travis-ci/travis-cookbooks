@@ -1,3 +1,1 @@
-default[:composer] = {
-  :github_oauth_token => nil
-}
+default['composer']['github_oauth_token'] = nil

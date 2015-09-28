@@ -25,10 +25,10 @@
 # Download and setup clang tarball package
 #
 ark 'clang' do
-  url           node['clang']['download_url']
-  checksum      node['clang']['checksum']
-  version       node['clang']['version']
-  extension     node['clang']['extension']
+  url node['clang']['download_url']
+  checksum node['clang']['checksum']
+  version node['clang']['version']
+  extension node['clang']['extension']
 
   append_env_path true
 end

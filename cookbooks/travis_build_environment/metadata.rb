@@ -1,12 +1,12 @@
-maintainer       "Travis CI Development Team"
-license          "Apache v2.0"
-name             "travis_build_environment"
-version          "1.0.0"
-description      "Travis build environment"
-long_description "Travis build environment"
+name 'travis_build_environment'
+maintainer 'Travis CI Development Team'
+license 'Apache v2.0'
+version '1.1.0'
+description 'Travis build environment'
+long_description 'Travis build environment'
 
-depends "timezone"
-depends "sysctl"
-depends "openssh"
-depends "unarchivers"
-depends "iptables"
+depends 'iptables'
+depends 'openssh'
+depends 'sysctl'
+depends 'travis_timezone'
+depends 'unarchivers'

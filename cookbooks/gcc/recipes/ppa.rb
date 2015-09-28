@@ -20,14 +20,13 @@
 # This recipe relies on a PPA package and is Ubuntu/Debian specific. Please
 # keep this in mind.
 
-
-apt_repository "ubuntu-toolchain-r-test" do
-  uri          "http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu"
+apt_repository 'ubuntu-toolchain-r-test' do
+  uri 'http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu'
   distribution node['lsb']['codename']
-  components   ["main"]
-  key          "BA9EF27F"
-  keyserver    "keyserver.ubuntu.com"
-  action       :add
+  components ['main']
+  key 'BA9EF27F'
+  keyserver 'keyserver.ubuntu.com'
+  action :add
 end
 
 include_recipe 'gcc::suggested'
@@ -45,4 +44,3 @@ package "g++-#{node['gcc']['ppa']['version']}"
     command "update-alternatives --config #{alt_name}"
   end
 end if node['gcc']['ppa']['as_default']
-

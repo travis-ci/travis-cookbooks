@@ -39,7 +39,7 @@ directory "#{node['gimme']['install_user_home']}/.gimme" do
 end
 
 file "#{node['gimme']['install_user_home']}/.gimme/version" do
-  content "#{node['gimme']['default_version']}"
+  content node['gimme']['default_version']
   owner node['gimme']['install_user']
   group node['gimme']['install_user']
   mode 0640
@@ -59,7 +59,7 @@ end
 install_env = {
   'GIMME_ENV_PREFIX' => "#{node['gimme']['install_user_home']}/.gimme/envs",
   'GIMME_VERSION_PREFIX' => "#{node['gimme']['install_user_home']}/.gimme/versions",
-  'HOME' => node['gimme']['install_user_home'],
+  'HOME' => node['gimme']['install_user_home']
 }
 
 install_env['GIMME_DEBUG'] = '1' if node['gimme']['debug']

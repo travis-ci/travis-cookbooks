@@ -22,13 +22,13 @@
 # THE SOFTWARE.
 
 case node[:platform]
-when "ubuntu", "debian" then
+when 'ubuntu', 'debian' then
   case node[:version]
-  when "11.04" then
-    package "libffi5"
-  when "11.10" then
-    package "libffi6"
+  when '11.04' then
+    package 'libffi5'
+  when '11.10' then
+    package 'libffi6'
   end
 
-  package "libffi-dev"
+  package 'libffi-dev'
 end

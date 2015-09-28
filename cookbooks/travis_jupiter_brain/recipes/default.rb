@@ -42,11 +42,11 @@ Array(node['travis_jupiter_brain']['instances']).each do |instance|
 
   haproxy_lb instance['service_name'] do
     type 'frontend'
-    params({
+    params(
       'maxconn' => 200,
       'bind' => instance['frontend_bind'],
       'default_backend' => "servers-#{instance['service_name']}"
-    })
+    )
 
     only_if { instance['blue_green'] && instance['frontend_bind'] }
   end

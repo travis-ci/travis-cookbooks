@@ -1,4 +1,3 @@
-#
 # Cookbook Name:: travis_rvm
 # Recipe:: default
 # Copyright 2011-2015, Travis CI Development Team <contact@travis-ci.org>

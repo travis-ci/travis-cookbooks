@@ -1,5 +1,0 @@
-= DESCRIPTION:
-
-Installs Leiningen for building Clojure projects.
-
-Retrieve shell script, install jar files.
