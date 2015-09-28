@@ -8,5 +8,15 @@ ark 'groovy' do
   version node['travis_groovy']['version']
   checksum node['travis_groovy']['checksum']
   path node['travis_groovy']['installation_dir']
+  has_binaries %w(
+    grape
+    groovy
+    groovyc
+    groovyConsole
+    groovydoc
+    groovysh
+    java2groovy
+    startGroovy
+  ).map { |exe| "bin/#{exe}" }
   owner 'root'
 end
