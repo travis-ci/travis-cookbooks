@@ -37,11 +37,8 @@ def main(argv = ARGV)
   0
 end
 
-def run_foodcritic_for_cookbook(options = {})
-  cookbook = options.fetch(:cookbook, '')
-  quiet = options.fetch(:quiet, false)
-  fc_args = options.fetch(:fc_args, '')
-  foodcritic_exe = options.fetch(:foodcritic_exe, 'foodcritic')
+def run_foodcritic_for_cookbook(cookbook: '', quiet: false, fc_args: '',
+                                foodcritic_exe: 'foodcritic')
 
   return nil if cookbook.empty?
   return nil unless File.directory?(cookbook)
