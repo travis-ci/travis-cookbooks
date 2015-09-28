@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-ruby_block 'reconfigure-locale' do
+ruby_block 'generate locales' do
   block do
     Travis::BuildEnvironment::Locale.generate_locales(
       Array(node['travis_build_environment']['language_codes']),
