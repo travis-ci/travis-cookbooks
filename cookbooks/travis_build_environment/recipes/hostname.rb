@@ -21,7 +21,7 @@
 # THE SOFTWARE.
 
 bits = (node['kernel']['machine'] =~ /x86_64/ ? 64 : 32)
-hostname = case [node[:platform], node[:platform_version]]
+hostname = case [node['platform'], node['platform_version']]
            when ['ubuntu', '11.04'] then
              "natty#{bits}"
            when ['ubuntu', '11.10'] then

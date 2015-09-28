@@ -41,7 +41,7 @@ end
   directory entry[:name] do
     owner node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    mode (entry[:perms] || 0750)
+    mode(entry[:perms] || 0750)
   end
 end
 
@@ -54,7 +54,7 @@ end
     source "ci_user/#{entry[:src]}"
     owner node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    mode (entry[:mode] || 0640)
+    mode(entry[:mode] || 0640)
   end
 end
 
@@ -68,7 +68,7 @@ end
     source "ci_user/#{entry[:src]}"
     owner node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    mode (entry[:mode] || 0400)
+    mode(entry[:mode] || 0400)
   end
 end
 
