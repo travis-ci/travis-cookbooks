@@ -16,10 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-package %w(
-  groovy
-  unzip
-)
+include_recipe 'travis_groovy'
 
 ark 'gradle' do
   url node['gradle']['url']
