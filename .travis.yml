@@ -16,6 +16,4 @@ addons:
     packages:
     - chefdk
 
-script:
-- find /opt -name ruby
-- ./runtests
+script: ./runtests
