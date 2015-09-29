@@ -1,7 +1,6 @@
-#
-# Cookbook Name:: phantomjs
-# Recipe:: default
-# Copyright 2012-2013, Travis CI Development Team <contact@travis-ci.org>
+# Cookbook Name:: travis_phantomjs
+# Recipe:: 2
+# Copyright 2012-2015, Travis CI Development Team <contact@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +20,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package 'libfontconfig1'
+package %w(
+  libicu-dev
+  libjpeg-dev
+  libpng-dev
+)
 
-include_recipe 'phantomjs::tarball'
+ark 'phantomjs' do
+  url ::File.join(
+    'https://s3.amazonaws.com/travis-phantomjs',
+    node['platform'],
+    node['platform_version'],
+    node['kernel']['machine'],
+    'phantomjs-2.0.0.tar.bz2'
+  )
+  version '2.0.0'
+  checksum '785913935b14dfadf759e6f54fc6858eadab3c15b87f88a720b0942058b5b573'
+  has_binaries %w(phantomjs)
+  owner 'root'
+end
