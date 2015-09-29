@@ -7,9 +7,15 @@ package %w(
 )
 
 ark 'phantomjs' do
-  url "https://s3.amazonaws.com/travis-phantomjs/phantomjs-2.0.0-#{node['platform']}-#{node['platform_version']}.tar.bz2"
+  url ::File.join(
+    'https://s3.amazonaws.com/travis-phantomjs',
+    node['platform'],
+    node['platform_version'],
+    node['kernel']['machine'],
+    'phantomjs-2.0.0.tar.bz2'
+  )
   version '2.0.0'
-  checksum '15052355c03b410b7e76ba51cdceebac5adc9f3ce872efc362b1b24a280f4240'
+  checksum '785913935b14dfadf759e6f54fc6858eadab3c15b87f88a720b0942058b5b573'
   has_binaries %w(phantomjs)
   owner 'root'
 end
