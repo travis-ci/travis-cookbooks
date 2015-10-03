@@ -50,4 +50,6 @@ template '/etc/hostname' do
   only_if { node['travis_build_environment']['update_hosts'] }
 end
 
-execute "hostname #{hostname}"
+execute "hostname #{hostname}" do
+  only_if { node['travis_build_environment']['update_hostname'] }
+end
