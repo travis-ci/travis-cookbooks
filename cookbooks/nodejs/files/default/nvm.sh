@@ -78,7 +78,7 @@ if [ -z "$NVM_DIR" ]; then
   if [ -n "$BASH_SOURCE" ]; then
     NVM_SCRIPT_SOURCE="${BASH_SOURCE[0]}"
   fi
-  export NVM_DIR=$(cd $NVM_CD_FLAGS $(dirname "${NVM_SCRIPT_SOURCE:-$0}") > /dev/null && \pwd)
+  export NVM_DIR="$(cd $NVM_CD_FLAGS $(dirname "${NVM_SCRIPT_SOURCE:-$0}") > /dev/null && \pwd)"
 fi
 unset NVM_SCRIPT_SOURCE 2> /dev/null
 
@@ -221,7 +221,7 @@ nvm_ensure_version_installed() {
 # Expand a version using the version cache
 nvm_version() {
   local PATTERN
-  PATTERN=$1
+  PATTERN="$1"
   local VERSION
   # The default version is the current one
   if [ -z "$PATTERN" ]; then
@@ -398,7 +398,7 @@ nvm_alias() {
     return 2
   fi
 
-  cat "$NVM_ALIAS_PATH"
+  command cat "$NVM_ALIAS_PATH"
 }
 
 nvm_ls_current() {
@@ -592,39 +592,51 @@ nvm_ls() {
       setopt shwordsplit
     fi
 
-    local NVM_DIRS_TO_TEST_AND_SEARCH
-    local NVM_DIRS_TO_SEARCH
+    local NVM_DIRS_TO_SEARCH1
+    NVM_DIRS_TO_SEARCH1=''
+    local NVM_DIRS_TO_SEARCH2
+    NVM_DIRS_TO_SEARCH2=''
+    local NVM_DIRS_TO_SEARCH3
+    NVM_DIRS_TO_SEARCH3=''
     local NVM_ADD_SYSTEM
     NVM_ADD_SYSTEM=false
     if nvm_is_iojs_version "$PATTERN"; then
-      NVM_DIRS_TO_TEST_AND_SEARCH="$NVM_VERSION_DIR_IOJS"
+      NVM_DIRS_TO_SEARCH1="$NVM_VERSION_DIR_IOJS"
       PATTERN="$(nvm_strip_iojs_prefix "$PATTERN")"
       if nvm_has_system_iojs; then
         NVM_ADD_SYSTEM=true
       fi
     elif [ "_$PATTERN" = "_$NVM_NODE_PREFIX-" ]; then
-      NVM_DIRS_TO_TEST_AND_SEARCH="$NVM_VERSION_DIR_OLD $NVM_VERSION_DIR_NEW"
+      NVM_DIRS_TO_SEARCH1="$NVM_VERSION_DIR_OLD"
+      NVM_DIRS_TO_SEARCH2="$NVM_VERSION_DIR_NEW"
       PATTERN=''
       if nvm_has_system_node; then
         NVM_ADD_SYSTEM=true
       fi
     else
-      NVM_DIRS_TO_TEST_AND_SEARCH="$NVM_VERSION_DIR_OLD $NVM_VERSION_DIR_NEW $NVM_VERSION_DIR_IOJS"
+      NVM_DIRS_TO_SEARCH1="$NVM_VERSION_DIR_OLD"
+      NVM_DIRS_TO_SEARCH2="$NVM_VERSION_DIR_NEW"
+      NVM_DIRS_TO_SEARCH3="$NVM_VERSION_DIR_IOJS"
       if nvm_has_system_iojs || nvm_has_system_node; then
         NVM_ADD_SYSTEM=true
       fi
     fi
-    for NVM_VERSION_DIR in $NVM_DIRS_TO_TEST_AND_SEARCH; do
-      if [ -d "$NVM_VERSION_DIR" ]; then
-        NVM_DIRS_TO_SEARCH="$NVM_VERSION_DIR $NVM_DIRS_TO_SEARCH"
-      fi
-    done
+
+    if ! [ -d "$NVM_DIRS_TO_SEARCH1" ]; then
+      NVM_DIRS_TO_SEARCH1=''
+    fi
+    if ! [ -d "$NVM_DIRS_TO_SEARCH2" ]; then
+      NVM_DIRS_TO_SEARCH2="$NVM_DIRS_TO_SEARCH1"
+    fi
+    if ! [ -d "$NVM_DIRS_TO_SEARCH3" ]; then
+      NVM_DIRS_TO_SEARCH3="$NVM_DIRS_TO_SEARCH2"
+    fi
 
     if [ -z "$PATTERN" ]; then
       PATTERN='v'
     fi
-    if [ -n "$NVM_DIRS_TO_SEARCH" ]; then
-      VERSIONS="$(command find $NVM_DIRS_TO_SEARCH -maxdepth 1 -type d -name "$PATTERN*" \
+    if [ -n "$NVM_DIRS_TO_SEARCH1$NVM_DIRS_TO_SEARCH2$NVM_DIRS_TO_SEARCH3" ]; then
+      VERSIONS="$(command find "$NVM_DIRS_TO_SEARCH1" "$NVM_DIRS_TO_SEARCH2" "$NVM_DIRS_TO_SEARCH3" -maxdepth 1 -type d -name "$PATTERN*" \
         | command sed "
             s#$NVM_VERSION_DIR_IOJS/#$NVM_IOJS_PREFIX-#;
             \#$NVM_VERSION_DIR_IOJS# d;
@@ -635,7 +647,6 @@ nvm_ls() {
             s#^\($NVM_IOJS_PREFIX\)[-/]v#\1.v#;
             s#^\($NVM_NODE_PREFIX\)[-/]v#\1.v#" \
         | command sort -t. -u -k 2.2,2n -k 3,3n -k 4,4n \
-        | command sort -s -t- -k1.1,1.1 \
         | command sed "
             s/^\($NVM_IOJS_PREFIX\)\./\1-/;
             s/^$NVM_NODE_PREFIX\.//" \
@@ -909,13 +920,30 @@ nvm_get_os() {
 }
 
 nvm_get_arch() {
-  local NVM_UNAME
-  NVM_UNAME="$(uname -m)"
+  local HOST_ARCH
+  local NVM_OS
+  local EXIT_CODE
+
+  NVM_OS="$(nvm_get_os)"
+  # If the OS is SunOS, first try to use pkgsrc to guess
+  # the most appropriate arch. If it's not available, use
+  # isainfo to get the instruction set supported by the
+  # kernel.
+  if [ "_$NVM_OS" = "_sunos" ]; then
+    HOST_ARCH=$(pkg_info -Q MACHINE_ARCH pkg_install)
+    EXIT_CODE=$?
+    if [ $EXIT_CODE -ne 0 ]; then
+      HOST_ARCH=$(isainfo -n)
+    fi
+  else
+     HOST_ARCH="$(uname -m)"
+  fi
+
   local NVM_ARCH
-  case "$NVM_UNAME" in
-    x86_64) NVM_ARCH="x64" ;;
+  case "$HOST_ARCH" in
+    x86_64 | amd64) NVM_ARCH="x64" ;;
     i*86) NVM_ARCH="x86" ;;
-    *) NVM_ARCH="$NVM_UNAME" ;;
+    *) NVM_ARCH="$HOST_ARCH" ;;
   esac
   echo "$NVM_ARCH"
 }
@@ -971,18 +999,27 @@ nvm_install_merged_node_binary() {
   local url
   local sum
   local NODE_PREFIX
+  local compression
+  compression="gz"
+  local tar_compression_flag
+  tar_compression_flag="x"
+  if nvm_supports_xz "$VERSION"; then
+    compression="xz"
+    tar_compression_flag="J"
+  fi
   NODE_PREFIX="$(nvm_node_prefix)"
 
   if [ -n "$NVM_OS" ]; then
     t="$VERSION-$NVM_OS-$(nvm_get_arch)"
-    url="$MIRROR/$VERSION/$NODE_PREFIX-${t}.tar.gz"
-    sum="$(nvm_download -L -s $MIRROR/$VERSION/SHASUMS256.txt -o - | command grep $NODE_PREFIX-${t}.tar.gz | command awk '{print $1}')"
+    url="$MIRROR/$VERSION/$NODE_PREFIX-${t}.tar.${compression}"
+    sum="$(nvm_download -L -s $MIRROR/$VERSION/SHASUMS256.txt -o - | command grep $NODE_PREFIX-${t}.tar.${compression} | command awk '{print $1}')"
     local tmpdir
     tmpdir="$NVM_DIR/bin/node-${t}"
     local tmptarball
-    tmptarball="$tmpdir/node-${t}.tar.gz"
+    tmptarball="$tmpdir/node-${t}.tar.${compression}"
     local NVM_INSTALL_ERRORED
     command mkdir -p "$tmpdir" && \
+      echo "Downloading $url..." && \
       nvm_download -L -C - --progress-bar $url -o "$tmptarball" || \
       NVM_INSTALL_ERRORED=true
     if grep '404 Not Found' "$tmptarball" >/dev/null; then
@@ -993,7 +1030,7 @@ nvm_install_merged_node_binary() {
       [ "$NVM_INSTALL_ERRORED" != true ] && \
       echo "WARNING: checksums are currently disabled for node.js v4.0 and later" >&2 && \
       # nvm_checksum "$tmptarball" $sum && \
-      command tar -xzf "$tmptarball" -C "$tmpdir" --strip-components 1 && \
+      command tar -x${tar_compression_flag}f "$tmptarball" -C "$tmpdir" --strip-components 1 && \
       command rm -f "$tmptarball" && \
       command mkdir -p "$VERSION_PATH" && \
       command mv "$tmpdir"/* "$VERSION_PATH"
@@ -1037,18 +1074,27 @@ nvm_install_iojs_binary() {
   local t
   local url
   local sum
+  local compression
+  compression="gz"
+  local tar_compression_flag
+  tar_compression_flag="x"
+  if nvm_supports_xz "$VERSION"; then
+    compression="xz"
+    tar_compression_flag="J"
+  fi
 
   if [ -n "$NVM_OS" ]; then
     if nvm_binary_available "$VERSION"; then
       t="$VERSION-$NVM_OS-$(nvm_get_arch)"
-      url="$MIRROR/$VERSION/$(nvm_iojs_prefix)-${t}.tar.gz"
-      sum="$(nvm_download -L -s $MIRROR/$VERSION/SHASUMS256.txt -o - | command grep $(nvm_iojs_prefix)-${t}.tar.gz | command awk '{print $1}')"
+      url="$MIRROR/$VERSION/$(nvm_iojs_prefix)-${t}.tar.${compression}"
+      sum="$(nvm_download -L -s $MIRROR/$VERSION/SHASUMS256.txt -o - | command grep $(nvm_iojs_prefix)-${t}.tar.${compression} | command awk '{print $1}')"
       local tmpdir
       tmpdir="$NVM_DIR/bin/iojs-${t}"
       local tmptarball
-      tmptarball="$tmpdir/iojs-${t}.tar.gz"
+      tmptarball="$tmpdir/iojs-${t}.tar.${compression}"
       local NVM_INSTALL_ERRORED
       command mkdir -p "$tmpdir" && \
+        echo "Downloading $url..." && \
         nvm_download -L -C - --progress-bar $url -o "$tmptarball" || \
         NVM_INSTALL_ERRORED=true
       if grep '404 Not Found' "$tmptarball" >/dev/null; then
@@ -1059,7 +1105,7 @@ nvm_install_iojs_binary() {
         [ "$NVM_INSTALL_ERRORED" != true ] && \
         echo "WARNING: checksums are currently disabled for io.js" >&2 && \
         # nvm_checksum "$tmptarball" $sum && \
-        command tar -xzf "$tmptarball" -C "$tmpdir" --strip-components 1 && \
+        command tar -x${tar_compression_flag}f "$tmptarball" -C "$tmpdir" --strip-components 1 && \
         command rm -f "$tmptarball" && \
         command mkdir -p "$VERSION_PATH" && \
         command mv "$tmpdir"/* "$VERSION_PATH"
@@ -1181,6 +1227,7 @@ nvm_install_node_source() {
   if (
     [ -n "$tarball" ] && \
     command mkdir -p "$tmpdir" && \
+    echo "Downloading $tarball..." && \
     nvm_download -L --progress-bar $tarball -o "$tmptarball" && \
     nvm_checksum "$tmptarball" $sum && \
     command tar -xzf "$tmptarball" -C "$tmpdir" && \
@@ -1303,6 +1350,63 @@ nvm_die_on_prefix() {
   fi
 }
 
+# Succeeds if $IOJS_VERSION represents an io.js version that has a
+# Solaris binary, fails otherwise.
+# Currently, only io.js 3.3.1 has a Solaris binary available, and it's the
+# latest io.js version available. The expectation is that any potential io.js
+# version later than v3.3.1 will also have Solaris binaries.
+iojs_version_has_solaris_binary() {
+  local IOJS_VERSION=$1
+  local STRIPPED_IOJS_VERSION="$(nvm_strip_iojs_prefix $IOJS_VERSION)"
+  if [ "_$STRIPPED_IOJS_VERSION" = "$IOJS_VERSION" ]; then
+    return 1
+  fi
+
+  # io.js started shipping Solaris binaries with io.js v3.3.1
+  nvm_version_greater_than_or_equal_to "$STRIPPED_IOJS_VERSION" v3.3.1
+}
+
+# Succeeds if $NODE_VERSION represents a node version that has a
+# Solaris binary, fails otherwise.
+# Currently, node versions starting from v0.8.6 have a Solaris binary
+# avaliable.
+node_version_has_solaris_binary() {
+  local NODE_VERSION=$1
+  # Error out if $NODE_VERSION is actually an io.js version
+  local STRIPPED_IOJS_VERSION="$(nvm_strip_iojs_prefix $NODE_VERSION)"
+  if [ "_$STRIPPED_IOJS_VERSION" != "_$NODE_VERSION" ]; then
+    return 1
+  fi
+
+  # node (unmerged) started shipping Solaris binaries with v0.8.6 and
+  # node versions v1.0.0 or greater are not considered valid "unmerged" node
+  # versions.
+  nvm_version_greater_than_or_equal_to "$NODE_VERSION" v0.8.6 &&
+  ! nvm_version_greater_than_or_equal_to "$NODE_VERSION" v1.0.0
+}
+
+# Succeeds if $VERSION represents a version (node, io.js or merged) that has a
+# Solaris binary, fails otherwise.
+nvm_has_solaris_binary() {
+  local VERSION=$1
+  if nvm_is_merged_node_version "$VERSION"; then
+    return 0 # All merged node versions have a Solaris binary
+  elif nvm_is_iojs_version "$VERSION"; then
+    iojs_version_has_solaris_binary "$VERSION"
+  else
+    node_version_has_solaris_binary "$VERSION"
+  fi
+}
+
+nvm_sanitize_path() {
+  local SANITIZED_PATH
+  SANITIZED_PATH="$1"
+  if [ "_$1" != "_$NVM_DIR" ]; then
+    SANITIZED_PATH="$(echo "$SANITIZED_PATH" | command sed "s#$NVM_DIR#\$NVM_DIR#g")"
+  fi
+  echo "$SANITIZED_PATH" | command sed "s#$HOME#\$HOME#g"
+}
+
 nvm() {
   if [ $# -lt 1 ]; then
     nvm help
@@ -1373,12 +1477,14 @@ nvm() {
         setopt shwordsplit
       fi
       echo >&2 "\$SHELL: $SHELL"
-      echo >&2 "\$NVM_DIR: $(echo $NVM_DIR | sed "s#$HOME#\$HOME#g")"
+      echo >&2 "\$NVM_DIR: '$(nvm_sanitize_path "$NVM_DIR")'"
+      echo >&2 "\$PREFIX: '$(nvm_sanitize_path "$PREFIX")'"
+      echo >&2 "\$NPM_CONFIG_PREFIX: '$(nvm_sanitize_path "$NPM_CONFIG_PREFIX")'"
       local NVM_DEBUG_OUTPUT
       for NVM_DEBUG_COMMAND in 'nvm current' 'which node' 'which iojs' 'which npm' 'npm config get prefix' 'npm root -g'
       do
-        NVM_DEBUG_OUTPUT="$($NVM_DEBUG_COMMAND 2>&1 | sed "s#$NVM_DIR#\$NVM_DIR#g")"
-        echo >&2 "$NVM_DEBUG_COMMAND: $NVM_DEBUG_OUTPUT"
+        NVM_DEBUG_OUTPUT="$($NVM_DEBUG_COMMAND 2>&1)"
+        echo >&2 "$NVM_DEBUG_COMMAND: $(nvm_sanitize_path "$NVM_DEBUG_OUTPUT")"
       done
       if [ "_$ZHS_HAS_SHWORDSPLIT_UNSET" = "_1" ] && nvm_has "unsetopt"; then
         unsetopt shwordsplit
@@ -1485,9 +1591,11 @@ nvm() {
       if [ "_$NVM_OS" = "_freebsd" ]; then
         # node.js and io.js do not have a FreeBSD binary
         nobinary=1
-      elif [ "_$NVM_OS" = "_sunos" ] && ([ "$NVM_IOJS" = true ] || [ "$NVM_NODE_MERGED" = true ]); then
-        # io.js does not have a SunOS binary
-        nobinary=1
+      elif [ "_$NVM_OS" = "_sunos" ]; then
+        # Not all node/io.js versions have a Solaris binary
+          if ! nvm_has_solaris_binary "$VERSION"; then
+            nobinary=1
+        fi
       fi
       local NVM_INSTALL_SUCCESS
       # skip binary install if "nobinary" option specified.
@@ -1570,9 +1678,9 @@ nvm() {
       fi
       # Delete all files related to target version.
       command rm -rf "$NVM_DIR/src/$NVM_PREFIX-$VERSION" \
-             "$NVM_DIR/src/$NVM_PREFIX-$VERSION.tar.gz" \
+             "$NVM_DIR/src/$NVM_PREFIX-$VERSION.tar.*" \
              "$NVM_DIR/bin/$NVM_PREFIX-${t}" \
-             "$NVM_DIR/bin/$NVM_PREFIX-${t}.tar.gz" \
+             "$NVM_DIR/bin/$NVM_PREFIX-${t}.tar.*" \
              "$VERSION_PATH" 2>/dev/null
       echo "$NVM_SUCCESS_MSG"
 
@@ -1700,13 +1808,14 @@ nvm() {
       if [ "$NVM_SYMLINK_CURRENT" = true ]; then
         command rm -f "$NVM_DIR/current" && ln -s "$NVM_VERSION_DIR" "$NVM_DIR/current"
       fi
+      local NVM_USE_OUTPUT
       if nvm_is_iojs_version "$VERSION"; then
         if [ $NVM_USE_SILENT -ne 1 ]; then
-          echo "Now using io.js $(nvm_strip_iojs_prefix "$VERSION")$(nvm_print_npm_version)"
+          NVM_USE_OUTPUT="Now using io.js $(nvm_strip_iojs_prefix "$VERSION")$(nvm_print_npm_version)"
         fi
       else
         if [ $NVM_USE_SILENT -ne 1 ]; then
-          echo "Now using node $VERSION$(nvm_print_npm_version)"
+          NVM_USE_OUTPUT="Now using node $VERSION$(nvm_print_npm_version)"
         fi
       fi
       if [ "_$VERSION" != "_system" ]; then
@@ -1721,6 +1830,9 @@ nvm() {
         if ! nvm_die_on_prefix "$NVM_DELETE_PREFIX" "$NVM_USE_CMD"; then
           return 11
         fi
+      fi
+      if [ -n "$NVM_USE_OUTPUT" ]; then
+        echo "$NVM_USE_OUTPUT"
       fi
     ;;
     "run" )
@@ -1750,7 +1862,7 @@ nvm() {
         fi
       fi
 
-      provided_version=$1
+      provided_version="$1"
       if [ -n "$provided_version" ]; then
         VERSION="$(nvm_version "$provided_version")"
         if [ "_$VERSION" = "_N/A" ] && ! nvm_is_valid_version "$provided_version"; then
@@ -1781,8 +1893,8 @@ nvm() {
         setopt shwordsplit
       fi
       if [ "_$VERSION" = "_N/A" ]; then
-        echo "$(nvm_ensure_version_prefix "$provided_version") is not installed yet" >&2
-        EXIT_CODE=1
+        nvm_ensure_version_installed "$provided_version"
+        EXIT_CODE=$?
       elif [ -z "$ARGS" ]; then
         if [ "$NVM_IOJS" = true ]; then
           nvm exec "$VERSION" iojs
@@ -1821,7 +1933,7 @@ nvm() {
       provided_version="$1"
       if [ -n "$provided_version" ]; then
         VERSION="$(nvm_version "$provided_version")"
-        if [ "_$VERSION" = "_N/A" ]; then
+        if [ "_$VERSION" = "_N/A" ] && ! nvm_is_valid_version "$provided_version"; then
           nvm_rc_version
           provided_version="$NVM_RC_VERSION"
           VERSION="$(nvm_version "$provided_version")"
@@ -2072,7 +2184,7 @@ $NVM_LS_REMOTE_POST_MERGED_OUTPUT" | command grep -v "N/A" | command sed '/^$/d'
       nvm_remote_version "$2"
     ;;
     "--version" )
-      echo "0.27.0"
+      echo "0.29.0"
     ;;
     "unload" )
       unset -f nvm nvm_print_versions nvm_checksum \
@@ -2097,7 +2209,7 @@ $NVM_LS_REMOTE_POST_MERGED_OUTPUT" | command grep -v "N/A" | command sed '/^$/d'
         nvm_print_npm_version nvm_npm_global_modules \
         nvm_has_system_node nvm_has_system_iojs \
         nvm_download nvm_get_latest nvm_has nvm_get_latest \
-        nvm_supports_source_options > /dev/null 2>&1
+        nvm_supports_source_options nvm_supports_xz > /dev/null 2>&1
       unset RC_VERSION NVM_NODEJS_ORG_MIRROR NVM_DIR NVM_CD_FLAGS > /dev/null 2>&1
     ;;
     * )
@@ -2109,6 +2221,11 @@ $NVM_LS_REMOTE_POST_MERGED_OUTPUT" | command grep -v "N/A" | command sed '/^$/d'
 
 nvm_supports_source_options() {
   [ "_$(echo 'echo $1' | . /dev/stdin yes 2> /dev/null)" = "_yes" ]
+}
+
+nvm_supports_xz() {
+  command which xz 2>&1 >/dev/null && \
+    nvm_version_greater_than_or_equal_to "$1" "2.3.2" 
 }
 
 NVM_VERSION="$(nvm_alias default 2>/dev/null || echo)"
