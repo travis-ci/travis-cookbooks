@@ -1,5 +1,8 @@
-#!/bin/sh
+#!/usr/bin/env bash
+# Managed by Chef on <%= node.name %>! :heart_eyes_cat:
 
 export PATH=$PATH:<%= @phpenv_path %>/bin
-eval "$(phpenv init -)"
-phpenv rehash 2>/dev/null
+if command -v phpenv ; then
+  eval "$(phpenv init -)"
+  phpenv rehash 2>/dev/null
+fi
