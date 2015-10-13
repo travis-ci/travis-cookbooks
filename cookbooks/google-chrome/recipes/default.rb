@@ -22,7 +22,7 @@
 
 apt_repository 'google-chrome-stable' do
   uri 'http://dl.google.com/linux/chrome/deb'
-  components ['main', 'stable']
+  components %w(main stable)
   key 'https://dl-ssl.google.com/linux/linux_signing_key.pub'
 end
 
