@@ -34,11 +34,17 @@ node['travis_rvm']['rubies'].each do |ruby|
   end
 
   name = ruby['check_for'] || ruby['name']
+
   gems.each do |gem|
-    bash "installing gem #{gem} for #{name}" do
+    bash "Installing gem #{gem} for #{name}" do
       code "#{rvm} use #{name}; gem install #{gem} --no-ri --no-rdoc"
     end
   end
+end
+
+bash "Set default ruby to #{node['travis_rvm']['default']}" do
+  code "#{rvm} --default use #{node['travis_rvm']['default']}"
+  not_if { (node['travis_rvm']['default'] || '').empty? }
 end
 
 bash 'clean up RVM sources, log files, etc' do
