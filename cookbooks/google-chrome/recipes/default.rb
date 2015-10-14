@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-apt_repository 'google-chrome-stable' do
+apt_repository 'google-chrome' do
   uri 'http://dl.google.com/linux/chrome/deb'
   components %w(stable main)
   key 'https://dl-ssl.google.com/linux/linux_signing_key.pub'
