@@ -46,11 +46,11 @@ end
 
 # A couple fixes for building php 5.3.29c and 5.4.45
 
-package "libxslt1-dev" do
+package 'libxslt1-dev' do
   action :install
 end
 
-link "/usr/include/freetype2/freetype" do
-  to "usr/include/freetype2"
+link '/usr/include/freetype2/freetype' do
+  to 'usr/include/freetype2'
   action :create
 end
