@@ -2,7 +2,7 @@
 # Managed by Chef on <%= node.name %>! :heart_eyes_cat:
 
 export PATH=$PATH:<%= @phpenv_path %>/bin
-if command -v phpenv ; then
+if command -v phpenv >/dev/null ; then
   eval "$(phpenv init -)"
   phpenv rehash 2>/dev/null
 fi
