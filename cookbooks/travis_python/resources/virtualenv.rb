@@ -1,7 +1,8 @@
+# Cookbook Name:: travis_python
+# Resource:: virtualenv
 #
-# Cookbook Name:: mercurial
-# Recipe:: default
-# Copyright 2012-2013, Travis CI Development Team <contact@travis-ci.org>
+# Copyright:: 2011, Opscode, Inc <legal@opscode.com>
+# Copyright:: 2011-2015, Travis CI GmbH <contact+travis-cookbooks-travis-python@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,16 +22,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe 'travis_python::package'
+actions :create, :delete
 
-apt_repository 'mercurial-ppa' do
-  uri 'http://ppa.launchpad.net/mercurial-ppa/releases/ubuntu'
-  distribution node['lsb']['codename']
-  components ['main']
-  key '323293EE'
-  keyserver 'keyserver.ubuntu.com'
+attribute :path, kind_of: String, name_attribute: true
+attribute :interpreter, default: 'python2.6'
+attribute :owner, regex: Chef::Config[:user_valid_regex]
+attribute :group, regex: Chef::Config[:group_valid_regex]
 
-  action :add
-end
-
-package 'mercurial'
+attribute :system_site_packages, default: false, kind_of: [FalseClass, TrueClass]

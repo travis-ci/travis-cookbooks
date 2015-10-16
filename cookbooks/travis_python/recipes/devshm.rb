@@ -1,7 +1,7 @@
+# Cookbook Name:: travis_python
+# Recipe:: devshm
 #
-# Cookbook Name:: mercurial
-# Recipe:: default
-# Copyright 2012-2013, Travis CI Development Team <contact@travis-ci.org>
+# Copyright 2011-2015, Travis CI Development Team <contact@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,16 +21,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe 'travis_python::package'
-
-apt_repository 'mercurial-ppa' do
-  uri 'http://ppa.launchpad.net/mercurial-ppa/releases/ubuntu'
-  distribution node['lsb']['codename']
-  components ['main']
-  key '323293EE'
-  keyserver 'keyserver.ubuntu.com'
-
-  action :add
+directory '/dev/shm' do
+  recursive true
+  action :delete
+  not_if { File.symlink?('/dev/shm') }
 end
 
-package 'mercurial'
+link '/dev/shm' do
+  to '/run/shm'
+  not_if { File.symlink?('/dev/shm') }
+end

@@ -21,6 +21,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe 'python::package'
+include_recipe 'travis_python::package'
 
 package 'mercurial'
