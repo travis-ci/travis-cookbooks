@@ -48,7 +48,7 @@ action :delete do
 end
 
 def load_current_resource
-  @current_resource = Chef::Resource::PythonVirtualenv.new(@new_resource.name)
+  @current_resource = Chef::Resource::TravisPythonVirtualenv.new(@new_resource.name)
   @current_resource.path(@new_resource.path)
 
   if exists?
