@@ -84,7 +84,7 @@ end
 # so refactoring into core Chef should be easy
 
 def load_current_resource
-  @current_resource = Chef::Resource::PythonPip.new(@new_resource.name)
+  @current_resource = Chef::Resource::TravisPythonPip.new(@new_resource.name)
   @current_resource.package_name(@new_resource.package_name)
   @current_resource.version(nil)
 
