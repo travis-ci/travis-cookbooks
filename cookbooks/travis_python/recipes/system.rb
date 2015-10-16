@@ -38,7 +38,7 @@ end
 node['travis_python']['system']['pythons'].each do |py|
   pyname = "python#{py}"
 
-  python_virtualenv "#{pyname}_with_system_site_packages" do
+  travis_python_virtualenv "#{pyname}_with_system_site_packages" do
     owner node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     interpreter "/usr/bin/#{pyname}"

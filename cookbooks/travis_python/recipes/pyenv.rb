@@ -120,7 +120,7 @@ node['travis_python']['pyenv']['pythons'].each do |py|
 
   bindirs << "/opt/python/#{py}/bin"
 
-  python_virtualenv "python_#{py}" do
+  travis_python_virtualenv "python_#{py}" do
     owner node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     interpreter "/opt/python/#{py}/bin/python"

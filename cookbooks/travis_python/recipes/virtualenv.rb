@@ -30,7 +30,7 @@ cookbook_file '/etc/profile.d/virtualenv_settings.sh' do
   mode 0755
 end
 
-python_pip 'virtualenv' do
+travis_python_pip 'virtualenv' do
   version '13.1.0'
   action :install
 end
