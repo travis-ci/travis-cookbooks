@@ -1,6 +1,29 @@
+# Cookbook Name:: travis_python
+# Recipe:: pyenv
+#
+# Copyright 2011-2015, Travis CI Development Team <contact@travis-ci.org>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+
 virtualenv_root = "#{node['travis_build_environment']['home']}/virtualenv"
 
-include_recipe 'python::virtualenv'
+include_recipe 'travis_python::virtualenv'
 
 package %w(
   build-essential
@@ -20,7 +43,7 @@ package %w(
 
 git '/opt/pyenv' do
   repository 'https://github.com/yyuu/pyenv.git'
-  revision node['python']['pyenv']['revision']
+  revision node['travis_python']['pyenv']['revision']
   action :sync
 end
 
@@ -37,8 +60,6 @@ directory virtualenv_root do
   group node['travis_build_environment']['group']
   mode 0755
 end
-
-bindirs = []
 
 build_environment = {
   'PYTHON_CONFIGURE_OPTS' => %w(
@@ -58,7 +79,9 @@ build_environment = {
   ).join(' ')
 }
 
-node['python']['pyenv']['pythons'].each do |py|
+bindirs = %w(/opt/pyenv/bin)
+
+node['travis_python']['pyenv']['pythons'].each do |py|
   if /^\d+\.\d+(?:\.\d+)?(?:-dev)?$/ =~ py
     pyname = "python#{py}"
   else
@@ -97,7 +120,7 @@ node['python']['pyenv']['pythons'].each do |py|
 
   bindirs << "/opt/python/#{py}/bin"
 
-  python_virtualenv "python_#{py}" do
+  travis_python_virtualenv "python_#{py}" do
     owner node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     interpreter "/opt/python/#{py}/bin/python"
@@ -105,7 +128,7 @@ node['python']['pyenv']['pythons'].each do |py|
     action :create
   end
 
-  node['python']['pyenv']['aliases'].fetch(py, []).each do |pyalias|
+  node['travis_python']['pyenv']['aliases'].fetch(py, []).each do |pyalias|
     if /^\d+\.\d+(?:\.\d+)?(?:-dev)?$/ =~ py
       pyaliasname = "python#{pyalias}"
     else
@@ -127,8 +150,8 @@ node['python']['pyenv']['pythons'].each do |py|
   end
 
   packages = []
-  node['python']['pyenv']['aliases'].fetch(py, []).concat(['default', py]).each do |name|
-    packages.concat(node['python']['pip']['packages'].fetch(name, []))
+  node['travis_python']['pyenv']['aliases'].fetch(py, []).concat(['default', py]).each do |name|
+    packages.concat(node['travis_python']['pip']['packages'].fetch(name, []))
   end
 
   execute "install packages #{py}" do

@@ -1,7 +1,8 @@
+# Cookbook Name:: travis_python
+# Recipe:: pip
 #
-# Cookbook Name:: mercurial
-# Recipe:: default
-# Copyright 2012-2013, Travis CI Development Team <contact@travis-ci.org>
+# Copyright 2011, Opscode, Inc.
+# Copyright 2011-2015, Travis CI Development Team <contact@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,16 +22,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe 'travis_python::package'
-
-apt_repository 'mercurial-ppa' do
-  uri 'http://ppa.launchpad.net/mercurial-ppa/releases/ubuntu'
-  distribution node['lsb']['codename']
-  components ['main']
-  key '323293EE'
-  keyserver 'keyserver.ubuntu.com'
-
-  action :add
+remote_file "#{Chef::Config[:file_cache_path]}/get-pip.py" do
+  source 'https://bootstrap.pypa.io/get-pip.py'
+  mode 0644
+  not_if 'which pip'
 end
 
-package 'mercurial'
+bash 'install-pip' do
+  cwd Chef::Config[:file_cache_path]
+  code <<-EOF
+    python get-pip.py
+    pip install --upgrade pip setuptools wheel
+  EOF
+  not_if 'which pip'
+end
