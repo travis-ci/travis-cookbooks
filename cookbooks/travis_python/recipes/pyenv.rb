@@ -171,7 +171,7 @@ node['travis_python']['pyenv']['pythons'].each do |py|
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment(
-      'HOME' => node['travis_build_environment']['home'],
+      'HOME' => node['travis_build_environment']['home']
     )
   end
 end
