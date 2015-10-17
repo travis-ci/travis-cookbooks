@@ -55,6 +55,12 @@ directory '/opt/python' do
   mode 0755
 end
 
+directory "#{node['travis_build_environment']['home']}/.pyenv/versions" do
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0755
+end
+
 directory virtualenv_root do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
@@ -118,6 +124,12 @@ node['travis_python']['pyenv']['pythons'].each do |py|
     group node['travis_build_environment']['group']
   end
 
+  link "#{node['travis_build_environment']['home']}/.pyenv/versions/#{py}" do
+    to "/opt/python/#{py}"
+    owner node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+  end
+
   bindirs << "/opt/python/#{py}/bin"
 
   travis_python_virtualenv "python_#{py}" do
@@ -155,13 +167,26 @@ node['travis_python']['pyenv']['pythons'].each do |py|
   end
 
   execute "install packages #{py}" do
-    command "#{virtualenv_root}/#{pyname}/bin/pip install --upgrade #{packages.join(' ')}"
+    command "#{virtualenv_root}/#{pyname}/bin/pip install -I -U #{packages.join(' ')}"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment(
-      'HOME' => node['travis_build_environment']['home']
+      'HOME' => node['travis_build_environment']['home'],
     )
   end
+end
+
+file "#{node['travis_build_environment']['home']}/.pyenv/version" do
+  content "#{node['travis_python']['pyenv']['pythons'].first}\n"
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0644
+end
+
+execute 'pyenv rehash' do
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  environment('HOME' => node['travis_build_environment']['home'])
 end
 
 template '/etc/profile.d/pyenv.sh' do
