@@ -167,7 +167,7 @@ node['travis_python']['pyenv']['pythons'].each do |py|
   end
 
   execute "install packages #{py}" do
-    command "#{virtualenv_root}/#{pyname}/bin/pip install -I -U #{packages.join(' ')}"
+    command "#{virtualenv_root}/#{pyname}/bin/pip install -U #{packages.join(' ')}"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment(
