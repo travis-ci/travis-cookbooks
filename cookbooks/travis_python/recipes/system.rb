@@ -21,16 +21,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-virtualenv_root = File.join(node['travis_build_environment']['home'], 'virtualenv')
+virtualenv_root = "#{node['travis_build_environment']['home']}/virtualenv"
 
-# Install Python2 and Python3
-package %w(python-dev python3-dev)
+python_runtime %w(2 3) do
+  options :system, dev_package: true
+end
 
-# Create a directory to store our virtualenvs in
 directory virtualenv_root do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode '0755'
+  mode 0755
 
   action :create
 end
@@ -38,29 +38,24 @@ end
 node['travis_python']['system']['pythons'].each do |py|
   pyname = "python#{py}"
 
-  travis_python_virtualenv "#{pyname}_with_system_site_packages" do
-    owner node['travis_build_environment']['user']
-    group node['travis_build_environment']['group']
-    interpreter "/usr/bin/#{pyname}"
-    path "#{virtualenv_root}/#{pyname}_with_system_site_packages"
-    system_site_packages true
+  virtualenv_name = "#{virtualenv_root}/#{pyname}_with_system_site_packages"
 
-    action :create
+  python_virtualenv virtualenv_name do
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    python "/usr/bin/#{pyname}"
+    system_site_packages true
   end
 
-  # Build a list of packages up so that we can install them
   packages = []
+
   node['travis_python']['pyenv']['aliases'].fetch(py, []).concat(['default', py]).each do |name|
     packages.concat node['travis_python']['pip']['packages'].fetch(name, [])
   end
 
-  # Install all of the pre-installed packages we want
-  execute "install packages #{pyname}_with_system_site_packages" do
-    command "#{virtualenv_root}/#{pyname}_with_system_site_packages/bin/pip install --upgrade #{packages.join(' ')}"
+  python_package packages do
+    virtualenv virtualenv_name
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    environment(
-      'HOME' => node['travis_build_environment']['home']
-    )
   end
 end

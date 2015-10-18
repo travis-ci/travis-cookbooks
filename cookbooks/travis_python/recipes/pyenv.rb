@@ -23,8 +23,6 @@
 
 virtualenv_root = "#{node['travis_build_environment']['home']}/virtualenv"
 
-include_recipe 'travis_python::virtualenv'
-
 package %w(
   build-essential
   curl
@@ -94,6 +92,7 @@ node['travis_python']['pyenv']['pythons'].each do |py|
     pyname = py
   end
 
+  virtualenv_name = "#{virtualenv_root}/#{pyname}"
   downloaded_tarball = "#{Chef::Config[:file_cache_path]}/python-#{py}.tar.bz2"
 
   remote_file downloaded_tarball do
@@ -108,14 +107,14 @@ node['travis_python']['pyenv']['pythons'].each do |py|
     code "tar -xjf #{downloaded_tarball} --directory /"
     creates "/opt/python/#{py}"
     environment build_environment
-    only_if { File.exist?(downloaded_tarball) }
+    only_if { ::File.exist?(downloaded_tarball) }
   end
 
   bash "build #{py}" do
     code "python-build #{py} /opt/python/#{py}"
     creates "/opt/python/#{py}"
     environment build_environment
-    not_if { File.exist?("/opt/python/#{py}") }
+    not_if { ::File.exist?("/opt/python/#{py}") }
   end
 
   link "/opt/python/#{py}/bin/#{pyname}" do
@@ -132,11 +131,10 @@ node['travis_python']['pyenv']['pythons'].each do |py|
 
   bindirs << "/opt/python/#{py}/bin"
 
-  travis_python_virtualenv "python_#{py}" do
-    owner node['travis_build_environment']['user']
+  python_virtualenv virtualenv_name do
+    user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    interpreter "/opt/python/#{py}/bin/python"
-    path "#{virtualenv_root}/#{pyname}"
+    python "/opt/python/#{py}/bin/python"
     action :create
   end
 
@@ -166,13 +164,10 @@ node['travis_python']['pyenv']['pythons'].each do |py|
     packages.concat(node['travis_python']['pip']['packages'].fetch(name, []))
   end
 
-  execute "install packages #{py}" do
-    command "#{virtualenv_root}/#{pyname}/bin/pip install -U #{packages.join(' ')}"
+  python_package packages do
+    virtualenv virtualenv_name
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    environment(
-      'HOME' => node['travis_build_environment']['home']
-    )
   end
 end
 
