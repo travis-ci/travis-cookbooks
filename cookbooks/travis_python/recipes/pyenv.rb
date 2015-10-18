@@ -24,6 +24,10 @@
 include_recipe 'travis_python::virtualenv'
 
 virtualenv_root = "#{node['travis_build_environment']['home']}/virtualenv"
+ug_perms = %W(
+  #{node['travis_build_environment']['user']}
+  #{node['travis_build_environment']['group']}
+).join(':')
 
 package %w(
   build-essential
@@ -93,6 +97,7 @@ node['travis_python']['pyenv']['pythons'].each do |py|
     pyname = py
   end
 
+  bindirs << "/opt/python/#{py}/bin"
   virtualenv_name = "#{virtualenv_root}/#{pyname}"
   downloaded_tarball = "#{Chef::Config[:file_cache_path]}/python-#{py}.tar.bz2"
 
@@ -130,7 +135,9 @@ node['travis_python']['pyenv']['pythons'].each do |py|
     group node['travis_build_environment']['group']
   end
 
-  bindirs << "/opt/python/#{py}/bin"
+  bash "fix pyenv #{pyname} perms" do
+    code "chown -R #{ug_perms} /opt/python/#{py}"
+  end
 
   base_pyexe = "/opt/python/#{py}/bin/python"
 
