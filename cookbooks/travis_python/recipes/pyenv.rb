@@ -207,12 +207,6 @@ file "#{node['travis_build_environment']['home']}/.pyenv/version" do
   mode 0644
 end
 
-execute 'pyenv rehash' do
-  user node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  environment('HOME' => node['travis_build_environment']['home'])
-end
-
 template '/etc/profile.d/pyenv.sh' do
   source 'pyenv.sh.erb'
   owner node['travis_build_environment']['user']
@@ -223,4 +217,11 @@ template '/etc/profile.d/pyenv.sh' do
     build_environment: build_environment
   )
   backup false
+end
+
+bash 'pyenv rehash' do
+  code 'source /etc/profile.d/pyenv.sh && pyenv rehash'
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  environment('HOME' => node['travis_build_environment']['home'])
 end
