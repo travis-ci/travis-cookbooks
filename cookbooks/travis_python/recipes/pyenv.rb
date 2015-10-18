@@ -53,10 +53,15 @@ directory '/opt/python' do
   mode 0755
 end
 
-directory "#{node['travis_build_environment']['home']}/.pyenv/versions" do
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  mode 0755
+%W(
+  #{node['travis_build_environment']['home']}/.pyenv
+  #{node['travis_build_environment']['home']}/.pyenv/versions
+).each do |dirname|
+  directory dirname do
+    owner node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    mode 0755
+  end
 end
 
 directory virtualenv_root do
