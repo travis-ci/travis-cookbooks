@@ -136,6 +136,15 @@ node['travis_python']['pyenv']['pythons'].each do |py|
 
   bindirs << "/opt/python/#{py}/bin"
 
+  base_pyexe = "/opt/python/#{py}/bin/python"
+
+  bash "install pyenv base #{pyname} packages" do
+    code "#{base_pyexe} -m pip.__main__ install -U setuptools wheel virtualenv"
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    environment('HOME' => node['travis_build_environment']['home'])
+  end
+
   python_virtualenv virtualenv_name do
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
