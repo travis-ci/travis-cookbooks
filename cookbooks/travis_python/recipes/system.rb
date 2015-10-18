@@ -23,8 +23,10 @@
 
 virtualenv_root = "#{node['travis_build_environment']['home']}/virtualenv"
 
-python_runtime %w(2 3) do
-  options :system, dev_package: true
+node['travis_python']['system']['pythons'].each do |python_version|
+  python_runtime python_version do
+    options :system, dev_package: true
+  end
 end
 
 directory virtualenv_root do
