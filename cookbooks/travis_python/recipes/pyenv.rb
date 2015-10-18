@@ -21,6 +21,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+include_recipe 'travis_python::virtualenv'
+
 virtualenv_root = "#{node['travis_build_environment']['home']}/virtualenv"
 
 package %w(
@@ -62,12 +64,6 @@ end
     group node['travis_build_environment']['group']
     mode 0755
   end
-end
-
-directory virtualenv_root do
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  mode 0755
 end
 
 build_environment = {
