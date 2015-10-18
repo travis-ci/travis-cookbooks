@@ -55,9 +55,22 @@ node['travis_python']['system']['pythons'].each do |py|
     packages.concat node['travis_python']['pip']['packages'].fetch(name, [])
   end
 
-  python_package packages do
-    virtualenv virtualenv_name
+  pyexe = resources("python_virtualenv[#{virtualenv_name}]").python_binary
+
+  bash "install system #{pyname} packages" do
+    code "#{pyexe} -m pip.__main__ install #{Shellwords.join(packages)}"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
+    environment('HOME' => node['travis_build_environment']['home'])
   end
+
+  # This fails with perms errors on `/root/.cache`, but seems we can't set
+  # environment('HOME' => ...) or equiv easily.
+  #
+  # python_package packages do
+  #   virtualenv virtualenv_name
+  #   user node['travis_build_environment']['user']
+  #   group node['travis_build_environment']['group']
+  #   action :nothing
+  # end
 end
