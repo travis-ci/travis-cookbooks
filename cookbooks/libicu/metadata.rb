@@ -1,6 +1,0 @@
-maintainer 'Travis CI Development Team'
-license 'Apache v2.0'
-name 'libicu'
-version '1.0.0'
-description 'libicu'
-long_description 'Installs/Configures libicu'
