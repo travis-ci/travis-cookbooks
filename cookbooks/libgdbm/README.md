@@ -1,1 +1,0 @@
-# libgdbm cookbook
