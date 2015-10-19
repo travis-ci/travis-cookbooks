@@ -48,3 +48,7 @@ package 'software-properties-common'
 ).each do |source_alias|
   execute "apt-add-repository -y #{source_alias}"
 end
+
+execute 'gencaches for travis_build_environment::apt' do
+  command 'apt-cache gencaches'
+end
