@@ -39,3 +39,12 @@ cookbook_file '/etc/apt/apt.conf.d/10periodic' do
   group 'root'
   mode 0644
 end
+
+package 'software-properties-common'
+
+%w(
+  universe
+  multiverse
+).each do |source_alias|
+  execute "apt-add-repository -y #{source_alias}"
+end
