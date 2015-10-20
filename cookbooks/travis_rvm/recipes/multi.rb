@@ -24,29 +24,26 @@ include_recipe 'rvm::system'
 include_recipe 'travis_java'
 include_recipe 'ant'
 
-gems = (node['travis_rvm']['gems'] || %w(bundler rake))
-rvm  = 'source /usr/local/rvm/scripts/rvm && rvm'
-
-node['travis_rvm']['rubies'].each do |ruby|
-  bash "Installing #{ruby['name']} with RVM arguments #{ruby['arguments']}" do
-    code "#{rvm} install #{ruby['name']} #{ruby['arguments']}"
-    not_if "#{rvm} list | grep #{ruby['check_for'] || ruby['name']}"
+node['travis_rvm']['rubies'].each do |ruby_name|
+  rvm_ruby ruby_name do
+    user node['travis_build_environment']['user']
   end
 
-  name = ruby['check_for'] || ruby['name']
-
-  gems.each do |gem|
-    bash "Installing gem #{gem} for #{name}" do
-      code "#{rvm} use #{name}; gem install #{gem} --no-ri --no-rdoc"
+  (node['travis_rvm']['gems'] || %w(bundler rake)).each do |gem|
+    rvm_shell "gem install #{gem} --no-ri --no-rdoc" do
+      ruby_string ruby_name
+      user node['travis_build_environment']['user']
+      group node['travis_build_environment']['group']
     end
   end
 end
 
-bash "Set default ruby to #{node['travis_rvm']['default']}" do
-  code "#{rvm} --default use #{node['travis_rvm']['default']}"
+rvm_default_ruby node['travis_rvm']['default'] do
+  user node['travis_build_environment']['user']
   not_if { (node['travis_rvm']['default'] || '').empty? }
 end
 
-bash 'clean up RVM sources, log files, etc' do
-  code "#{rvm} cleanup all"
+rvm_shell 'rvm cleanup all' do
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
 end
