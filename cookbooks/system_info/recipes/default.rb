@@ -46,13 +46,14 @@ bash 'execute-system_info' do
   cwd system_info_dir
   code <<-EOF
     [[ -f #{rvm_source} ]] && source #{rvm_source}
-    #{node['system_info']['use_bundler'] ? 'bundle exec' : ''} ./bin/system_info #{node['system_info']['cookbooks_sha'] || 'fffffff'}
+    #{node['system_info']['use_bundler'] ? 'bundle exec' : ''} ./bin/system_info
   EOF
   environment(
     'HOME' => node['travis_build_environment']['home'],
     'FORMATS' => 'human,json',
     'HUMAN_OUTPUT' => "#{system_info_dest}/system_info",
     'JSON_OUTPUT' => "#{system_info_dest}/system_info.json",
-    'COMMANDS_FILE' => node['system_info']['commands_file']
+    'COMMANDS_FILE' => node['system_info']['commands_file'],
+    'COOKBOOKS_SHA' => node['system_info']['travis_cookbooks_sha'] || 'fffffff'
   )
 end
