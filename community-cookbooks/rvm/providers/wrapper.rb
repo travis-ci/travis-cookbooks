@@ -48,6 +48,7 @@ action :create do
   @rvm_env.use @ruby_string
 
   @binaries.each { |b| create_wrapper(b) }
+  new_resource.updated_by_last_action(true)
 end
 
 private

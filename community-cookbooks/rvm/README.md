@@ -1,4 +1,4 @@
-# <a name="title"></a> chef-rvm [![Build Status](https://secure.travis-ci.org/fnichol/chef-rvm.png?branch=master)](http://travis-ci.org/fnichol/chef-rvm)
+# <a name="title"></a> chef-rvm [![Build Status](https://secure.travis-ci.org/martinisoft/chef-rvm.png?branch=master)](http://travis-ci.org/martinisoft/chef-rvm)
 
 ## <a name="description"></a> Description
 
@@ -17,14 +17,14 @@ details.
 
 If you want a per-user install (like on a Mac/Linux workstation for
 development), include `recipe[rvm::user]` in your run_list and add a user
-hash to the `user_installs` attribute list. For example:
+hash to the `installs` attribute hash. For example:
 
-    node['rvm']['user_installs'] = [
-      { 'user'          => 'wigglebottom',
-        'default_ruby'  => 'rbx',
-        'rubies'        => ['1.9.2', '1.8.7']
+    node.set["rvm"]["installs"] = {
+      "wigglebottom" => {
+        "default_ruby"  => "rbx",
+        "rubies"        => ["1.9.2", "1.8.7"]
       }
-    ]
+    }
 
 See below for more details.
 
@@ -39,11 +39,11 @@ section for more details.
 
 If you want to manage your own RVM environment for users with the provided
 LWRPs, then include `recipe[rvm::user_install]` in your run_list and add a
-user hash to the `user_installs` attribute list. For example:
+user hash to the `installs` attribute hash. For example:
 
-    node['rvm']['user_installs'] = [
-      { 'user' => 'wigglebottom' }
-    ]
+    node.set["rvm"]["installs"] = {
+      "wigglebottom" => true
+    }
 
 See the **Resources and Providers** section for more details.
 
@@ -66,7 +66,7 @@ read the recipe details before attempting.
 
 ### <a name="requirements-chef"></a> Chef
 
-Tested on 0.10.2/0.10.4 and 0.9.16 but newer and older versions (of 0.9.x)
+Tested on 11.6.0 but newer and older versions (of 10/11)
 should work just fine. Due to the `rvm_gem` implementation, versions 0.8.x
 of Chef currently will **not** work (see [GH-50][gh50]).
 
@@ -207,7 +207,7 @@ etc.
 ### <a name="recipes-user-install"></a> user_install
 
 Installs the RVM codebase for a list of users (selected from the
-`node['rvm']['user_installs']` hash). This recipe includes *default*.
+`node['rvm']['installs']` hash). This recipe includes *default*.
 
 Use this recipe by itself if you want RVM installed for specific users in
 isolation but want each user to handle installing Rubies, invoking LWRPs, etc.
@@ -215,7 +215,7 @@ isolation but want each user to handle installing Rubies, invoking LWRPs, etc.
 ### <a name="recipes-user"></a> user
 
 Installs the RVM codebase for a list of users (selected from the
-`node['rvm']['user_installs']` hash) and installs Rubies, global gems, and
+`node['rvm']['installs']` hash) and installs Rubies, global gems, and
 specific gems driven off attribute metadata. This recipe includes *default*
 and *user_install*.
 
@@ -369,126 +369,85 @@ the `gems` attribute for an example.
 
 The default is an empty hash: `{}`.
 
-### <a name="attributes-rvmrc"></a> rvmrc
+### <a name="attributes-rvmrc-env"></a> rvmrc\_env
 
 A hash of system-wide `rvmrc` options. The key is the RVM setting name
 (in String or Symbol form) and the value is the desired setting value.
-An example used on a build box might be:
+If the value is set to `false` or `nil` then this value will not be
+included. An example used on a build box might be:
 
-    node['rvm']['rvmrc'] = {
+    node.set['rvm']['rvmrc_env'] = {
       'rvm_project_rvmrc'             => 1,
       'rvm_gemset_create_on_use_flag' => 1,
-      'rvm_trust_rvmrcs_flag'         => 1
+      'rvm_trust_rvmrcs_flag'         => 1,
+      'rvm_gem_options'               => false
+    }
+
+The default is: `{ "rvm_gem_options" => "--no-ri --no-rdoc" }`.
+
+### <a name="attributes-installs"></a> installs
+
+A hash of user specific RVM installation hashes. The `user_install` and
+`user` recipes use this attribute to determine per-user installation settings.
+The hash keys correspond to the default/system equivalents. For example:
+
+    node["rvm"]["installs"] = {
+      "jdoe" => {
+        "rvmrc_env" => {
+          "rvm_gem_options" => false
+        },
+        "action"          => "force",
+        "default_ruby"    => "ree",
+        "global_gems"     => [
+          { "name"    => "bundler",
+            "version" => "1.1.pre.7"
+          },
+          { "name"    => "rake" }
+        ]
+      },
+      "jenkins" => {
+        "installer_flags" => "--version 1.19.0",
+        "default_ruby"  => "jruby-1.6.3",
+        "rubies" => [
+          "ree-1.8.7",
+          "jruby",
+          {
+            "version" => "1.9.3-p125-perf",
+            "patch" => "falcon",
+            "rubygems_version" => "1.5.2"
+          }
+        ],
+        "rvmrc_env"      => {
+          "rvm_project_rvmrc"             => 1,
+          "rvm_gemset_create_on_use_flag" => 1,
+          "rvm_pretty_print_flag"         => 1
+        },
+        "global_gems"   => [
+          { "name"    => "bundler",
+            "version" => "1.1.pre.7"
+          },
+          { "name"    => "rake",
+            "version" => "0.8.7"
+          }
+        ]
+      }
     }
 
 The default is an empty hash: `{}`.
 
-### <a name="attributes-user-installs"></a> user_installs
-
-A list of user specific RVM installation hashes. The `user_install` and
-`user` recipes use this attribute to determine per-user installation settings.
-The hash keys correspond to the default/system equivalents. For example:
-
-    node['rvm']['user_installs'] = [
-      { 'user'            => 'jdoe',
-        'upgrade'         => "head",
-        'default_ruby'    => 'ree',
-        'rvm_gem_options' => "",
-        'global_gems'     => [
-          { 'name'    => 'bundler',
-            'version' => '1.1.pre.7'
-          },
-          { 'name'    => 'rake' },
-          { 'name'    => 'rubygems-bundler',
-            'action'  => 'remove'
-          }
-        ]
-      },
-      { 'user'          => 'jenkins',
-        'version'       => '1.7.0',
-        'default_ruby'  => 'jruby-1.6.3',
-        'rubies' => [
-          "ree-1.8.7",
-          "jruby",
-          {
-            'version' => '1.9.3-p125-perf',
-            'patch' => "falcon",
-            'rubygems_version' => '1.5.2'
-          }
-        ],
-        'rvmrc'         => {
-          'rvm_project_rvmrc'             => 1,
-          'rvm_gemset_create_on_use_flag' => 1,
-          'rvm_pretty_print_flag'         => 1
-        },
-        'global_gems'   => [
-          { 'name'    => 'bundler',
-            'version' => '1.1.pre.7'
-          },
-          { 'name'    => 'rake',
-            'version' => '0.8.7'
-          },
-          { 'name'    => 'rubygems-bundler',
-            'action'  => 'remove'
-          }
-        ]
-      }
-    ]
-
-The default is an empty list: `[]`.
-
-### <a name="attributes-installer-url"></a> installer_url
+### <a name="attributes-installer-url"></a> installer\_url
 
 The URL that provides the RVM installer.
 
-The default is `"https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer"`.
+The default is `"https://get.rvm.io"`.
 
-### <a name="attributes-branch"></a> branch
+### <a name="attributes-installer-flags"></a> installer\_flags
 
-A specific git branch to use when installing system-wide. For example:
+The default string of arguments passed to an RVM installation script. The value
+will be used as the default flag string for all
+[rvm_installation][#resources-rvm-installation] resources.
 
-    node['rvm']['branch'] = "crazy"
-
-The default is `"stable"` which corresponds to the stable release branch.
-
-### <a name="attributes-version"></a> version
-
-A specific tagged version or head of a branch to use when installing
-system-wide. This value is passed directly to the `rvm-installer` script and
-current valid values are:
-
-* `"head"` - the default, last git commit on a branch
-* a specific tagged version of the form `"1.2.3"`.
-
-You may want to use a specific version of RVM to prevent differences in
-deployment from one day to the next (RVM head moves pretty darn quickly).
-
-**Note** that if a version number is used, then `"none"` should be the value
-of the `branch` attribute. For example:
-
-    node['rvm']['version'] = "1.13.4"
-    node['rvm']['branch']  = "none"
-
-The default is `"head"`.
-
-### <a name="attributes-upgrade"></a> upgrade
-
-Determines how to handle installing updates to the RVM framework system-wide.
-The value of this string is passed to `rvm get`. The possible values include:
-
-* `"none"`, `false`, or `nil`: will not update RVM and leave it in its
-  current state.
-* Any other value is passed to `rvm get` as described on the
-  [upgrading][rvm_upgrading] page. For example: `"latest"`, `"stable"`,
-  and `"branch mpapis/shoes"`.
-
-The default is `"none"`.
-
-### <a name="attributes-root-path"></a> root_path
-
-The path prefix to RVM in a system-wide installation.
-
-The default is `"/usr/local/rvm"`.
+The default is `"stable"`.
 
 ### <a name="attributes-group-id"></a> group_id
 
@@ -505,40 +464,6 @@ A list of users that will be added to the `rvm` group. These users
 will then be able to manage RVM in a system-wide installation.
 
 The default is an empty list: `[]`.
-
-### <a name="attributes-rvm-gem-options"></a> rvm_gem_options
-
-These options are passed to the *gem* command in an RVM environment.
-In the interest of speed, rdoc and ri docs will not be generated by default.
-To re-enable the documentation generation set:
-
-    node['rvm']['rvm_gem_options'] = "--rdoc --ri"
-
-The default is `"--no-rdoc --no-ri"`.
-
-### <a name="attributes-install-rubies"></a> install_rubies (Future Deprecation)
-
-Can enable or disable installation of a default Ruby and additional Rubies
-system-wide. For example:
-
-    node['rvm']['install_rubies'] = "false"
-
-The default is `"true"`.
-
-**Note:** This remains a legacy setting and will be deprecated in
-the next minor version release.
-
-### <a name="attributes-user-install-rubies"></a> iuser_install_rubies (Future Deprecation)
-
-Can enable or disable installation of a default Ruby and additional Rubies
-per user. For example:
-
-    node['rvm']['user_install_rubies'] = "false"
-
-The default is `"true"`.
-
-**Note:** This remains a legacy setting and will be deprecated in
-the next minor version release.
 
 ### <a name="attributes-gem-package-rvm-string"></a> gem_package/rvm_string
 
@@ -598,7 +523,7 @@ The default is `"/opt/ruby/bin/chef-solo"`.
   </tbody>
 </table>
 
-1. [RVM rubies/installing][rvm_install]
+1. [RVM rubies/installing][rvm_ruby_install]
 2. [RVM rubies/removing][rvm_remove]
 3. [RVM rubies/removing][rvm_remove]
 
@@ -1467,18 +1392,14 @@ under `node['rvm']['root_path']`.
 
 ## <a name="contributing"></a> Contributing
 
-* Source hosted at [GitHub][repo]
-* Report issues/Questions/Feature requests on [GitHub Issues][issues]
-
-Pull requests are very welcome! Make sure your patches are well tested.
-Ideally create a topic branch for every seperate change you make.
+See the CONTRIBUTING.md file
 
 ### Testing
 
 Make sure you have the following requirements setup:
 
-* [Vagrant](http://www.vagrantup.com/)
-* [vagrant-berkshelf](https://github.com/riotgames/vagrant-berkshelf) plugin for Vagrant
+* [Vagrant][vagrant]
+* [vagrant-berkshelf][vagrant-berkshelf]
 
 After you `bundle install` run `rake` for unit tests and `kitchen test` for
 integration level tests.
@@ -1526,12 +1447,13 @@ limitations under the License.
 [rvm_empty_gemset]:     https://rvm.io/gemsets/emptying/
 [rvm_default]:          https://rvm.io/rubies/default/
 [rvm_gemsets]:          https://rvm.io/gemsets/
-[rvm_install]:          https://rvm.io/rubies/installing/
+[rvm_install]:          https://rvm.io/rvm/install/
 [rvm_remove]:           https://rvm.io/rubies/removing/
+[rvm_ruby_install]:     https://rvm.io/rubies/installing/
 [rvm_upgrading]:        https://rvm.io/rvm/upgrading/
 [script_resource]:      http://wiki.opscode.com/display/chef/Resources#Resources-Script
 [vagrant]:              http://vagrantup.com
-[vagrant-berkshelf]:    https://github.com/berkshelf/vagrant-berkshelf
+[vagrant-berkshelf]:    https://github.com/RiotGames/vagrant-berkshelf
 
 [repo]:         https://github.com/fnichol/chef-rvm
 [issues]:       https://github.com/fnichol/chef-rvm/issues

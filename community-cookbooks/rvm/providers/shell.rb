@@ -44,6 +44,7 @@ action :run do
   end
 
   script_wrapper :run
+  new_resource.updated_by_last_action(true)
 end
 
 private
