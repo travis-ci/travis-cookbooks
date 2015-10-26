@@ -41,7 +41,7 @@ default['travis_build_environment']['language_codes'] = %w(
 ).map { |l| "#{l}.UTF-8" }
 default['travis_build_environment']['rubies'] = %w(1.9.3-p551 2.2.3)
 default['travis_build_environment']['default_ruby'] = '2.2.3'
-default['travis_build_environment']['gems'] = []
+default['travis_build_environment']['gems'] = {}
 default['travis_build_environment']['global_gems'] = %w(
   bundler
   nokogiri
