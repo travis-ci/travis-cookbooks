@@ -93,6 +93,7 @@ bash 'import mpapis.asc' do
   code "gpg2 --import #{Chef::Config[:file_cache_path]}/mpapis.asc"
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
+  environment('HOME' => node['travis_build_environment']['home'])
   action :nothing
 end
 
