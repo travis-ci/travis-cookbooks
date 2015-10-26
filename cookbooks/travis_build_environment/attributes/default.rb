@@ -39,6 +39,31 @@ default['travis_build_environment']['language_codes'] = %w(
   zh_CN
   zh_TW
 ).map { |l| "#{l}.UTF-8" }
+default['travis_build_environment']['rubies'] = %w(1.9.3-p551 2.2.3)
+default['travis_build_environment']['default_ruby'] = '2.2.3'
+default['travis_build_environment']['gems'] = {}
+default['travis_build_environment']['global_gems'] = %w(
+  bundler
+  nokogiri
+  rake
+).map { |gem| { name: gem } }
+default['travis_build_environment']['rvmrc_env'] = {
+  'rvm_autoupdate_flag' => '0',
+  'rvm_binary_flag' => '1',
+  'rvm_fuzzy_flag' => '1',
+  'rvm_remote_flag' => '1',
+  'rvm_gem_options' => '--no-ri --no-rdoc',
+  'rvm_max_time_flag' => '5',
+  'rvm_path' => "#{node['travis_build_environment']['home']}/.rvm",
+  'rvm_project_rvmrc' => '0',
+  'rvm_remote_server_type3' => 'rubies',
+  'rvm_remote_server_url3' => 'https://s3.amazonaws.com/travis-rubies/binaries',
+  'rvm_remote_server_verify_downloads3' => '1',
+  'rvm_silence_path_mismatch_check_flag' => '1',
+  'rvm_user_install_flag' => '1',
+  'rvm_with_default_gems' => 'rake bundler',
+  'rvm_without_gems' => 'rubygems-bundler'
+}
 default['travis_build_environment']['prerequisite_recipes'] = %w(
   travis_timezone
   sysctl

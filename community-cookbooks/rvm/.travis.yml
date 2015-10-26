@@ -1,4 +1,9 @@
 language: ruby
 rvm:
-  - 1.9.3-p484
+  - 2.0.0
+  - 2.1.2
+  - 2.2.0
 bundler_args: --without integration development
+script:
+  - bundle exec rake unit
+  - bundle exec rake foodcritic
