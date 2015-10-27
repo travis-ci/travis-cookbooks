@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe 'python::package'
+include_recipe 'travis_python::package'
 
 apt_repository 'mercurial-ppa' do
   uri 'http://ppa.launchpad.net/mercurial-ppa/releases/ubuntu'

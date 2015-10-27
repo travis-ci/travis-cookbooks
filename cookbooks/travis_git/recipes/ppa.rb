@@ -16,13 +16,8 @@
 # limitations under the License.
 
 apt_repository 'git-ppa' do
-  uri 'http://ppa.launchpad.net/git-core/v1.8/ubuntu'
+  uri 'ppa:git-core/ppa'
   distribution node['lsb']['codename']
-  components ['main']
-  key 'E1DF1F24'
-  keyserver 'keyserver.ubuntu.com'
-
-  action :add
 end
 
 package 'git'

@@ -43,3 +43,14 @@ template '/etc/profile.d/phpenv.sh' do
   source 'phpenv.sh.erb'
   variables(phpenv_path: phpenv_path)
 end
+
+# A couple fixes for building php 5.3.29c and 5.4.45
+
+package 'libxslt1-dev' do
+  action :install
+end
+
+link '/usr/include/freetype2/freetype' do
+  to 'usr/include/freetype2'
+  action :create
+end

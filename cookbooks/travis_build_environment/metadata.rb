@@ -7,6 +7,7 @@ long_description 'Travis build environment'
 
 depends 'iptables'
 depends 'openssh'
+depends 'rvm'
 depends 'sysctl'
 depends 'travis_timezone'
 depends 'unarchivers'
