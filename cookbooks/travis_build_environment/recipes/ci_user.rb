@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+include_recipe 'rvm::default'
+
 user node['travis_build_environment']['user'] do
   supports manage_home: true
   manage_home true
@@ -86,3 +88,32 @@ link '/home/vagrant' do
   to node['travis_build_environment']['home']
   not_if { File.exist?('/home/vagrant') }
 end
+
+bash 'import mpapis.asc' do
+  code "gpg2 --import #{Chef::Config[:file_cache_path]}/mpapis.asc"
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  environment('HOME' => node['travis_build_environment']['home'])
+  action :nothing
+end
+
+remote_file "#{Chef::Config[:file_cache_path]}/mpapis.asc" do
+  source 'https://rvm.io/mpapis.asc'
+  checksum '6ba1ebe6b02841db9ea3b73b85d4ede87192584efc7dfe13fe42a29416767ffa'
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0644
+  notifies :run, 'bash[import mpapis.asc]', :immediately
+end
+
+rvm_installation node['travis_build_environment']['user'] do
+  rvmrc_env node['travis_build_environment']['rvmrc_env']
+end
+
+install_rubies(
+  rubies: node['travis_build_environment']['rubies'],
+  default_ruby: node['travis_build_environment']['default_ruby'],
+  global_gems: node['travis_build_environment']['global_gems'],
+  gems: node['travis_build_environment']['gems'],
+  user: node['travis_build_environment']['user']
+)

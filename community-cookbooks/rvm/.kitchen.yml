@@ -1,25 +1,20 @@
 ---
 driver_plugin: vagrant
+driver_config:
+  require_chef_omnibus: true
 
 platforms:
+- name: ubuntu-14.04
+  run_list:
+  - recipe[apt]
 - name: ubuntu-12.04
-  driver_config:
-    box: opscode-ubuntu-12.04
-    box_url: https://opscode-vm.s3.amazonaws.com/vagrant/boxes/opscode-ubuntu-12.04.box
   run_list:
   - recipe[apt]
 - name: ubuntu-10.04
-  driver_config:
-    box: opscode-ubuntu-10.04
-    box_url: https://opscode-vm.s3.amazonaws.com/vagrant/boxes/opscode-ubuntu-10.04.box
   run_list:
   - recipe[apt]
-- name: centos-6.3
-  driver_config:
-    box: opscode-centos-6.3
-    box_url: https://opscode-vm.s3.amazonaws.com/vagrant/boxes/opscode-centos-6.3.box
-  run_list:
-  - recipe[yum::epel]
+- name: debian-7.6
+- name: centos-6.4
 
 suites:
 - name: stock_system_and_user
@@ -33,7 +28,7 @@ suites:
     rvm:
       user_installs:
       - user: wigglebottom
-        default_ruby: 1.8.7
+        default_ruby: 1.9.3-p484
 - name: rubies
   run_list:
   - recipe[java]
@@ -55,7 +50,7 @@ suites:
   attributes:
     rvm:
       default_ruby: rbx
-- name: rvm_versions
+- name: installs
   run_list:
   - recipe[user::data_bag]
   - recipe[rvm::user_install]
@@ -64,8 +59,8 @@ suites:
     - virgil1
     - virgil2
     rvm:
-      user_installs:
-      - user: virgil1
-        version: 1.17.10
-      - user: virgil2
-        version: 1.16.20
+      installs:
+        virgil1:
+          installer_flags: --version 1.19.6
+        virgil2:
+          installer_flags: --version 1.21.20
