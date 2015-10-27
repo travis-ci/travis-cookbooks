@@ -1,31 +1,36 @@
 ---
-driver_plugin: vagrant
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
+  require_chef_omnibus: 11.14
 
 platforms:
 
-- name: ubuntu-trusty
-  driver_config:
-    box: 'ubuntu/trusty64'
-    require_chef_omnibus: true
+- name: ubuntu-12.04
+  driver:
     customize:
       memory: 384
     run_list:
       - recipe[apt]
 
-- name: ubuntu-precise
-  driver_config:
-    box: 'ubuntu/precise64'
-    require_chef_omnibus: true
+- name: ubuntu-14.04
+  driver:
     customize:
-      memory: 512
+      memory: 384
     run_list:
       - recipe[apt]
 
-- name: centos-6.4
-  driver_config:
-    box: opscode-centos-6.4
-    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_centos-6.4_provisionerless.box
-    require_chef_omnibus: true
+- name: centos-6.6
+  driver:
+    customize:
+      memory: 512
+    run_list:
+      - recipe[yum]
+
+- name: centos-7.1
+  driver:
     customize:
       memory: 512
     run_list:
@@ -43,9 +48,9 @@ suites:
       owner: vagrant
       group: vagrant
     components:
-      - build-tools-19.1.0
-      - android-19
-      - sysimg-19
+      - build-tools-22.1.0
+      - android-22
+      - sysimg-22
     java:
       jdk_version: 7
 
@@ -57,4 +62,6 @@ suites:
       jdk_version: 7
     android-sdk:
       components:
-        - build-tools-19.0.1
+        - build-tools-22.0.1
+        - android-22
+        - sys-img-armeabi-v7a-android-22

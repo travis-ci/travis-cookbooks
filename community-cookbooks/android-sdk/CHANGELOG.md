@@ -1,13 +1,18 @@
 CHANGELOG for Android-SDK cookbook
 ==================================
 
-v0.2.0 (upcoming)
+v0.2.0 (2015-10-17)
 -------------------
 
-- Integrate by default with Android SDK 23.0.0
-- WIP: Optionally install Maven Android SDK Deployer [GH-14]
+- Integrate by default with Android SDK 24.4.0 (October 2015)
+- Add the `java_from_system` option to skip java cookbook dependency (disabled by default)
+- Add the `set_environment_variables` option to automatically set related environment variables
+  in user shell (enabled by default)
+- Add the `with_symlink` option to use ark's friendly symlink feature (enabled by default)
 - Deploy scripts for waiting on Emulator startup [GH-16]
 - Deploy scripts for non-interactive SDK setup/updates [GH-13]
+- Add Rubocop checks [GH-7]
+- Optionally install Maven Android SDK Deployer [GH-14]
 
 v0.1.1 (2014-04-01)
 -------------------

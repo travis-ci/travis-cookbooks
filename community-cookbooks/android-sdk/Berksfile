@@ -7,7 +7,7 @@ group :integration do
   cookbook 'yum'
   cookbook 'java'
 
-  #TODO better understand Berkshelf, and how to DRY .kitchen.yml and Berksfile...
+  # TODO: better understand Berkshelf, and how to DRY .kitchen.yml and Berksfile...
   cookbook 'maven'
   cookbook 'git'
 end
