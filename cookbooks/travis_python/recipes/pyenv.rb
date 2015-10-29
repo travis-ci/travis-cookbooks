@@ -91,7 +91,13 @@ node['travis_python']['pyenv']['pythons'].each do |py|
   downloaded_tarball = "#{Chef::Config[:file_cache_path]}/python-#{py}.tar.bz2"
 
   remote_file downloaded_tarball do
-    source "https://s3.amazonaws.com/travis-python-archives/#{node['lsb']['release']}/python-#{py}.tar.bz2"
+    source ::File.join(
+      'https://s3.amazonaws.com/travis-python-archives/binaries',
+      node['platform'],
+      node['platform_version'],
+      node['kernel']['machine'],
+      ::File.basename(downloaded_tarball)
+    )
     owner 'root'
     group 'root'
     mode 0644
