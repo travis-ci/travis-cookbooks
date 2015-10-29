@@ -14,7 +14,7 @@ Requirements
 ------------
 
 * Depends on **opscode/ark** and **opscode/java** cookbooks
-* This cookbook currently supports Ubuntu 12.04+, but more Linux distributions are welcome (depending on community interests)
+* This cookbook currently supports Ubuntu 12.04+ and CentOS 6.6+, but more Linux distributions are welcome (depending on community interests)
 
 Attributes
 ----------
