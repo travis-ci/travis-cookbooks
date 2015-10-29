@@ -12,3 +12,6 @@ default['travis_java']['oraclejdk7']['pinned_release'] = nil
 default['travis_java']['oraclejdk8']['jvm_name'] = 'java-8-oracle'
 default['travis_java']['oraclejdk8']['install_jce_unlimited'] = true
 default['travis_java']['oraclejdk8']['pinned_release'] = nil
+default['travis_java']['oraclejdk9']['jvm_name'] = 'java-9-oracle'
+default['travis_java']['oraclejdk9']['install_jce_unlimited'] = true
+default['travis_java']['oraclejdk9']['pinned_release'] = nil

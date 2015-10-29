@@ -2,7 +2,7 @@
 # Cookbook Name:: travis_java
 # Recipe:: oraclejdk8
 #
-# Copyright 2012, Michael S. Klishin & Travis CI Development Team
+# Copyright 2012-2015, Michael S. Klishin & Travis CI Development Team
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

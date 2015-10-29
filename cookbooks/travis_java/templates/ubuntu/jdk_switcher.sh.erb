@@ -56,6 +56,16 @@ else
     ORACLEJDK8_JAVA_HOME="/usr/lib/jvm/java-8-oracle"
 fi
 
+# The java::oraclejdk9 recipe from github.com/travis-ci/travis-cookbooks
+# takes care of this alias. We take it for granted here. MK.
+if [[ -d "/usr/lib/jvm/java-9-oracle-$ARCH_SUFFIX" ]] ; then
+    ORACLEJDK9_UJA_ALIAS="java-9-oracle-$ARCH_SUFFIX"
+    ORACLEJDK9_JAVA_HOME="/usr/lib/jvm/java-8-oracle-$ARCH_SUFFIX"
+else
+    ORACLEJDK9_UJA_ALIAS="java-9-oracle"
+    ORACLEJDK9_JAVA_HOME="/usr/lib/jvm/java-9-oracle"
+fi
+
 UJA="update-java-alternatives"
 
 switch_to_openjdk6 () {
@@ -88,6 +98,12 @@ switch_to_oraclejdk8 () {
     export JAVA_HOME="$ORACLEJDK8_JAVA_HOME"
 }
 
+switch_to_oraclejdk9 () {
+    echo "Switching to Oracle JDK9 ($ORACLEJDK9_UJA_ALIAS), JAVA_HOME will be set to $ORACLEJDK9_JAVA_HOME"
+    sudo $UJA --set "$ORACLEJDK9_UJA_ALIAS"
+    export JAVA_HOME="$ORACLEJDK9_JAVA_HOME"
+}
+
 print_home_of_openjdk6 () {
     echo "$OPENJDK6_JAVA_HOME"
 }
@@ -106,6 +122,10 @@ print_home_of_oraclejdk7 () {
 
 print_home_of_oraclejdk8 () {
     echo "$ORACLEJDK8_JAVA_HOME"
+}
+
+print_home_of_oraclejdk9 () {
+    echo "$ORACLEJDK9_JAVA_HOME"
 }
 
 warn_sunjdk6_eol () {
@@ -145,6 +165,9 @@ switch_jdk()
             ;;
         oraclejdk8|oraclejdk1.8|oraclejdk1.8.0|oracle8|oracle1.8.0|oracle8.0)
             switch_to_oraclejdk8
+            ;;
+        oraclejdk9|oraclejdk1.9|oraclejdk1.9.0|oracle9|oracle1.9.0|oracle9.0)
+            switch_to_oraclejdk9
             ;;
         default)
             <% unless node['travis_java']['default_version'].empty? %>
@@ -187,6 +210,9 @@ print_java_home()
             ;;
         oraclejdk8|oraclejdk1.8|oraclejdk1.8.0|oracle8|oracle1.8.0|oracle8.0)
             print_home_of_oraclejdk8
+            ;;
+        oraclejdk9|oraclejdk1.9|oraclejdk1.9.0|oracle9|oracle1.9.0|oracle9.0)
+            print_home_of_oraclejdk9
             ;;
         default)
             <% unless node['travis_java']['default_version'].empty? %>
