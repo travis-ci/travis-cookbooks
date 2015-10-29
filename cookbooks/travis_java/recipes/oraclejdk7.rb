@@ -44,6 +44,8 @@ package 'oracle-java7-installer' do
   not_if { node['travis_java']['oraclejdk7']['pinned_release'] }
 end
 
+package 'oracle-java7-unlimited-jce-policy'
+
 oraclejdk7_home = File.join(
   node['travis_java']['jvm_base_dir'],
   node['travis_java']['oraclejdk7']['jvm_name']
@@ -51,15 +53,4 @@ oraclejdk7_home = File.join(
 
 link "#{oraclejdk7_home}/jre/lib/security/cacerts" do
   to '/etc/ssl/certs/java/cacerts'
-end
-
-bash 'install jce unlimited' do
-  code <<-EOBASH.gsub(/^\s+>\s/, '')
-    > curl -L --cookie 'oraclelicense=accept-securebackup-cookie;' \\
-    >   -o /tmp/policy.zip  \\
-    >   http://download.oracle.com/otn-pub/java/jce/7/UnlimitedJCEPolicyJDK7.zip && \\
-    > sudo unzip -j -o /tmp/policy.zip *.jar -d #{oraclejdk7_home}/jre/lib/security && \\
-    > rm /tmp/policy.zip
-  EOBASH
-  only_if { node['travis_java']['oraclejdk7']['install_jce_unlimited'] }
 end

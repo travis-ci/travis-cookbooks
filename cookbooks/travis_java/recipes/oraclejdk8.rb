@@ -53,19 +53,10 @@ link "#{oraclejdk8_home}/jre/lib/security/cacerts" do
   to '/etc/ssl/certs/java/cacerts'
 end
 
+package 'oracle-java8-unlimited-jce-policy'
+
 directory '/var/cache/oracle-jdk8-installer' do
   action :delete
   recursive true
   ignore_failure true
-end
-
-bash 'install jce unlimited' do
-  code <<-EOBASH.gsub(/^\s+>\s/, '')
-    > curl -L --cookie 'oraclelicense=accept-securebackup-cookie;' \\
-    >   -o /tmp/policy.zip  \\
-    >   http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip && \\
-    > sudo unzip -j -o /tmp/policy.zip *.jar -d #{oraclejdk8_home}/jre/lib/security && \\
-    > rm /tmp/policy.zip
-  EOBASH
-  only_if { node['travis_java']['oraclejdk8']['install_jce_unlimited'] }
 end
