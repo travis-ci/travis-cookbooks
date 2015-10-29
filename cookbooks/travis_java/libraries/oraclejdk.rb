@@ -45,7 +45,6 @@ module TravisJava
       directory installer_cache_path do
         action :delete
         recursive true
-        ignore_failure true
       end
     end
   end
