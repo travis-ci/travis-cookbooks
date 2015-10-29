@@ -44,8 +44,6 @@ package 'oracle-java7-installer' do
   not_if { node['travis_java']['oraclejdk7']['pinned_release'] }
 end
 
-package 'oracle-java7-unlimited-jce-policy'
-
 oraclejdk7_home = File.join(
   node['travis_java']['jvm_base_dir'],
   node['travis_java']['oraclejdk7']['jvm_name']
@@ -53,4 +51,12 @@ oraclejdk7_home = File.join(
 
 link "#{oraclejdk7_home}/jre/lib/security/cacerts" do
   to '/etc/ssl/certs/java/cacerts'
+end
+
+package 'oracle-java7-unlimited-jce-policy'
+
+directory '/var/cache/oracle-jdk7-installer' do
+  action :delete
+  recursive true
+  ignore_failure true
 end
