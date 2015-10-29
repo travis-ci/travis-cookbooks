@@ -36,9 +36,8 @@ else
     OPENJDK8_JAVA_HOME="/usr/lib/jvm/java-8-openjdk"
 fi
 
-# The java::oraclejdk7 recipe from github.com/travis-ci/travis-cookbooks
-# takes care of this alias. We take it for granted here. MK.
 if [[ -d "/usr/lib/jvm/java-7-oracle-$ARCH_SUFFIX" ]] ; then
+    # Currently unused, because the `travis_java` cookbook doesn't create this architecture specific symbolic link
     ORACLEJDK7_UJA_ALIAS="java-7-oracle-$ARCH_SUFFIX"
     ORACLEJDK7_JAVA_HOME="/usr/lib/jvm/java-7-oracle-$ARCH_SUFFIX"
 else
@@ -46,9 +45,8 @@ else
     ORACLEJDK7_JAVA_HOME="/usr/lib/jvm/java-7-oracle"
 fi
 
-# The java::oraclejdk8 recipe from github.com/travis-ci/travis-cookbooks
-# takes care of this alias. We take it for granted here. MK.
 if [[ -d "/usr/lib/jvm/java-8-oracle-$ARCH_SUFFIX" ]] ; then
+    # Currently unused, because the `travis_java` cookbook doesn't create this architecture specific symbolic link
     ORACLEJDK8_UJA_ALIAS="java-8-oracle-$ARCH_SUFFIX"
     ORACLEJDK8_JAVA_HOME="/usr/lib/jvm/java-8-oracle-$ARCH_SUFFIX"
 else
@@ -56,9 +54,8 @@ else
     ORACLEJDK8_JAVA_HOME="/usr/lib/jvm/java-8-oracle"
 fi
 
-# The java::oraclejdk9 recipe from github.com/travis-ci/travis-cookbooks
-# takes care of this alias. We take it for granted here. MK.
 if [[ -d "/usr/lib/jvm/java-9-oracle-$ARCH_SUFFIX" ]] ; then
+    # Currently unused, because the `travis_java` cookbook doesn't create this architecture specific symbolic link
     ORACLEJDK9_UJA_ALIAS="java-9-oracle-$ARCH_SUFFIX"
     ORACLEJDK9_JAVA_HOME="/usr/lib/jvm/java-8-oracle-$ARCH_SUFFIX"
 else
