@@ -19,19 +19,15 @@ module TravisJava
         EOBASH
       end
 
-      remote_file deb_installer do
-        source "http://ppa.launchpad.net/webupd8team/java/ubuntu/pool/main/o/#{pkg_installer}/#{pkg_installer}_#{node['travis_java'][attribute_key]['pinned_release']}.deb"
-        not_if "test -f #{deb_installer}"
-        only_if { node['travis_java'][attribute_key]['pinned_release'] }
-      end
+      if node['travis_java'][attribute_key]['pinned_release']
+        remote_file deb_installer do
+          source "http://ppa.launchpad.net/webupd8team/java/ubuntu/pool/main/o/#{pkg_installer}/#{pkg_installer}_#{node['travis_java'][attribute_key]['pinned_release']}.deb"
+          not_if "test -f #{deb_installer}"
+        end
 
-      dpkg_package deb_installer do
-        action :install
-        only_if { node['travis_java'][attribute_key]['pinned_release'] }
-      end
-
-      package pkg_installer do
-        not_if { node['travis_java'][attribute_key]['pinned_release'] }
+        dpkg_package deb_installer
+      else
+        package pkg_installer
       end
 
       package "#{pkg_prefix}-unlimited-jce-policy"
