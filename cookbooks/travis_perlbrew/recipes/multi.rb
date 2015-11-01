@@ -43,9 +43,9 @@ node['travis_perlbrew']['perls'].each do |pl|
 
   remote_file dest_tarball do
     source File.join(
-      'https://s3.amazonaws.com/travis-perl-archives',
-      node['lsb']['id'].downcase,
-      node['lsb']['release'],
+      'https://s3.amazonaws.com/travis-perl-archives/binaries',
+      node['platform'],
+      node['platform_version'],
       node['kernel']['machine'],
       File.basename(dest_tarball)
     )
