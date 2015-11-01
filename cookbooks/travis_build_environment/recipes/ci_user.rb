@@ -108,6 +108,7 @@ end
 
 rvm_installation node['travis_build_environment']['user'] do
   rvmrc_env node['travis_build_environment']['rvmrc_env']
+  installer_flags node['travis_build_environment']['rvm_release']
 end
 
 install_rubies(
