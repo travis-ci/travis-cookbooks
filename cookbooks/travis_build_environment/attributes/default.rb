@@ -47,6 +47,7 @@ default['travis_build_environment']['global_gems'] = %w(
   nokogiri
   rake
 ).map { |gem| { name: gem } }
+default['travis_build_environment']['rvm_release'] = 'stable'
 default['travis_build_environment']['rvmrc_env'] = {
   'rvm_autoupdate_flag' => '0',
   'rvm_binary_flag' => '1',
