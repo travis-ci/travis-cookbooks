@@ -111,46 +111,10 @@ rvm_installation node['travis_build_environment']['user'] do
   installer_flags node['travis_build_environment']['rvm_release']
 end
 
-# install_rubies(
-#   rubies: node['travis_build_environment']['rubies'],
-#   default_ruby: node['travis_build_environment']['default_ruby'],
-#   global_gems: node['travis_build_environment']['global_gems'],
-#   gems: node['travis_build_environment']['gems'],
-#   user: node['travis_build_environment']['user']
-# )
-
-Array(node['travis_build_environment']['rubies']).each do |ruby|
-  Chef::Log.info("Running rvm_ruby[#{ruby}]")
-  rvm_ruby ruby do
-    user node['travis_build_environment']['user']
-  end
-end
-
-rvm_default_ruby node['travis_build_environment']['default_ruby'] do
-  user node['travis_build_environment']['user']
-end
-
-Array(node['travis_build_environment']['global_gems']).each do |gem|
-  rvm_global_gem gem[:name] do
-    user node['travis_build_environment']['user']
-    %w(version action options source).map(&:to_sym).each do |method_name|
-      send(method_name, gem[method_name]) if gem.key?(method_name)
-    end
-  end
-end
-
-Hash(node['travis_build_environment']['gems']).each do |rstring, gems|
-  rvm_environment rstring do
-    user node['travis_build_environment']['user']
-  end
-
-  Array(gems).each do |gem|
-    rvm_gem gem[:name] do
-      ruby_string rstring
-      user node['travis_build_environment']['user']
-      %w(version action options source).map(&:to_sym).each do |method_name|
-        send(method_name, gem[method_name]) if gem.key?(method_name)
-      end
-    end
-  end
-end
+install_rubies(
+  rubies: node['travis_build_environment']['rubies'],
+  default_ruby: node['travis_build_environment']['default_ruby'],
+  global_gems: node['travis_build_environment']['global_gems'],
+  gems: node['travis_build_environment']['gems'],
+  user: node['travis_build_environment']['user']
+)
