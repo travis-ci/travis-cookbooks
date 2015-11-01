@@ -41,7 +41,7 @@ end
 node['travis_perlbrew']['perls'].each do |pl|
   dest_tarball = ::File.join(
     Chef::Config[:file_cache_path],
-    "perl-#{pl['name']]}.tar.bz2"
+    "perl-#{pl['name']}.tar.bz2"
   )
 
   remote_file dest_tarball do
