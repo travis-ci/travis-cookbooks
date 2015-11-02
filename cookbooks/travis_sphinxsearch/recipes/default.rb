@@ -24,7 +24,7 @@
 
 Array(node['travis_sphinxsearch']['ppas']).each do |ppa|
   apt_repository ppa do
-    url "ppa:#{ppa}"
+    uri "ppa:#{ppa}"
     distribution node['lsb']['codename']
   end
 end
