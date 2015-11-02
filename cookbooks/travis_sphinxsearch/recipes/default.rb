@@ -23,7 +23,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Array(node['travis_sphinxsearch']['ppas']).each do |ppa|
-  apt_repository ppa do
+  apt_repository ::File.basename(ppa) do
     uri ppa
     distribution node['lsb']['codename']
   end
