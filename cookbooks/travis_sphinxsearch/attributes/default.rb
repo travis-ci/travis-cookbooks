@@ -1,7 +1,7 @@
 default['travis_sphinxsearch']['ppas'] = %w(
-  sphinxsearch-rel20
-  sphinxsearch-rel21
-  sphinxsearch-rel22
-  sphinxsearch-stable
+  ppa:builds/sphinxsearch-rel20
+  ppa:builds/sphinxsearch-rel21
+  ppa:builds/sphinxsearch-rel22
+  ppa:builds/sphinxsearch-stable
 )
 default['travis_sphinxsearch']['default_version'] = '2.2.10-release-0ubuntu12~trusty'
