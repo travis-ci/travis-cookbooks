@@ -1,6 +1,5 @@
 default['travis_php']['multi']['prerequisite_recipes'] = %w(
   bison
-  libreadline
   travis_phpenv
   travis_phpbuild
 )
@@ -15,14 +14,14 @@ default['travis_php']['multi']['postrequisite_recipes'] = %w(
 
 default['travis_php']['multi']['versions'] = %w(
   5.4.45
-  5.5.29
-  5.6.13
+  5.5.30
+  5.6.15
 )
 
 default['travis_php']['multi']['aliases'] = {
   '5.4' => '5.4.45',
-  '5.5' => '5.5.29',
-  '5.6' => '5.6.13'
+  '5.5' => '5.5.30',
+  '5.6' => '5.6.15'
 }
 
 default['travis_php']['multi']['extensions'] = {
@@ -64,19 +63,3 @@ default['travis_php']['multi']['extensions'] = {
   },
   'redis' => {}
 }
-
-if node['lsb']['codename'] == 'precise'
-  default['travis_php']['multi']['versions'] = %w(
-    5.3.29
-    5.4.45
-    5.5.9
-    5.5.29
-    5.6.13
-  )
-  default['travis_php']['multi']['aliases'] = {
-    '5.3' => '5.3.29',
-    '5.4' => '5.4.45',
-    '5.5' => '5.5.29',
-    '5.6' => '5.6.13'
-  }
-end
