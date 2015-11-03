@@ -32,7 +32,7 @@ phpenv_path = "#{node['travis_build_environment']['home']}/.phpenv"
 node['travis_php']['multi']['versions'].each do |php_version|
   local_archive = ::File.join(
     Chef::Config[:file_cache_path],
-    "php-#{php[:version]}.tar.bz2"
+    "php-#{php_version}.tar.bz2"
   )
 
   remote_file local_archive do
@@ -43,12 +43,11 @@ node['travis_php']['multi']['versions'].each do |php_version|
       node['kernel']['machine'],
       ::File.basename(local_archive)
     )
-    checksum php[:checksum] if php[:checksum]
     ignore_failure true
     not_if { ::File.exist?(local_archive) }
   end
 
-  bash "Expand PHP #{php[:version]} archive" do
+  bash "Expand PHP #{php_version} archive" do
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     code "tar -xjf #{local_archive.inspect} --directory #{unpack_dir}"
