@@ -50,7 +50,7 @@ node['travis_php']['multi']['versions'].each do |php_version|
   bash "Expand PHP #{php_version} archive" do
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    code "tar -xjf #{local_archive.inspect} --directory #{unpack_dir}"
+    code "tar -xjf #{local_archive.inspect} --directory /"
     only_if { ::File.exist?(local_archive) }
   end
 
