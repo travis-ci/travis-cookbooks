@@ -2,7 +2,7 @@ include_recipe 'travis_phpenv'
 include_recipe 'travis_phpbuild'
 
 node['travis_php']['multi']['extensions'].each do |php_extension, options|
-  php_pecl php_extension do
+  travis_php_pecl php_extension do
     channel options['channel']
     versions options['versions'] || node['travis_php']['multi']['versions']
     before_recipes options['before_recipes']
