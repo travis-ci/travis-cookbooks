@@ -20,6 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+unless Array(node['travis_php']['multi']['packages']).empty?
+  package Array(node['travis_php']['multi']['packages'])
+end
+
 unless Array(node['travis_php']['multi']['prerequisite_recipes']).empty?
   Array(node['travis_php']['multi']['prerequisite_recipes']).each do |recipe_name|
     include_recipe recipe_name

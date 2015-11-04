@@ -1,5 +1,10 @@
-default['travis_php']['multi']['prerequisite_recipes'] = %w(
+default['travis_php']['multi']['packages'] = %w(
   bison
+  libbison-dev
+  libreadline6-dev
+)
+
+default['travis_php']['multi']['prerequisite_recipes'] = %w(
   travis_phpenv
   travis_phpbuild
 )
