@@ -1,6 +1,7 @@
 default['travis_php']['multi']['packages'] = %w(
   bison
   libbison-dev
+  libfreetype6-dev
   libreadline6-dev
 )
 
