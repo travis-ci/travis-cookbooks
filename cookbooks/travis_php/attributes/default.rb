@@ -14,8 +14,8 @@ default['travis_php']['multi']['postrequisite_recipes'] = %w(
   travis_php::extensions
   travis_php::hhvm
   travis_php::hhvm-nightly
-  phpunit
-  composer
+  travis_php::phpunit
+  travis_php::composer
 )
 multi_versions = %w(
   5.4.45
@@ -57,3 +57,8 @@ default['travis_php']['multi']['extensions']['redis'] = {}
 default['travis_php']['multi']['extensions']['zmq-beta']['versions'] = multi_versions
 default['travis_php']['multi']['extensions']['zmq-beta']['before_recipes'] = %w(zeromq::ppa)
 default['travis_php']['multi']['extensions']['zmq-beta']['before_packages'] = %w(libzmq3-dev)
+
+default['travis_php']['hhvm']['package']['name'] = 'hhvm'
+default['travis_php']['hhvm']['package']['version'] = '3.10.1~trusty'
+
+default['travis_php']['composer']['github_oauth_token'] = nil

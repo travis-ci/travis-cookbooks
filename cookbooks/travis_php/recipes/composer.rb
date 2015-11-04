@@ -25,5 +25,7 @@ template "#{composer_path}/config.json" do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   source 'config.json.erb'
-  variables(github_oauth_token: node['composer']['github_oauth_token'])
+  variables(
+    github_oauth_token: node['travis_php']['composer']['github_oauth_token']
+  )
 end

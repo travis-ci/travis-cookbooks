@@ -1,8 +1,20 @@
-include_recipe 'hhvm'
+apt_repository 'hhvm-repository' do
+  uri 'http://dl.hhvm.com/ubuntu'
+  distribution node['lsb']['codename']
+  components ['main']
+  key 'http://dl.hhvm.com/conf/hhvm.gpg.key'
+end
+
+package node['travis_php']['hhvm']['package']['name'] do
+  version node['travis_php']['hhvm']['package']['version']
+  options '--force-yes'
+  action :install
+end
+
 include_recipe 'travis_phpenv'
 
 phpenv_path = "#{node['travis_build_environment']['home']}/.phpenv"
-hhvm_path = "#{phpenv_path}/versions/hhvm-#{node['hhvm']['package']['version']}"
+hhvm_path = "#{phpenv_path}/versions/hhvm-#{node['travis_php']['hhvm']['package']['version']}"
 
 directory hhvm_path do
   owner node['travis_build_environment']['user']
