@@ -55,7 +55,6 @@ default['travis_php']['multi']['extensions']['memcached']['versions'] = multi_ve
 default['travis_php']['multi']['extensions']['mongo'] = {}
 default['travis_php']['multi']['extensions']['redis'] = {}
 default['travis_php']['multi']['extensions']['zmq-beta']['versions'] = multi_versions
-default['travis_php']['multi']['extensions']['zmq-beta']['before_recipes'] = %w(zeromq::ppa)
 default['travis_php']['multi']['extensions']['zmq-beta']['before_packages'] = %w(libzmq3-dev)
 
 default['travis_php']['hhvm']['package']['name'] = 'hhvm'
