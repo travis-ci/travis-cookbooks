@@ -89,7 +89,36 @@ cookbook_file "#{node.travis_build_environment.home}/.build_plt" do
 end
 
 
-node.kerl.releases.each do |rel, build|
+node.kerl.releases.each do |rel|
+  local_tarball = "#{Chef::Config[:file_cache_path]}/erlang-#{rel}.tar.bz2"
+
+  remote_file local_tarball do
+    source ::File.join(
+      'https://s3.amazonaws.com/travis-otp-releases/binaries',
+      node['lsb']['codename'],
+      node['lsb']['release'],
+      node['kernel']['machine'],
+      ::File.basename(local_tarball)
+    )
+
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+
+    ignore_failure true
+  end
+
+  bash "extract Erlang #{rel}" do
+    code <<-EOF.gsub(/^\s+>\s/, '')
+      > set -o xtrace
+      > tar -xjvf #{local_tarball} -C #{installation_root}
+      > echo '#{rel},#{rel}' >> #{home}/.kerl/otp_builds
+      > echo '#{rel} #{home}/otp/#{rel}' >> #{home}/.kerl/otp_builds
+    EOF
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    only_if { ::File.exist?(local_tarball) }
+  end
+
   execute "build Erlang #{rel}" do
     command "#{node.kerl.path} build #{rel} #{rel}"
 
