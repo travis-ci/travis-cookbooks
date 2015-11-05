@@ -90,15 +90,15 @@ end
 
 
 node.kerl.releases.each do |rel|
-  local_tarball = "#{Chef::Config[:file_cache_path]}/erlang-#{rel}.tar.bz2"
+  local_archive = "#{Chef::Config[:file_cache_path]}/erlang-#{rel}.tar.bz2"
 
-  remote_file local_tarball do
+  remote_file local_archive do
     source ::File.join(
       'https://s3.amazonaws.com/travis-otp-releases/binaries',
-      node['lsb']['codename'],
-      node['lsb']['release'],
+      node['platform'],
+      node['platform_version'],
       node['kernel']['machine'],
-      ::File.basename(local_tarball)
+      ::File.basename(local_archive)
     )
 
     user node['travis_build_environment']['user']
@@ -110,13 +110,13 @@ node.kerl.releases.each do |rel|
   bash "extract Erlang #{rel}" do
     code <<-EOF.gsub(/^\s+>\s/, '')
       > set -o xtrace
-      > tar -xjvf #{local_tarball} -C #{installation_root}
+      > tar -xjvf #{local_archive} -C #{installation_root}
       > echo '#{rel},#{rel}' >> #{home}/.kerl/otp_builds
       > echo '#{rel} #{home}/otp/#{rel}' >> #{home}/.kerl/otp_builds
     EOF
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    only_if { ::File.exist?(local_tarball) }
+    only_if { ::File.exist?(local_archive) }
   end
 
   execute "build Erlang #{rel}" do
