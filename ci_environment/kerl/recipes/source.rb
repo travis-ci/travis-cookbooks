@@ -67,9 +67,6 @@ execute "erlang.releases.update" do
   group   node.travis_build_environment.group
 
   environment(env)
-
-  # run when kerl script is downloaded & installed
-  subscribes :run, resources(:remote_file => node.kerl.path)
 end
 
 cookbook_file "#{node.travis_build_environment.home}/.erlang.cookie" do
@@ -130,7 +127,6 @@ node.kerl.releases.each do |rel|
     # make sure R14B02 won't cause R14B to be skipped. MK.
     not_if "#{node.kerl.path} list builds | grep \"#{rel}$\"", :user => node.travis_build_environment.user, :environment => env
   end
-
 
   execute "install Erlang #{rel}" do
     # cleanup is available starting with https://github.com/spawngrid/kerl/pull/28
