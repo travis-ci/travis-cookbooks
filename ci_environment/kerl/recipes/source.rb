@@ -123,9 +123,7 @@ node.kerl.releases.each do |rel|
     group   node.travis_build_environment.group
 
     environment(env)
-
-    # make sure R14B02 won't cause R14B to be skipped. MK.
-    not_if "#{node.kerl.path} list builds | grep '#{rel}$'", :user => node.travis_build_environment.user, :environment => env
+    not_if { ::File.exist?("#{installation_root}/#{rel}/activate") }
   end
 
   execute "install Erlang #{rel}" do
@@ -136,7 +134,6 @@ node.kerl.releases.each do |rel|
     group   node.travis_build_environment.group
 
     environment(env)
-
-    not_if "#{node.kerl.path} list installations | grep #{rel}", :user => node.travis_build_environment.user, :environment => env
+    not_if { ::File.exist?("#{installation_root}/#{rel}/activate") }
   end
 end
