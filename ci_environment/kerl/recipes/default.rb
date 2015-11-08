@@ -16,4 +16,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe "kerl::source"
+include_recipe 'kerl::source'

@@ -67,9 +67,6 @@ execute "erlang.releases.update" do
   group   node.travis_build_environment.group
 
   environment(env)
-
-  # run when kerl script is downloaded & installed
-  subscribes :run, resources(:remote_file => node.kerl.path)
 end
 
 cookbook_file "#{node.travis_build_environment.home}/.erlang.cookie" do
@@ -89,7 +86,36 @@ cookbook_file "#{node.travis_build_environment.home}/.build_plt" do
 end
 
 
-node.kerl.releases.each do |rel, build|
+node.kerl.releases.each do |rel|
+  local_archive = "#{Chef::Config[:file_cache_path]}/erlang-#{rel}.tar.bz2"
+
+  remote_file local_archive do
+    source ::File.join(
+      'https://s3.amazonaws.com/travis-otp-releases/binaries',
+      node['platform'],
+      node['platform_version'],
+      node['kernel']['machine'],
+      ::File.basename(local_archive)
+    )
+
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+
+    ignore_failure true
+  end
+
+  bash "extract Erlang #{rel}" do
+    code <<-EOF.gsub(/^\s+>\s/, '')
+      > set -o xtrace
+      > tar -xjvf #{local_archive} -C #{installation_root}
+      > echo '#{rel},#{rel}' >> #{home}/.kerl/otp_builds
+      > echo '#{rel} #{home}/otp/#{rel}' >> #{home}/.kerl/otp_builds
+    EOF
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    only_if { ::File.exist?(local_archive) }
+  end
+
   execute "build Erlang #{rel}" do
     command "#{node.kerl.path} build #{rel} #{rel}"
 
@@ -97,11 +123,8 @@ node.kerl.releases.each do |rel, build|
     group   node.travis_build_environment.group
 
     environment(env)
-
-    # make sure R14B02 won't cause R14B to be skipped. MK.
-    not_if "#{node.kerl.path} list builds | grep \"#{rel}$\"", :user => node.travis_build_environment.user, :environment => env
+    not_if { ::File.exist?("#{installation_root}/#{rel}/activate") }
   end
-
 
   execute "install Erlang #{rel}" do
     # cleanup is available starting with https://github.com/spawngrid/kerl/pull/28
@@ -111,7 +134,6 @@ node.kerl.releases.each do |rel, build|
     group   node.travis_build_environment.group
 
     environment(env)
-
-    not_if "#{node.kerl.path} list installations | grep #{rel}", :user => node.travis_build_environment.user, :environment => env
+    not_if { ::File.exist?("#{installation_root}/#{rel}/activate") }
   end
 end

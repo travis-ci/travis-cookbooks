@@ -6,6 +6,7 @@ description      "Installs kerl for managing Erlang versions."
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          "1.0.0"
 
-%w{ libncurses libreadline libssl }.each do |cb|
-  depends cb
-end
+depends 'libncurses'
+depends 'libreadline'
+depends 'libssl'
+depends 'travis_build_environment'
