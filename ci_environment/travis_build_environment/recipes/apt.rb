@@ -36,11 +36,11 @@ end
 
 package 'python-software-properties'
 
-%w(
-  universe
-  multiverse
-).each do |source_alias|
-  execute "apt-add-repository -y #{source_alias}"
+cookbook_file '/etc/apt/sources.list.d/travis-universe-multiverse.list' do
+  source 'etc/apt/sources.list.d-travis-universe-multiverse.list'
+  owner 'root'
+  group 'root'
+  mode 0644
 end
 
 execute 'gencaches for travis_build_environment::apt' do
