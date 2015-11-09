@@ -37,7 +37,7 @@ end
 package 'python-software-properties'
 
 cookbook_file '/etc/apt/sources.list.d/travis-universe-multiverse.list' do
-  source 'etc/apt/sources.list.d-travis-universe-multiverse.list'
+  source 'etc/apt/sources.list.d/travis-universe-multiverse.list'
   owner 'root'
   group 'root'
   mode 0644
