@@ -89,21 +89,7 @@ template "/etc/security/limits.conf" do
   source "etc/security/limits.conf.erb"
 end
 
-template "/etc/apt/apt.conf.d/60assumeyes" do
-  owner "root"
-  group "root"
-  mode 0644
-
-  source "etc/apt/assumeyes.erb"
-end
-
-template "/etc/apt/apt.conf.d/37timeouts" do
-  owner "root"
-  group "root"
-  mode 0644
-
-  source "etc/apt/timeouts.erb"
-end
+include_recipe 'travis_build_environment::apt'
 
 cookbook_file "/etc/sudoers.d/env_keep" do
   owner "root"
