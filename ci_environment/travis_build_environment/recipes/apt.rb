@@ -34,12 +34,6 @@ template '/etc/apt/apt.conf.d/37timeouts' do
   mode 0644
 end
 
-cookbook_file '/etc/apt/apt.conf.d/10periodic' do
-  owner 'root'
-  group 'root'
-  mode 0644
-end
-
 package 'python-software-properties'
 
 %w(
