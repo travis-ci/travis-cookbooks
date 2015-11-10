@@ -34,19 +34,25 @@ template '/etc/apt/apt.conf.d/37timeouts' do
   mode 0644
 end
 
-package 'python-software-properties'
+ruby_block 'enable universe and multiverse sources' do
+  block do
+    sources_list = ::Chef::Util::FileEdit.new('/etc/apt/sources.list')
+    sources_list.search_file_replace(/^#\s+(deb.*universe.*)/, '\1')
+    sources_list.search_file_replace(/^#\s+(deb.*multiverse.*)/, '\1')
+    sources_list.insert_line_if_no_match(
+      /^# Managed by Chef/,
+      '# Managed by Chef! :heart_eyes_cat:'
+    )
+    sources_list.write_file
+  end
+end
 
-cookbook_file '/etc/apt/sources.list.d/travis-universe-multiverse.list' do
-  source 'etc/apt/sources.list.d/travis-universe-multiverse.list'
-  owner 'root'
-  group 'root'
-  mode 0644
+execute 'apt-get update for travis_build_environment::apt' do
+  command 'apt-get update'
 end
 
 execute 'gencaches for travis_build_environment::apt' do
   command 'apt-cache gencaches'
 end
 
-execute 'apt-get update for travis_build_environment::apt' do
-  command 'apt-get update'
-end
+package 'python-software-properties'
