@@ -34,6 +34,12 @@ cookbook_file '/etc/default/docker' do
   mode 0640
 end
 
+directory '/etc/default/grub.d' do
+  owner 'root'
+  group 'root'
+  mode 0755
+end
+
 cookbook_file '/etc/default/grub.d/99-travis-settings.cfg' do
   source 'etc/default/grub.d/99-travis-settings.cfg'
   owner 'root'
