@@ -1,7 +1,6 @@
-#
-# Cookbook Name:: zeromq
-# Recipe:: tarball
-# Copyright 2014, Travis CI Development Team <contact@travis-ci.org>
+# Cookbook Name:: travis_build_environment
+# Recipe:: mysql
+# Copyright 2011-2015, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,13 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-#
-# Download and setup zeromq tarball package
-#
-ark 'zeromq' do
-  url node['zeromq']['download_url']
-  checksum node['zeromq']['checksum']
-  version node['zeromq']['version']
-
-  append_env_path true
+mysql_service '5.6' do
+  port '3306'
+  version '5.6'
+  initial_root_password node['travis_build_environment']['mysql']['password']
+  action [:create, :start]
 end
+
+mysql_client 'default'

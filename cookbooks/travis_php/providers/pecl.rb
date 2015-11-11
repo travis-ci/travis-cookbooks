@@ -30,6 +30,7 @@ action :install do
         cwd '/tmp'
         environment('HOME' => node['travis_build_environment']['home'])
         code <<-EOF
+          set -o xtrace
           source /etc/profile.d/phpenv.sh
           phpenv global #{php_version}
           #{new_resource.script}
@@ -41,6 +42,7 @@ action :install do
         group new_resource.group
         environment('HOME' => node['travis_build_environment']['home'])
         code <<-EOF
+          set -o xtrace
           source /etc/profile.d/phpenv.sh
           phpenv global #{php_version}
 
@@ -80,7 +82,8 @@ action :uninstall do
       user new_resource.owner
       group new_resource.group
       code <<-EOF
-      pecl uninstall #{extension}
+        set -o xtrace
+        pecl uninstall #{extension}
       EOF
     end
   end

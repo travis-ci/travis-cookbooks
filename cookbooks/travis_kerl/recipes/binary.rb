@@ -83,10 +83,16 @@ cookbook_file "#{node['travis_build_environment']['home']}/.build_plt" do
 end
 
 node['travis_kerl']['releases'].each do |rel|
-  local_archive = File.join(Chef::Config[:file_cache_path], "erlang-#{rel}-x86_64.tar.bz2")
+  local_archive = ::File.join(Chef::Config[:file_cache_path], "erlang-#{rel}-x86_64.tar.bz2")
 
   remote_file local_archive do
-    source "https://s3.amazonaws.com/travis-otp-releases/#{node['platform']}/#{node['platform_version']}/erlang-#{rel}-x86_64.tar.bz2"
+    source ::File.join(
+      'https://s3.amazonaws.com/travis-otp-releases/binaries',
+      node['platform'],
+      node['platform_version'],
+      node['kernel']['machine'],
+      ::File.basename(local_archive)
+    )
     checksum node['travis_kerl']['checksum'][rel]
   end
 
@@ -95,13 +101,13 @@ node['travis_kerl']['releases'].each do |rel|
     group node['travis_build_environment']['group']
 
     code <<-EOF
-      tar xjf #{local_archive} --directory #{File.join(node['travis_build_environment']['home'], 'otp')}
-      echo #{rel} >> #{File.join(base_dir, 'otp_installations')}
-      echo #{rel},#{rel} >> #{File.join(base_dir, 'otp_builds')}
+      tar xjf #{local_archive} --directory #{::File.join(node['travis_build_environment']['home'], 'otp')}
+      echo #{rel} >> #{::File.join(base_dir, 'otp_installations')}
+      echo #{rel},#{rel} >> #{::File.join(base_dir, 'otp_builds')}
     EOF
 
     not_if do
-      File.exist?(File.join(node['travis_build_environment']['home'], 'otp', rel))
+      ::File.exist?(::File.join(node['travis_build_environment']['home'], 'otp', rel))
     end
   end
 end

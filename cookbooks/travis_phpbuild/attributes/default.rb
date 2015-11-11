@@ -6,7 +6,6 @@ default['travis_phpbuild']['custom']['php_ini']['memory_limit'] = '1G'
 default['travis_phpbuild']['custom']['php_ini']['timezone'] = 'UTC'
 default['travis_phpbuild']['arch'] = (kernel['machine'] =~ /x86_64/ ? 'x86_64' : 'i386')
 default['travis_phpbuild']['prerequisite_recipes'] = %w(
-  mysql::client
   postgresql::client
 )
 default['travis_phpbuild']['packages'] = %w(

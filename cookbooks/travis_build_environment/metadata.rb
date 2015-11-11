@@ -6,6 +6,7 @@ description 'Travis build environment'
 long_description 'Travis build environment'
 
 depends 'iptables'
+depends 'mysql'
 depends 'openssh'
 depends 'rvm'
 depends 'sysctl'
