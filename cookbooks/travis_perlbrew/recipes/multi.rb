@@ -80,7 +80,7 @@ node['travis_perlbrew']['perls'].each do |pl|
   end
 
   node['travis_perlbrew']['modules'].each do |mod|
-    bash "preinstall #{mod} via cpanm" do
+    bash "preinstall #{mod} via cpanm for #{pl['version']}" do
       permissions.call(self)
       code "#{perlbrew} use #{pl['name']} && cpanm #{mod} --force --notest"
       not_if { ::File.exist?(dest_tarball) }
