@@ -24,7 +24,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-default['gimme']['url'] = 'https://raw.githubusercontent.com/meatballhat/gimme/v0.2.3/gimme'
+default['gimme']['url'] = 'https://raw.githubusercontent.com/travis-ci/gimme/v0.2.4/gimme'
 default['gimme']['sha256sum'] = '62673853c69cf0efc2ad33cf446dffad0807c0508eaa6cd7fd942384323f25e9'
 default['gimme']['default_version'] = ''
 default['gimme']['versions'] = %w()
