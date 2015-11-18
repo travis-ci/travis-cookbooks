@@ -27,7 +27,7 @@ directory node['travis_system_info']['dest_dir'] do
   recursive true
 end
 
-ruby_block do
+ruby_block 'generate system-info report' do
   block do
     exec = Chef::Resource::Execute.new('system-info report', run_context)
     exec.command(
