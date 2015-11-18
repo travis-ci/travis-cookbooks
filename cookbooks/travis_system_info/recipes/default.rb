@@ -14,13 +14,12 @@ remote_file local_gem do
   checksum node['travis_system_info']['gem_sha256sum']
 end
 
-chef_gem 'system-info' do
+gem_package 'system-info' do
+  gem_binary '/opt/chef/embedded/bin/gem'
   source local_gem
 end
 
-execute "remove #{node['travis_system_info']['dest_dir']}" do
-  command "rm -rf #{node['travis_system_info']['dest_dir']}"
-end
+execute "rm -rf #{node['travis_system_info']['dest_dir']}"
 
 directory node['travis_system_info']['dest_dir'] do
   owner node['travis_build_environment']['user']
