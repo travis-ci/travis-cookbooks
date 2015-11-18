@@ -29,11 +29,9 @@ end
 
 ruby_block 'generate system-info report' do
   block do
-    include SystemInfoMethods
-
     exec = Chef::Resource::Execute.new('system-info report', run_context)
     exec.command(
-      system_info_command(
+      SystemInfoMethods.system_info_command(
         user: node['travis_build_environment']['user'],
         dest_dir: node['travis_system_info']['dest_dir'],
         commands_file: node['travis_system_info']['commands_file'],
