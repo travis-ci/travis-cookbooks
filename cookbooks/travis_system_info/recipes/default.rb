@@ -16,7 +16,6 @@ end
 
 chef_gem 'system-info' do
   source local_gem
-  compile_time true
 end
 
 execute "remove #{node['travis_system_info']['dest_dir']}" do
