@@ -7,19 +7,16 @@
 # MIT License
 #
 
-chef_gem 'travis-system-info' do
+local_gem = "#{Chef::Config[:file_cache_path]}/system-info.gem"
+
+remote_file local_gem do
   source node['travis_system_info']['gem_url']
+  checksum node['travis_system_info']['gem_sha256sum']
+end
+
+chef_gem 'system-info' do
+  source local_gem
   compile_time true
-end
-
-git node['travis_system_info']['install_dir'] do
-  repository node['travis_system_info']['git_repo']
-  revision node['travis_system_info']['git_ref']
-  action :sync
-end
-
-execute "set owner on #{node['travis_system_info']['install_dir']}" do
-  command "chown -R #{node['travis_build_environment']['user']}:#{node['travis_build_environment']['group']} #{node['travis_system_info']['install_dir']}"
 end
 
 execute "remove #{node['travis_system_info']['dest_dir']}" do
