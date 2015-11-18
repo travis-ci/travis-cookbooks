@@ -12,8 +12,8 @@ system_info_dest = '/usr/share/travis'
 rvm_source = "#{node['travis_build_environment']['home']}/.rvm/scripts/rvm"
 
 git system_info_dir do
-  repository 'https://github.com/travis-ci/system_info.git'
-  revision 'master'
+  repository node['system_info']['git_repo']
+  revision node['system_info']['git_ref']
   action :sync
 end
 
