@@ -27,9 +27,18 @@ directory node['travis_system_info']['dest_dir'] do
   recursive true
 end
 
-execute system_info_command(
-  user: node['travis_build_environment']['user'],
-  dest_dir: node['travis_system_info']['dest_dir'],
-  commands_file: node['travis_system_info']['commands_file'],
-  cookbooks_sha: node['travis_system_info']['cookbooks_sha']
-)
+ruby_block do
+  block do
+    exec = Chef::Resource::Execute.new('system-info report', run_context)
+    exec.command(
+      system_info_command(
+        user: node['travis_build_environment']['user'],
+        dest_dir: node['travis_system_info']['dest_dir'],
+        commands_file: node['travis_system_info']['commands_file'],
+        cookbooks_sha: node['travis_system_info']['cookbooks_sha']
+      )
+    )
+    exec.environment('HOME' => node['travis_build_environment']['home'])
+    exec.run_action(:run)
+  end
+end
