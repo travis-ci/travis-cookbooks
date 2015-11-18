@@ -27,7 +27,7 @@ directory node['travis_system_info']['dest_dir'] do
   recursive true
 end
 
-run_system_info(
+execute system_info_command(
   user: node['travis_build_environment']['user'],
   dest_dir: node['travis_system_info']['dest_dir'],
   commands_file: node['travis_system_info']['commands_file'],

@@ -1,13 +1,9 @@
 module SystemInfoRecipeMethods
   include Chef::Mixin::ShellOut
 
-  def run_system_info(options = {})
+  def system_info_command(options = {})
     require 'rbconfig'
-
-    Chef::Resource::Execute.new(
-      "#{RbConfig.ruby} -S system-info -- report #{system_info_options(options)}",
-      run_context
-    )
+    "#{RbConfig.ruby} -S system-info -- report #{system_info_options(options)}"
   end
 
   private
