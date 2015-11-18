@@ -4,8 +4,9 @@ module SystemInfoRecipeMethods
   def run_system_info(options = {})
     require 'rbconfig'
 
-    shell_out!(
-      "#{RbConfig.ruby} -S system-info -- report #{system_info_options(options)}"
+    Chef::Resource::Execute.new(
+      "#{RbConfig.ruby} -S system-info -- report #{system_info_options(options)}",
+      run_context
     )
   end
 
