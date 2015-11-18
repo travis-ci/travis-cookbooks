@@ -9,7 +9,6 @@ version '1.0'
 
 depends 'apt'
 depends 'build-essential'
-depends 'networking_basic'
 
 recipe 'travis_perlbrew', 'Install system-wide Perlbrew'
 recipe 'travis_perlbrew::multi', 'Install a Perl implementation based on attributes'
