@@ -29,6 +29,8 @@ end
 
 ruby_block 'generate system-info report' do
   block do
+    include SystemInfoMethods
+
     exec = Chef::Resource::Execute.new('system-info report', run_context)
     exec.command(
       system_info_command(

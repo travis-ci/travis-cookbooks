@@ -1,4 +1,4 @@
-module SystemInfoRecipeMethods
+module SystemInfoMethods
   def system_info_command(options = {})
     "#{system_info_exe} report #{system_info_options(options)}"
   end
@@ -19,5 +19,3 @@ module SystemInfoRecipeMethods
     ).join(' ')
   end
 end
-
-Chef::Recipe.send(:include, SystemInfoRecipeMethods)
