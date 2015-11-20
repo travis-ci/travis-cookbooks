@@ -38,7 +38,8 @@ end
   { name: node['travis_build_environment']['home'] },
   { name: "#{node['travis_build_environment']['home']}/.ssh" },
   { name: "#{node['travis_build_environment']['home']}/builds", perms: 0755 },
-  { name: "#{node['travis_build_environment']['home']}/.m2" }
+  { name: "#{node['travis_build_environment']['home']}/.m2" },
+  { name: "#{node['travis_build_environment']['home']}/gopath" }
 ].each do |entry|
   directory entry[:name] do
     owner node['travis_build_environment']['user']
