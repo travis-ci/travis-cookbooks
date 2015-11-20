@@ -127,7 +127,8 @@ Array(node['gimme']['versions']).each do |version|
 
   Array(node['travis_build_environment']['golang_libraries']).each do |lib|
     bash "install #{lib} for go #{version}" do
-      code %{eval "$(gimme #{version})" && go get -u #{lib}}
+      code %{eval "$(gimme #{version})" ; go get -u #{lib}}
+      flags '-lex'
       user node['travis_build_environment']['user']
       group node['travis_build_environment']['group']
       environment('HOME' => node['travis_build_environment']['home'])
@@ -135,7 +136,8 @@ Array(node['gimme']['versions']).each do |version|
   end
 
   bash "install gometalinter tools for #{version}" do
-    code %{eval "$(gimme #{version})" && gometalinter --install --update}
+    code %{eval "$(gimme #{version})" ; gometalinter --install --update}
+    flags '-lex'
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment('HOME' => node['travis_build_environment']['home'])
