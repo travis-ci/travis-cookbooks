@@ -39,7 +39,8 @@ end
   { name: "#{node['travis_build_environment']['home']}/.ssh" },
   { name: "#{node['travis_build_environment']['home']}/builds", perms: 0755 },
   { name: "#{node['travis_build_environment']['home']}/.m2" },
-  { name: "#{node['travis_build_environment']['home']}/gopath" }
+  { name: "#{node['travis_build_environment']['home']}/gopath" },
+  { name: "#{node['travis_build_environment']['home']}/gopath/bin" }
 ].each do |entry|
   directory entry[:name] do
     owner node['travis_build_environment']['user']
@@ -122,7 +123,13 @@ install_rubies(
 
 include_recipe 'gimme::default'
 
-Array(node['gimme']['versions']).each do |version|
+gimme_default_version = node['gimme']['default_version'].to_s
+
+(
+  Array(node['gimme']['versions']) << (
+    gimme_default_version.empty? ? nil : gimme_default_version
+  )
+).compact.each do |version|
   version = version.sub('go', '')
   next if version < '1.2.2'
 
