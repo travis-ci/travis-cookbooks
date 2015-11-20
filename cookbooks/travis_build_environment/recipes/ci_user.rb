@@ -124,12 +124,10 @@ install_rubies(
 include_recipe 'gimme::default'
 
 gimme_default_version = node['gimme']['default_version'].to_s
+gimme_versions = Array(node['gimme']['versions'])
+gimme_versions += [gimme_default_version] unless gimme_default_version.empty?
 
-(
-  Array(node['gimme']['versions']) << (
-    gimme_default_version.empty? ? nil : gimme_default_version
-  )
-).compact.each do |version|
+gimme_versions.each do |version|
   version = version.sub('go', '')
   next if version < '1.2.2'
 
