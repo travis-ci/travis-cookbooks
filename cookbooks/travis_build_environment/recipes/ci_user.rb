@@ -127,6 +127,7 @@ Array(node['gimme']['versions']).each do |version|
       code %{eval "$(gimme #{version})" && go get -u #{lib}}
       user node['travis_build_environment']['user']
       group node['travis_build_environment']['group']
+      environment('HOME' => node['travis_build_environment']['home'])
     end
   end
 
@@ -134,6 +135,7 @@ Array(node['gimme']['versions']).each do |version|
     code %{eval "$(gimme #{version})" && gometalinter --install --update}
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
+    environment('HOME' => node['travis_build_environment']['home'])
     only_if { node['travis_build_environment']['install_gometalinter_tools'] }
   end
 end
