@@ -129,11 +129,11 @@ Array(node['gimme']['versions']).each do |version|
       group node['travis_build_environment']['group']
     end
   end
-end
 
-bash "install gometalinter tools for #{version}" do
-  code %{eval "$(gimme #{version})" && gometalinter --install --update}
-  user node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  only_if { node['travis_build_environment']['install_gometalinter_tools'] }
+  bash "install gometalinter tools for #{version}" do
+    code %{eval "$(gimme #{version})" && gometalinter --install --update}
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    only_if { node['travis_build_environment']['install_gometalinter_tools'] }
+  end
 end
