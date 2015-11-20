@@ -122,6 +122,9 @@ install_rubies(
 include_recipe 'gimme::default'
 
 Array(node['gimme']['versions']).each do |version|
+  version = version.sub('go', '')
+  next if version < '1.2.2'
+
   Array(node['travis_build_environment']['golang_libraries']).each do |lib|
     bash "install #{lib} for go #{version}" do
       code %{eval "$(gimme #{version})" && go get -u #{lib}}
