@@ -55,17 +55,16 @@ node['nodejs']['versions'].each do |version|
   end
 
   node['nodejs']['default_modules'].each do |mod|
-    if Gem::Version.new(version) >= Gem::Version.new(mod['required'])
-      bash "install #{mod[:module]} for node version #{version}" do
-        code "#{nvm} use #{version}; npm install -g #{mod['module']}"
-        creates "#{node['travis_build_environment']['home']}/.nvm/#{version}/lib/node_modules/#{mod['module']}"
-        user node['travis_build_environment']['user']
-        group node['travis_build_environment']['group']
-        cwd node['travis_build_environment']['home']
-        environment(
-          'HOME' => node['travis_build_environment']['home']
-        )
-      end
+    next unless Gem::Version.new(version) >= Gem::Version.new(mod['required'])
+    bash "install #{mod[:module]} for node version #{version}" do
+      code "#{nvm} use #{version}; npm install -g #{mod['module']}"
+      creates "#{node['travis_build_environment']['home']}/.nvm/#{version}/lib/node_modules/#{mod['module']}"
+      user node['travis_build_environment']['user']
+      group node['travis_build_environment']['group']
+      cwd node['travis_build_environment']['home']
+      environment(
+        'HOME' => node['travis_build_environment']['home']
+      )
     end
   end
 end
