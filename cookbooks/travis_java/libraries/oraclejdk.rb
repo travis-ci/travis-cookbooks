@@ -12,7 +12,7 @@ module TravisJava
       include_recipe 'travis_java::webupd8'
 
       # accept Oracle License v1.1, otherwise the package won't install
-      bash 'accept oracle license v1.1' do
+      bash "accept oracle license v1.1 for #{attribute_key}" do
         code <<-EOBASH.gsub(/^\s+>\s/, '')
           > /bin/echo -e #{pkg_installer} shared/accepted-oracle-license-v1-1 select true | \\
           >   debconf-set-selections
