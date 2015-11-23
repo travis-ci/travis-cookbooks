@@ -5,6 +5,7 @@ version '1.1.0'
 description 'Travis build environment'
 long_description 'Travis build environment'
 
+depends 'ark'
 depends 'gimme'
 depends 'iptables'
 depends 'mysql'

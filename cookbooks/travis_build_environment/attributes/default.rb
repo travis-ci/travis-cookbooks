@@ -79,6 +79,52 @@ default['travis_build_environment']['prerequisite_recipes'] = %w(
 default['travis_build_environment']['postrequisite_recipes'] = %w(
   iptables
 )
+default['travis_build_environment']['packer_url'] = \
+  'https://releases.hashicorp.com/packer/0.8.6/packer_0.8.6_linux_amd64.zip'
+default['travis_build_environment']['packer_checksum'] = \
+  '2f1ca794e51de831ace30792ab0886aca516bf6b407f6027e816ba7ca79703b5'
+default['travis_build_environment']['packer_version'] = '0.8.6'
+default['travis_build_environment']['packer_binaries'] = %w(
+  packer
+  packer-builder-amazon-chroot
+  packer-builder-amazon-ebs
+  packer-builder-amazon-instance
+  packer-builder-digitalocean
+  packer-builder-docker
+  packer-builder-file
+  packer-builder-googlecompute
+  packer-builder-null
+  packer-builder-openstack
+  packer-builder-parallels-iso
+  packer-builder-parallels-pvm
+  packer-builder-qemu
+  packer-builder-virtualbox-iso
+  packer-builder-virtualbox-ovf
+  packer-builder-vmware-iso
+  packer-builder-vmware-vmx
+  packer-post-processor-artifice
+  packer-post-processor-atlas
+  packer-post-processor-compress
+  packer-post-processor-docker-import
+  packer-post-processor-docker-push
+  packer-post-processor-docker-save
+  packer-post-processor-docker-tag
+  packer-post-processor-vagrant
+  packer-post-processor-vagrant-cloud
+  packer-post-processor-vsphere
+  packer-provisioner-ansible-local
+  packer-provisioner-chef-client
+  packer-provisioner-chef-solo
+  packer-provisioner-file
+  packer-provisioner-powershell
+  packer-provisioner-puppet-masterless
+  packer-provisioner-puppet-server
+  packer-provisioner-salt-masterless
+  packer-provisioner-shell
+  packer-provisioner-shell-local
+  packer-provisioner-windows-restart
+  packer-provisioner-windows-shell
+)
 
 default['travis_build_environment']['arch'] = 'i386'
 if kernel['machine'] =~ /x86_64/
