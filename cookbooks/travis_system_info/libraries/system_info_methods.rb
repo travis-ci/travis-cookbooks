@@ -11,13 +11,19 @@ module SystemInfoMethods
     end
 
     def system_info_options(options)
-      %W(
+      options_array = %W(
         --formats human,json
         --human-output #{options.fetch(:dest_dir)}/system_info
         --json-output #{options.fetch(:dest_dir)}/system_info.json
-        --commands-file #{options.fetch(:commands_file)}
         --cookbooks-sha #{options.fetch(:cookbooks_sha)}
-      ).join(' ')
+      )
+
+      commands_file = options.fetch(:commands_file, '')
+      unless commands_file.nil? || commands_file.empty?
+        options_array << "--commands-file #{options.fetch(:commands_file)}"
+      end
+
+      options_array.join(' ')
     end
   end
 end
