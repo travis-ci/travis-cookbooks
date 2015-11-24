@@ -35,7 +35,7 @@ end
 
 # Install phpunit
 remote_file "#{hhvm_path}/bin/phpunit" do
-  source "https://phar.phpunit.de/phpunit.phar"
+  source "https://phar.phpunit.de/phpunit-old.phar"
   owner  node.travis_build_environment.user
   group  node.travis_build_environment.group
   mode   0755
