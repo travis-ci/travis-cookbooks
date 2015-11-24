@@ -1,4 +1,4 @@
-arch     = kernel['machine'] =~ /x86_64/ ? "amd64" : "i386"
+arch = kernel['machine'] =~ /x86_64/ ? 'amd64' : 'i386'
 filename = "bison_2.4.1.dfsg-3_#{arch}.deb"
 
 default['bison']['filename'] = filename

@@ -1,1 +1,1 @@
-PATH=/usr/local/gradle/bin:$PATH
+PATH="/usr/local/gradle/bin:$PATH"

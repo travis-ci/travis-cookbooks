@@ -19,19 +19,19 @@ Requirements
 Attributes
 ----------
 
-* `node['sbt-extras']['download_url']` - URL to obtain a specific version of sbt-extras script.
-* `node['sbt-extras']['setup_dir']` - Target directory for installation (default: `/usr/local/bin`). Attention: this cookbook won't create `setup_dir` if does not exist yet (the idea is to force selection of a good location, most probably part of user PATH)
-* `node['sbt-extras']['script_name']` - Name of the installed script (default: `sbt`).
-* `node['sbt-extras']['owner']` - user owner of installed script (default: `root`)
-* `node['sbt-extras']['group']` - group owner of installed script (default: `root`).
-* `node['sbt-extras']['config_dir']` - Target directory for global configuration files (default: `/etc/sbt`). The default recipe can potentially install two templates in this directory if their filename attribute is not nil or empty (`''`)
-  * `node['sbt-extras']['jvmopts']['filename']` - default jvm arguments can be globally set in this file (default: `jvmopts`)
-  * `node['sbt-extras']['sbtopts']['filename']` - default sbt arguments can be globally set in this file (disabled by default)
-* `node['sbt-extras']['user_setup']['<user_name>']['sbt'][<array of sbt versions>]` and `node['sbt-extras']['user_setup']['<user_name>']['scala'][<array of scala versions>]` - (optional) sbt and scala boot dependencies will be preinstalled in `~/.sbt` and `~/.ivy2` directories during chef provisioning. Examples:
+* `node['travis_sbt_extras']['download_url']` - URL to obtain a specific version of sbt-extras script.
+* `node['travis_sbt_extras']['setup_dir']` - Target directory for installation (default: `/usr/local/bin`). Attention: this cookbook won't create `setup_dir` if does not exist yet (the idea is to force selection of a good location, most probably part of user PATH)
+* `node['travis_sbt_extras']['script_name']` - Name of the installed script (default: `sbt`).
+* `node['travis_sbt_extras']['owner']` - user owner of installed script (default: `root`)
+* `node['travis_sbt_extras']['group']` - group owner of installed script (default: `root`).
+* `node['travis_sbt_extras']['config_dir']` - Target directory for global configuration files (default: `/etc/sbt`). The default recipe can potentially install two templates in this directory if their filename attribute is not nil or empty (`''`)
+  * `node['travis_sbt_extras']['jvmopts']['filename']` - default jvm arguments can be globally set in this file (default: `jvmopts`)
+  * `node['travis_sbt_extras']['sbtopts']['filename']` - default sbt arguments can be globally set in this file (disabled by default)
+* `node['travis_sbt_extras']['user_setup']['<user_name>']['sbt'][<array of sbt versions>]` and `node['travis_sbt_extras']['user_setup']['<user_name>']['scala'][<array of scala versions>]` - (optional) sbt and scala boot dependencies will be preinstalled in `~/.sbt` and `~/.ivy2` directories during chef provisioning. Examples:
 
 ```ruby
-node['sbt-extras']['user_setup']['scala_lover']['sbt'] = %w{ 0.13.0 0.12.4 0.11.3 }
-node['sbt-extras']['user_setup']['scala_lover']['scala'] = %w{ 2.10.2 2.10.1 2.9.3 2.9.2 2.8.3 }
+node['travis_sbt_extras']['user_setup']['scala_lover']['sbt'] = %w{ 0.13.0 0.12.4 0.11.3 }
+node['travis_sbt_extras']['user_setup']['scala_lover']['scala'] = %w{ 2.10.2 2.10.1 2.9.3 2.9.2 2.8.3 }
 ```
 
 Installation and Usage

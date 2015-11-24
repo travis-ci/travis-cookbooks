@@ -1,7 +1,6 @@
-#
 # Cookbook Name:: haskell
 # Recipe:: default
-# Copyright 2012-2013, Travis CI Development Team <contact@travis-ci.org>
+# Copyright 2012-2015, Travis CI Development Team <contact@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,18 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-cookbook_file "/etc/profile.d/cabal.sh" do
-  owner node.travis_build_environment.user
-  group node.travis_build_environment.group
+cookbook_file '/etc/profile.d/cabal.sh' do
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
   mode 0755
 end
 
-case [node.platform, node.platform_version]
-when ["ubuntu", "11.10"] then
-  include_recipe "haskell::ghc_source"
-  include_recipe "haskell::platform_source"
-when ["ubuntu", "12.04"] then
-  include_recipe "haskell::ghc_package"
-  include_recipe "haskell::platform_package"
-end
-
+include_recipe 'haskell::ghc_package'
+include_recipe 'haskell::platform_package'

@@ -1,4 +1,4 @@
-name             "monit"
-maintainer       "Travis CI Development Team"
-license          "Apache v2.0"
-description      "Installs/Configures monit"
+name 'monit'
+maintainer 'Travis CI Development Team'
+license 'Apache v2.0'
+description 'Installs/Configures monit'

@@ -23,6 +23,15 @@ There are two cookbook path directories in this repository:
 There is no `Gemfile` for specifying Chef dependencies.  Please install the
 [ChefDK](https://downloads.chef.io/chef-dk/).
 
+### Testing
+
+The script that's run on Travis is `./runtests`, which by default runs on the
+`./cookbooks` directory.  Example usage:
+
+``` bash
+./runtests
+```
+
 ### Branches
 
 There are two long-lived branches:

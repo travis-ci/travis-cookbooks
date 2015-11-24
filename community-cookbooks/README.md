@@ -18,7 +18,6 @@ ark
 build-essential  
 erlang  
 git  
-imagemagick  
 iptables  
 jpackage  
 leiningen  

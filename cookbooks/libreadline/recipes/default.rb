@@ -22,11 +22,11 @@
 # THE SOFTWARE.
 
 case node[:platform]
-when "debian","ubuntu"
+when 'debian', 'ubuntu'
   case node[:version]
-  when "11.04" then
+  when '11.04' then
     package %w(libreadline5-dev libreadline5)
-  else  
+  else
     package %w(libreadline-dev libreadline6)
   end
 end

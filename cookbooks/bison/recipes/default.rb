@@ -15,34 +15,21 @@
 # limitations under the License.
 #
 
-#
-# Provides an older Bison version (2.4) to make it possible to build PHP 5.2
-# on Ubuntu 12.04. MK.
-#
+path = File.join(Chef::Config[:file_cache_path], node['bison']['filename'])
 
-require 'tmpdir'
+remote_file path do
+  source node['bison']['url']
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+end
 
-tmp = Dir.tmpdir
-case node['platform']
-when 'debian', 'ubuntu'
-  path = File.join(tmp, node['bison']['filename'])
+file path do
+  action :nothing
+end
 
-  remote_file(path) do
-    source node['bison']['url']
-
-    owner node['travis_build_environment']['user']
-    group node['travis_build_environment']['group']
-  end
-
-  file(path) do
-    action :nothing
-  end
-
-  package(path) do
-    action   :install
-    source   path
-    provider Chef::Provider::Package::Dpkg
-
-    notifies :delete, "file[#{path}]"
-  end
-end # case
+package path do
+  source path
+  provider Chef::Provider::Package::Dpkg
+  notifies :delete, "file[#{path}]"
+  action :install
+end

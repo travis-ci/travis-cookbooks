@@ -23,21 +23,18 @@
 
 include_recipe 'travis_java'
 
-require "tmpdir"
-
-tmp = Dir.tmpdir
 case node['platform']
-when "debian", "ubuntu"
+when 'debian', 'ubuntu'
   v = node['elasticsearch']['version']
   ["elasticsearch-#{v}.deb"].each do |deb|
-    path = File.join(tmp, deb)
+    path = File.join(Chef::Config[:file_cache_path], deb)
 
     remote_file(path) do
-      owner  node['travis_build_environment']['user']
-      group  node['travis_build_environment']['group']
+      owner node['travis_build_environment']['user']
+      group node['travis_build_environment']['group']
       source "http://download.elasticsearch.org/elasticsearch/elasticsearch/#{deb}"
 
-      not_if "which elasticsearch"
+      not_if 'which elasticsearch'
     end
 
     file(path) do
@@ -45,28 +42,28 @@ when "debian", "ubuntu"
     end
 
     package(deb) do
-      action   :install
-      source   path
+      action :install
+      source path
       provider Chef::Provider::Package::Dpkg
 
-      notifies :delete, resources(:file => path)
-      notifies :create, "ruby_block[create-symbolic-links]"
+      notifies :delete, "file[#{path}]"
+      notifies :create, 'ruby_block[create-symbolic-links]'
 
-      not_if "which elasticsearch"
+      not_if 'which elasticsearch'
     end
   end # each
 
   ruby_block 'create-symbolic-links' do
     block do
-      Dir.foreach("/usr/share/elasticsearch/bin") do |file|
+      Dir.foreach('/usr/share/elasticsearch/bin') do |file|
         File.symlink "/usr/share/elasticsearch/bin/#{file}", "/usr/local/bin/#{file}" unless File.exist? "/usr/local/bin/#{file}"
       end
     end
     action :nothing
   end
 
-  service "elasticsearch" do
-    supports :restart => true, :status => true
+  service 'elasticsearch' do
+    supports restart: true, status: true
 
     if node['elasticsearch']['service']['enabled']
       action [:enable, :start]

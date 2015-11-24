@@ -1,5 +1,5 @@
 service_provider = Chef::Provider::Service::Upstart if 'ubuntu' == node['platform'] &&
-  Chef::VersionConstraint.new('>= 12.04').include?(node['platform_version'])
+                                                       Chef::VersionConstraint.new('>= 12.04').include?(node['platform_version'])
 
 service 'ssh' do
   provider service_provider

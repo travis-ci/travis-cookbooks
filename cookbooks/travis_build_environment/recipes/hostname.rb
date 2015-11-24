@@ -20,8 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-bits = (node.kernel.machine =~ /x86_64/ ? 64 : 32)
-hostname = case [node[:platform], node[:platform_version]]
+bits = (node['kernel']['machine'] =~ /x86_64/ ? 64 : 32)
+hostname = case [node['platform'], node['platform_version']]
            when ['ubuntu', '11.04'] then
              "natty#{bits}"
            when ['ubuntu', '11.10'] then
@@ -50,4 +50,6 @@ template '/etc/hostname' do
   only_if { node['travis_build_environment']['update_hosts'] }
 end
 
-execute "hostname #{hostname}"
+execute "hostname #{hostname}" do
+  only_if { node['travis_build_environment']['update_hostname'] }
+end

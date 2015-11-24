@@ -1,4 +1,4 @@
-default['firefox']['tarball']['version']              = "31.6.0esr"
+default['firefox']['tarball']['version']              = '31.6.0esr'
 default['firefox']['tarball']['download_url']         = "http://releases.mozilla.org/pub/firefox/releases/#{node['firefox']['tarball']['version']}/linux-#{kernel['machine']}/en-US/firefox-#{node['firefox']['tarball']['version']}.tar.bz2"
 
 # Required distro packages, preconfigured for Ubuntu 12.04

@@ -1,25 +1,10 @@
 #!/usr/bin/env rake
 
 require 'foodcritic'
-require 'rake/testtask'
+require 'rspec/core/rake_task'
 
-begin
-  require 'emeril/rake'
-rescue LoadError
-  puts ">>>>> Emeril gem not loaded, omitting tasks" unless ENV['CI']
-end
-
-# FC041 is excluded because we want to preserve the official RVM installation
-# process as much as possible, i.e. using curl to download the installer.
-FoodCritic::Rake::LintTask.new do |t|
-  t.options = { :fail_tags => ['any'], :tags => ['~FC041'] }
-end
-
-
-Rake::TestTask.new do |t|
-  t.name = "unit"
-  t.test_files = FileList['test/unit/**/*_spec.rb']
-  t.verbose = true
+RSpec::Core::RakeTask.new(:unit) do |t|
+  t.pattern = "test/unit/**/*_spec.rb"
 end
 
 begin
@@ -30,3 +15,4 @@ rescue LoadError
 end
 
 task :default => [:foodcritic, :unit]
+FoodCritic::Rake::LintTask.new

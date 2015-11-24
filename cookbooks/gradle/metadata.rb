@@ -1,6 +1,7 @@
-name             "gradle"
-maintainer       "Travis CI Development Team"
-license          "Apache v2.0"
-description      "Installs/Configures gradle"
+name 'gradle'
+maintainer 'Travis CI Development Team'
+license 'Apache v2.0'
+description 'Installs/Configures gradle'
 
-depends          "java"
+depends 'ark'
+depends 'travis_groovy'

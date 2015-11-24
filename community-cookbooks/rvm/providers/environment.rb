@@ -38,6 +38,7 @@ action :create do
   else
     ruby_resource   :install
   end
+  new_resource.updated_by_last_action(true)
 end
 
 private

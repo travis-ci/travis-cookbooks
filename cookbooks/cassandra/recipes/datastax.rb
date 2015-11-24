@@ -22,19 +22,19 @@
 
 include_recipe 'travis_java'
 
-apt_repository "datastax" do
-  uri          "http://debian.datastax.com/community"
-  distribution "stable"
-  components   ["main"]
-  key          "http://debian.datastax.com/debian/repo_key"
+apt_repository 'datastax' do
+  uri 'http://debian.datastax.com/community'
+  distribution 'stable'
+  components ['main']
+  key 'http://debian.datastax.com/debian/repo_key'
 
   action :add
 end
 
 package 'cassandra'
 
-service "cassandra" do
-  supports :restart => true, :status => true
+service 'cassandra' do
+  supports restart: true, status: true
   # intentionally disabled on boot to save on RAM available to projects,
   # supposed to be started manually by projects that need it. MK.
   action [:disable, :stop]
