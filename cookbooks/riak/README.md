@@ -1,1 +1,0 @@
-# riak cookbook

@@ -1,7 +1,0 @@
-Berksfile.lock
-Gemfile.lock
-/cookbooks
-.vagrant
-.DS_Store
-test/kitchen/.kitchen/
-.kitchen.local.yml

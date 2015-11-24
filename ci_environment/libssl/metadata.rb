@@ -1,0 +1,6 @@
+maintainer       "Travis CI Development Team"
+license          "Apache v2.0"
+name             "libssl"
+version          "1.0.0"
+description      "libssl"
+long_description "Installs/Configures libssl"
