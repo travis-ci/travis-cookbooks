@@ -1,0 +1,86 @@
+---
+driver_config:
+  digitalocean_client_id: <%= ENV['DIGITAL_OCEAN_CLIENT_ID'] %>
+  digitalocean_api_key: <%= ENV['DIGITAL_OCEAN_API_KEY'] %>
+  aws_access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %> 
+  aws_secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+  aws_ssh_key_id: <%= ENV['AWS_KEYPAIR_NAME'] %>
+  availability_zone: <%= ENV['AWS_AVAILABILITY_ZONE'] %>
+
+provisioner:
+  name: chef_zero
+  require_chef_omnibus: latest
+
+platforms:
+- name: centos-5.8
+  driver_plugin: digital_ocean
+  driver_config:
+    size: 1gb
+
+- name: centos-6.5
+  driver_plugin: digital_ocean
+  driver_config:
+    size: 1gb
+
+- name: centos-7.0
+  driver_plugin: digital_ocean
+  driver_config:
+    size: 1gb
+
+- name: debian-7.0
+  driver_plugin: digital_ocean
+  driver_config:
+    size: 1gb
+
+- name: ubuntu-10.04
+  driver_plugin: digital_ocean
+  driver_config:
+    size: 1gb
+
+- name: ubuntu-12.04
+  driver_plugin: digital_ocean
+  driver_config:
+    size: 1gb
+
+- name: ubuntu-14.04
+  driver_plugin: digital_ocean
+  driver_config:
+    size: 1gb
+
+- name: amazon-2013.09
+  driver_plugin: ec2
+  driver_config:
+    image_id: ami-3be4bc52
+    username: ec2-user
+    ssh_key: <%= ENV['EC2_SSH_KEY_PATH'] %>
+
+- name: amazon-2014.03
+  driver_plugin: ec2
+  driver_config:
+    image_id: ami-6b726502
+    username: ec2-user
+    ssh_key: <%= ENV['EC2_SSH_KEY_PATH'] %>
+
+suites:
+
+#
+# Uncomment to verify that the instance becomes inaccessible post-converge
+#
+#- name: default
+#  run_list:
+#  - recipe[iptables::default]
+#  attributes: {}
+
+- name: iptables_secure
+  run_list:
+  - recipe[iptables::default]
+  - recipe[iptables_secure::default]
+  attributes: {}
+
+- name: no_default_rules
+  run_list:
+  - recipe[iptables::default]
+  attributes:
+    iptables:
+      install_rules: false
+

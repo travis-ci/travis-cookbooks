@@ -1,0 +1,45 @@
+{
+  "name": "erlang",
+  "version": "1.5.8",
+  "description": "Installs erlang, optionally install GUI tools.",
+  "long_description": "",
+  "maintainer": "Chef Software, Inc.",
+  "maintainer_email": "cookbooks@chef.io",
+  "license": "Apache 2.0",
+  "platforms": {
+    "ubuntu": ">= 0.0.0",
+    "debian": ">= 0.0.0",
+    "redhat": ">= 0.0.0",
+    "centos": ">= 0.0.0",
+    "scientific": ">= 0.0.0",
+    "amazon": ">= 0.0.0",
+    "oracle": ">= 0.0.0"
+  },
+  "dependencies": {
+    "apt": ">= 1.7.0",
+    "yum": "~> 3.0",
+    "yum-epel": ">= 0.0.0",
+    "yum-erlang_solutions": ">= 0.0.0",
+    "build-essential": ">= 0.0.0"
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+  },
+  "groupings": {
+  },
+  "recipes": {
+    "erlang": "Installs Erlang via native package, source, or Erlang Solutions package",
+    "erlang::package": "Installs Erlang via native package",
+    "erlang::source": "Installs Erlang via source",
+    "erlang::esl": "Installs Erlang from Erlang Solutions' package repositories"
+  }
+}

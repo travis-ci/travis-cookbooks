@@ -1,0 +1,13 @@
+#
+# Configured by Chef. Local changes will be lost.
+#
+# "Javier Frias"<jfrias@gmail.com>
+#
+# centos sysconfig  memcached default  file
+#
+
+PORT="<%= @port %>"
+USER="<%= @user %>"
+MAXCONN="<%= @maxconn %>"
+CACHESIZE="<%= @memory %>"
+OPTIONS="-U <%= @udp_port %> -l <%= @listen %> -I <%= @max_object_size %> <% if @threads %>-t <%= @threads %><% end %> >> /var/log/<%= @logfilename %> 2>&1"

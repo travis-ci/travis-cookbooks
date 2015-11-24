@@ -1,0 +1,67 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
+  require_chef_omnibus: 11.14
+
+platforms:
+
+- name: ubuntu-12.04
+  driver:
+    customize:
+      memory: 384
+    run_list:
+      - recipe[apt]
+
+- name: ubuntu-14.04
+  driver:
+    customize:
+      memory: 384
+    run_list:
+      - recipe[apt]
+
+- name: centos-6.6
+  driver:
+    customize:
+      memory: 512
+    run_list:
+      - recipe[yum]
+
+- name: centos-7.1
+  driver:
+    customize:
+      memory: 512
+    run_list:
+      - recipe[yum]
+
+suites:
+
+- name: wip # be prepared to work on https://github.com/gildegoma/chef-android-sdk/issues/14 (maven-android-sdk-deployer)
+  run_list:
+    - recipe[git]
+    - recipe[maven]
+    - recipe[android-sdk]
+  attributes:
+    android-sdk:
+      owner: vagrant
+      group: vagrant
+    components:
+      - build-tools-22.1.0
+      - android-22
+      - sysimg-22
+    java:
+      jdk_version: 7
+
+- name: default
+  run_list:
+    - recipe[android-sdk]
+  attributes:
+    java:
+      jdk_version: 7
+    android-sdk:
+      components:
+        - build-tools-22.0.1
+        - android-22
+        - sys-img-armeabi-v7a-android-22

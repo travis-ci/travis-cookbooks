@@ -1,0 +1,31 @@
+# Push system log to papertrailapp.com
+#
+
+$DefaultNetstreamDriverCAFile <%= @cert_file %> # trust these CAs
+$DefaultNetstreamDriver gtls # use gtls netstream driver
+$ActionSendStreamDriverMode 1 # require TLS
+$ActionSendStreamDriverAuthMode x509/name # authenticate by hostname
+$ActionSendStreamDriverPermittedPeer <%= node['papertrail']['permitted_peer'] %>
+$ActionResumeRetryCount <%= node['papertrail']['resume_retry_count'] %>
+$ActionResumeInterval 10
+$ActionQueueType LinkedList
+$ActionQueueMaxDiskSpace <%= node['papertrail']['queue_disk_space'] %>
+$ActionQueueFileName <%= node['papertrail']['queue_file_name'] %>
+$ActionQueueSaveOnShutdown on
+$ActionQueueSize <%= node['papertrail']['queue_size'] %>
+$ActionQueueDiscardMark 97500
+$ActionQueueHighWaterMark 80000
+$ActionQueueCheckpointInterval 100
+$ActionQueueSaveOnShutdown on
+$ActionQueueTimeoutEnqueue 10
+$ActionQueueDiscardSeverity 0
+
+<%- if @fixhostname %>
+
+*.*   @@<%= @host %>:<%= @port %>;FixHostname
+
+<%- else %>
+
+*.*   @@<%= @host %>:<%= @port %>
+
+<%- end %>

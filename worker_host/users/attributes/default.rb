@@ -1,2 +1,0 @@
-default[:users] = []
-default[:groups] = []

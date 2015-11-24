@@ -1,0 +1,5 @@
+root hard nofile 72000
+root soft nofile 96000
+
+<%= node['travis_build_environment']['user'] %> hard nofile 64000
+<%= node['travis_build_environment']['user'] %> soft nofile 72000

@@ -1,4 +1,0 @@
-recipes:
-  - perlbrew::multi
-  - system_info
-  - sweeper

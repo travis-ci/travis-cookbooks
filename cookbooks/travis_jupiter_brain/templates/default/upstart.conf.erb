@@ -1,0 +1,54 @@
+# Managed by Chef on <%= node.name %>, thanks! :heart_eyes_cat:
+description "Jupiter Brain (<%= @service_name %>)"
+
+start on (started networking)
+stop on runlevel [!2345]
+
+<% if @blue_green %>
+instance $INST
+<% end %>
+
+setuid travis
+setgid nogroup
+
+respawn
+respawn limit 10 90
+
+script
+  JUPITER_BRAIN_RUN_DIR=/var/tmp/run
+
+  if [ -f /etc/default/$UPSTART_JOB ]; then
+    . /etc/default/$UPSTART_JOB
+  fi
+
+<% if @blue_green %>
+  if [ -f /etc/default/$UPSTART_JOB-$INST ] ; then
+    . /etc/default/$UPSTART_JOB-$INST
+  fi
+<% end %>
+
+  export GOMAXPROCS=`nproc`
+<% if @blue_green %>
+  cp -v /usr/local/bin/jb-server $JUPITER_BRAIN_RUN_DIR/$UPSTART_JOB-$INST
+  exec $JUPITER_BRAIN_RUN_DIR/$UPSTART_JOB-$INST
+<% else %>
+  cp -v /usr/local/bin/jb-server $JUPITER_BRAIN_RUN_DIR/$UPSTART_JOB
+  exec $JUPITER_BRAIN_RUN_DIR/$UPSTART_JOB
+<% end %>
+end script
+
+post-stop script
+  JUPITER_BRAIN_RUN_DIR=/var/tmp/run
+
+  if [ -f /etc/default/$UPSTART_JOB ]; then
+    . /etc/default/$UPSTART_JOB
+  fi
+
+<% if @blue_green %>
+  rm -f $JUPITER_BRAIN_RUN_DIR/$UPSTART_JOB-$INST
+<% else %>
+  rm -f $JUPITER_BRAIN_RUN_DIR/$UPSTART_JOB
+<% end %>
+end script
+
+# vim:filetype=upstart

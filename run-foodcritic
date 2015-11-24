@@ -1,0 +1,73 @@
+#!/usr/bin/env ruby
+# vim:fileencoding=utf-8
+
+require 'English'
+
+def main(argv = ARGV)
+  return 1 if argv.empty?
+
+  failed = []
+
+  cookbook_path = argv.first
+  fc_args = %W(#{ENV['FC_ARGS']})
+  fc_tags = ENV['FC_TAGS'] || File.join(cookbook_path, '.foodcritic-tags')
+  quiet = ENV['QUIET'].nil? ? false : true
+  foodcritic_exe = ENV['FOODCRITIC_EXE'] || 'foodcritic'
+
+  if File.exist?(fc_tags)
+    fc_args += File.read(fc_tags).split.map { |t| "--tags #{t.strip}" }
+  end
+
+  Dir.glob("#{cookbook_path}/*") do |cookbook|
+    next unless File.exist?(File.join(cookbook, 'metadata.rb'))
+
+    failed << run_foodcritic_for_cookbook(
+      cookbook: cookbook,
+      quiet: quiet,
+      fc_args: fc_args,
+      foodcritic_exe: foodcritic_exe
+    )
+  end
+
+  failed.compact!
+
+  unless failed.empty?
+    puts "FAILED:\n#{failed.join(' ')}"
+    return 1
+  end
+
+  0
+end
+
+def run_foodcritic_for_cookbook(cookbook: '', quiet: false, fc_args: '',
+                                foodcritic_exe: 'foodcritic')
+
+  return nil if cookbook.empty?
+  return nil unless File.directory?(cookbook)
+  cookbook_name = File.basename(cookbook)
+  return nil if cookbook_name == 'cookbooks'
+
+  foodcritic_command = %W(
+    #{foodcritic_exe}
+    --epic-fail any
+    #{fc_args.join(' ')}
+    #{cookbook}
+  ).join(' ')
+
+  puts "---> #{cookbook_name}: #{foodcritic_command}" unless quiet
+
+  output = `#{foodcritic_command} 2>&1`.chomp
+  output = output.split(/[\r\n]/).map(&:strip).reject(&:empty?).join("\n")
+  puts output unless output.empty?
+
+  if $CHILD_STATUS.success?
+    puts "---> #{cookbook_name} ✔︎" unless quiet
+  else
+    puts "---> #{cookbook_name} ✘" unless quiet
+    return cookbook_name
+  end
+
+  nil
+end
+
+exit(main) if $PROGRAM_NAME == __FILE__

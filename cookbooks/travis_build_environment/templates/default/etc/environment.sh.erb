@@ -1,0 +1,14 @@
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+<% unless node['travis_java']['default_version'].empty? -%>
+JAVA_HOME="<%= node['travis_java']['jvm_base_dir'] -%>/<%= node['travis_java'][node['travis_java']['default_version']]['jvm_name'] -%>"
+<% end -%>
+
+DEBIAN_FRONTEND=noninteractive
+
+TRAVIS=true
+CI=true
+CONTINUOUS_INTEGRATION=true
+
+LC_CTYPE=en_US.UTF-8
+LC_ALL=en_US.UTF-8
+LANG=en_US.UTF-8

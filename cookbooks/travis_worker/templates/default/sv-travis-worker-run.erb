@@ -1,0 +1,43 @@
+#!/bin/bash
+# vim:filetype=sh
+# Chef manages this file on <%= node.name %> <3 <3 <3
+exec 2>&1
+
+if [[ -f /etc/default/travis-worker-chef ]] ; then
+  set -a
+  source /etc/default/travis-worker-chef
+  set +a
+fi
+
+if [[ -f /etc/default/travis-worker ]] ; then
+  set -a
+  source /etc/default/travis-worker
+  set +a
+fi
+
+: ${TRAVIS_WORKER_DOCKER_LANGUAGES:=<%= @options.fetch(:docker_languages, []).join(' ') %>}
+: ${TRAVIS_WORKER_HOME:=<%= @options[:worker_home] %>}
+: ${TRAVIS_WORKER_USER:=<%= @options[:user] %>}
+: ${TRAVIS_WORKER_GROUP:=<%= @options[:group] %>}
+: ${TRAVIS_WORKER_JRUBY:=<%= @options[:jruby] %>}
+: ${TRAVIS_WORKER_DOCKER_PRESEED_ENABLED:=false}
+: ${TRAVIS_WORKER_DOCKER_PRESEED_TOUCHFILE:=/mnt/docker/.preseeded}
+: ${TRAVIS_WORKER_DOCKER_PRESEED_WAIT_SLEEP:=30}
+
+if [[ $TRAVIS_WORKER_DOCKER_PRESEED_ENABLED = true && ! -f "$TRAVIS_WORKER_DOCKER_PRESEED_TOUCHFILE" ]] ; then
+  echo "Docker preseed not done yet"
+  sleep "${TRAVIS_WORKER_DOCKER_PRESEED_WAIT_SLEEP}"
+  exit 1
+fi
+
+for lang in ${TRAVIS_WORKER_DOCKER_LANGUAGES} ; do
+  docker pull "quay.io/travisci/travis-${lang}:latest" || { echo "Pulling ${lang} image failed"; exit 1; }
+  docker tag "quay.io/travisci/travis-${lang}:latest" "travis:${lang}" || { echo "Tagging ${lang} image failed"; exit 1; }
+done
+
+cd "${TRAVIS_WORKER_HOME}"
+
+exec chpst \
+  -u "${TRAVIS_WORKER_USER}:${TRAVIS_WORKER_GROUP}" \
+  /usr/local/bin/signal_wrapper "${TRAVIS_WORKER_JRUBY}" \
+  ./bin/thor travis:worker:boot

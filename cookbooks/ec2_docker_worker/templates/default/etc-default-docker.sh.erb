@@ -1,0 +1,11 @@
+# Chef manages this file on <%= node.name %> <3 <3 <3
+DOCKER_OPTS="\
+  --exec-driver=lxc --icc=false \
+  -H tcp://127.0.0.1:4243 \
+  -H unix:///var/run/docker.sock \
+  -g $DOCKER_GRAPH_DIR \
+  -s devicemapper \
+  --storage-opt dm.basesize=$DOCKER_STORAGE_OPT_DM_BASESIZE \
+  --storage-opt dm.datadev=/dev/direct-lvm/data \
+  --storage-opt dm.metadatadev=/dev/direct-lvm/metadata \
+  --storage-opt dm.fs=$DOCKER_STORAGE_OPT_DM_FS"

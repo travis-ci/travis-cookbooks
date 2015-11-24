@@ -5,7 +5,8 @@ tmp/*
 *.rbc
 #~
 ~*
-/Gemfile.lock
+Gemfile.lock
+Berksfile.lock
 /.rvmrc
 /.versions.conf
 /.bundle

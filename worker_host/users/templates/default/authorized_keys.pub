@@ -1,4 +1,0 @@
-<% @ssh_keys.each do |name, key| %>
-# <%= name %>
-<%= key %>
-<% end %>

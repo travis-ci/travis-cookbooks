@@ -1,7 +1,0 @@
-json:
-  postgresql:
-    ssl: false
-  travis_build_environment:
-    update_hosts: false
-recipes:
-  - mysql::server

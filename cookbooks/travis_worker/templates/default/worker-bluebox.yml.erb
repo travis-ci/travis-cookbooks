@@ -1,0 +1,75 @@
+env: <%= @worker[:env] %>
+linux:
+<% if @worker[:logging_channel] -%>
+  logging_channel: <%= @worker[:logging_channel] %>
+<% end -%>
+<% if @queue -%>
+  queue: <%= @queue %>
+<% end -%>
+  host: <%= @hostname %>
+  log_level: <%= @worker[:log_level] %>
+  amqp:
+  <% @amqp.each do |key, value| -%>
+    <%= key %>: <%= value %>
+  <% end %>
+  vms:
+    provider: <%= @worker[:provider] %>
+    count: <%= @vms || @worker[:vms] %>
+  blue_box:
+    customer_id: <%= @bluebox[:customer_id] %>
+    api_key: <%= @bluebox[:api_key] %>
+    flavor_id: <%= @bluebox[:flavor_id] %>
+    location_id: <%= @bluebox[:location_id] %>
+<% if @bluebox[:ipv6_only] -%>
+    ipv6_only: <%= @bluebox[:ipv6_only] %>
+<% end -%>
+<% if @open_stack -%>
+  open_stack:
+    api_key: <%= @open_stack[:api_key] %>
+    username: <%= @open_stack[:username] %>
+    auth_url: <%= @open_stack[:auth_url] %>
+    tenant: <%= @open_stack[:tenant] %>
+    flavor_id: <%= @open_stack[:flavor_id] %>
+<% end -%>
+  librato:
+    email: <%= @librato[:email] %>
+    token: <%= @librato[:api_token] %>
+  language_mappings:
+    clojure: jvm
+    scala: jvm
+    groovy: jvm
+    java: jvm
+    elixir: erlang
+<% if @worker[:template_override] -%>
+  template_override: <%= @worker[:template_override] %>
+<% end -%>
+<% if @worker[:timeouts] -%>
+  timeouts:
+  <% @worker[:timeouts].each do |timeout, value| -%>
+    <%= timeout -%>: <%= value %>
+  <% end -%>
+<% end -%>
+<% if @worker[:shutdown_timeout] -%>
+  shutdown_timeout: <%= @worker[:shutdown_timeout] %>
+<% end -%>
+<% if @worker[:hosts] && @worker[:hosts].any? -%>
+  hosts:
+  <% @worker[:hosts].each do |name, host| %>
+    <%= name -%>: "<%= host %>"
+  <% end %>
+<% end -%>
+<% if @worker[:cache_options] && @worker[:cache_options][:s3].any? -%>
+  cache_options:
+    type: s3
+    s3:
+      bucket: <%= @worker[:cache_options][:s3][:bucket] %>
+      access_key_id: <%= @worker[:cache_options][:s3][:access_key_id] %>
+      secret_access_key: <%= @worker[:cache_options][:s3][:secret_access_key] %>
+    fetch_timeout: <%= 1200 %>
+    push_timeout: <%= 1200 + @worker[:timeouts][:hard_limit] %>
+<% end -%>
+<% if @worker[:build] -%>
+  build:
+    url: <%= @worker[:build][:url] %>
+    api_token: <%= @worker[:build][:api_token] %>
+<% end -%>

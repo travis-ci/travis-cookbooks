@@ -1,4 +1,19 @@
-language: ruby
-rvm: 1.9.3
-sudo: required
-group: edge
+language: generic
+
+sudo: false
+
+env:
+  global:
+  - PATH="/opt/chefdk/bin:/opt/chef/bin:/opt/chef/embedded/bin:/opt/chefdk/embedded/bin:$PATH"
+  matrix:
+  - COOKBOOK_PATH="cookbooks"
+  - COOKBOOK_PATH="community-cookbooks"
+
+addons:
+  apt:
+    sources:
+    - chef-stable-precise
+    packages:
+    - chefdk
+
+script: ./runtests

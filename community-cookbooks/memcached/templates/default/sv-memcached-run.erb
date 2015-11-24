@@ -1,0 +1,17 @@
+#!/bin/sh
+exec 2>&1
+
+<% if @options[:ulimit] == true %>ulimit -n <%= @options[:maxconn] %><% end %>
+
+exec chpst -u <%= @options[:user] %> \
+  /usr/bin/memcached -v \
+  -m <%= @options[:memory] %> \
+  -U <%= @options[:udp_port] %> \
+  -p <%= @options[:port] %> \
+  -u <%= @options[:user] %> \
+  -l <%= @options[:listen] %> \
+  -c <%= @options[:maxconn] %> \
+  -I <%= @options[:max_object_size] %><% if @options[:experimental_options].any? %> \
+  -o <%= @options[:experimental_options].join(', ') %><% end %><% if @options[:threads] %> \
+  -t <%= @options[:threads] %>
+  <% end %>
