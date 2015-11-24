@@ -1,0 +1,10 @@
+[opsmatic_public]
+name=opsmatic_public
+baseurl=https://packagecloud.io/opsmatic/public/el/6/$basearch
+enabled=1
+gpgcheck=0
+sslverify=1
+repo_gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-opsmatic_packagecloud
+assumeyes=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt

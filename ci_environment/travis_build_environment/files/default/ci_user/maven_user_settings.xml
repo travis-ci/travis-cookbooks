@@ -1,0 +1,149 @@
+<settings>
+  <profiles>
+    <profile>
+      <id>standard-with-extra-repos</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+
+      <repositories>
+        <repository>
+          <id>central</id>
+          <name>Central Repository</name>
+          <url>http://repo.maven.apache.org/maven2</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+
+        <repository>
+          <id>sonatype</id>
+          <name>OSS Sonatype repo (releases)</name>
+          <releases>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+            <checksumPolicy>warn</checksumPolicy>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+            <updatePolicy>never</updatePolicy>
+            <checksumPolicy>fail</checksumPolicy>
+          </snapshots>
+          <url>https://oss.sonatype.org/content/repositories/releases/</url>
+        </repository>
+
+        <repository>
+          <id>sonatype-snapshots</id>
+          <name>OSS Sonatype repo (snapshots)</name>
+          <releases>
+            <enabled>false</enabled>
+            <updatePolicy>always</updatePolicy>
+            <checksumPolicy>warn</checksumPolicy>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+            <checksumPolicy>fail</checksumPolicy>
+          </snapshots>
+          <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
+
+        <repository>
+          <id>sonatype-apache</id>
+          <name>Apache repo (releases)</name>
+          <releases>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+            <checksumPolicy>warn</checksumPolicy>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+            <updatePolicy>never</updatePolicy>
+            <checksumPolicy>fail</checksumPolicy>
+          </snapshots>
+          <url>https://repository.apache.org/releases/</url>
+        </repository>
+
+        <repository>
+          <id>apache-snapshots</id>
+          <name>ASF repo (snapshots)</name>
+          <releases>
+            <enabled>false</enabled>
+            <updatePolicy>never</updatePolicy>
+            <checksumPolicy>warn</checksumPolicy>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+            <checksumPolicy>fail</checksumPolicy>
+          </snapshots>
+          <url>https://repository.apache.org/snapshots/</url>
+        </repository>
+
+        <repository>
+          <id>codehaus-snapshots</id>
+          <name>Codehaus (snapshots)</name>
+          <releases>
+            <enabled>false</enabled>
+            <updatePolicy>always</updatePolicy>
+            <checksumPolicy>warn</checksumPolicy>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+            <checksumPolicy>fail</checksumPolicy>
+          </snapshots>
+          <url>https://nexus.codehaus.org/snapshots/</url>
+        </repository>
+      </repositories>
+    </profile>
+  </profiles>
+
+  <!-- remove the mirrors for now as VMs are based in the US -->
+  <!-- <mirrors>
+    <mirror>
+      <id>travis-ci-central</id>
+      <name>Travis CI Central mirror</name>
+      <url>http://maven.mirrors.travis-ci.org/nexus/content/repositories/central/</url>
+      <mirrorOf>central</mirrorOf>
+    </mirror>
+
+    <mirror>
+      <id>travis-ci-sonatype</id>
+      <name>Travis CI oss.sonatype.org mirror</name>
+      <url>http://maven.mirrors.travis-ci.org/nexus/content/repositories/sonatype/</url>
+      <mirrorOf>sonatype</mirrorOf>
+    </mirror>
+
+    <mirror>
+      <id>travis-ci-sonatype-snapshots</id>
+      <name>Travis CI oss.sonatype.org mirror (snapshots)</name>
+      <url>http://maven.mirrors.travis-ci.org/nexus/content/repositories/sonatype-snapshots/</url>
+      <mirrorOf>sonatype-snapshots</mirrorOf>
+    </mirror>
+
+    <mirror>
+      <id>travis-ci-apache</id>
+      <name>Travis CI repository.apache.org mirror (releases)</name>
+      <url>http://maven.mirrors.travis-ci.org/nexus/content/repositories/apache/</url>
+      <mirrorOf>apache</mirrorOf>
+    </mirror>
+
+    <mirror>
+      <id>travis-ci-apache-snapshots</id>
+      <name>Travis CI repository.apache.org mirror (snapshots)</name>
+      <url>http://maven.mirrors.travis-ci.org/nexus/content/repositories/apache-snapshots/</url>
+      <mirrorOf>sonatype-snapshots</mirrorOf>
+    </mirror>
+
+    <mirror>
+      <id>travis-ci-codehaus-snapshots</id>
+      <name>Travis CI Codehaus mirror (snapshots)</name>
+      <url>http://maven.mirrors.travis-ci.org/nexus/content/repositories/codehaus-snapshots/</url>
+      <mirrorOf>codehaus-snapshots</mirrorOf>
+    </mirror>
+  </mirrors> -->
+</settings>

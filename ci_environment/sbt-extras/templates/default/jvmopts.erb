@@ -1,0 +1,8 @@
+# Tweaking for VM equipped with 3GB of RAM
+# See also 'default_jvm_opts' defined in <%= File.join(node['sbt-extras']['setup_dir'], node['sbt-extras']['script_name']) %>
+
+-Xms2048M
+-Xmx2048M
+-Xss6M
+-XX:MaxPermSize=512M
+

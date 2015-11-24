@@ -1,0 +1,12 @@
+set alert <%= @alerts["receiver"] %> on { pid, timeout, connection, action, nonexist }
+<% unless @alerts[:disabled] %>
+<%# Allow disabling alerts via "monit": { "alerts": { "disabled": true } }, in a node config %>
+set mailserver <%= @alerts["smtp"] %> port <%= @alerts["port"] %>
+  username "<%= @alerts["user"] %>" password "<%= @alerts["password"] %>"
+  with timeout 30 seconds
+
+  set mail-format {
+    from: <%= @alerts["receiver"] %>
+    subject: monit alert for <%= node["hostname"] %>: $EVENT $SERVICE
+  }
+<% end %>
