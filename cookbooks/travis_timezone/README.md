@@ -1,1 +1,0 @@
-# travis_timezone cookbook

@@ -1,0 +1,6 @@
+maintainer       "Travis CI Development Team"
+license          "Apache v2.0"
+name             "unarchivers"
+version          "1.0.0"
+description      "unarchivers"
+long_description "Installs/Configures unarchivers"

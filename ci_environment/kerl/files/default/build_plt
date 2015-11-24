@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+. "$1/activate"
+
+dialyzer --output_plt "${REBAR_PLT_DIR}/dialyzer.plt" --build_plt --apps `ls "$2" | sed 's/-.*//' | grep -v jinterface | grep -v erl_interface`

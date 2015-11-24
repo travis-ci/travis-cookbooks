@@ -1,8 +1,0 @@
-SITE
-  remote: http://community.opscode.com/api/v1
-  specs:
-    rsyslog (1.5.0)
-
-DEPENDENCIES
-  rsyslog (>= 0)
-

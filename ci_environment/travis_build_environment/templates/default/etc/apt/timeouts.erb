@@ -1,0 +1,3 @@
+Acquire::Retries "<%= node.travis_build_environment.apt.retries %>";
+// So that dead slow or timing out repositories fail faster. MK.
+Acquire::http::Timeout "<%= node.travis_build_environment.apt.timeout %>";

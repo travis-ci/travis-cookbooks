@@ -1,0 +1,7 @@
+# Export the $PATH with the pyenv bindirs prepended to it
+export PATH=<%= @bindirs.join(':') %>:$PATH
+
+# Configure python-build for consistent build options
+<% @build_environment.each do |key, value| %>
+export <%= key %>="<%= value %>"
+<% end %>
