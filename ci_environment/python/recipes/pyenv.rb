@@ -51,6 +51,8 @@ build_environment = {
   "PYTHON_CFLAGS" => "-g -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security",
 }
 
+Chef::Log.info("installing pythons: #{node['python']['pyenv']['pythons'].inspect}")
+
 # Install the baked in versions of Python we are offering
 node.python.pyenv.pythons.each do |py|
   # Get our on disk name for this python
