@@ -28,7 +28,7 @@ bash 'Install system_info gems' do
   user node['travis_build_environment']['user']
   cwd system_info_dir
   flags '-l'
-  code 'bundle install --deployment'
+  code 'rvm use default && bundle install --deployment'
   environment('HOME' => node['travis_build_environment']['home'])
   only_if { node['system_info']['use_bundler'] }
 end
@@ -43,7 +43,7 @@ bash 'execute-system_info' do
   user node['travis_build_environment']['user']
   cwd system_info_dir
   flags '-l'
-  code "#{node['system_info']['use_bundler'] ? 'bundle exec' : ''} ./bin/system_info"
+  code "rvm use default && #{node['system_info']['use_bundler'] ? 'bundle exec' : ''} ./bin/system_info"
   environment(
     'HOME' => node['travis_build_environment']['home'],
     'FORMATS' => 'human,json',
