@@ -9,7 +9,6 @@
 
 system_info_dir = '/usr/local/system_info'
 system_info_dest = '/usr/share/travis'
-rvm_source = "#{node['travis_build_environment']['home']}/.rvm/scripts/rvm"
 
 git system_info_dir do
   repository node['system_info']['git_repo']
@@ -28,10 +27,9 @@ end
 bash 'Install system_info gems' do
   user node['travis_build_environment']['user']
   cwd system_info_dir
-  code <<-EOF
-    [[ -f #{rvm_source} ]] && source #{rvm_source}
-    bundle install --deployment
-  EOF
+  flags '-l'
+  code 'bundle install --deployment'
+  environment('HOME' => node['travis_build_environment']['home'])
   only_if { node['system_info']['use_bundler'] }
 end
 
@@ -44,10 +42,8 @@ end
 bash 'execute-system_info' do
   user node['travis_build_environment']['user']
   cwd system_info_dir
-  code <<-EOF
-    [[ -f #{rvm_source} ]] && source #{rvm_source}
-    #{node['system_info']['use_bundler'] ? 'bundle exec' : ''} ./bin/system_info
-  EOF
+  flags '-l'
+  code "#{node['system_info']['use_bundler'] ? 'bundle exec' : ''} ./bin/system_info"
   environment(
     'HOME' => node['travis_build_environment']['home'],
     'FORMATS' => 'human,json',
