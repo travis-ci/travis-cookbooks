@@ -48,14 +48,16 @@ def replacement(*args, **kwargs):
     from pip._vendor import pkg_resources
     dists = []
     for raw_req in sys.argv[3:]:
+        if raw_req.startswith('-'):
+            continue
         req = pkg_resources.Requirement.parse(raw_req)
         dist = pkg_resources.working_set.by_key.get(req.key)
         if dist:
-          # Don't mutate stuff from the global working set.
-          dist = copy.copy(dist)
+            # Don't mutate stuff from the global working set.
+            dist = copy.copy(dist)
         else:
-          # Make a fake one.
-          dist = pkg_resources.Distribution(project_name=req.key, version='0')
+            # Make a fake one.
+            dist = pkg_resources.Distribution(project_name=req.key, version='0')
         # Fool the .key property into using our string.
         dist._key = raw_req
         dists.append(dist)
@@ -248,7 +250,7 @@ EOH
           full_cmd = if new_resource.options
             # We have to use a string for this case to be safe because the
             # options are a string and I don't want to try and parse that.
-            "##{runner.join(' ')} #{pip_command} #{new_resource.options} #{Shellwords.join(pip_options)}"
+            "#{runner.join(' ')} #{pip_command} #{new_resource.options} #{Shellwords.join(pip_options)}"
           else
             # No special options, use an array to skip the extra /bin/sh.
             runner + [pip_command] + pip_options
