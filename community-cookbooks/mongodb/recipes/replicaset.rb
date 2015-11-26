@@ -1,10 +1,8 @@
 #
 # Cookbook Name:: mongodb
-# Recipe:: default
+# Recipe:: replicaset
 #
 # Copyright 2011, edelight GmbH
-# Authors:
-#       Markus Korn <markus.korn@edelight.de>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,29 +17,19 @@
 # limitations under the License.
 #
 
+node.set['mongodb']['is_replicaset'] = true
+node.set['mongodb']['cluster_name'] = node['mongodb']['cluster_name']
+
 include_recipe 'mongodb::install'
+include_recipe 'mongodb::mongo_gem'
 
-# allow mongodb_instance to run if recipe isn't included
-allow_mongodb_instance_run = true
-conflicting_recipes = %w(mongodb::replicaset mongodb::shard mongodb::configserver mongodb::mongos mongodb::mms_agent)
-chef_major_version = Chef::VERSION.split('.').first.to_i
-if chef_major_version < 11
-  conflicting_recipes.each do |recipe|
-    allow_mongodb_instance_run &&= false if node.recipe?(recipe)
-  end
-else
-  conflicting_recipes.each do |recipe|
-    allow_mongodb_instance_run &&= false if node.run_context.loaded_recipe?(recipe)
-  end
-end
-
-if allow_mongodb_instance_run
+unless node['mongodb']['is_shard']
   mongodb_instance node['mongodb']['instance_name'] do
     mongodb_type 'mongod'
-    bind_ip      node['mongodb']['config']['bind_ip']
     port         node['mongodb']['config']['port']
     logpath      node['mongodb']['config']['logpath']
     dbpath       node['mongodb']['config']['dbpath']
+    replicaset   node
     enable_rest  node['mongodb']['config']['rest']
     smallfiles   node['mongodb']['config']['smallfiles']
   end

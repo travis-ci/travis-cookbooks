@@ -1,0 +1,36 @@
+HashSyntax:
+  EnforcedStyle: hash_rockets
+
+LineLength:
+  Max: 200 # TODO: reduce to 80
+
+MethodLength:
+  Max: 155 # TODO: reduce to 10
+
+ClassLength:
+  Max: 264 # TODO: reduce to 100
+
+BlockNesting:
+  Max: 4 # TODO: reduce to 3
+
+CyclomaticComplexity:
+  Enabled: false # TODO: enable
+
+Documentation:
+  Enabled: false # TODO: enable
+
+NumericLiterals:
+  MinDigits: 6
+
+Encoding:
+  Enabled: false # TODO: enable (?)
+
+FileName:
+  Exclude:
+    - mms-agent.rb
+
+ClassAndModuleChildren:
+  EnforcedStyle: compact
+
+DoubleNegation:
+  Enabled: false # TODO: mms agent recipes could be improved to not use double negation
