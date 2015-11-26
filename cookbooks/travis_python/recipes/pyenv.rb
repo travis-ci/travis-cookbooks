@@ -187,7 +187,12 @@ node['travis_python']['pyenv']['pythons'].each do |py|
     packages.concat(node['travis_python']['pip']['packages'].fetch(name, []))
   end
 
-  pyexe = resources("python_virtualenv[#{virtualenv_name}]").python_binary
+  venv = resources("python_virtualenv[#{virtualenv_name}]")
+  pyexe = venv.python_binary
+
+  bash "fix #{pyname} virtualenv perms" do
+    code "chown -R #{ug_perms} #{venv.path}"
+  end
 
   bash "install pyenv #{pyname} packages" do
     code "#{pyexe} -m pip.__main__ install #{Shellwords.join(packages)}"
