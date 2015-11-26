@@ -47,23 +47,29 @@ default['travis_build_environment']['global_gems'] = %w(
   nokogiri
   rake
 ).map { |gem| { name: gem } }
+default['travis_build_environment']['rvm_release'] = 'stable'
 default['travis_build_environment']['rvmrc_env'] = {
   'rvm_autoupdate_flag' => '0',
   'rvm_binary_flag' => '1',
   'rvm_fuzzy_flag' => '1',
-  'rvm_remote_flag' => '1',
   'rvm_gem_options' => '--no-ri --no-rdoc',
   'rvm_max_time_flag' => '5',
   'rvm_path' => "#{node['travis_build_environment']['home']}/.rvm",
   'rvm_project_rvmrc' => '0',
-  'rvm_remote_server_type3' => 'rubies',
-  'rvm_remote_server_url3' => 'https://s3.amazonaws.com/travis-rubies/binaries',
-  'rvm_remote_server_verify_downloads3' => '1',
+  'rvm_remote_server_type4' => 'rubies',
+  'rvm_remote_server_url4' => 'https://s3.amazonaws.com/travis-rubies/binaries',
+  'rvm_remote_server_verify_downloads4' => '1',
   'rvm_silence_path_mismatch_check_flag' => '1',
   'rvm_user_install_flag' => '1',
   'rvm_with_default_gems' => 'rake bundler',
   'rvm_without_gems' => 'rubygems-bundler'
 }
+default['travis_build_environment']['golang_libraries'] = %w(
+  golang.org/x/tools/cmd/cover
+  github.com/alecthomas/gometalinter
+)
+default['travis_build_environment']['install_gometalinter_tools'] = true
+default['travis_build_environment']['mysql']['password'] = 'travis'
 default['travis_build_environment']['prerequisite_recipes'] = %w(
   travis_timezone
   sysctl
@@ -72,6 +78,52 @@ default['travis_build_environment']['prerequisite_recipes'] = %w(
 )
 default['travis_build_environment']['postrequisite_recipes'] = %w(
   iptables
+)
+default['travis_build_environment']['packer_url'] = \
+  'https://releases.hashicorp.com/packer/0.8.6/packer_0.8.6_linux_amd64.zip'
+default['travis_build_environment']['packer_checksum'] = \
+  '2f1ca794e51de831ace30792ab0886aca516bf6b407f6027e816ba7ca79703b5'
+default['travis_build_environment']['packer_version'] = '0.8.6'
+default['travis_build_environment']['packer_binaries'] = %w(
+  packer
+  packer-builder-amazon-chroot
+  packer-builder-amazon-ebs
+  packer-builder-amazon-instance
+  packer-builder-digitalocean
+  packer-builder-docker
+  packer-builder-file
+  packer-builder-googlecompute
+  packer-builder-null
+  packer-builder-openstack
+  packer-builder-parallels-iso
+  packer-builder-parallels-pvm
+  packer-builder-qemu
+  packer-builder-virtualbox-iso
+  packer-builder-virtualbox-ovf
+  packer-builder-vmware-iso
+  packer-builder-vmware-vmx
+  packer-post-processor-artifice
+  packer-post-processor-atlas
+  packer-post-processor-compress
+  packer-post-processor-docker-import
+  packer-post-processor-docker-push
+  packer-post-processor-docker-save
+  packer-post-processor-docker-tag
+  packer-post-processor-vagrant
+  packer-post-processor-vagrant-cloud
+  packer-post-processor-vsphere
+  packer-provisioner-ansible-local
+  packer-provisioner-chef-client
+  packer-provisioner-chef-solo
+  packer-provisioner-file
+  packer-provisioner-powershell
+  packer-provisioner-puppet-masterless
+  packer-provisioner-puppet-server
+  packer-provisioner-salt-masterless
+  packer-provisioner-shell
+  packer-provisioner-shell-local
+  packer-provisioner-windows-restart
+  packer-provisioner-windows-shell
 )
 
 default['travis_build_environment']['arch'] = 'i386'

@@ -38,7 +38,9 @@ end
   { name: node['travis_build_environment']['home'] },
   { name: "#{node['travis_build_environment']['home']}/.ssh" },
   { name: "#{node['travis_build_environment']['home']}/builds", perms: 0755 },
-  { name: "#{node['travis_build_environment']['home']}/.m2" }
+  { name: "#{node['travis_build_environment']['home']}/.m2" },
+  { name: "#{node['travis_build_environment']['home']}/gopath" },
+  { name: "#{node['travis_build_environment']['home']}/gopath/bin" }
 ].each do |entry|
   directory entry[:name] do
     owner node['travis_build_environment']['user']
@@ -108,6 +110,7 @@ end
 
 rvm_installation node['travis_build_environment']['user'] do
   rvmrc_env node['travis_build_environment']['rvmrc_env']
+  installer_flags node['travis_build_environment']['rvm_release']
 end
 
 install_rubies(
@@ -117,3 +120,33 @@ install_rubies(
   gems: node['travis_build_environment']['gems'],
   user: node['travis_build_environment']['user']
 )
+
+include_recipe 'gimme::default'
+
+gimme_default_version = node['gimme']['default_version'].to_s
+gimme_versions = Array(node['gimme']['versions'])
+gimme_versions += [gimme_default_version] unless gimme_default_version.empty?
+
+gimme_versions.each do |version|
+  version = version.sub('go', '')
+  next if version < '1.4'
+
+  Array(node['travis_build_environment']['golang_libraries']).each do |lib|
+    bash "install #{lib} for go #{version}" do
+      code %{eval "$(gimme #{version})" && go get -u #{lib}}
+      flags '-l'
+      user node['travis_build_environment']['user']
+      group node['travis_build_environment']['group']
+      environment('HOME' => node['travis_build_environment']['home'])
+    end
+  end
+
+  bash "install gometalinter tools for #{version}" do
+    code %{eval "$(gimme #{version})" && gometalinter --install --update}
+    flags '-l'
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    environment('HOME' => node['travis_build_environment']['home'])
+    only_if { node['travis_build_environment']['install_gometalinter_tools'] }
+  end
+end

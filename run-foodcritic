@@ -19,6 +19,8 @@ def main(argv = ARGV)
   end
 
   Dir.glob("#{cookbook_path}/*") do |cookbook|
+    next unless File.exist?(File.join(cookbook, 'metadata.rb'))
+
     failed << run_foodcritic_for_cookbook(
       cookbook: cookbook,
       quiet: quiet,
