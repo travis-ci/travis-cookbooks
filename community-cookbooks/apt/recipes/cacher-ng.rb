@@ -38,6 +38,6 @@ template '/etc/apt-cacher-ng/acng.conf' do
 end
 
 service 'apt-cacher-ng' do
-  supports :restart => true, :status => false
+  supports restart: true, status: false
   action [:enable, :start]
 end
