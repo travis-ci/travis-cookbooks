@@ -36,6 +36,16 @@ packagecloud_repo "computology/packagecloud-cookbook-test-private" do
 end
 ```
 
+For forcing the os and dist for repository install:
+
+```
+packagecloud_repo 'computology/packagecloud-cookbook-test-public' do
+  type 'rpm'
+  force_os 'rhel'
+  force_dist '6.5'
+end
+```
+
 Valid options for `type` include `deb`, `rpm`, and `gem`.
 
 ## Interactions with other cookbooks
@@ -75,6 +85,7 @@ buggy.
 Beginning in 0.1.0, you can use
 `default['packagecloud']['hostname_override']` to specify a hostname if ohai
 is unable to determine the hostname of the node on its own.
+
 
 ## Credits
 Computology, LLC.
