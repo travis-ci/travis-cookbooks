@@ -2,7 +2,7 @@
 # Cookbook Name:: build-essential
 # Recipe:: fedora
 #
-# Copyright 2008-2013, Chef Software, Inc.
+# Copyright 2008-2015, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,4 +28,5 @@ potentially_at_compile_time do
   package 'make'
   package 'm4'
   package 'ncurses-devel'
+  package 'patch'
 end

@@ -84,7 +84,7 @@ EOH
         Chef::Log.warn <<-EOH
 node['build-essential']['compiletime'] has been deprecated. Please use
 node['build-essential']['compile_time'] instead. I have gracefully converted the
-attribute for you, but this warning and converstion will be removed in the next
+attribute for you, but this warning and conversion will be removed in the next
 major release of the build-essential cookbook.
 EOH
         node.default['build-essential']['compile_time'] = node['build-essential']['compiletime']
@@ -107,7 +107,7 @@ EOH
       def method_missing(m, *args, &block)
         resource = @recipe.send(m, *args, &block)
         if resource.is_a?(Chef::Resource)
-          actions  = Array(resource.action)
+          actions = Array(resource.action)
           resource.action(:nothing)
 
           actions.each do |action|
