@@ -1,0 +1,3 @@
+community-cookbooks/* linguist-vendored
+community-cookbooks/**/* linguist-vendored
+community-cookbooks/README.md linguist-vendored=false
