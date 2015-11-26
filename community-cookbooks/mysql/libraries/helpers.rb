@@ -61,7 +61,7 @@ module MysqlCookbook
     end
 
     def pkg_ver_string
-      parsed_version.gsub('.', '') if node['platform_family'] == 'omnios'
+      parsed_version.delete('.') if node['platform_family'] == 'omnios'
     end
 
     def prefix_dir
@@ -328,6 +328,14 @@ EOSQL
         @pkginfo.set['rhel']['2015.03']['5.6']['server_package'] = 'mysql-community-server'
         @pkginfo.set['rhel']['2015.03']['5.7']['client_package'] = %w(mysql-community-client mysql-community-devel)
         @pkginfo.set['rhel']['2015.03']['5.7']['server_package'] = 'mysql-community-server'
+        @pkginfo.set['rhel']['2015.09']['5.1']['server_package'] = %w(mysql51 mysql51-devel)
+        @pkginfo.set['rhel']['2015.09']['5.1']['server_package'] = 'mysql51-server'
+        @pkginfo.set['rhel']['2015.09']['5.5']['client_package'] = %w(mysql-community-client mysql-community-devel)
+        @pkginfo.set['rhel']['2015.09']['5.5']['server_package'] = 'mysql-community-server'
+        @pkginfo.set['rhel']['2015.09']['5.6']['client_package'] = %w(mysql-community-client mysql-community-devel)
+        @pkginfo.set['rhel']['2015.09']['5.6']['server_package'] = 'mysql-community-server'
+        @pkginfo.set['rhel']['2015.09']['5.7']['client_package'] = %w(mysql-community-client mysql-community-devel)
+        @pkginfo.set['rhel']['2015.09']['5.7']['server_package'] = 'mysql-community-server'
         @pkginfo.set['rhel']['5']['5.0']['client_package'] = %w(mysql mysql-devel)
         @pkginfo.set['rhel']['5']['5.0']['server_package'] = 'mysql-server'
         @pkginfo.set['rhel']['5']['5.1']['client_package'] = %w(mysql51-mysql)
