@@ -25,12 +25,12 @@ def whyrun_supported?
   true
 end
 
-action :create  do
+action :create do
   template new_resource.path do
     source 'main.erb'
     cookbook 'yum'
     mode '0644'
-    variables(:config => new_resource)
+    variables(config: new_resource)
   end
 end
 
