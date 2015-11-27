@@ -2,6 +2,17 @@ build-essential Cookbook CHANGELOG
 ==================================
 This file is used to list changes made in each version of the build-essential cookbook.
 
+v2.2.4 (2015-10-06)
+-------------------
+* Add patch package on Fedora systems
+* Add additional platforms to Kitchen CI
+* Use Chef standard Rubocop file and resolve several issues
+* Update contributing and testing docs
+* Update Gemfile with the latest testing and development deps
+* Add maintainers.md and maintainers.toml files
+* Add chefignore file to limit the files uploaded to the Chef server
+* Add source_url and issues_url metadata for Supermarket
+
 v2.2.3 (2015-04-15)
 -------------------
 * Don’t install omnibus-build-essential on Solaris 10 - We decided it’s easier to use the old GCC that ships with Solaris 10.

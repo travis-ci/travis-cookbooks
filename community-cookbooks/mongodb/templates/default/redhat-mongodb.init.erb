@@ -1,0 +1,106 @@
+#!/bin/bash
+
+# <%= @provides %> - Startup script for mongod
+
+# chkconfig: 35 85 15
+# description: Mongo is a scalable, document-oriented database.
+# processname: <%= @provides %>
+# config: <%= @dbconfig_file %>
+
+. /etc/rc.d/init.d/functions
+
+NAME=<%= @provides %>
+SYSCONFIG=<%= @sysconfig_file %>
+DAEMON_USER=mongod
+ENABLE_MONGODB=yes
+
+SUBSYS_LOCK_FILE=/var/lock/subsys/<%= @provides %>
+
+if [ -f "$SYSCONFIG" ]; then
+    . "$SYSCONFIG"
+fi
+
+# FIXME: 1.9.x has a --shutdown flag that parses the config file and
+# shuts down the correct running pid, but that's unavailable in 1.8
+# for now.  This can go away when this script stops supporting 1.8.
+DBPATH=`awk -F= '/^dbpath[[:blank:]]*=[[:blank:]]*/{print $2}' "$CONFIGFILE"`
+PIDFILE=`awk -F= '/^pidfilepath[[:blank:]]*=[[:blank:]]*/{print $2}' "$CONFIGFILE"`
+
+# Handle NUMA access to CPUs (SERVER-3574)
+# This verifies the existence of numactl as well as testing that the command works
+NUMACTL_ARGS="--interleave=all"
+if which numactl >/dev/null 2>/dev/null && numactl $NUMACTL_ARGS ls / >/dev/null 2>/dev/null
+then
+    NUMACTL="numactl $NUMACTL_ARGS"
+else
+    NUMACTL=""
+fi
+
+start()
+{
+  echo -n $"Starting <%= @provides %>: "
+  daemon --user "$DAEMON_USER" $NUMACTL $DAEMON $DAEMON_OPTS
+  RETVAL=$?
+  echo
+  [ $RETVAL -eq 0 ] && touch $SUBSYS_LOCK_FILE
+}
+
+stop()
+{
+  echo -n $"Stopping <%= @provides %>: "
+  if test "x$PIDFILE" != "x"; then
+    killproc -p $PIDFILE -d 300 $DAEMON
+  else
+    killproc -d 300 $DAEMON
+  fi
+  RETVAL=$?
+  echo
+  [ $RETVAL -eq 0 ] && rm -f $SUBSYS_LOCK_FILE
+}
+
+restart () {
+  stop
+  start
+}
+
+ulimit -f <%= @ulimit['fsize'] %>
+ulimit -t <%= @ulimit['cpu'] %>
+ulimit -v <%= @ulimit['as'] %>
+ulimit -n <%= @ulimit['nofile'] %>
+ulimit -m <%= @ulimit['rss'] %>
+ulimit -u <%= @ulimit['nproc'] %>
+
+RETVAL=0
+
+if test "x$ENABLE_MONGODB" != "xyes"; then
+    exit $RETVAL
+fi
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart|reload|force-reload)
+    restart
+    ;;
+  condrestart)
+    [ -f $SUBSYS_LOCK_FILE ] && restart || :
+    ;;
+  status)
+    if test "x$PIDFILE" != "x"; then
+      status -p $PIDFILE $DAEMON
+    else
+      status $DAEMON
+    fi
+    RETVAL=$?
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|status|restart|reload|force-reload|condrestart}"
+    RETVAL=1
+esac
+
+exit $RETVAL
+

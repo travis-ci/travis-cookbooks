@@ -2,9 +2,9 @@
 # Cookbook Name:: mongodb
 # Recipe:: default
 #
-# Author:: Gerhard Lazu (<gerhard.lazu@papercavalier.com>)
-#
-# Copyright 2010, Paper Cavalier, LLC
+# Copyright 2011, edelight GmbH
+# Authors:
+#       Markus Korn <markus.korn@edelight.de>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,6 +19,30 @@
 # limitations under the License.
 #
 
-include_recipe "mongodb::ppa" unless node['lsb']['codename'] == 'precise'
-include_recipe "mongodb::apt"
-include_recipe "mongodb::server"
+include_recipe 'mongodb::install'
+
+# allow mongodb_instance to run if recipe isn't included
+allow_mongodb_instance_run = true
+conflicting_recipes = %w(mongodb::replicaset mongodb::shard mongodb::configserver mongodb::mongos mongodb::mms_agent)
+chef_major_version = Chef::VERSION.split('.').first.to_i
+if chef_major_version < 11
+  conflicting_recipes.each do |recipe|
+    allow_mongodb_instance_run &&= false if node.recipe?(recipe)
+  end
+else
+  conflicting_recipes.each do |recipe|
+    allow_mongodb_instance_run &&= false if node.run_context.loaded_recipe?(recipe)
+  end
+end
+
+if allow_mongodb_instance_run
+  mongodb_instance node['mongodb']['instance_name'] do
+    mongodb_type 'mongod'
+    bind_ip      node['mongodb']['config']['bind_ip']
+    port         node['mongodb']['config']['port']
+    logpath      node['mongodb']['config']['logpath']
+    dbpath       node['mongodb']['config']['dbpath']
+    enable_rest  node['mongodb']['config']['rest']
+    smallfiles   node['mongodb']['config']['smallfiles']
+  end
+end

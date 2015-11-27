@@ -112,7 +112,7 @@ class Chef
       when 10.8
         'http://devimages.apple.com/downloads/xcode/command_line_tools_for_xcode_os_x_mountain_lion_march_2014.dmg'
       else
-        raise "Unknown DMG download URL for OSX #{node['platform_version']}"
+        fail "Unknown DMG download URL for OSX #{node['platform_version']}"
       end
     end
 
@@ -143,7 +143,7 @@ class Chef
     # @return [void]
     #
     def attach
-      execute %|hdiutil attach "#{dmg_cache_path}" -mountpoint "#{mount_path}"|
+      execute %(hdiutil attach "#{dmg_cache_path}" -mountpoint "#{mount_path}")
     end
 
     #
@@ -161,7 +161,7 @@ class Chef
     # @return [void]
     #
     def detach
-      execute %|hdiutil detach "#{mount_path}"|
+      execute %(hdiutil detach "#{mount_path}")
     end
   end
 end
@@ -176,7 +176,6 @@ class Chef
           # This script was graciously borrowed and modified from Tim Sutton's
           # osx-vm-templates at https://github.com/timsutton/osx-vm-templates/blob/b001475df54a9808d3d56d06e71b8fa3001fff42/scripts/xcode-cli-tools.sh
           execute 'install XCode Command Line tools' do
-            # rubocop:disable Metrics/LineLength
             command <<-EOH.gsub(/^ {14}/, '')
               # create the placeholder file that's checked by CLI updates' .dist code
               # in Apple's SUS catalog

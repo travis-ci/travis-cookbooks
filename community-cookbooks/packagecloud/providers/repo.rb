@@ -164,7 +164,7 @@ def read_token(repo_url, gems=false)
 end
 
 def install_endpoint_params
-  dist = value_for_platform_family(
+  dist = new_resource.force_dist || value_for_platform_family(
     'debian' => node['lsb']['codename'],
     ['rhel', 'fedora'] => node['platform_version'],
   )
@@ -178,9 +178,13 @@ def install_endpoint_params
           "if it cannot be automatically determined by Ohai.")
   end
 
-  { :os   => node['platform'],
+  { :os   => os_platform,
     :dist => dist,
     :name => hostname }
+end
+
+def os_platform
+  new_resource.force_os || node['platform']
 end
 
 def filename

@@ -1,10 +1,10 @@
 apt Cookbook
 ============
-[![Build Status](https://img.shields.io/travis/opscode-cookbooks/apt.svg)][travis]
+[![Build Status](https://img.shields.io/travis/chef-cookbooks/apt.svg)][travis]
 [![Cookbook Version](https://img.shields.io/cookbook/v/apt.svg)][cookbook]
 
 [cookbook]: https://community.chef.io/cookbooks/apt
-[travis]: https://travis-ci.org/opscode-cookbooks/apt
+[travis]: https://travis-ci.org/chef-cookbooks/apt
 
 This cookbook includes recipes to execute apt-get update to ensure the local APT package cache is up to date. There are recipes for managing the apt-cacher-ng caching proxy and proxy clients. It also includes a LWRP for managing APT repositories in /etc/apt/sources.list.d as well as an LWRP for pinning packages via /etc/apt/preferences.d.
 
@@ -113,6 +113,11 @@ Attributes
 * `['apt']['unattended_upgrades']['remove_unused_dependencies']` Do automatic removal of new unused dependencies after the upgrade. Defaults to false.
 * `['apt']['unattended_upgrades']['automatic_reboot']` - Automatically reboots *without confirmation* if a restart is required after the upgrade. Defaults to false.
 * `['apt']['unattended_upgrades']['dl_limit']` - Limits the bandwidth used by apt to download packages. Value given as an integer in kb/sec. Defaults to nil (no limit).
+
+### Configuration for APT
+
+* `['apt']['confd']['install_recommends']` - Consider recommended packages as a dependency for installing. (default: true)
+* `['apt']['confd']['install_suggests']` - Consider suggested packages as a dependency for installing. (default: false)
 
 Libraries
 ---------
