@@ -20,7 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-mysql_client 'default'
+mysql_client 'default' do
+  version '5.6'
+end
 
 mysql_service '5.6' do
   port '3306'
@@ -28,3 +30,14 @@ mysql_service '5.6' do
   initial_root_password node['travis_build_environment']['mysql']['password']
   action [:create, :start]
 end
+
+# mysql_client 'default' do
+#   version '5.5'
+# end
+
+# mysql_service '5.5' do
+#   port '13306'
+#   version '5.5'
+#   initial_root_password node['travis_build_environment']['mysql']['password']
+#   action [:create, :start]
+# end
