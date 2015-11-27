@@ -27,6 +27,18 @@ module Apt
       !which('apt-get').nil?
     end
 
+    # Determines whether we need to run `apt-get update`
+    #
+    # @return [Boolean]
+    def apt_up_to_date?
+      if ::File.exist?('/var/lib/apt/periodic/update-success-stamp') &&
+         ::File.mtime('/var/lib/apt/periodic/update-success-stamp') > Time.now - node['apt']['periodic_update_min_delay']
+        true
+      else
+        false
+      end
+    end
+
     # Finds a command in $PATH
     #
     # @return [String, nil]

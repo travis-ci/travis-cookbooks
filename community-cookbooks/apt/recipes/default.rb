@@ -35,7 +35,7 @@ file '/var/lib/apt/periodic/update-success-stamp' do
 end
 
 # If compile_time_update run apt-get update at compile time
-if node['apt']['compile_time_update'] && (!::File.exist?('/var/lib/apt/periodic/update-success-stamp') || !::File.exist?(first_run_file))
+if node['apt']['compile_time_update'] && (!apt_up_to_date? || !::File.exist?(first_run_file))
   e = bash 'apt-get-update at compile time' do
     code <<-EOH
       apt-get update
@@ -56,15 +56,6 @@ end
 
 cookbook_file '/etc/apt/apt.conf.d/15update-stamp' do
   source '15update-stamp'
-end
-
-# Run apt-get update to create the stamp file
-execute 'apt-get-update' do
-  command 'apt-get update'
-  ignore_failure true
-  only_if { apt_installed? }
-  not_if { ::File.exist?('/var/lib/apt/periodic/update-success-stamp') }
-  notifies :touch, 'file[/var/lib/apt/periodic/update-success-stamp]', :immediately
 end
 
 # For other recipes to call to force an update
@@ -93,11 +84,8 @@ end
 execute 'apt-get-update-periodic' do
   command 'apt-get update'
   ignore_failure true
-  only_if do
-    apt_installed? &&
-      ::File.exist?('/var/lib/apt/periodic/update-success-stamp') &&
-      ::File.mtime('/var/lib/apt/periodic/update-success-stamp') < Time.now - node['apt']['periodic_update_min_delay']
-  end
+  only_if { apt_installed? }
+  not_if { apt_up_to_date? }
   notifies :touch, 'file[/var/lib/apt/periodic/update-success-stamp]', :immediately
 end
 
@@ -109,4 +97,16 @@ end
     action :create
     only_if { apt_installed? }
   end
+end
+
+template '/etc/apt/apt.conf.d/10recommends' do
+  owner 'root'
+  group 'root'
+  mode '644'
+  source '10recommends.erb'
+end
+
+package 'apt-transport-https' do
+  only_if { apt_installed? }
+  action :install
 end

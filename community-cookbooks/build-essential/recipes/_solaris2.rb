@@ -44,5 +44,5 @@ when 5.11
     package 'ucb'
   end
 else
-  raise "Sorry, we don't support Solaris version #{node['platform_version']} at this juncture."
+  fail "Sorry, we don't support Solaris version #{node['platform_version']} at this juncture."
 end

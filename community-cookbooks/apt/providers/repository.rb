@@ -33,6 +33,7 @@ def install_key_from_keyserver(key, keyserver, key_proxy)
     else
       command "apt-key adv --keyserver-options http-proxy=#{key_proxy} --keyserver hkp://#{keyserver}:80 --recv #{key}"
     end
+    sensitive new_resource.sensitive if respond_to?(:sensitive)
     action :run
     not_if do
       key_present = extract_fingerprints_from_cmd('apt-key finger').any? do |fingerprint|
@@ -45,8 +46,9 @@ def install_key_from_keyserver(key, keyserver, key_proxy)
 
   ruby_block "validate-key #{key}" do
     block do
-      fail "The key #{key} is no longer valid and cannot be used for an apt repository." unless key_is_valid('apt-key list', key.upcase)
+      fail "The key #{key} is no longer valid and cannot be used for an apt repository."
     end
+    not_if { key_is_valid('apt-key list', key.upcase) }
   end
 end
 
@@ -88,6 +90,7 @@ def install_key_from_uri(uri)
     remote_file cached_keyfile do
       source new_resource.key
       mode 00644
+      sensitive new_resource.sensitive if respond_to?(:sensitive)
       action :create
     end
   else
@@ -95,6 +98,7 @@ def install_key_from_uri(uri)
       source new_resource.key
       cookbook new_resource.cookbook
       mode 00644
+      sensitive new_resource.sensitive if respond_to?(:sensitive)
       action :create
     end
 
@@ -107,6 +111,7 @@ def install_key_from_uri(uri)
 
   execute "install-key #{key_name}" do
     command "apt-key add #{cached_keyfile}"
+    sensitive new_resource.sensitive if respond_to?(:sensitive)
     action :run
     not_if do
       installed_keys = extract_fingerprints_from_cmd('apt-key finger')
@@ -191,6 +196,7 @@ action :add do
   execute 'apt-get update' do
     command "apt-get update -o Dir::Etc::sourcelist='sources.list.d/#{new_resource.name}.list' -o Dir::Etc::sourceparts='-' -o APT::Get::List-Cleanup='0'"
     ignore_failure true
+    sensitive new_resource.sensitive if respond_to?(:sensitive)
     action :nothing
     notifies :run, 'execute[apt-cache gencaches]', :immediately
   end
@@ -222,6 +228,7 @@ action :add do
     group 'root'
     mode 00644
     content repository
+    sensitive new_resource.sensitive if respond_to?(:sensitive)
     action :create
     notifies :delete, 'file[/var/lib/apt/periodic/update-success-stamp]', :immediately
     notifies :run, 'execute[apt-get update]', :immediately if new_resource.cache_rebuild
@@ -232,6 +239,7 @@ action :remove do
   if ::File.exist?("/etc/apt/sources.list.d/#{new_resource.name}.list")
     Chef::Log.info "Removing #{new_resource.name} repository from /etc/apt/sources.list.d/"
     file "/etc/apt/sources.list.d/#{new_resource.name}.list" do
+      sensitive new_resource.sensitive if respond_to?(:sensitive)
       action :delete
     end
   end
