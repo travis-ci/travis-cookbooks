@@ -34,3 +34,13 @@ mysql_service '5.6' do
   initial_root_password node['travis_build_environment']['mysql']['password']
   action [:create, :start]
 end
+
+template "#{node['travis_build_environment']['home']}/.my.cnf" do
+  source 'ci_user/dot_my.cnf.erb'
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0640
+  variables(
+    password: node['travis_build_environment']['mysql']['password']
+  )
+end
