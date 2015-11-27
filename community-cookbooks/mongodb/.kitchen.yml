@@ -1,0 +1,144 @@
+---
+driver:
+  name: vagrant
+  customize:
+    memory: 512
+
+provisioner:
+  name: chef_solo
+  # require_chef_omnibus: latest # will install on each run
+  require_chef_omnibus: 11.8.2
+
+platforms:
+
+- name: ubuntu-12.04
+  run_list:
+  - "recipe[apt]"
+
+- name: ubuntu-10.04
+  run_list:
+  - "recipe[apt]"
+
+- name: debian-7.2.0
+  run_list:
+  - "recipe[apt]"
+
+- name: centos-7.0
+  run_list:
+  - "recipe[yum]"
+  - "recipe[yum-epel]"
+
+- name: centos-6.5
+  run_list:
+  - "recipe[yum]"
+  - "recipe[yum-epel]"
+
+- name: centos-5.10
+  run_list:
+  - "recipe[yum]"
+  - "recipe[yum-epel]"
+
+# not going to try until
+# https://jira.mongodb.org/browse/SERVER-7285 is closed
+#- name: fedora-19
+  #run_list:
+  #- "recipe[yum]"
+
+ #- name: fedora-20
+  #run_list:
+  #- "recipe[yum]"
+
+# maybe again oneday
+ #- name: freebsd-9.2
+  #run_list:
+  #- "recipe[yum]"
+
+suites:
+- name: default
+  run_list:
+  - "recipe[mongodb]"
+
+- name: default_mongodb_org_repo
+  run_list:
+  - "recipe[mongodb]"
+  attributes:
+    mongodb:
+      install_method: mongodb-org
+
+- name: replicaset
+  run_list:
+  - "recipe[chef-solo-search]"
+  - "recipe[mongodb::replicaset]"
+  attributes:
+    mongodb:
+      cluster_name: kitchen
+      config:
+        replSet: kitchen
+  excludes:
+    # Upstart is not starting mongodb, status script returns 0 and there are no useful logs. wat?
+    - ubuntu-10.04
+
+- name: configserver
+  run_list:
+  - "recipe[mongodb::configserver]"
+
+- name: mongos
+  run_list:
+  - "recipe[chef-solo-search]"
+  - "recipe[mongodb::mongos]"
+  attributes:
+    mongodb:
+      cluster_name: default
+      config:
+        configdb: my_configserver
+
+- name: mms_monitoring_agent
+  run_list:
+  - "recipe[mongodb::mms_monitoring_agent]"
+  attributes:
+    mongodb:
+      mms_agent:
+        api_key: "random key"
+        monitoring:
+          sslRequireValidServerCertificates: false
+  excludes:
+    # Upstart script uses setuid which is not present in this version
+    - ubuntu-10.04
+    # Upstart is not present
+    - debian-7.2.0
+    # Package does not create the user
+    - centos-5.10
+
+- name: mms_backup_agent
+  run_list:
+  - "recipe[mongodb::mms_backup_agent]"
+  attributes:
+    mongodb:
+      mms_agent:
+        api_key: "random key"
+        backup:
+          sslRequireValidServerCertificates: false
+  excludes:
+    # Upstart script uses setuid which is not present in this version
+    - ubuntu-10.04
+    # Upstart is not present
+    - debian-7.2.0
+    # Package does not create the user
+    - centos-5.10
+
+- name: user_management
+  run_list:
+  - "recipe[mongodb::default]"
+  - "recipe[mongodb::user_management]"
+  attributes:
+    mongodb:
+      install_method: mongodb-org
+      # Needed to read the correct config file
+      # since mongo 2.6
+      default_init_name: mongod
+      dbconfig_file: mongodb.conf
+      config:
+        auth: true
+  excludes:
+    # Can't connect to mongodb without it running from upstart
+    - ubuntu-10.04

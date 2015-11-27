@@ -4,7 +4,7 @@ maintainer_email 'support@hw-ops.com'
 license 'Apache 2.0'
 description 'Installs runit and provides runit_service definition'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '1.7.2'
+version '1.7.4'
 
 recipe 'runit', 'Installs and configures runit'
 
