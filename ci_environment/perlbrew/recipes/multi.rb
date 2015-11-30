@@ -17,6 +17,30 @@ bash "install cpanm" do
 end
 
 node.perlbrew.perls.each do |pl|
+  dest_tarball = ::File.join(
+    Chef::Config[:file_cache_path],
+    "perl-#{pl['name']}.tar.bz2"
+  )
+
+  remote_file dest_tarball do
+    source ::File.join(
+      'https://s3.amazonaws.com/travis-perl-archives/binaries',
+      node['platform'],
+      node['platform_version'],
+      node['kernel']['machine'],
+      ::File.basename(dest_tarball)
+    )
+    owner 'root'
+    group 'root'
+    mode 0644
+    ignore_failure true
+  end
+
+  bash "extract #{dest_tarball}" do
+    code "tar -xjf #{dest_tarball} --directory /"
+    only_if { ::File.exist?(dest_tarball) }
+  end
+
   args = pl[:arguments].to_s
   args << " --notest"
 
@@ -39,6 +63,7 @@ node.perlbrew.perls.each do |pl|
       # remove the mirror for now as VMs are based in the US
       # --mirror 'http://cpan.mirrors.travis-ci.org'
       code   "#{brew} use #{pl[:name]} && cpanm #{mod} --force --notest"
+      not_if { ::File.exist?(dest_tarball) }
     end
   end
 
@@ -47,4 +72,3 @@ node.perlbrew.perls.each do |pl|
     code   "rm -rf ~/.cpanm"
   end
 end
-
