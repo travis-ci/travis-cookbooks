@@ -41,7 +41,7 @@ node.sphinx.versions.each do |version, path|
   log("Installing Sphinx #{version} to #{path}") { level :debug }
 
   local_archive = ::File.join(
-    Chef::Config[:file_cache_path]},
+    Chef::Config[:file_cache_path],
     "sphinx-#{version.delete('-release')}.tar.bz2"
   )
 
