@@ -57,10 +57,7 @@ node.sphinx.versions.each do |version, path|
     not_if { ::File.exist?(local_archive) }
   end
 
-  bash "Expand sphinx #{version.delete('-release')} archive" do
-    user node['travis_build_environment']['user']
-    group node['travis_build_environment']['group']
-    code "tar -xjf #{local_archive.inspect} --directory /"
+  execute "tar -xjf #{local_archive.inspect} --directory /" do
     only_if { ::File.exist?(local_archive) }
   end
 
