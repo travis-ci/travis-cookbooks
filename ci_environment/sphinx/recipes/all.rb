@@ -40,21 +40,51 @@ end
 node.sphinx.versions.each do |version, path|
   log("Installing Sphinx #{version} to #{path}") { level :debug }
 
-  script 'install sphinx with libstemmer' do
-    interpreter 'bash'
+  local_archive = ::File.join(
+    Chef::Config[:file_cache_path],
+    "sphinx-#{version.delete('-release')}.tar.bz2"
+  )
+
+  remote_file local_archive do
+    source ::File.join(
+      'https://s3.amazonaws.com/travis-sphinx-archives/binaries',
+      node['platform'],
+      node['platform_version'],
+      node['kernel']['machine'],
+      ::File.basename(local_archive)
+    )
+    ignore_failure true
+    not_if { ::File.exist?(local_archive) }
+  end
+
+  execute "tar -xjf #{local_archive.inspect} --directory /" do
+    only_if { ::File.exist?(local_archive) }
+  end
+
+  remote_file "/tmp/sphinx_install/sphinx-#{version}.tar.gz" do
+    source "http://www.sphinxsearch.com/files/sphinx-#{version}.tar.gz"
+    owner 'root'
+    group 'root'
+    mode 0644
+    not_if { ::File.exist?("#{path}/bin/searchd") }
+  end
+
+  execute "tar -xzf /tmp/sphinx_install/sphinx-#{version}.tar.gz -C /tmp/sphinx_install" do
+    not_if { ::File.exist?("#{path}/bin/searchd") }
+  end
+
+  bash 'install sphinx with libstemmer' do
     code <<-SHELL
       cd /tmp/sphinx_install
-      wget http://www.sphinxsearch.com/files/sphinx-#{version}.tar.gz
-      tar zxvf sphinx-#{version}.tar.gz
       cp libstemmer_c.tgz sphinx-#{version}/libstemmer_c.tgz
       cd sphinx-#{version}
-      tar zxvf libstemmer_c.tgz
+      tar -zxvf libstemmer_c.tgz
       sed -i -e 's/stem_ISO_8859_1_hungarian/stem_ISO_8859_2_hungarian/g' libstemmer_c/Makefile.in
       ./configure --with-mysql --with-pgsql --with-libstemmer --prefix=#{path}
       make && make install
     SHELL
 
-    not_if "test -d #{path}"
+    not_if { ::File.exist?("#{path}/bin/searchd") }
   end
 end
 
