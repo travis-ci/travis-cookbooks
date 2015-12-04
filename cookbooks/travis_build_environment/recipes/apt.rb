@@ -43,6 +43,29 @@ end
 package 'software-properties-common'
 
 %w(
+  /etc/cloud
+  /etc/cloud/templates
+).each do |dirname|
+  directory dirname do
+    owner 'root'
+    group 'root'
+    mode 0755
+  end
+end
+
+%w(
+  /etc/cloud/templates/sources.list.tmpl
+  /etc/cloud/templates/sources.list.ubuntu.tmpl
+).each do |filename|
+  template filename do
+    source 'etc/cloud/templates/sources.list.tmpl.erb'
+    owner 'root'
+    group 'root'
+    mode 0644
+  end
+end
+
+%w(
   universe
   multiverse
 ).each do |source_alias|
