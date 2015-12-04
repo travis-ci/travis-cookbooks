@@ -34,6 +34,24 @@ template '/etc/apt/apt.conf.d/37timeouts' do
   mode 0644
 end
 
+%w(
+  /etc/cloud
+  /etc/cloud/templates
+).each do |dirname|
+  directory dirname do
+    owner 'root'
+    group 'root'
+    mode 0755
+  end
+end
+
+template '/etc/cloud/templates/sources.list.tmpl' do
+  source 'etc/cloud/templates/sources.list.tmpl.erb'
+  owner 'root'
+  group 'root'
+  mode 0644
+end
+
 ruby_block 'enable universe and multiverse sources' do
   block do
     sources_list = ::Chef::Util::FileEdit.new('/etc/apt/sources.list')
