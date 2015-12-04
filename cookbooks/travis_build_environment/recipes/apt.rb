@@ -53,11 +53,16 @@ package 'software-properties-common'
   end
 end
 
-template '/etc/cloud/templates/sources.list.tmpl' do
-  source 'etc/cloud/templates/sources.list.tmpl.erb'
-  owner 'root'
-  group 'root'
-  mode 0644
+%w(
+  /etc/cloud/templates/sources.list.tmpl
+  /etc/cloud/templates/sources.list.ubuntu.tmpl
+).each do |filename|
+  template filename do
+    source 'etc/cloud/templates/sources.list.tmpl.erb'
+    owner 'root'
+    group 'root'
+    mode 0644
+  end
 end
 
 %w(
