@@ -20,4 +20,4 @@ supports 'ubuntu', '= 12.04'
 supports 'ubuntu', '= 14.04'
 
 depends 'apt'
-depends 'ramfs'
+depends 'travis_build_environment'

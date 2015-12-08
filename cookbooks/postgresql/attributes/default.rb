@@ -15,8 +15,7 @@ default['postgresql']['client_min_messages'] = 'error' # suppress warning output
 default['postgresql']['data_on_ramfs']       = true    # enabled for CI purpose
 
 if node['postgresql']['data_on_ramfs']
-  include_attribute 'ramfs::default'
-  default['postgresql']['data_dir']          = "#{node['ramfs']['dir']}/postgresql"
+  default['postgresql']['data_dir']          = "#{node['travis_build_environment']['ramfs_dir']}/postgresql"
 else
   default['postgresql']['data_dir']          = '/var/lib/postgresql'
 end
