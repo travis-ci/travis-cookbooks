@@ -31,5 +31,5 @@ apt_repository "git-ppa" do
 end
 
 package "git" do
-  action :install
+  action [:install, :upgrade]
 end
