@@ -17,12 +17,13 @@ end
 # new OS version
 ["2.7", "3.2"].each do |py|
   pyname = "python#{py}"
+  venv_name = "#{virtualenv_root}/#{pyname}_with_system_site_packages"
 
   python_virtualenv "#{pyname}_with_system_site_packages" do
     owner                node.travis_build_environment.user
     group                node.travis_build_environment.group
     interpreter          "/usr/bin/#{pyname}"
-    path                 "#{virtualenv_root}/#{pyname}_with_system_site_packages"
+    path                 venv_name
     system_site_packages true
 
     action :create
@@ -34,9 +35,15 @@ end
     packages.concat node.python.pip.packages.fetch(name, [])
   end
 
+  execute "install wheel in #{pyname}_with_system_site_packages" do
+    command "#{venv_name}/bin/pip install --upgrade wheel"
+    user    node.travis_build_environment.user
+    group   node.travis_build_environment.group
+  end
+
   # Install all of the pre-installed packages we want
   execute "install packages #{pyname}_with_system_site_packages" do
-    command "#{virtualenv_root}/#{pyname}_with_system_site_packages/bin/pip install --upgrade #{packages.join(' ')}"
+    command "#{venv_name}/bin/pip install --upgrade #{packages.join(' ')}"
     user    node.travis_build_environment.user
     group   node.travis_build_environment.group
   end
