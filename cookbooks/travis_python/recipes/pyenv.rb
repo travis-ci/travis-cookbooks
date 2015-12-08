@@ -88,6 +88,8 @@ node['travis_python']['pyenv']['pythons'].each do |py|
     pyname = py
   end
 
+  venv_fullname = "#{virtualenv_root}/#{pyname}"
+
   downloaded_tarball = "#{Chef::Config[:file_cache_path]}/python-#{py}.tar.bz2"
 
   remote_file downloaded_tarball do
@@ -130,7 +132,7 @@ node['travis_python']['pyenv']['pythons'].each do |py|
     owner node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     interpreter "/opt/python/#{py}/bin/python"
-    path "#{virtualenv_root}/#{pyname}"
+    path venv_fullname
     action :create
   end
 
@@ -142,7 +144,7 @@ node['travis_python']['pyenv']['pythons'].each do |py|
     end
 
     link "#{virtualenv_root}/#{pyaliasname}" do
-      to "#{virtualenv_root}/#{pyname}"
+      to venv_fullname
       owner node['travis_build_environment']['user']
       group node['travis_build_environment']['group']
     end
@@ -162,13 +164,16 @@ node['travis_python']['pyenv']['pythons'].each do |py|
   end
 
   execute "install wheel in #{py}" do
-    command "#{virtualenv_root}/#{pyname}/bin/pip install --upgrade wheel"
+    command "#{venv_fullname}/bin/pip install --upgrade wheel"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
+    environment(
+      'HOME' => node['travis_build_environment']['home']
+    )
   end
 
   execute "install packages in #{py}" do
-    command "#{virtualenv_root}/#{pyname}/bin/pip install --upgrade #{packages.join(' ')}"
+    command "#{venv_fullname}/bin/pip install --upgrade #{packages.join(' ')}"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment(

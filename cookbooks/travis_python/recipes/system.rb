@@ -60,6 +60,9 @@ node['travis_python']['system']['pythons'].each do |py|
     command "#{venv_fullname}/bin/pip install --upgrade wheel"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
+    environment(
+      'HOME' => node['travis_build_environment']['home']
+    )
   end
 
   execute "install packages in #{venv_name}" do
