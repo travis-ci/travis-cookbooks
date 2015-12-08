@@ -125,6 +125,9 @@ node.python.pyenv.pythons.each do |py|
     command "#{venv_fullname}/bin/pip install --upgrade wheel"
     user    node.travis_build_environment.user
     group   node.travis_build_environment.group
+    environment(
+      'HOME' => node['travis_build_environment']['home']
+    )
   end
 
   # Install all of the pre-installed packages we want
@@ -132,6 +135,9 @@ node.python.pyenv.pythons.each do |py|
     command "#{venv_fullname}/bin/pip install --upgrade #{packages.join(' ')}"
     user    node.travis_build_environment.user
     group   node.travis_build_environment.group
+    environment(
+      'HOME' => node['travis_build_environment']['home']
+    )
   end
 end
 
