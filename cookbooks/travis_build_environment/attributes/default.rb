@@ -125,6 +125,8 @@ default['travis_build_environment']['packer_binaries'] = %w(
   packer-provisioner-windows-restart
   packer-provisioner-windows-shell
 )
+default['travis_build_environment']['ramfs_dir'] = '/var/ramfs'
+default['travis_build_environment']['ramfs_size'] = '768m'
 
 default['travis_build_environment']['arch'] = 'i386'
 if kernel['machine'] =~ /x86_64/
