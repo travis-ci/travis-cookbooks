@@ -15,7 +15,7 @@ remote_file local_gem do
 end
 
 gem_package 'system-info' do
-  gem_binary '/opt/chef/embedded/bin/gem'
+  gem_binary '/opt/chefdk/embedded/bin/gem'
   source local_gem
 end
 
