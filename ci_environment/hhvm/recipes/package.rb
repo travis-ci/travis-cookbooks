@@ -18,7 +18,6 @@ end
 
 package node["hhvm"]["package"]["name"] do
   action  :install
-  version node["hhvm"]["package"]["version"]
   options "--force-yes"
   not_if { node['hhvm']['package']['disabled'] }
 end
