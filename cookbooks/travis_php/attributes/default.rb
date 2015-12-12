@@ -58,6 +58,5 @@ default['travis_php']['multi']['extensions']['zmq-beta']['versions'] = multi_ver
 default['travis_php']['multi']['extensions']['zmq-beta']['before_packages'] = %w(libzmq3-dev)
 
 default['travis_php']['hhvm']['package']['name'] = 'hhvm'
-default['travis_php']['hhvm']['package']['version'] = '3.10.1~trusty'
 
 default['travis_php']['composer']['github_oauth_token'] = nil
