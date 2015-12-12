@@ -6,7 +6,6 @@ apt_repository 'hhvm-repository' do
 end
 
 package node['travis_php']['hhvm']['package']['name'] do
-  version node['travis_php']['hhvm']['package']['version']
   options '--force-yes'
   action :install
 end
