@@ -127,6 +127,8 @@ default['travis_build_environment']['packer_binaries'] = %w(
 )
 default['travis_build_environment']['ramfs_dir'] = '/var/ramfs'
 default['travis_build_environment']['ramfs_size'] = '768m'
+default['travis_build_environment']['bats_git_repository'] = \
+  'https://github.com/sstephenson/bats.git'
 
 default['travis_build_environment']['arch'] = 'i386'
 if kernel['machine'] =~ /x86_64/
