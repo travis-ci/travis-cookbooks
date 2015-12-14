@@ -20,9 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-ark 'hk' do
-  version '20140604'
-  url 'https://hk.heroku.com/hk.gz'
-  has_binaries %w(hk)
-  strip_components 0
+local_hk_gz = "#{Chef::Config[:file_cache_path]}/hk.gz"
+
+remote_file local_hk_gz do
+  source 'https://hk.heroku.com/hk.gz'
 end
+
+execute "zcat < #{local_hk_gz} > /usr/local/bin/hk && chmod +x /usr/local/bin/hk"
