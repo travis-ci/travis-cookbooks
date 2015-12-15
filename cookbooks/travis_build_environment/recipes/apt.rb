@@ -66,8 +66,9 @@ end
 end
 
 %w(
-  universe
   multiverse
+  restricted
+  universe
 ).each do |source_alias|
   execute "apt-add-repository -y #{source_alias}"
 end
