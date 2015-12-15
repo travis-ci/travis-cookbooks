@@ -52,11 +52,14 @@ template '/etc/cloud/templates/sources.list.tmpl' do
   mode 0644
 end
 
-ruby_block 'enable universe and multiverse sources' do
+ruby_block 'enable universe, multiverse, and restricted sources' do
   block do
     sources_list = ::Chef::Util::FileEdit.new('/etc/apt/sources.list')
-    sources_list.search_file_replace(/^#\s+(deb.*universe.*)/, '\1')
-    sources_list.search_file_replace(/^#\s+(deb.*multiverse.*)/, '\1')
+
+    %w(universe multiverse restricted).each do |source|
+      sources_list.search_file_replace(/^#\s+(deb.*#{source}.*)/, '\1')
+    end
+
     sources_list.insert_line_if_no_match(
       /^# Managed by Chef/,
       '# Managed by Chef! :heart_eyes_cat:'
