@@ -25,6 +25,10 @@ apt_repository 'pollinate' do
   distribution node['lsb']['codename']
 end
 
+execute 'apt-get update for pollinate' do
+  command 'apt-get update'
+end
+
 package 'pollinate' do
   action [:install, :upgrade]
 end
