@@ -1,5 +1,5 @@
 # Cookbook Name:: travis_build_environment
-# Recipe:: apt
+# Recipe:: cloud_init
 # Copyright 2011-2015, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,51 +20,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe 'travis_build_environment::cloud_init'
-
-template '/etc/apt/apt.conf.d/60assumeyes' do
-  source 'etc/apt/assumeyes.erb'
-  owner 'root'
-  group 'root'
-  mode 0644
-end
-
-template '/etc/apt/apt.conf.d/37timeouts' do
-  source 'etc/apt/timeouts.erb'
-  owner 'root'
-  group 'root'
-  mode 0644
-end
-
-template '/etc/cloud/templates/sources.list.tmpl' do
-  source 'etc/cloud/templates/sources.list.tmpl.erb'
-  owner 'root'
-  group 'root'
-  mode 0644
-end
-
-ruby_block 'enable universe, multiverse, and restricted sources' do
-  block do
-    sources_list = ::Chef::Util::FileEdit.new('/etc/apt/sources.list')
-
-    %w(universe multiverse restricted).each do |source|
-      sources_list.search_file_replace(/^#\s+(deb.*#{source}.*)/, '\1')
-    end
-
-    sources_list.insert_line_if_no_match(
-      /^# Managed by Chef/,
-      '# Managed by Chef! :heart_eyes_cat:'
-    )
-    sources_list.write_file
+%w(
+  /etc/cloud
+  /etc/cloud/templates
+).each do |dirname|
+  directory dirname do
+    mode 0755
   end
 end
 
-execute 'apt-get update for travis_build_environment::apt' do
-  command 'apt-get update'
+template '/etc/cloud/cloud.cfg' do
+  source 'etc/cloud/cloud.cfg.erb'
+  owner 'root'
+  group 'root'
+  mode 0644
 end
-
-execute 'gencaches for travis_build_environment::apt' do
-  command 'apt-cache gencaches'
-end
-
-package 'python-software-properties'
