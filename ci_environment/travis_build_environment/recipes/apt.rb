@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+include_recipe 'travis_build_environment::cloud_init'
+
 template '/etc/apt/apt.conf.d/60assumeyes' do
   source 'etc/apt/assumeyes.erb'
   owner 'root'
@@ -35,21 +37,16 @@ template '/etc/apt/apt.conf.d/37timeouts' do
 end
 
 %w(
-  /etc/cloud
-  /etc/cloud/templates
-).each do |dirname|
-  directory dirname do
+  /etc/cloud/templates/sources.list.debian.tmpl
+  /etc/cloud/templates/sources.list.tmpl
+  /etc/cloud/templates/sources.list.ubuntu.tmpl
+).each do |filename|
+  template filename do
+    source 'etc/cloud/templates/sources.list.tmpl.erb'
     owner 'root'
     group 'root'
-    mode 0755
+    mode 0644
   end
-end
-
-template '/etc/cloud/templates/sources.list.tmpl' do
-  source 'etc/cloud/templates/sources.list.tmpl.erb'
-  owner 'root'
-  group 'root'
-  mode 0644
 end
 
 ruby_block 'enable universe, multiverse, and restricted sources' do

@@ -31,6 +31,7 @@ include_recipe "unarchivers"
 
 include_recipe "travis_build_environment::root"
 include_recipe "travis_build_environment::ci_user"
+include_recipe "travis_build_environment::cloud_init"
 
 cookbook_file "/etc/default/locale" do
   owner "root"
@@ -65,6 +66,20 @@ template "/etc/hosts" do
   variables(:hostname => hostname)
   source "etc/hosts.erb"
   not_if { !node[:travis_build_environment][:update_hosts] }
+end
+
+%w(
+  /etc/cloud/templates/hosts.debian.tmpl
+  /etc/cloud/templates/hosts.tmpl
+  /etc/cloud/templates/hosts.ubuntu.tmpl
+).each do |filename|
+  template filename do
+    source 'etc/cloud/templates/hosts.tmpl.erb'
+    owner 'root'
+    group 'root'
+    mode 0644
+    variables(hostname: hostname)
+  end
 end
 
 template "/etc/hostname" do
