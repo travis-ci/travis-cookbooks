@@ -67,6 +67,23 @@ template "/etc/hosts" do
   not_if { !node[:travis_build_environment][:update_hosts] }
 end
 
+%w(
+  /etc/cloud
+  /etc/cloud/templates
+).each do |dirname|
+  directory dirname do
+    mode 0755
+  end
+end
+
+template '/etc/cloud/templates/hosts.tmpl' do
+  source 'etc/cloud/templates/hosts.tmpl.erb'
+  owner 'root'
+  group 'root'
+  mode 0644
+  variables(hostname: hostname)
+end
+
 template "/etc/hostname" do
   owner "root"
   group "root"
