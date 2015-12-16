@@ -20,11 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-apt_repository 'pollinate' do
-  uri 'ppa:pollinate/ppa'
-  distribution node['lsb']['codename']
-  action :add
-end
+# apt_repository 'pollinate' do
+#   uri 'ppa:pollinate/ppa'
+#   distribution node['lsb']['codename']
+#   action :add
+# end
+
+execute 'apt-add-repository -y ppa:pollinate/ppa'
 
 execute 'apt-get update for pollinate' do
   command 'apt-get update'
