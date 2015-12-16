@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+# XXX: this does not work, probably because the apt cookbook in here is
+# XXX: fairly outdated, so instead we do the `execute` resource just below.
 # apt_repository 'pollinate' do
 #   uri 'ppa:pollinate/ppa'
 #   distribution node['lsb']['codename']
