@@ -20,6 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+apt_repository 'pollinate' do
+  uri 'ppa:pollinate/ppa'
+  distribution node['lsb']['codename']
+end
+
+package 'pollinate' do
+  action [:install, :upgrade]
+end
+
 %w(
   /etc/cloud
   /etc/cloud/templates
