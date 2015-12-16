@@ -36,11 +36,17 @@ template '/etc/apt/apt.conf.d/37timeouts' do
   mode 0644
 end
 
-template '/etc/cloud/templates/sources.list.tmpl' do
-  source 'etc/cloud/templates/sources.list.tmpl.erb'
-  owner 'root'
-  group 'root'
-  mode 0644
+%w(
+  /etc/cloud/templates/sources.list.debian.tmpl
+  /etc/cloud/templates/sources.list.tmpl
+  /etc/cloud/templates/sources.list.ubuntu.tmpl
+).each do |filename|
+  template filename do
+    source 'etc/cloud/templates/sources.list.tmpl.erb'
+    owner 'root'
+    group 'root'
+    mode 0644
+  end
 end
 
 ruby_block 'enable universe, multiverse, and restricted sources' do
