@@ -1,5 +1,5 @@
 # Cookbook Name:: travis_build_environment
-# Recipe:: hostname
+# Recipe:: cloud_init
 # Copyright 2011-2015, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,29 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe 'travis_build_environment::cloud_init'
-
-bits = (node['kernel']['machine'] =~ /x86_64/ ? 64 : 32)
-hostname = case [node['platform'], node['platform_version']]
-           when ['ubuntu', '11.04'] then
-             "natty#{bits}"
-           when ['ubuntu', '11.10'] then
-             "oneiric#{bits}"
-           when ['ubuntu', '12.04'] then
-             "precise#{bits}"
-           when ['ubuntu', '14.04'] then
-             "trusty#{bits}"
-           end
-
-template '/etc/hosts' do
-  source 'etc/hosts.erb'
-  owner 'root'
-  group 'root'
-  mode 0644
-  variables(hostname: hostname)
-  only_if { node['travis_build_environment']['update_hosts'] }
-end
-
 %w(
   /etc/cloud
   /etc/cloud/templates
@@ -52,23 +29,9 @@ end
   end
 end
 
-template '/etc/cloud/templates/hosts.tmpl' do
-  source 'etc/cloud/templates/hosts.tmpl.erb'
+template '/etc/cloud/cloud.cfg' do
+  source 'etc/cloud/cloud.cfg.erb'
   owner 'root'
   group 'root'
   mode 0644
-  variables(hostname: hostname)
-end
-
-template '/etc/hostname' do
-  source 'etc/hostname.erb'
-  owner 'root'
-  group 'root'
-  mode 0644
-  variables(hostname: hostname)
-  only_if { node['travis_build_environment']['update_hosts'] }
-end
-
-execute "hostname #{hostname}" do
-  only_if { node['travis_build_environment']['update_hostname'] }
 end

@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+include_recipe 'travis_build_environment::cloud_init'
+
 template '/etc/apt/apt.conf.d/60assumeyes' do
   source 'etc/apt/assumeyes.erb'
   owner 'root'
@@ -41,17 +43,6 @@ cookbook_file '/etc/apt/apt.conf.d/10periodic' do
 end
 
 package 'software-properties-common'
-
-%w(
-  /etc/cloud
-  /etc/cloud/templates
-).each do |dirname|
-  directory dirname do
-    owner 'root'
-    group 'root'
-    mode 0755
-  end
-end
 
 %w(
   /etc/cloud/templates/sources.list.tmpl
