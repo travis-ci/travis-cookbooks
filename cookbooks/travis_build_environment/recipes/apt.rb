@@ -45,6 +45,7 @@ end
 package 'software-properties-common'
 
 %w(
+  /etc/cloud/templates/sources.list.debian.tmpl
   /etc/cloud/templates/sources.list.tmpl
   /etc/cloud/templates/sources.list.ubuntu.tmpl
 ).each do |filename|

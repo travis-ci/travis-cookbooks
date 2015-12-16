@@ -52,12 +52,18 @@ end
   end
 end
 
-template '/etc/cloud/templates/hosts.tmpl' do
-  source 'etc/cloud/templates/hosts.tmpl.erb'
-  owner 'root'
-  group 'root'
-  mode 0644
-  variables(hostname: hostname)
+%w(
+  /etc/cloud/templates/hosts.debian.tmpl
+  /etc/cloud/templates/hosts.tmpl
+  /etc/cloud/templates/hosts.ubuntu.tmpl
+).each do |filename|
+  template filename do
+    source 'etc/cloud/templates/hosts.tmpl.erb'
+    owner 'root'
+    group 'root'
+    mode 0644
+    variables(hostname: hostname)
+  end
 end
 
 template '/etc/hostname' do
