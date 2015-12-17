@@ -1,0 +1,24 @@
+\## Managed by Chef on <%= node.name %> :heart_eyes_cat:
+\## cookbook:: travis_build_environment
+\##     file:: templates/default/etc/cloud/templates/sources.list.tmpl.erb
+
+deb $mirror $codename main restricted
+deb-src $mirror $codename main restricted
+deb $mirror $codename-updates main restricted
+deb-src $mirror $codename-updates main restricted
+deb $mirror $codename universe
+deb-src $mirror $codename universe
+deb $mirror $codename-updates universe
+deb-src $mirror $codename-updates universe
+deb $mirror $codename multiverse
+deb-src $mirror $codename multiverse
+deb $mirror $codename-updates multiverse
+deb-src $mirror $codename-updates multiverse
+deb $mirror $codename-backports main restricted universe multiverse
+deb-src $mirror $codename-backports main restricted universe multiverse
+deb $security $codename-security main restricted
+deb-src $security $codename-security main restricted
+deb $security $codename-security universe
+deb-src $security $codename-security universe
+deb $security $codename-security multiverse
+deb-src $security $codename-security multiverse

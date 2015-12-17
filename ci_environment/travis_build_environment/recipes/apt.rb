@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+include_recipe 'travis_build_environment::cloud_init'
+
 template '/etc/apt/apt.conf.d/60assumeyes' do
   source 'etc/apt/assumeyes.erb'
   owner 'root'
@@ -34,11 +36,27 @@ template '/etc/apt/apt.conf.d/37timeouts' do
   mode 0644
 end
 
-ruby_block 'enable universe and multiverse sources' do
+%w(
+  /etc/cloud/templates/sources.list.debian.tmpl
+  /etc/cloud/templates/sources.list.tmpl
+  /etc/cloud/templates/sources.list.ubuntu.tmpl
+).each do |filename|
+  template filename do
+    source 'etc/cloud/templates/sources.list.tmpl.erb'
+    owner 'root'
+    group 'root'
+    mode 0644
+  end
+end
+
+ruby_block 'enable universe, multiverse, and restricted sources' do
   block do
     sources_list = ::Chef::Util::FileEdit.new('/etc/apt/sources.list')
-    sources_list.search_file_replace(/^#\s+(deb.*universe.*)/, '\1')
-    sources_list.search_file_replace(/^#\s+(deb.*multiverse.*)/, '\1')
+
+    %w(universe multiverse restricted).each do |source|
+      sources_list.search_file_replace(/^#\s+(deb.*#{source}.*)/, '\1')
+    end
+
     sources_list.insert_line_if_no_match(
       /^# Managed by Chef/,
       '# Managed by Chef! :heart_eyes_cat:'

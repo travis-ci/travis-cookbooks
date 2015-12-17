@@ -62,6 +62,8 @@ node.python.pyenv.pythons.each do |py|
     pyname = py
   end
 
+  venv_fullname = "#{virtualenv_root}/#{pyname}"
+
   # Actually do the installation/building to the full version python
   execute "python-build #{py} /opt/python/#{py}" do
     creates "/opt/python/#{py}"
@@ -84,7 +86,7 @@ node.python.pyenv.pythons.each do |py|
     owner       node.travis_build_environment.user
     group       node.travis_build_environment.group
     interpreter "/opt/python/#{py}/bin/python"
-    path        "#{virtualenv_root}/#{pyname}"
+    path        venv_fullname
 
     action :create
   end
@@ -98,7 +100,7 @@ node.python.pyenv.pythons.each do |py|
     end
 
     link "#{virtualenv_root}/#{pyaliasname}" do
-      to    "#{virtualenv_root}/#{pyname}"
+      to    venv_fullname
       owner node.travis_build_environment.user
       group node.travis_build_environment.group
     end
@@ -119,11 +121,23 @@ node.python.pyenv.pythons.each do |py|
     packages.concat node.python.pip.packages.fetch(name, [])
   end
 
-  # Install all of the pre-installed packages we want
-  execute "install packages #{py}" do
-    command "#{virtualenv_root}/#{pyname}/bin/pip install --upgrade #{packages.join(' ')}"
+  execute "install wheel in #{pyname}" do
+    command "#{venv_fullname}/bin/pip install --upgrade wheel"
     user    node.travis_build_environment.user
     group   node.travis_build_environment.group
+    environment(
+      'HOME' => node['travis_build_environment']['home']
+    )
+  end
+
+  # Install all of the pre-installed packages we want
+  execute "install packages #{py}" do
+    command "#{venv_fullname}/bin/pip install --upgrade #{packages.join(' ')}"
+    user    node.travis_build_environment.user
+    group   node.travis_build_environment.group
+    environment(
+      'HOME' => node['travis_build_environment']['home']
+    )
   end
 end
 
