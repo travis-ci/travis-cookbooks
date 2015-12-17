@@ -16,11 +16,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'libreadline'
-include_recipe 'libssl'
-include_recipe 'libncurses'
-
-package %w(curl unixodbc-dev)
+package %w(
+  curl
+  libncurses-dev
+  libreadline-dev
+  libssl-dev
+  unixodbc-dev
+)
 
 installation_root = "/home/#{node['travis_build_environment']['user']}/otp"
 
