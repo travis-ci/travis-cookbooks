@@ -85,7 +85,7 @@ cookbook_file "#{node['travis_build_environment']['home']}/.build_plt" do
 end
 
 node['travis_kerl']['releases'].each do |rel|
-  local_archive = ::File.join(Chef::Config[:file_cache_path], "erlang-#{rel}-x86_64.tar.bz2")
+  local_archive = ::File.join(Chef::Config[:file_cache_path], "erlang-#{rel}.tar.bz2")
 
   remote_file local_archive do
     source ::File.join(
