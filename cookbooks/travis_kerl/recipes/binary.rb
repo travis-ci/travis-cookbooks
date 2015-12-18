@@ -95,7 +95,6 @@ node['travis_kerl']['releases'].each do |rel|
       node['kernel']['machine'],
       ::File.basename(local_archive)
     )
-    checksum node['travis_kerl']['checksum'][rel]
   end
 
   bash "Expand Erlang #{rel} archive" do
