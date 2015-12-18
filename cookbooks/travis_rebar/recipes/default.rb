@@ -19,7 +19,7 @@
 include_recipe 'travis_kerl::binary'
 
 remote_file '/usr/local/bin/rebar' do
-  source node['rebar']['release']
+  source node['travis_rebar']['release']
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode 0755
