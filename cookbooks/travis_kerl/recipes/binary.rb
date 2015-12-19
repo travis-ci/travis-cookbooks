@@ -26,11 +26,10 @@ package %w(
 
 installation_root = "/home/#{node['travis_build_environment']['user']}/otp"
 
-directory(installation_root) do
+directory installation_root do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode 0755
-  action :create
 end
 
 remote_file node['travis_kerl']['path'] do
@@ -38,54 +37,39 @@ remote_file node['travis_kerl']['path'] do
   mode 0755
 end
 
-home = "/home/#{node['travis_build_environment']['user']}"
-base_dir = "#{home}/.kerl"
+base_dir = "#{node['travis_build_environment']['home']}/.kerl"
 env = {
-  'HOME' => home,
+  'HOME' => node['travis_build_environment']['home'],
   'USER' => node['travis_build_environment']['user'],
   'KERL_DISABLE_AGNER' => 'yes',
   'KERL_BASE_DIR' => base_dir,
   'CPPFLAGS' => "#{ENV['CPPFLAGS']} -DEPMD6"
 }
 
-case [node['platform'], node['platform_version']]
-when ['ubuntu', '11.04'] then
-  # fixes compilation with Ubuntu 11.04 zlib. MK.
-  env['KERL_CONFIGURE_OPTIONS'] = '--enable-dynamic-ssl-lib --enable-hipe'
-end
-
-# updates list of available releases. Needed for kerl to recognize
-# R15B, for example. MK.
-execute 'erlang.releases.update' do
-  command "#{node['travis_kerl']['path']} update releases"
-
+execute "#{node['travis_kerl']['path']} update releases" do
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-
   environment(env)
-
-  # run when kerl script is downloaded & installed
   subscribes :run, "remote_file[#{node['travis_kerl']['path']}]"
 end
 
 cookbook_file "#{node['travis_build_environment']['home']}/.erlang.cookie" do
+  source 'erlang.cookie'
+  mode 0600
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0600
-
-  source 'erlang.cookie'
 end
 
 cookbook_file "#{node['travis_build_environment']['home']}/.build_plt" do
+  source 'build_plt'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode 0700
-
-  source 'build_plt'
 end
 
 node['travis_kerl']['releases'].each do |rel|
   local_archive = ::File.join(Chef::Config[:file_cache_path], "erlang-#{rel}.tar.bz2")
+  rel_dir = ::File.join(node['travis_build_environment']['home'], 'otp', rel)
 
   remote_file local_archive do
     source ::File.join(
@@ -102,13 +86,11 @@ node['travis_kerl']['releases'].each do |rel|
     group node['travis_build_environment']['group']
 
     code <<-EOF
-      tar xjf #{local_archive} --directory #{::File.join(node['travis_build_environment']['home'], 'otp')}
+      tar -xjf #{local_archive} --directory #{::File.dirname(rel_dir)}
       echo #{rel} >> #{::File.join(base_dir, 'otp_installations')}
       echo #{rel},#{rel} >> #{::File.join(base_dir, 'otp_builds')}
     EOF
 
-    not_if do
-      ::File.exist?(::File.join(node['travis_build_environment']['home'], 'otp', rel))
-    end
+    not_if { ::File.exist?(rel_dir) }
   end
 end
