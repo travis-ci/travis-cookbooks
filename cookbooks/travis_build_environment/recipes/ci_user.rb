@@ -150,3 +150,80 @@ gimme_versions.each do |version|
     only_if { node['travis_build_environment']['install_gometalinter_tools'] }
   end
 end
+
+include_recipe 'travis_build_environment::kerl'
+
+node['travis_build_environment']['otp_releases'].each do |rel|
+  local_archive = ::File.join(Chef::Config[:file_cache_path], "erlang-#{rel}.tar.bz2")
+  rel_dir = ::File.join(node['travis_build_environment']['home'], 'otp', rel)
+
+  remote_file local_archive do
+    source ::File.join(
+      'https://s3.amazonaws.com/travis-otp-releases/binaries',
+      node['platform'],
+      node['platform_version'],
+      node['kernel']['machine'],
+      ::File.basename(local_archive)
+    )
+  end
+
+  bash "Expand Erlang #{rel} archive" do
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+
+    code <<-EOF
+      tar -xjf #{local_archive} --directory #{::File.dirname(rel_dir)}
+      echo #{rel} >> #{::File.join(node['travis_build_environment']['kerl_base_dir'], 'otp_installations')}
+      echo #{rel},#{rel} >> #{::File.join(node['travis_build_environment']['kerl_base_dir'], 'otp_builds')}
+    EOF
+
+    not_if { ::File.exist?(rel_dir) }
+  end
+end
+
+include_recipe 'travis_build_environment::rebar'
+include_recipe 'travis_build_environment::kiex'
+
+node['travis_build_environment']['elixir_versions'].each do |elixir|
+  local_archive = "#{Chef::Config[:file_cache_path]}/v#{elixir}.zip"
+  dest = "#{node['travis_build_environment']['home']}/.kiex/elixirs/elixir-#{elixir}"
+
+  remote_file local_archive do
+    source "http://s3.hex.pm/builds/elixir/v#{elixir}.zip"
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    mode 0644
+  end
+
+  bash "unpack #{local_archive}" do
+    code "unzip -d #{dest} #{local_archive}"
+    cwd node['travis_build_environment']['home']
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    environment(
+      'HOME' => node['travis_build_environment']['home'],
+      'USER' => node['travis_build_environment']['user']
+    )
+  end
+
+  file "#{node['travis_build_environment']['home']}/.kiex/elixirs/elixir-#{elixir}.env" do
+    content <<-EOF.gsub(/^.*> /, '')
+      > export ELIXIR_VERSION=#{elixir}
+      > export PATH=#{node['travis_build_environment']['home']}/.kiex/elixirs/elixir-#{elixir}/bin:$PATH
+      > export MIX_ARCHIVES=#{node['travis_build_environment']['home']}/.kiex/mix/elixir-#{elixir}
+    EOF
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    mode 0644
+  end
+end
+
+bash "set default elixir version to #{node['travis_build_environment']['default_elixir_version']}" do
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  code "#{node['travis_build_environment']['home']}/.kiex/bin/kiex default #{node['travis_build_environment']['default_elixir_version']}"
+  environment(
+    'HOME' => node['travis_build_environment']['home'],
+    'USER' => node['travis_build_environment']['user']
+  )
+end
