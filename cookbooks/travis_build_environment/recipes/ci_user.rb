@@ -150,3 +150,56 @@ gimme_versions.each do |version|
     only_if { node['travis_build_environment']['install_gometalinter_tools'] }
   end
 end
+
+include_recipe 'travis_build_environment::kerl'
+
+node['travis_build_environment']['otp_releases'].each do |rel|
+  local_archive = ::File.join(Chef::Config[:file_cache_path], "erlang-#{rel}.tar.bz2")
+  rel_dir = ::File.join(node['travis_build_environment']['home'], 'otp', rel)
+
+  remote_file local_archive do
+    source ::File.join(
+      'https://s3.amazonaws.com/travis-otp-releases/binaries',
+      node['platform'],
+      node['platform_version'],
+      node['kernel']['machine'],
+      ::File.basename(local_archive)
+    )
+  end
+
+  bash "Expand Erlang #{rel} archive" do
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+
+    code <<-EOF
+      tar -xjf #{local_archive} --directory #{::File.dirname(rel_dir)}
+      echo #{rel} >> #{::File.join(base_dir, 'otp_installations')}
+      echo #{rel},#{rel} >> #{::File.join(base_dir, 'otp_builds')}
+    EOF
+
+    not_if { ::File.exist?(rel_dir) }
+  end
+end
+
+include_recipe 'travis_build_environment::rebar'
+include_recipe 'travis_build_environment::kiex'
+
+node['travis_build_environment']['elixir_versions'].each do |elixir, _|
+  bash "install elixir version #{elixir} with kiex" do
+    user node['travis_build_environment']['user']
+    cwd node['travis_build_environment']['home']
+    group node['travis_build_environment']['group']
+    code <<-EOF
+      source #{node['travis_build_environment']['home']}/otp/#{node['travis_build_environment']['required_otp_release_for'][elixir]}/activate
+      #{node['travis_build_environment']['home']}/.kiex/bin/kiex install #{elixir}
+    EOF
+    environment(env)
+  end
+end
+
+bash "set default elixir version to #{node['travis_build_environment']['default_elixir_version']}" do
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  code "#{node['travis_build_environment']['home']}/.kiex/bin/kiex default #{node['travis_build_environment']['default_elixir_version']}"
+  environment(env)
+end
