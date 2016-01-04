@@ -195,7 +195,10 @@ node['travis_build_environment']['elixir_versions'].each do |elixir|
       source #{node['travis_build_environment']['home']}/otp/#{via_otp}/activate
       #{node['travis_build_environment']['home']}/.kiex/bin/kiex install #{elixir}
     EOF
-    environment(env)
+    environment(
+      'HOME' => node['travis_build_environment']['home'],
+      'USER' => node['travis_build_environment']['user']
+    )
   end
 end
 
@@ -203,5 +206,8 @@ bash "set default elixir version to #{node['travis_build_environment']['default_
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   code "#{node['travis_build_environment']['home']}/.kiex/bin/kiex default #{node['travis_build_environment']['default_elixir_version']}"
-  environment(env)
+  environment(
+    'HOME' => node['travis_build_environment']['home'],
+    'USER' => node['travis_build_environment']['user']
+  )
 end
