@@ -184,7 +184,7 @@ end
 include_recipe 'travis_build_environment::rebar'
 include_recipe 'travis_build_environment::kiex'
 
-node['travis_build_environment']['elixir_versions'].each do |elixir, _|
+node['travis_build_environment']['elixir_versions'].each do |elixir|
   bash "install elixir version #{elixir} with kiex" do
     user node['travis_build_environment']['user']
     cwd node['travis_build_environment']['home']
