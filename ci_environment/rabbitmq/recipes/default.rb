@@ -18,6 +18,13 @@
 # limitations under the License.
 #
 
+apt_repository 'erlang-solutions' do
+  uri 'http://packages.erlang-solutions.com/ubuntu'
+  distribution node['lsb']['codename']
+  components %w(contrib)
+  key 'http://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc'
+end
+
 # use the RabbitMQ repository instead of Ubuntu or Debian's
 # because there are very useful features in the newer versions
 apt_repository "rabbitmq" do
