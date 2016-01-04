@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'travis_kerl::binary'
+include_recipe 'travis_kerl::default'
 
 remote_file '/usr/local/bin/rebar' do
   source node['travis_rebar']['release']

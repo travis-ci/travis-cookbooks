@@ -5,7 +5,7 @@
 # Copyright 2014-2015, Travis CI GmbH
 #
 
-include_recipe 'travis_kerl::binary'
+include_recipe 'travis_kerl::default'
 
 env = {
   'HOME' => node['travis_build_environment']['home'],
