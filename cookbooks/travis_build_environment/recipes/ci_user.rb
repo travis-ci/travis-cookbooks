@@ -173,8 +173,8 @@ node['travis_build_environment']['otp_releases'].each do |rel|
 
     code <<-EOF
       tar -xjf #{local_archive} --directory #{::File.dirname(rel_dir)}
-      echo #{rel} >> #{::File.join(base_dir, 'otp_installations')}
-      echo #{rel},#{rel} >> #{::File.join(base_dir, 'otp_builds')}
+      echo #{rel} >> #{::File.join(node['travis_build_environment']['kerl_base_dir'], 'otp_installations')}
+      echo #{rel},#{rel} >> #{::File.join(node['travis_build_environment']['kerl_base_dir'], 'otp_builds')}
     EOF
 
     not_if { ::File.exist?(rel_dir) }

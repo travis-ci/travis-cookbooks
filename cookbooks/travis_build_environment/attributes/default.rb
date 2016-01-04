@@ -72,6 +72,8 @@ default['travis_build_environment']['install_gometalinter_tools'] = true
 default['travis_build_environment']['rebar_release'] = \
   'https://github.com/rebar/rebar/wiki/rebar'
 default['travis_build_environment']['kerl_path'] = '/usr/local/bin/kerl'
+default['travis_build_environment']['kerl_base_dir'] = \
+  "#{node['travis_build_environment']['home']}/.kerl"
 default['travis_build_environment']['otp_releases'] = %w(
   17.5
   R16B03

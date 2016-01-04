@@ -41,12 +41,11 @@ remote_file node['travis_build_environment']['kerl_path'] do
   mode 0755
 end
 
-base_dir = "#{node['travis_build_environment']['home']}/.kerl"
 env = {
   'HOME' => node['travis_build_environment']['home'],
   'USER' => node['travis_build_environment']['user'],
   'KERL_DISABLE_AGNER' => 'yes',
-  'KERL_BASE_DIR' => base_dir,
+  'KERL_BASE_DIR' => node['travis_build_environment']['kerl_base_dir'],
   'CPPFLAGS' => "#{ENV['CPPFLAGS']} -DEPMD6"
 }
 
