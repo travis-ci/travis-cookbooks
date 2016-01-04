@@ -53,7 +53,6 @@ execute "#{node['travis_build_environment']['kerl_path']} update releases" do
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   environment(env)
-  subscribes :run, "remote_file[#{node['travis_build_environment']['kerl_path']}]"
 end
 
 cookbook_file "#{node['travis_build_environment']['home']}/.erlang.cookie" do
