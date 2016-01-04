@@ -54,7 +54,9 @@ template "/etc/rabbitmq/rabbitmq.config" do
   mode 0644
 end
 
-package "rabbitmq-server"
+package "rabbitmq-server" do
+  version '3.4.3-1'
+end
 
 service "rabbitmq-server" do
   supports :restart => true, :status => true, :reload => true
