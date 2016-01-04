@@ -185,12 +185,14 @@ include_recipe 'travis_build_environment::rebar'
 include_recipe 'travis_build_environment::kiex'
 
 node['travis_build_environment']['elixir_versions'].each do |elixir|
-  bash "install elixir version #{elixir} with kiex" do
+  via_otp = node['travis_build_environment']['required_otp_release_for'][elixir]
+
+  bash "install elixir version #{elixir} with kiex via OTP #{via_otp.inspect}" do
     user node['travis_build_environment']['user']
     cwd node['travis_build_environment']['home']
     group node['travis_build_environment']['group']
     code <<-EOF
-      source #{node['travis_build_environment']['home']}/otp/#{node['travis_build_environment']['required_otp_release_for'][elixir]}/activate
+      source #{node['travis_build_environment']['home']}/otp/#{via_otp}/activate
       #{node['travis_build_environment']['home']}/.kiex/bin/kiex install #{elixir}
     EOF
     environment(env)
