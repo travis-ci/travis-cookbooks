@@ -40,6 +40,20 @@ end
 
 execute "tar -C / -xjf #{couchdb_tarball.inspect}"
 
+group 'couchdb' do
+  gid 120
+  action :create
+end
+
+user 'couchdb' do
+  supports manage_home: true
+  comment 'CouchDB Administrator'
+  uid 113
+  group 'couchdb'
+  home '/var/lib/couchdb'
+  shell '/bin/bash'
+end
+
 service 'couchdb' do
   action [:disable, :start]
 end
