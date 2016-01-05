@@ -41,7 +41,6 @@ end
 execute "tar -C / -xjf #{couchdb_tarball.inspect}"
 
 group 'couchdb' do
-  gid 120
   action :create
 end
 
