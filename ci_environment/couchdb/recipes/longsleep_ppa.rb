@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: couchdb
-# Recipe:: ppa
+# Recipe:: longsleep_ppa
 #
-# Copyright 2012-2013, Travis CI Development Team <contact@travis-ci.org>
+# Copyright 2016, Travis CI Development Team <contact@travis-ci.org>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,27 +17,8 @@
 # limitations under the License.
 #
 
-# This recipe relies on a PPA package and is Ubuntu/Debian specific. Please
-# keep this in mind.
-
-case node[:platform]
-when "ubuntu" then
-  # include_recipe "couchdb::ubuntu_ppa"
-  include_recipe "couchdb::longsleep_ppa"
-end
-
-package "couchdb" do
-  action :install
-end
-
-service "couchdb" do
-  # intentionally disabled on boot. MK.
-  action [:disable, :start]
-end
-
-file '/etc/init/couchdb.override' do
-  owner 'root'
-  group 'root'
-  mode 0644
-  content 'manual'
+apt_repository 'couchdb-ppa' do
+  uri 'ppa:longsleep/couchdb'
+  distribution node['lsb']['codename']
+  action :add
 end
