@@ -22,8 +22,7 @@
 
 case node[:platform]
 when "ubuntu" then
-  # include_recipe "couchdb::ubuntu_ppa"
-  include_recipe "couchdb::longsleep_ppa"
+  include_recipe "couchdb::ubuntu_ppa"
 end
 
 package "couchdb" do
