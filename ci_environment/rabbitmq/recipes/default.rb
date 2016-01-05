@@ -23,6 +23,7 @@ apt_repository 'erlang-solutions' do
   distribution node['lsb']['codename']
   components %w(contrib)
   key 'http://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc'
+  action :add
 end
 
 # use the RabbitMQ repository instead of Ubuntu or Debian's
