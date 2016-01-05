@@ -1,1 +1,0 @@
-default[:apt][:mirror] = :us
