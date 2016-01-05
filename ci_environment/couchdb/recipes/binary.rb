@@ -47,7 +47,6 @@ end
 user 'couchdb' do
   supports manage_home: true
   comment 'CouchDB Administrator'
-  uid 113
   group 'couchdb'
   home '/var/lib/couchdb'
   shell '/bin/bash'
