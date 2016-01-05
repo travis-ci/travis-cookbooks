@@ -9,3 +9,4 @@ default[:rabbitmq][:high_memory_watermark]  = 0.04
 
 default[:rabbitmq][:service][:enabled]      = false
 
+default['rabbitmq']['deb_version'] = '3.4.3'
