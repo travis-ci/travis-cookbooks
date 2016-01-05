@@ -18,14 +18,6 @@
 # limitations under the License.
 #
 
-apt_repository 'erlang-solutions' do
-  uri 'http://packages.erlang-solutions.com/ubuntu'
-  distribution node['lsb']['codename']
-  components %w(contrib)
-  key 'http://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc'
-  action :add
-end
-
 directory "/etc/rabbitmq/" do
   owner "root"
   group "root"
