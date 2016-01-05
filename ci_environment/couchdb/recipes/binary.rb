@@ -26,7 +26,7 @@ couchdb_tarball = ::File.join(
 )
 
 remote_file couchdb_tarball do
-  url ::File.join(
+  source ::File.join(
     'https://s3.amazonaws.com/travis-couchdb-archives/binaries',
     node['platform'],
     node['platform_version'],
