@@ -154,8 +154,13 @@ end
 include_recipe 'travis_build_environment::kerl'
 
 node['travis_build_environment']['otp_releases'].each do |rel|
-  local_archive = ::File.join(Chef::Config[:file_cache_path], "erlang-#{rel}.tar.bz2")
-  rel_dir = ::File.join(node['travis_build_environment']['home'], 'otp', rel)
+  local_archive = ::File.join(
+    Chef::Config[:file_cache_path],
+    "erlang-#{rel}-nonroot.tar.bz2"
+  )
+  rel_dir = ::File.join(
+    node['travis_build_environment']['home'], 'otp', rel
+  )
 
   remote_file local_archive do
     source ::File.join(
