@@ -20,53 +20,74 @@ platforms:
       box: box-cutter/ubuntu1404
     run_list:
     - recipe[apt]
-  #- name: ubuntu-12.04
-  #  driver:
-  #    box: box-cutter/ubuntu1204
-  #  run_list:
-  #  - recipe[apt]
-  - name: debian-6.0.10
+  - name: ubuntu-12.04
     driver:
-      box: box-cutter/debian6010
+      box: box-cutter/ubuntu1204
     run_list:
     - recipe[apt]
-  - name: debian-7.6
+  - name: debian-8.2
     driver:
-      box: box-cutter/debian76
+      box: box-cutter/debian82
+    run_list:
+    - recipe[apt]
+  - name: debian-7.9
+    driver:
+      box: box-cutter/debian79
     run_list:
     - recipe[apt]
   - name: centos-7.1
     driver:
       box: box-cutter/centos71
-  - name: centos-6.5
+  - name: centos-6.7
     driver:
-      box: box-cutter/centos65
+      box: box-cutter/centos67
   - name: centos-5.11
     driver:
       box: box-cutter/centos511
-  - name: fedora-19
+  - name: fedora-22
     driver:
-      box: box-cutter/fedora19
-  - name: fedora-20
+      box: box-cutter/fedora22
+  - name: fedora-21
     driver:
-      box: box-cutter/fedora20
+      box: box-cutter/fedora21
 
 suites:
-  - name: openjdk
-    excludes:
-      - fedora-19
-      - fedora-20
+  - name: openjdk-6
+    includes:
+      - centos-5.11
+      - centos-6.7
+      - centos-7.1
+      - debian-7.9
+      - ubuntu-12.04
+      - ubuntu-14.04
     run_list:
       - recipe[java::default]
   - name: openjdk-7
-    excludes:
-      - ubuntu-10.04
-      - debian-6.0.8
+    includes:
+      - centos-5.11
+      - centos-6.7
+      - centos-7.1
+      - debian-7.9
+      - debian-8.2
+      - ubuntu-12.04
+      - ubuntu-14.04
     run_list:
       - recipe[java::default]
     attributes:
       java:
         jdk_version: "7"
+  - name: openjdk-8
+    includes:
+      - ubuntu-14.04
+      - centos-6.7
+      - centos-7.1
+      - fedora-21
+      - fedora-22
+    run_list:
+      - recipe[java::default]
+    attributes:
+      java:
+        jdk_version: "8"
   - name: oracle
     run_list:
       - recipe[test_java::default]
@@ -112,15 +133,31 @@ suites:
   - name: openjdk-direct
     run_list:
       - recipe[java::openjdk]
-    excludes:
-      - fedora-19
-      - fedora-20
   - name: oracle-rpm
+    includes:
+      - centos-5.11
+      - centos-6.7
+      - centos-7.1
+      - fedora-21
     run_list:
-      - recipe[java]
+      - recipe[java::default]
     attributes:
       java:
         install_flavor: oracle_rpm
         jdk_version: 7
+        oracle:
+          accept_oracle_download_terms: true
+  - name: oracle-rpm-8
+    includes:
+      - centos-5.11
+      - centos-6.7
+      - centos-7.1
+      - fedora-21
+    run_list:
+      - recipe[java::default]
+    attributes:
+      java:
+        install_flavor: oracle_rpm
+        jdk_version: 8
         oracle:
           accept_oracle_download_terms: true
