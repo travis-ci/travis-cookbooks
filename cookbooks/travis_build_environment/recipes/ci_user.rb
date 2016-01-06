@@ -154,8 +154,13 @@ end
 include_recipe 'travis_build_environment::kerl'
 
 node['travis_build_environment']['otp_releases'].each do |rel|
-  local_archive = ::File.join(Chef::Config[:file_cache_path], "erlang-#{rel}.tar.bz2")
-  rel_dir = ::File.join(node['travis_build_environment']['home'], 'otp', rel)
+  local_archive = ::File.join(
+    Chef::Config[:file_cache_path],
+    "erlang-#{rel}-nonroot.tar.bz2"
+  )
+  rel_dir = ::File.join(
+    node['travis_build_environment']['home'], 'otp', rel
+  )
 
   remote_file local_archive do
     source ::File.join(
@@ -165,19 +170,55 @@ node['travis_build_environment']['otp_releases'].each do |rel|
       node['kernel']['machine'],
       ::File.basename(local_archive)
     )
-  end
 
-  bash "Expand Erlang #{rel} archive" do
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
 
-    code <<-EOF
-      tar -xjf #{local_archive} --directory #{::File.dirname(rel_dir)}
-      echo #{rel} >> #{::File.join(node['travis_build_environment']['kerl_base_dir'], 'otp_installations')}
-      echo #{rel},#{rel} >> #{::File.join(node['travis_build_environment']['kerl_base_dir'], 'otp_builds')}
+    ignore_failure true
+  end
+
+  bash "expand erlang #{rel} archive" do
+    code <<-EOF.gsub(/^\s+>\s/, '')
+      > tar -xjf #{local_archive} --directory #{::File.dirname(rel_dir)}
+      > echo #{rel} >> #{::File.join(node['travis_build_environment']['kerl_base_dir'], 'otp_installations')}
+      > echo #{rel},#{rel} >> #{::File.join(node['travis_build_environment']['kerl_base_dir'], 'otp_builds')}
     EOF
 
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+
     not_if { ::File.exist?(rel_dir) }
+    only_if { ::File.exist?(local_archive) }
+  end
+
+  bash "build erlang #{rel}" do
+    code "#{node['travis_build_environment']['kerl_path']} build #{rel} #{rel}"
+
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+
+    environment(
+      'HOME' => node['travis_build_environment']['home'],
+      'USER' => node['travis_build_environment']['user']
+    )
+
+    not_if { ::File.exist?("#{rel_dir}/activate") }
+  end
+
+  bash "install erlang #{rel}" do
+    flags '-e'
+    code <<-EOF.gsub(/^\s+>\s/, '')
+      > #{node['travis_build_environment']['kerl_path']} install #{rel} #{rel_dir}
+      > #{node['travis_build_environment']['kerl_path']} cleanup #{rel}
+      > rm -rf #{node['travis_build_environment']['home']}/.kerl/archives/*
+    EOF
+
+    environment(
+      'HOME' => node['travis_build_environment']['home'],
+      'USER' => node['travis_build_environment']['user']
+    )
+
+    not_if { ::File.exist?("#{rel_dir}/activate") }
   end
 end
 
