@@ -52,6 +52,8 @@ remote_file rabbitmq_deb do
   )
 end
 
+package 'erlang-nox'
+
 dpkg_package 'rabbitmq-server' do
   source rabbitmq_deb
 end
