@@ -41,7 +41,7 @@ end
 
 rabbitmq_deb = ::File.join(
   Chef::Config[:file_cache_path],
-  "rabbitmq-server_#{node['rabbitmq']['deb_version']}-1.all.deb"
+  "rabbitmq-server_#{node['rabbitmq']['deb_version']}-1_all.deb"
 )
 
 remote_file rabbitmq_deb do
