@@ -6,7 +6,7 @@ Travis internal machines.
 
 The wrapper cookbooks that compose together the cookbooks found here live over
 in the [Travis CI Infrastructure Packer
-Templates](https://github.com/travis-infrastructure/packer-templates)
+Templates](https://github.com/travis-ci/packer-templates)
 repository.
 
 ## Developing Cookbooks
