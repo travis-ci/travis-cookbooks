@@ -2,8 +2,8 @@ user 'deploy' do
   action :create
 end
 
-include_recipe 'build-essential'
 include_recipe 'apt'
+include_recipe 'build-essential'
 include_recipe 'ec2_docker_worker::apt'
 include_recipe 'ec2_docker_worker::volume_pre'
 include_recipe 'git'
