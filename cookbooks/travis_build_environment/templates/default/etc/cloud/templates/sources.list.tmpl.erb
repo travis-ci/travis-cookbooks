@@ -2,10 +2,10 @@
 \## cookbook:: travis_build_environment
 \##     file:: templates/default/etc/cloud/templates/sources.list.tmpl.erb
 
-deb $mirror $codename main
-deb-src $mirror $codename main
-deb $mirror $codename-updates main
-deb-src $mirror $codename-updates main
+deb $mirror $codename main restricted
+deb-src $mirror $codename main restricted
+deb $mirror $codename-updates main restricted
+deb-src $mirror $codename-updates main restricted
 deb $mirror $codename universe
 deb-src $mirror $codename universe
 deb $mirror $codename-updates universe
@@ -16,8 +16,8 @@ deb $mirror $codename-updates multiverse
 deb-src $mirror $codename-updates multiverse
 deb $mirror $codename-backports main restricted universe multiverse
 deb-src $mirror $codename-backports main restricted universe multiverse
-deb $security $codename-security main
-deb-src $security $codename-security main
+deb $security $codename-security main restricted
+deb-src $security $codename-security main restricted
 deb $security $codename-security universe
 deb-src $security $codename-security universe
 deb $security $codename-security multiverse

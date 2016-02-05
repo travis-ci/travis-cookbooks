@@ -57,7 +57,7 @@ fi
 if [[ -d "/usr/lib/jvm/java-9-oracle-$ARCH_SUFFIX" ]] ; then
     # Currently unused, because the `travis_java` cookbook doesn't create this architecture specific symbolic link
     ORACLEJDK9_UJA_ALIAS="java-9-oracle-$ARCH_SUFFIX"
-    ORACLEJDK9_JAVA_HOME="/usr/lib/jvm/java-8-oracle-$ARCH_SUFFIX"
+    ORACLEJDK9_JAVA_HOME="/usr/lib/jvm/java-9-oracle-$ARCH_SUFFIX"
 else
     ORACLEJDK9_UJA_ALIAS="java-9-oracle"
     ORACLEJDK9_JAVA_HOME="/usr/lib/jvm/java-9-oracle"

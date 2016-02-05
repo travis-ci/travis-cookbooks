@@ -1,5 +1,5 @@
 # Cookbook Name:: travis_build_environment
-# Recipe:: apt
+# Recipe:: hk
 # Copyright 2011-2015, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,55 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe 'travis_build_environment::cloud_init'
+local_hk_gz = "#{Chef::Config[:file_cache_path]}/hk.gz"
 
-template '/etc/apt/apt.conf.d/60assumeyes' do
-  source 'etc/apt/assumeyes.erb'
-  owner 'root'
-  group 'root'
-  mode 0644
+remote_file local_hk_gz do
+  source 'https://hk.heroku.com/hk.gz'
 end
 
-template '/etc/apt/apt.conf.d/37timeouts' do
-  source 'etc/apt/timeouts.erb'
-  owner 'root'
-  group 'root'
-  mode 0644
-end
-
-cookbook_file '/etc/apt/apt.conf.d/10periodic' do
-  owner 'root'
-  group 'root'
-  mode 0644
-end
-
-package 'software-properties-common'
-
-%w(
-  /etc/cloud/templates/sources.list.debian.tmpl
-  /etc/cloud/templates/sources.list.tmpl
-  /etc/cloud/templates/sources.list.ubuntu.tmpl
-).each do |filename|
-  template filename do
-    source 'etc/cloud/templates/sources.list.tmpl.erb'
-    owner 'root'
-    group 'root'
-    mode 0644
-  end
-end
-
-%w(
-  multiverse
-  restricted
-  universe
-).each do |source_alias|
-  execute "apt-add-repository -y #{source_alias}"
-end
-
-execute 'gencaches for travis_build_environment::apt' do
-  command 'apt-cache gencaches'
-end
-
-execute 'apt-get update for travis_build_environment::apt' do
-  command 'apt-get update'
-end
+execute "zcat < #{local_hk_gz} > /usr/local/bin/hk && chmod +x /usr/local/bin/hk"

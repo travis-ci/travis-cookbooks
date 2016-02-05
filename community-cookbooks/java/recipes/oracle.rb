@@ -64,6 +64,7 @@ java_ark "jdk" do
   connect_timeout node['java']['ark_timeout']
   use_alt_suffix node['java']['use_alt_suffix']
   reset_alternatives node['java']['reset_alternatives']
+  download_timeout node['java']['ark_download_timeout']
   action :install
 end
 
