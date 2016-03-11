@@ -7,5 +7,5 @@ ruby_block "Change SSH port" do
     file.write_file
   end
 
-  only_if { File.exists?(sshd_config_file) }
+  only_if { File.exist?(sshd_config_file) }
 end

@@ -18,7 +18,7 @@ end
 execute "msgpack-extract-source" do
   command "tar zxf #{Chef::Config.file_cache_path}/#{msgpack_tar} --strip-components 1 -C #{msgpack_src_dir}"
   creates "#{msgpack_src_dir}/COPYING"
-  only_if do File.exist?("#{Chef::Config.file_cache_path}/#{msgpack_tar}") end
+  only_if { File.exist?("#{Chef::Config.file_cache_path}/#{msgpack_tar}") }
   action :run
   notifies :run, "execute[install-msgpack]", :immediately
 end
