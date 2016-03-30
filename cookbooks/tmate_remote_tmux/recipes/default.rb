@@ -33,10 +33,10 @@ template '/etc/init/tmate-remote-tmux.conf' do
   source 'tmate-remote-tmux.conf.erb'
   owner 'root'
   mode '0644'
-  variables app_path:      node[:tmate_remote_tmux][:app_path],
-            keys_dir:      node[:tmate_remote_tmux][:keys_dir],
-            use_syslog:    node[:tmate_remote_tmux][:use_syslog],
-            log_level:     node[:tmate_remote_tmux][:log_level],
-            listen_port:   node[:tmate_remote_tmux][:listen_port],
-            has_websocket: node[:tmate_remote_tmux][:has_websocket]
+  variables app_path:    node[:tmate_remote_tmux][:app_path],
+            keys_dir:    node[:tmate_remote_tmux][:keys_dir],
+            use_syslog:  node[:tmate_remote_tmux][:use_syslog],
+            log_level:   node[:tmate_remote_tmux][:log_level],
+            listen_port: node[:tmate_remote_tmux][:listen_port],
+            has_proxy:   node[:tmate_remote_tmux][:has_proxy]
 end

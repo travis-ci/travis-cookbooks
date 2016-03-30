@@ -14,5 +14,5 @@ script
   cd <%= @app_path %>
   exec ./tmate-remote-tmux -k <%= @keys_dir %> -p <%= @listen_port %> \
     <%= @log_level %> <%= @use_syslog ? "-s" : "" %> \
-    <%= @has_websocket ? "-x localhost" : "" %>
+    <%= @has_proxy ? "-x localhost" : "" %>
 end script

@@ -1,0 +1,27 @@
+description "tmate-proxy"
+
+start on runlevel [2345]
+stop on runlevel [!2345]
+
+respawn
+respawn limit unlimited
+kill timeout 5
+
+setuid root
+setgid root
+
+env MIX_ENV=prod
+env HOME=<%= @app_path %>
+env LC_ALL=en_US.UTF-8
+env LANG=en_US.UTF-8
+env LANGUAGE=en_US.UTF-8
+
+script
+  cd <%= @app_path %>
+  bin/tmate foreground
+end script
+
+pre-stop script
+  cd <%= @app_path %>
+  bin/tmate stop
+end script
