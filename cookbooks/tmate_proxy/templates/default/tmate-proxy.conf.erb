@@ -18,7 +18,7 @@ env LANGUAGE=en_US.UTF-8
 
 script
   cd <%= @app_path %>
-  bin/tmate foreground
+  bin/tmate foreground | logger -t tmate-proxy 2>&1
 end script
 
 pre-stop script
