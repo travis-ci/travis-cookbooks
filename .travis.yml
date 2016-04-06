@@ -16,4 +16,7 @@ addons:
     packages:
     - chefdk
 
+before_install:
+  - gem install rubocop --version=0.34.2
+
 script: ./runtests
