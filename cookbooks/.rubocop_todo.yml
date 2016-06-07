@@ -10,7 +10,6 @@
 # Configuration parameters: AllowSafeAssignment.
 Lint/AssignmentInCondition:
   Exclude:
-    - 'travis_worker/recipes/bluebox.rb'
     - 'travis_worker/recipes/ec2-docker.rb'
 
 # Offense count: 1
@@ -22,7 +21,6 @@ Lint/HandleExceptions:
 Lint/UselessAssignment:
   Exclude:
     - 'travis_php/recipes/multi.rb'
-    - 'travis_worker/recipes/bluebox.rb'
     - 'travis_worker/recipes/ec2-docker.rb'
 
 # Offense count: 1

@@ -76,7 +76,7 @@ runit_service 'travis-worker' do
 end
 
 template '/etc/monit/conf.d/travis-worker.monitrc' do
-  source 'travis-worker-bluebox.monitrc.erb'
+  source 'travis-worker.monitrc.erb'
   owner 'root'
   group 'root'
   mode 0644
