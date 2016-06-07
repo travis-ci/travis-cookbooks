@@ -2,3 +2,9 @@ inherit_from: .rubocop_todo.yml
 
 Style/Documentation:
   Enabled: false
+
+Style/ConditionalAssignment:
+  Enabled: false
+
+Performance/Casecmp:
+  Enabled: false
