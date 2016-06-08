@@ -29,4 +29,4 @@ apt_repository 'cmake' do
   distribution node['lsb']['codename']
 end
 
-package %w(cmake cmake-extras)
+package %w(cmake)
