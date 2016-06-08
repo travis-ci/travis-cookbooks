@@ -40,7 +40,7 @@ node['travis_python']['system']['pythons'].each do |py|
   venv_name = "#{pyname}_with_system_site_packages"
   venv_fullname = "#{virtualenv_root}/#{venv_name}"
 
-  travis_python_virtualenv "#{venv_name}" do
+  travis_python_virtualenv venv_name.to_s do
     owner node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     interpreter "/usr/bin/#{pyname}"

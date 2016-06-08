@@ -20,7 +20,7 @@ cookbook_file '/usr/local/bin/signal_wrapper' do
 end
 
 worker_name = "worker.#{node['fqdn']}"
-home = "#{node['travis']['worker']['home']}"
+home = node['travis']['worker']['home'].to_s
 service_name = 'travis-worker'
 host_name = "#{node['travis']['worker']['hostname']}.#{node['travis']['worker']['domain']}"
 
@@ -76,7 +76,7 @@ runit_service 'travis-worker' do
 end
 
 template '/etc/monit/conf.d/travis-worker.monitrc' do
-  source 'travis-worker-bluebox.monitrc.erb'
+  source 'travis-worker.monitrc.erb'
   owner 'root'
   group 'root'
   mode 0644
