@@ -19,7 +19,7 @@
 #
 
 remote_file "#{Chef::Config[:file_cache_path]}/ez_setup.py" do
-  source "https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py"
+  source 'https://bootstrap.pypa.io/ez_setup.py'
   mode "0644"
   not_if "which pip"
 end
