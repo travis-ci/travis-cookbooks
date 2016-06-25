@@ -33,6 +33,7 @@ tarball_dir = File.join(td, "phantomjs-#{node.phantomjs.version}-linux-#{node.ph
 
 remote_file(tmp) do
   source node.phantomjs.tarball.url
+  retries 2
 
   not_if "which phantomjs && [[ `phantomjs --version` == \"#{node.phantomjs.version}\" ]]"
 end
