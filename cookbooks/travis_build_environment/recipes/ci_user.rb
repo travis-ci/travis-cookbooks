@@ -129,7 +129,7 @@ gimme_versions += [gimme_default_version] unless gimme_default_version.empty?
 
 gimme_versions.each do |version|
   version = version.sub('go', '')
-  next if version < '1.4'
+  next if version < '1.5'
 
   Array(node['travis_build_environment']['golang_libraries']).each do |lib|
     bash "install #{lib} for go #{version}" do
