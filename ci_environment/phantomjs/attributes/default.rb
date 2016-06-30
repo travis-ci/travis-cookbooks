@@ -1,10 +1,15 @@
-version = "1.9.8"
+version = '1.9.8'
 arch    = kernel['machine'] =~ /x86_64/ ? "x86_64" : "i686"
 
 default[:phantomjs] = {
   :version => version,
   :arch    => arch,
   :tarball => {
-    :url => "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-#{version}-linux-#{arch}.tar.bz2"
+    :url => ::File.join(
+      'https://s3.amazonaws.com/travis-phantomjs/binaries',
+      node['platform'],
+      node['platform_version'],
+      node['kernel']['machine'],
+      "phantomjs-#{version}.tar.bz2"
   }
 }
