@@ -11,5 +11,6 @@ default[:phantomjs] = {
       node['platform_version'],
       node['kernel']['machine'],
       "phantomjs-#{version}.tar.bz2"
+    )
   }
 }
