@@ -31,4 +31,7 @@ package 'heroku-toolbelt'
 
 execute 'heroku version' do
   user node['travis_build_environment']['user']
+  environment(
+    'HOME' => node['travis_build_environment']['home']
+  )
 end
