@@ -28,8 +28,7 @@ package "libfontconfig1"
 require "tmpdir"
 
 td          = Dir.tmpdir
-tmp         = File.join(td, "phantomjs-#{node.phantomjs.version}.tar.gz")
-tarball_dir = File.join(td, "phantomjs-#{node.phantomjs.version}-linux-#{node.phantomjs.arch}")
+tmp         = File.join(td, "phantomjs-#{node.phantomjs.version}.tar.bz2")
 
 remote_file(tmp) do
   source node.phantomjs.tarball.url
@@ -42,12 +41,13 @@ end
 # 3. Copy to /usr/local/phantomjs
 bash "extract #{tmp}, move it to /usr/local/phantomjs" do
   user "root"
-  cwd  "/tmp"
+  cwd  td
 
   code <<-EOS
     rm -rf /usr/local/phantomjs
-    tar xfj #{tmp}
-    mv --force #{tarball_dir} /usr/local/phantomjs
+    mkdir -p /usr/local/phantomjs/bin
+    tar -C /usr/local/phantomjs/bin -xjf #{tmp} --strip-components=1
+    chmod 0755 /usr/local/phantomjs/bin/phantomjs
   EOS
 
   creates "/usr/local/phantomjs/bin/phantomjs"

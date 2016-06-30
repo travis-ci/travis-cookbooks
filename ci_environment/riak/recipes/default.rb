@@ -34,6 +34,19 @@ template "/etc/riak/riak.conf" do
   mode   0644
 end
 
+%w(
+  /usr/lib/riak
+  /var/lib/riak
+).each do |riak_dir|
+  directory riak_dir do
+    owner 'riak'
+    group 'riak'
+    mode 0755
+  end
+
+  execute "chown -R riak:riak #{riak_dir}"
+end
+
 execute "remove Bashio APT package source" do
   command "rm -f /etc/apt/sources.list.d/basho-riak-source.list"
 end
