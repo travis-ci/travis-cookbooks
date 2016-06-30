@@ -1,3 +1,19 @@
+*.gem
+.zero-knife.rb
+*.rbc
+.bundle
+.config
+coverage
+InstalledFiles
+lib/bundler/man
+pkg
+rdoc
+spec/reports
+test/tmp
+test/version_tmp
+tmp
+Gemfile.lock
+_Store
 *~
 *#
 .#*
@@ -7,15 +23,24 @@
 *.tmp
 *.bk
 *.bkup
-.kitchen.local.yml
-Berksfile.lock
-Gemfile.lock
+.ruby-version
+.ruby-gemset
+.rvmrc
 
-.bundle/
-.cache/
-.kitchen/
+# YARD artifacts
+.yardoc
+_yardoc
+doc/
+.idea
+
+#chef stuff
+Berksfile.lock
+.kitchen
+.kitchen.local.yml
+vendor/
+.coverage/
+
+#vagrant stuff
 .vagrant/
 .vagrant.d/
-bin/
-tmp/
-vendor/
+.kitchen/

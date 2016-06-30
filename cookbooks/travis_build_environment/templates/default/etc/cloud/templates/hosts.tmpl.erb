@@ -1,0 +1,19 @@
+\## Managed by Chef on <%= node.name %> :heart_eyes_cat:
+\## cookbook:: travis_build_environment
+\##     file:: templates/default/etc/cloud/templates/hosts.tmpl.erb
+
+<% %w(127.0.0.1 127.0.1.1).each do |addr| %>
+<%= addr %> $hostname $fqdn
+<%= addr %> localhost <%= @hostname %> nettuno travis vagrant
+<% end %>
+
+<% if node['ip6address'] %>
+<% %W(#{node['ip6address']} ::1).each do |addr| %>
+<%= addr %> $hostname $fqdn
+<%= addr %> localhost <%= @hostname %> nettuno travis vagrant ip6-localhost ip6-loopback
+<% end %>
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+<% end %>

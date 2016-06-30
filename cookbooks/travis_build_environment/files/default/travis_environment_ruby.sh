@@ -18,6 +18,6 @@ JRUBY_OPTS="$JRUBY_OPTS -Xcext.enabled=false"
 JRUBY_OPTS="$JRUBY_OPTS -J-Xss2m"
 
 # Disable invokedynamic as it is still somewhat experimental
-JRUBY_OPTS="$JRUBY_OPTS --Xcompile.invokedynamic=false"
+JRUBY_OPTS="$JRUBY_OPTS -Xcompile.invokedynamic=false"
 
 export JRUBY_OPTS

@@ -69,6 +69,23 @@ default['travis_build_environment']['golang_libraries'] = %w(
   github.com/alecthomas/gometalinter
 )
 default['travis_build_environment']['install_gometalinter_tools'] = true
+default['travis_build_environment']['rebar_release'] = \
+  'https://github.com/rebar/rebar/wiki/rebar'
+default['travis_build_environment']['kerl_path'] = '/usr/local/bin/kerl'
+default['travis_build_environment']['kerl_base_dir'] = \
+  "#{node['travis_build_environment']['home']}/.kerl"
+default['travis_build_environment']['otp_releases'] = %w(
+  17.5
+  R16B03
+)
+default['travis_build_environment']['elixir_versions'] = %w(
+  1.0.4
+)
+default['travis_build_environment']['required_otp_release_for'] = {
+  '1.0.3' => '17.4',
+  '1.0.4' => '17.5'
+}
+default['travis_build_environment']['default_elixir_version'] = '1.0.4'
 default['travis_build_environment']['mysql']['password'] = 'travis'
 default['travis_build_environment']['prerequisite_recipes'] = %w(
   travis_timezone

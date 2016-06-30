@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+include_recipe 'travis_build_environment::cloud_init'
+
 template '/etc/apt/apt.conf.d/60assumeyes' do
   source 'etc/apt/assumeyes.erb'
   owner 'root'
@@ -43,17 +45,7 @@ end
 package 'software-properties-common'
 
 %w(
-  /etc/cloud
-  /etc/cloud/templates
-).each do |dirname|
-  directory dirname do
-    owner 'root'
-    group 'root'
-    mode 0755
-  end
-end
-
-%w(
+  /etc/cloud/templates/sources.list.debian.tmpl
   /etc/cloud/templates/sources.list.tmpl
   /etc/cloud/templates/sources.list.ubuntu.tmpl
 ).each do |filename|
@@ -66,8 +58,9 @@ end
 end
 
 %w(
-  universe
   multiverse
+  restricted
+  universe
 ).each do |source_alias|
   execute "apt-add-repository -y #{source_alias}"
 end
