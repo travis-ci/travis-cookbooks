@@ -29,7 +29,6 @@ require "tmpdir"
 
 td          = Dir.tmpdir
 tmp         = File.join(td, "phantomjs-#{node.phantomjs.version}.tar.bz2")
-tarball_dir = File.join(td, "phantomjs-#{node.phantomjs.version}-linux-#{node.phantomjs.arch}")
 
 remote_file(tmp) do
   source node.phantomjs.tarball.url
@@ -42,13 +41,13 @@ end
 # 3. Copy to /usr/local/phantomjs
 bash "extract #{tmp}, move it to /usr/local/phantomjs" do
   user "root"
-  cwd  "/tmp"
+  cwd  td
 
   code <<-EOS
     rm -rf /usr/local/phantomjs
-    tar -xjf #{tmp}
     mkdir -p /usr/local/phantomjs/bin
-    mv --force #{tarball_dir}/phantomjs /usr/local/phantomjs/bin/phantomjs
+    tar -C /usr/local/phantomjs/bin -xjf #{tmp} --strip-components=1
+    chmod 0755 /usr/local/phantomjs/bin/phantomjs
   EOS
 
   creates "/usr/local/phantomjs/bin/phantomjs"
