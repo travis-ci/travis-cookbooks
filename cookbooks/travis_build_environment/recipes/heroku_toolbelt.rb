@@ -28,3 +28,7 @@ apt_repository 'heroku-toolbelt' do
 end
 
 package 'heroku-toolbelt'
+
+execute 'heroku version' do
+  user node['travis_build_environment']['user']
+end
