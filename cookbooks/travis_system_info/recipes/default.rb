@@ -14,10 +14,7 @@ remote_file local_gem do
   checksum node['travis_system_info']['gem_sha256sum']
 end
 
-gem_package 'system-info' do
-  gem_binary '/opt/chef/embedded/bin/gem'
-  source local_gem
-end
+execute "/opt/chef/embedded/bin/gem install -b #{local_gem.inspect}"
 
 execute "rm -rf #{node['travis_system_info']['dest_dir']}"
 
