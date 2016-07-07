@@ -62,7 +62,8 @@ default['travis_build_environment']['rvmrc_env'] = {
   'rvm_silence_path_mismatch_check_flag' => '1',
   'rvm_user_install_flag' => '1',
   'rvm_with_default_gems' => 'rake bundler',
-  'rvm_without_gems' => 'rubygems-bundler'
+  'rvm_without_gems' => 'rubygems-bundler',
+  'rvm_autolibs_flag' => 'read-fail'
 }
 default['travis_build_environment']['golang_libraries'] = %w(
   golang.org/x/tools/cmd/cover
