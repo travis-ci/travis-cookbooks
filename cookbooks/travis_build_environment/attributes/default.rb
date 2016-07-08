@@ -67,9 +67,7 @@ default['travis_build_environment']['rvmrc_env'] = {
 }
 default['travis_build_environment']['golang_libraries'] = %w(
   golang.org/x/tools/cmd/cover
-  github.com/alecthomas/gometalinter
 )
-default['travis_build_environment']['install_gometalinter_tools'] = true
 default['travis_build_environment']['rebar_release'] = \
   'https://github.com/rebar/rebar/wiki/rebar'
 default['travis_build_environment']['kerl_path'] = '/usr/local/bin/kerl'

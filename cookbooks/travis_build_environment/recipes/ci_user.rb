@@ -140,15 +140,6 @@ gimme_versions.each do |version|
       environment('HOME' => node['travis_build_environment']['home'])
     end
   end
-
-  bash "install gometalinter tools for #{version}" do
-    code %{eval "$(gimme #{version})" && gometalinter --install --update}
-    flags '-l'
-    user node['travis_build_environment']['user']
-    group node['travis_build_environment']['group']
-    environment('HOME' => node['travis_build_environment']['home'])
-    only_if { node['travis_build_environment']['install_gometalinter_tools'] }
-  end
 end
 
 include_recipe 'travis_build_environment::kerl'
