@@ -7,6 +7,12 @@ default['travis']['worker']['disable_reconfiguration'] = false
 # This should be the exact env vars
 default['travis']['worker']['environment'] = {}
 
+default['travis']['worker']['docker']['volume']['device'] = '/dev/xvdc'
+default['travis']['worker']['docker']['volume']['metadata_size'] = '2G'
+default['travis']['worker']['docker']['dm_basesize'] = '12G'
+default['travis']['worker']['docker']['dm_fs'] = 'xfs'
+default['travis']['worker']['docker']['dir'] = '/mnt/docker'
+
 set['papertrail']['watch_files']['/var/log/upstart/travis-worker.log'] = 'travis-worker'
 
 # rsyslogd must be root in order to read upstart logs :'(
