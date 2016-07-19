@@ -63,14 +63,6 @@ git phpbuild_path do
   action :sync
 end
 
-git '/tmp/php-build-plugin-phpunit' do
-  user node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  repository node['travis_phpbuild']['phpunit_plugin']['git']['repository']
-  revision node['travis_phpbuild']['phpunit_plugin']['git']['revision']
-  action :checkout
-end
-
 %w(tmp versions).each do |dirname|
   directory "#{phpbuild_path}/#{dirname}" do
     owner node['travis_build_environment']['user']
@@ -78,13 +70,6 @@ end
     mode 0755
     action :create
   end
-end
-
-cookbook_file "#{phpbuild_path}/share/php-build/after-install.d/phpunit" do
-  source 'after-install.d/phpunit.sh'
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  mode 0755
 end
 
 template "#{phpbuild_path}/share/php-build/default_configure_options" do
