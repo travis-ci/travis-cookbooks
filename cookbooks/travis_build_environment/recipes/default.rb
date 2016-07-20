@@ -28,6 +28,7 @@ end
 
 %w(
   root
+  jq
   ci_user
   locale
   hostname
