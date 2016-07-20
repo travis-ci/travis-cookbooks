@@ -7,5 +7,4 @@ version '1.1.0'
 
 depends 'apt'
 depends 'build-essential'
-depends 'travis_phpbuild'
 depends 'travis_phpenv'

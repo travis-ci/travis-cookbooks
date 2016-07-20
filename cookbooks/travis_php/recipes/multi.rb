@@ -47,7 +47,6 @@ node['travis_php']['multi']['versions'].each do |php_version|
       node['kernel']['machine'],
       ::File.basename(local_archive)
     )
-    ignore_failure true
     not_if { ::File.exist?(local_archive) }
   end
 
@@ -55,15 +54,6 @@ node['travis_php']['multi']['versions'].each do |php_version|
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     code "tar -xjf #{local_archive.inspect} --directory /"
-    only_if { ::File.exist?(local_archive) }
-  end
-
-  travis_phpbuild_build "#{phpenv_path}/versions" do
-    version php_version
-    owner node['travis_build_environment']['user']
-    group node['travis_build_environment']['group']
-    action :create
-    not_if { ::File.exist?(local_archive) }
   end
 
   link "#{phpenv_path}/versions/#{php_version}/bin/php-fpm" do
