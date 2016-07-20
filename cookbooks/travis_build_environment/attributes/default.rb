@@ -111,4 +111,6 @@ if kernel['machine'] =~ /x86_64/
   default['travis_build_environment']['arch'] = 'amd64'
 end
 
+default['travis_build_environment']['jq_install_dest'] = '/usr/local/bin/jq'
+
 default['travis_java']['default_version'] = ''

@@ -1,6 +1,5 @@
-#
-# Cookbook Name:: jq
-# Attributes:: default
+# Cookbook Name:: travis_build_environment
+# Recipe:: default
 #
 # Copyright 2015, Travis CI GmbH
 #
@@ -22,8 +21,13 @@
 # LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-#
 
-default['jq']['install_dest'] = '/usr/local/bin/jq'
-default['jq']['owner'] = 'root'
-default['jq']['group'] = 'root'
+arch = node['kernel']['machine'] =~ /x86_64/ ? '64' : '32'
+
+remote_file node['travis_build_environment']['jq_install_dest'] do
+  source "https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux#{arch}"
+  action :create_if_missing
+  mode 0755
+  owner node['travis_build_environment']['owner']
+  group node['travis_build_environment']['group']
+end
