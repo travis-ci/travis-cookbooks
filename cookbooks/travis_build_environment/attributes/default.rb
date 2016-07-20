@@ -106,6 +106,26 @@ default['travis_build_environment']['ramfs_size'] = '768m'
 default['travis_build_environment']['bats_git_repository'] = \
   'https://github.com/sstephenson/bats.git'
 
+default['travis_build_environment']['hhvm_enabled'] = true
+default['travis_build_environment']['hhvm_package_name'] = 'hhvm'
+default['travis_build_environment']['php_packages'] = %w(
+  autoconf
+  bison
+  build-essential
+  libbison-dev
+  libfreetype6-dev
+  libreadline6-dev
+)
+php_versions = %w(
+  5.4.45
+  5.5.30
+  5.6.15
+)
+default['travis_build_environment']['php_versions'] = php_versions
+default['travis_build_environment']['php_aliases'] = Hash[
+  php_versions.map { |v| [v.split('.')[0, 2].join('.'), v] }
+]
+
 default['travis_build_environment']['arch'] = 'i386'
 if kernel['machine'] =~ /x86_64/
   default['travis_build_environment']['arch'] = 'amd64'
