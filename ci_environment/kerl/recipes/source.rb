@@ -38,7 +38,7 @@ directory(installation_root) do
 end
 
 remote_file(node.kerl.path) do
-  source "https://raw.githubusercontent.com/yrashk/kerl/master/kerl"
+  source "https://raw.githubusercontent.com/kerl/kerl/master/kerl"
   mode "0755"
 end
 
@@ -127,7 +127,7 @@ node.kerl.releases.each do |rel|
   end
 
   execute "install Erlang #{rel}" do
-    # cleanup is available starting with https://github.com/yrashk/kerl/pull/28
+    # cleanup is available starting with https://github.com/kerl/kerl/pull/28
     command "#{node.kerl.path} install #{rel} #{installation_root}/#{rel} && #{node.kerl.path} cleanup #{rel} && rm -rf #{node.travis_build_environment.home}/.kerl/archives/*" # && ~/.build_plt #{installation_root}/#{rel} #{installation_root}/#{rel}/lib"
 
     user    node.travis_build_environment.user
