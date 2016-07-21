@@ -123,7 +123,8 @@ node.kerl.releases.each do |rel|
     group   node.travis_build_environment.group
 
     environment(env)
-    not_if { ::File.exist?("#{installation_root}/#{rel}/activate") }
+    not_if { ::File.exist?(local_archive) ||
+             ::File.exist?("#{installation_root}/#{rel}/activate") }
   end
 
   execute "install Erlang #{rel}" do
@@ -134,6 +135,7 @@ node.kerl.releases.each do |rel|
     group   node.travis_build_environment.group
 
     environment(env)
-    not_if { ::File.exist?("#{installation_root}/#{rel}/activate") }
+    not_if { ::File.exist?(local_archive) ||
+             ::File.exist?("#{installation_root}/#{rel}/activate") }
   end
 end
