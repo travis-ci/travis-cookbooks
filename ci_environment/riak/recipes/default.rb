@@ -15,6 +15,7 @@ apt_repository 'basho-riak' do
 end
 
 package 'riak' do
+  version node['riak']['package_version']
   action :install
 end
 
