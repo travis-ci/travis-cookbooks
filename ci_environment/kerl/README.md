@@ -1,3 +1,3 @@
 # DESCRIPTION:
 
-Installs [kerl](https://github.com/spawngrid/kerl) for managing multiple Erlang versions.
+Installs [kerl](https://github.com/kerl/kerl) for managing multiple Erlang versions.
