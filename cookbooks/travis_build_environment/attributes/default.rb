@@ -119,7 +119,7 @@ default['travis_build_environment']['php_packages'] = %w(
 php_versions = %w(
   5.4.45
   5.5.30
-  5.6.15
+  5.6.24
 )
 default['travis_build_environment']['php_versions'] = php_versions
 default['travis_build_environment']['php_aliases'] = Hash[
