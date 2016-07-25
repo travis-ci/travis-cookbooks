@@ -142,9 +142,11 @@ gimme_versions.each do |version|
   end
 end
 
-include_recipe 'travis_build_environment::kerl'
+unless Array(node['travis_build_environment']['otp_releases']).empty?
+  include_recipe 'travis_build_environment::kerl'
+end
 
-node['travis_build_environment']['otp_releases'].each do |rel|
+Array(node['travis_build_environment']['otp_releases']).each do |rel|
   local_archive = ::File.join(
     Chef::Config[:file_cache_path],
     "erlang-#{rel}-nonroot.tar.bz2"
@@ -213,10 +215,12 @@ node['travis_build_environment']['otp_releases'].each do |rel|
   end
 end
 
-include_recipe 'travis_build_environment::rebar'
-include_recipe 'travis_build_environment::kiex'
+unless Array(node['travis_build_environment']['otp_releases']).empty?
+  include_recipe 'travis_build_environment::rebar'
+  include_recipe 'travis_build_environment::kiex'
+end
 
-node['travis_build_environment']['elixir_versions'].each do |elixir|
+Array(node['travis_build_environment']['elixir_versions']).each do |elixir|
   local_archive = "#{Chef::Config[:file_cache_path]}/v#{elixir}.zip"
   dest = "#{node['travis_build_environment']['home']}/.kiex/elixirs/elixir-#{elixir}"
 
@@ -258,17 +262,20 @@ bash "set default elixir version to #{node['travis_build_environment']['default_
     'HOME' => node['travis_build_environment']['home'],
     'USER' => node['travis_build_environment']['user']
   )
+  not_if { node['travis_build_environment']['default_elixir_version'].empty? }
 end
 
 unless Array(node['travis_build_environment']['php_packages']).empty?
   package Array(node['travis_build_environment']['php_packages'])
 end
 
-include_recipe 'travis_phpenv'
+unless Array(node['travis_build_environment']['php_versions']).empty?
+  include_recipe 'travis_phpenv'
+end
 
 phpenv_path = "#{node['travis_build_environment']['home']}/.phpenv"
 
-node['travis_build_environment']['php_versions'].each do |php_version|
+Array(node['travis_build_environment']['php_versions']).each do |php_version|
   local_archive = ::File.join(
     Chef::Config[:file_cache_path],
     "php-#{php_version}.tar.bz2"
