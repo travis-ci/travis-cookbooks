@@ -20,6 +20,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+file '/.travis-build-environment.yml' do
+  content YAML.dump(
+    JSON.parse(JSON.dump(node['travis_build_environment'])).merge(
+      '__timestamp' => Time.now.utc.to_s
+    )
+  )
+  owner 'root'
+  group 'root'
+  mode 0o644
+end
+
 unless Array(node['travis_build_environment']['prerequisite_recipes']).empty?
   Array(node['travis_build_environment']['prerequisite_recipes']).each do |recipe_name|
     include_recipe recipe_name
