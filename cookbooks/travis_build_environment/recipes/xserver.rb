@@ -1,6 +1,6 @@
-# Cookbook Name:: xserver
-# Recipe:: default
-# Copyright 2011-2013, Travis CI Development Team <contact@travis-ci.org>
+# Cookbook Name:: travis_build_environment
+# Recipe:: xserver
+# Copyright 2011-2016, Travis CI Development Team <contact@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,7 @@
 # THE SOFTWARE.
 
 package %w(
+  x11-xserver-utils
   xserver-xorg-core
   xvfb
 )
@@ -30,5 +31,5 @@ cookbook_file '/etc/init.d/xvfb' do
   group 'root'
   mode 0644
 
-  source 'etc/init.d/xvfb.sh'
+  source 'etc-init.d-xvfb.sh'
 end
