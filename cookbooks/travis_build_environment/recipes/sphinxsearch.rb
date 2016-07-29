@@ -1,7 +1,7 @@
-# Cookbook Name:: travis_sphinxsearch
-# Recipe:: default
+# Cookbook Name:: travis_build_environment
+# Recipe:: sphinxsearch
 #
-# Copyright 2015, Travis CI GmbH
+# Copyright 2016, Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -22,7 +22,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Array(node['travis_sphinxsearch']['ppas']).each do |ppa|
+Array(node['travis_build_environment']['sphinxsearch']['ppas']).each do |ppa|
   apt_repository ::File.basename(ppa) do
     uri ppa
     distribution node['lsb']['codename']
@@ -30,5 +30,5 @@ Array(node['travis_sphinxsearch']['ppas']).each do |ppa|
 end
 
 package 'sphinxsearch' do
-  version node['travis_sphinxsearch']['default_version']
+  version node['travis_build_environment']['sphinxsearch']['default_version']
 end
