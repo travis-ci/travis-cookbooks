@@ -1,1 +1,0 @@
-# `travis_phpbuild` cookbook

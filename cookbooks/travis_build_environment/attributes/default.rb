@@ -62,13 +62,12 @@ default['travis_build_environment']['rvmrc_env'] = {
   'rvm_silence_path_mismatch_check_flag' => '1',
   'rvm_user_install_flag' => '1',
   'rvm_with_default_gems' => 'rake bundler',
-  'rvm_without_gems' => 'rubygems-bundler'
+  'rvm_without_gems' => 'rubygems-bundler',
+  'rvm_autolibs_flag' => 'read-fail'
 }
 default['travis_build_environment']['golang_libraries'] = %w(
   golang.org/x/tools/cmd/cover
-  github.com/alecthomas/gometalinter
 )
-default['travis_build_environment']['install_gometalinter_tools'] = true
 default['travis_build_environment']['rebar_release'] = \
   'https://github.com/rebar/rebar/wiki/rebar'
 default['travis_build_environment']['kerl_path'] = '/usr/local/bin/kerl'
@@ -97,59 +96,48 @@ default['travis_build_environment']['postrequisite_recipes'] = %w(
   iptables
 )
 default['travis_build_environment']['packer_url'] = \
-  'https://releases.hashicorp.com/packer/0.8.6/packer_0.8.6_linux_amd64.zip'
+  'https://releases.hashicorp.com/packer/0.10.1/packer_0.10.1_linux_amd64.zip'
 default['travis_build_environment']['packer_checksum'] = \
-  '2f1ca794e51de831ace30792ab0886aca516bf6b407f6027e816ba7ca79703b5'
-default['travis_build_environment']['packer_version'] = '0.8.6'
-default['travis_build_environment']['packer_binaries'] = %w(
-  packer
-  packer-builder-amazon-chroot
-  packer-builder-amazon-ebs
-  packer-builder-amazon-instance
-  packer-builder-digitalocean
-  packer-builder-docker
-  packer-builder-file
-  packer-builder-googlecompute
-  packer-builder-null
-  packer-builder-openstack
-  packer-builder-parallels-iso
-  packer-builder-parallels-pvm
-  packer-builder-qemu
-  packer-builder-virtualbox-iso
-  packer-builder-virtualbox-ovf
-  packer-builder-vmware-iso
-  packer-builder-vmware-vmx
-  packer-post-processor-artifice
-  packer-post-processor-atlas
-  packer-post-processor-compress
-  packer-post-processor-docker-import
-  packer-post-processor-docker-push
-  packer-post-processor-docker-save
-  packer-post-processor-docker-tag
-  packer-post-processor-vagrant
-  packer-post-processor-vagrant-cloud
-  packer-post-processor-vsphere
-  packer-provisioner-ansible-local
-  packer-provisioner-chef-client
-  packer-provisioner-chef-solo
-  packer-provisioner-file
-  packer-provisioner-powershell
-  packer-provisioner-puppet-masterless
-  packer-provisioner-puppet-server
-  packer-provisioner-salt-masterless
-  packer-provisioner-shell
-  packer-provisioner-shell-local
-  packer-provisioner-windows-restart
-  packer-provisioner-windows-shell
-)
+  '7d51fc5db19d02bbf32278a8116830fae33a3f9bd4440a58d23ad7c863e92e28'
+default['travis_build_environment']['packer_version'] = '0.10.1'
+default['travis_build_environment']['packer_binaries'] = %w(packer)
 default['travis_build_environment']['ramfs_dir'] = '/var/ramfs'
 default['travis_build_environment']['ramfs_size'] = '768m'
 default['travis_build_environment']['bats_git_repository'] = \
   'https://github.com/sstephenson/bats.git'
 
+default['travis_build_environment']['hhvm_enabled'] = true
+default['travis_build_environment']['hhvm_package_name'] = 'hhvm'
+default['travis_build_environment']['php_packages'] = %w(
+  autoconf
+  bison
+  build-essential
+  libbison-dev
+  libfreetype6-dev
+  libreadline6-dev
+)
+php_versions = %w(
+  5.4.45
+  5.5.30
+  5.6.24
+)
+default['travis_build_environment']['php_versions'] = php_versions
+default['travis_build_environment']['php_aliases'] = Hash[
+  php_versions.map { |v| [v.split('.')[0, 2].join('.'), v] }
+]
+
 default['travis_build_environment']['arch'] = 'i386'
 if kernel['machine'] =~ /x86_64/
   default['travis_build_environment']['arch'] = 'amd64'
 end
+
+default['travis_build_environment']['jq_install_dest'] = '/usr/local/bin/jq'
+
+default['travis_build_environment']['sphinxsearch']['ppas'] = %w(
+  ppa:builds/sphinxsearch-rel20
+  ppa:builds/sphinxsearch-rel21
+  ppa:builds/sphinxsearch-rel22
+)
+default['travis_build_environment']['sphinxsearch']['default_version'] = '2.2.11'
 
 default['travis_java']['default_version'] = ''
