@@ -1,8 +1,7 @@
+# Cookbook Name:: travis_build_environment
+# Recipe:: cmake
 #
-# Cookbook Name:: travis_cmake
-# Recipe:: default
-#
-# Copyright 2015, Travis CI GmbH
+# Copyright 2016, Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -27,6 +26,8 @@
 apt_repository 'cmake' do
   uri 'ppa:george-edison55/cmake-3.x'
   distribution node['lsb']['codename']
+  retries 2
+  retry_delay 30
 end
 
 package %w(cmake)
