@@ -30,6 +30,7 @@ end
   root
   jq
   ci_user
+  basic
   locale
   hostname
   security

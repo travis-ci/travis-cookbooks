@@ -1,7 +1,6 @@
-#
-# Cookbook Name:: clang
-# Recipe:: default
-# Copyright 2012-2013, Travis CI Development Team <contact@travis-ci.org>
+# Cookbook Name:: travis_build_environment
+# Recipe:: clang_tarball
+# Copyright 2011-2016, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,4 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package 'clang'
+ark 'clang' do
+  url node['travis_build_environment']['clang']['download_url']
+  checksum node['travis_build_environment']['clang']['checksum']
+  version node['travis_build_environment']['clang']['version']
+  extension node['travis_build_environment']['clang']['extension']
+
+  append_env_path true
+end

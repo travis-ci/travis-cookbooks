@@ -1,7 +1,6 @@
-#
-# Cookbook Name:: bazaar
-# Recipe:: default
-# Copyright 2012-2013, Travis CI Development Team <contact@travis-ci.org>
+# Cookbook Name:: travis_build_environment
+# Recipe:: basic
+# Copyright 2011-2016, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +20,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe 'travis_python::package'
+include_recipe 'apt'
+include_recipe 'travis_build_environment::apt'
+include_recipe 'travis_build_environment::bats'
+include_recipe 'travis_build_environment::clang_tarball'
+include_recipe 'travis_build_environment::packer'
+include_recipe 'travis_build_environment::heroku_toolbelt'
+include_recipe 'travis_git::ppa'
+include_recipe 'travis_build_environment::sysctl'
 
-package 'bzr'
+package %w(
+  bzr
+  md5deep
+  ccache
+  wamerican
+)
