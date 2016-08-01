@@ -138,6 +138,6 @@ default['travis_build_environment']['sphinxsearch']['ppas'] = %w(
   ppa:builds/sphinxsearch-rel21
   ppa:builds/sphinxsearch-rel22
 )
-default['travis_build_environment']['sphinxsearch']['default_version'] = '2.2.10'
+default['travis_build_environment']['sphinxsearch']['default_version'] = '2.2.11'
 
 default['travis_java']['default_version'] = ''
