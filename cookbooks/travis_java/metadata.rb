@@ -7,9 +7,7 @@ version '2.2.0'
 
 supports 'ubuntu', '>= 12.04'
 
-%w(apt travis_timezone).each do |cb|
-  depends cb
-end
+depends 'apt'
 
 recipe 'travis_java::default', 'Installs a default JDK'
 

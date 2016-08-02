@@ -87,8 +87,6 @@ default['travis_build_environment']['required_otp_release_for'] = {
 default['travis_build_environment']['default_elixir_version'] = '1.0.4'
 default['travis_build_environment']['mysql']['password'] = 'travis'
 default['travis_build_environment']['prerequisite_recipes'] = %w(
-  travis_timezone
-  sysctl
   openssh
   unarchivers
 )
@@ -146,4 +144,5 @@ default['travis_build_environment']['clang']['checksum'] = 'b9b420b93d7681bb2b80
 
 default['travis_build_environment']['sysctl_kernel_shmmax'] = 45_794_432
 
+default['tz'] = 'UTC'
 default['travis_java']['default_version'] = ''

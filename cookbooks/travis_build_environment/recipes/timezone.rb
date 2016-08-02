@@ -1,6 +1,6 @@
 # Cookbook Name:: travis_build_environment
-# Recipe:: basic
-# Copyright 2011-2016, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
+# Recipe:: timezone
+# Copyright 2016, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,26 +20,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe 'travis_build_environment::timezone'
-include_recipe 'apt'
-include_recipe 'gimme'
-include_recipe 'rvm'
-include_recipe 'travis_build_environment::apt'
-include_recipe 'travis_build_environment::bats'
-include_recipe 'travis_build_environment::jq'
-include_recipe 'travis_build_environment::clang_tarball'
-include_recipe 'travis_build_environment::packer'
-include_recipe 'travis_build_environment::heroku_toolbelt'
-include_recipe 'travis_git::ppa'
-include_recipe 'travis_build_environment::locale'
-include_recipe 'travis_build_environment::hostname'
-include_recipe 'travis_build_environment::sysctl'
+package 'tzdata'
 
-package %w(
-  bzr
-  md5deep
-  ccache
-  wamerican
-)
+bash 'dpkg-reconfigure tzdata' do
+  user 'root'
+  code '/usr/sbin/dpkg-reconfigure -f noninteractive tzdata'
+  action :nothing
+end
 
-execute 'rm -rf /etc/update-motd.d/*'
+file '/etc/timezone' do
+  content "#{node['tz']}\n"
+  owner 'root'
+  group 'root'
+  mode 0o644
+  notifies :run, 'bash[dpkg-reconfigure tzdata]'
+end
