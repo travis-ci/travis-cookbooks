@@ -21,12 +21,17 @@
 # THE SOFTWARE.
 
 include_recipe 'apt'
+include_recipe 'gimme'
+include_recipe 'rvm'
 include_recipe 'travis_build_environment::apt'
 include_recipe 'travis_build_environment::bats'
+include_recipe 'travis_build_environment::jq'
 include_recipe 'travis_build_environment::clang_tarball'
 include_recipe 'travis_build_environment::packer'
 include_recipe 'travis_build_environment::heroku_toolbelt'
 include_recipe 'travis_git::ppa'
+include_recipe 'travis_build_environment::locale'
+include_recipe 'travis_build_environment::hostname'
 include_recipe 'travis_build_environment::sysctl'
 
 package %w(
@@ -35,3 +40,5 @@ package %w(
   ccache
   wamerican
 )
+
+execute 'rm -rf /etc/update-motd.d/*'

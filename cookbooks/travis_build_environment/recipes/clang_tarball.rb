@@ -25,6 +25,7 @@ ark 'clang' do
   checksum node['travis_build_environment']['clang']['checksum']
   version node['travis_build_environment']['clang']['version']
   extension node['travis_build_environment']['clang']['extension']
-
+  retries 2
+  retry_delay 30
   append_env_path true
 end

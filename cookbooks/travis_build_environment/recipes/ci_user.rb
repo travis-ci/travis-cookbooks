@@ -1,6 +1,6 @@
 # Cookbook Name:: travis_build_environment
 # Recipe:: ci_user
-# Copyright 2011-2015, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
+# Copyright 2011-2016, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,8 +19,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-
-include_recipe 'rvm::default'
 
 user node['travis_build_environment']['user'] do
   supports manage_home: true
@@ -120,8 +118,6 @@ install_rubies(
   gems: node['travis_build_environment']['gems'],
   user: node['travis_build_environment']['user']
 )
-
-include_recipe 'gimme::default'
 
 gimme_default_version = node['gimme']['default_version'].to_s
 gimme_versions = Array(node['gimme']['versions'])
