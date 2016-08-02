@@ -26,19 +26,11 @@ unless Array(node['travis_build_environment']['prerequisite_recipes']).empty?
   end
 end
 
-%w(
-  root
-  jq
-  ci_user
-  locale
-  hostname
-  security
-  apt
-  environment
-  cleanup
-).each do |internal_recipe|
-  include_recipe "travis_build_environment::#{internal_recipe}"
-end
+include_recipe 'travis_build_environment::basic'
+include_recipe 'travis_build_environment::security'
+include_recipe 'travis_build_environment::environment'
+include_recipe 'travis_build_environment::root'
+include_recipe 'travis_build_environment::ci_user'
 
 unless Array(node['travis_build_environment']['postrequisite_recipes']).empty?
   Array(node['travis_build_environment']['postrequisite_recipes']).each do |recipe_name|

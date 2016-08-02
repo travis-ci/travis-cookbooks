@@ -1,7 +1,6 @@
-#
-# Cookbook Name:: clang
-# Recipe:: default
-# Copyright 2012-2013, Travis CI Development Team <contact@travis-ci.org>
+# Cookbook Name:: travis_build_environment
+# Recipe:: timezone
+# Copyright 2016, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,4 +20,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package 'clang'
+package 'tzdata'
+
+bash 'dpkg-reconfigure tzdata' do
+  user 'root'
+  code '/usr/sbin/dpkg-reconfigure -f noninteractive tzdata'
+  action :nothing
+end
+
+file '/etc/timezone' do
+  content "#{node['tz']}\n"
+  owner 'root'
+  group 'root'
+  mode 0o644
+  notifies :run, 'bash[dpkg-reconfigure tzdata]'
+end

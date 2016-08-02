@@ -87,8 +87,6 @@ default['travis_build_environment']['required_otp_release_for'] = {
 default['travis_build_environment']['default_elixir_version'] = '1.0.4'
 default['travis_build_environment']['mysql']['password'] = 'travis'
 default['travis_build_environment']['prerequisite_recipes'] = %w(
-  travis_timezone
-  sysctl
   openssh
   unarchivers
 )
@@ -139,5 +137,12 @@ default['travis_build_environment']['sphinxsearch']['ppas'] = %w(
   ppa:builds/sphinxsearch-rel22
 )
 default['travis_build_environment']['sphinxsearch']['default_version'] = '2.2.11'
+default['travis_build_environment']['clang']['version'] = '3.5.0'
+default['travis_build_environment']['clang']['download_url'] = "http://llvm.org/releases/#{node['travis_build_environment']['clang']['version']}/clang+llvm-#{node['travis_build_environment']['clang']['version']}-x86_64-linux-gnu-ubuntu-14.04.tar.xz"
+default['travis_build_environment']['clang']['extension'] = 'tar.xz'
+default['travis_build_environment']['clang']['checksum'] = 'b9b420b93d7681bb2b809c3271ebdf4389c9b7ca35a781c7189d07d483d8f201'
 
+default['travis_build_environment']['sysctl_kernel_shmmax'] = 45_794_432
+
+default['tz'] = 'UTC'
 default['travis_java']['default_version'] = ''
