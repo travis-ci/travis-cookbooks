@@ -21,7 +21,6 @@
 # THE SOFTWARE.
 
 include_recipe 'travis_build_environment::timezone'
-include_recipe 'apt'
 include_recipe 'gimme'
 include_recipe 'rvm'
 include_recipe 'travis_build_environment::apt'
