@@ -22,7 +22,7 @@
 
 package 'openssh-server'
 
-templates '/etc/ssh/sshd_config' do
+template '/etc/ssh/sshd_config' do
   source 'sshd_config.erb'
   owner 'root'
   group 'root'
