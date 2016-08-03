@@ -26,6 +26,8 @@ apt_repository 'mongodb-3.2' do
   components %w(multiverse)
   keyserver 'hkp://keyserver.ubuntu.com:80'
   key 'EA312927'
+  retries 2
+  retry_delay 30
 end
 
 package 'mongodb-org'

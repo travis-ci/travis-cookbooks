@@ -1,1 +1,0 @@
-# monit cookbook

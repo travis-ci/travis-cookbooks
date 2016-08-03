@@ -26,9 +26,9 @@ Array(node['travis_build_environment']['sphinxsearch']['ppas']).each do |ppa|
   apt_repository ::File.basename(ppa) do
     uri ppa
     distribution node['lsb']['codename']
+    retries 2
+    retry_delay 30
   end
 end
 
-package 'sphinxsearch' do
-  version node['travis_build_environment']['sphinxsearch']['default_version']
-end
+package 'sphinxsearch'

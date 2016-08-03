@@ -3,6 +3,8 @@ apt_repository 'hhvm-repository' do
   distribution node['lsb']['codename']
   components ['main']
   key 'http://dl.hhvm.com/conf/hhvm.gpg.key'
+  retries 2
+  retry_delay 30
 end
 
 package node['travis_build_environment']['hhvm_package_name'] do
