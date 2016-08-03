@@ -20,22 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe 'travis_build_environment::timezone'
-include_recipe 'travis_build_environment::gimme'
-include_recipe 'rvm'
-include_recipe 'travis_build_environment::apt'
-include_recipe 'travis_build_environment::bats'
-include_recipe 'travis_build_environment::jq'
-include_recipe 'travis_build_environment::cmake'
-include_recipe 'travis_build_environment::clang_tarball'
-include_recipe 'travis_build_environment::packer'
-include_recipe 'travis_build_environment::heroku_toolbelt'
-include_recipe 'travis_git::ppa'
-include_recipe 'travis_git::lfs'
-include_recipe 'travis_build_environment::locale'
-include_recipe 'travis_build_environment::hostname'
-include_recipe 'travis_build_environment::sysctl'
-
 package %w(
   bsdmainutils
   bzip2
@@ -48,6 +32,7 @@ package %w(
   iptables
   libbz2-dev
   libmagickwand-dev
+  libsqlite3-dev
   lsof
   md5deep
   mercurial
@@ -55,13 +40,33 @@ package %w(
   openssl
   ragel
   rsync
+  sqlite3
+  sqlite3-doc
   subversion
   sudo
   unzip
   vim
   wamerican
-  wget
   zip
-)
+) do
+  action [:install, :upgrade]
+end
 
 execute 'rm -rf /etc/update-motd.d/*'
+
+include_recipe 'rvm'
+include_recipe 'travis_git::ppa'
+include_recipe 'travis_git::lfs'
+include_recipe 'travis_build_environment::timezone'
+include_recipe 'travis_build_environment::gimme'
+include_recipe 'travis_build_environment::apt'
+include_recipe 'travis_build_environment::bats'
+include_recipe 'travis_build_environment::jq'
+include_recipe 'travis_build_environment::cmake'
+include_recipe 'travis_build_environment::clang_tarball'
+include_recipe 'travis_build_environment::packer'
+include_recipe 'travis_build_environment::heroku_toolbelt'
+include_recipe 'travis_build_environment::wget'
+include_recipe 'travis_build_environment::locale'
+include_recipe 'travis_build_environment::hostname'
+include_recipe 'travis_build_environment::sysctl'
