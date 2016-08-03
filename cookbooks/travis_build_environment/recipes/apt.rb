@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+include_recipe 'apt'
 include_recipe 'travis_build_environment::cloud_init'
 
 template '/etc/apt/apt.conf.d/60assumeyes' do
