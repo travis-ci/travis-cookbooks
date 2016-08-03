@@ -86,13 +86,6 @@ default['travis_build_environment']['required_otp_release_for'] = {
 }
 default['travis_build_environment']['default_elixir_version'] = '1.0.4'
 default['travis_build_environment']['mysql']['password'] = 'travis'
-default['travis_build_environment']['prerequisite_recipes'] = %w(
-  openssh
-  unarchivers
-)
-default['travis_build_environment']['postrequisite_recipes'] = %w(
-  iptables
-)
 default['travis_build_environment']['packer_url'] = \
   'https://releases.hashicorp.com/packer/0.10.1/packer_0.10.1_linux_amd64.zip'
 default['travis_build_environment']['packer_checksum'] = \

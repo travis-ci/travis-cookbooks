@@ -1,6 +1,6 @@
 # Cookbook Name:: travis_build_environment
 # Recipe:: default
-# Copyright 2011-2015, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
+# Copyright 2016, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,20 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-unless Array(node['travis_build_environment']['prerequisite_recipes']).empty?
-  Array(node['travis_build_environment']['prerequisite_recipes']).each do |recipe_name|
-    include_recipe recipe_name
-  end
-end
-
+include_recipe 'openssh'
 include_recipe 'travis_build_environment::basic'
 include_recipe 'travis_build_environment::security'
 include_recipe 'travis_build_environment::environment'
 include_recipe 'travis_build_environment::root'
 include_recipe 'travis_build_environment::ci_user'
-
-unless Array(node['travis_build_environment']['postrequisite_recipes']).empty?
-  Array(node['travis_build_environment']['postrequisite_recipes']).each do |recipe_name|
-    include_recipe recipe_name
-  end
-end
+include_recipe 'iptables'

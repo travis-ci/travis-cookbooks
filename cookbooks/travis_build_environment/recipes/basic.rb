@@ -37,10 +37,31 @@ include_recipe 'travis_build_environment::hostname'
 include_recipe 'travis_build_environment::sysctl'
 
 package %w(
+  bsdmainutils
+  bzip2
   bzr
-  md5deep
   ccache
+  curl
+  gcc
+  gzip
+  imagemagick
+  iptables
+  libbz2-dev
+  libmagickwand-dev
+  lsof
+  md5deep
+  mercurial
+  netcat-openbsd
+  openssl
+  ragel
+  rsync
+  subversion
+  sudo
+  unzip
+  vim
   wamerican
+  wget
+  zip
 )
 
 execute 'rm -rf /etc/update-motd.d/*'
