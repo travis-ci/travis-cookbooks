@@ -23,6 +23,8 @@
 apt_repository 'pollinate' do
   uri 'ppa:pollinate/ppa'
   distribution node['lsb']['codename']
+  retries 2
+  retry_delay 30
 end
 
 package 'pollinate' do
