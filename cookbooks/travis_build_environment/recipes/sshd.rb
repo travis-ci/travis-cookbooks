@@ -1,5 +1,5 @@
 # Cookbook Name:: travis_build_environment
-# Recipe:: default
+# Recipe:: sshd
 # Copyright 2016, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,10 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe 'travis_build_environment::sshd'
-include_recipe 'travis_build_environment::basic'
-include_recipe 'travis_build_environment::security'
-include_recipe 'travis_build_environment::environment'
-include_recipe 'travis_build_environment::root'
-include_recipe 'travis_build_environment::ci_user'
-include_recipe 'iptables'
+package 'openssh-server'
+
+templates '/etc/ssh/sshd_config' do
+  source 'sshd_config.erb'
+  owner 'root'
+  group 'root'
+  mode 0o644
+end
