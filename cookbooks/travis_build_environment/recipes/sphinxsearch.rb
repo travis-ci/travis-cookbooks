@@ -29,6 +29,4 @@ Array(node['travis_build_environment']['sphinxsearch']['ppas']).each do |ppa|
   end
 end
 
-package 'sphinxsearch' do
-  version node['travis_build_environment']['sphinxsearch']['default_version']
-end
+package 'sphinxsearch'

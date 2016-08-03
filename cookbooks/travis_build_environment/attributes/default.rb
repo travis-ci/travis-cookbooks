@@ -129,7 +129,6 @@ default['travis_build_environment']['sphinxsearch']['ppas'] = %w(
   ppa:builds/sphinxsearch-rel21
   ppa:builds/sphinxsearch-rel22
 )
-default['travis_build_environment']['sphinxsearch']['default_version'] = '2.2.11'
 default['travis_build_environment']['clang']['version'] = '3.5.0'
 default['travis_build_environment']['clang']['download_url'] = "http://llvm.org/releases/#{node['travis_build_environment']['clang']['version']}/clang+llvm-#{node['travis_build_environment']['clang']['version']}-x86_64-linux-gnu-ubuntu-14.04.tar.xz"
 default['travis_build_environment']['clang']['extension'] = 'tar.xz'
