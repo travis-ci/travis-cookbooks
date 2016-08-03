@@ -86,13 +86,6 @@ default['travis_build_environment']['required_otp_release_for'] = {
 }
 default['travis_build_environment']['default_elixir_version'] = '1.0.4'
 default['travis_build_environment']['mysql']['password'] = 'travis'
-default['travis_build_environment']['prerequisite_recipes'] = %w(
-  openssh
-  unarchivers
-)
-default['travis_build_environment']['postrequisite_recipes'] = %w(
-  iptables
-)
 default['travis_build_environment']['packer_url'] = \
   'https://releases.hashicorp.com/packer/0.10.1/packer_0.10.1_linux_amd64.zip'
 default['travis_build_environment']['packer_checksum'] = \
@@ -141,6 +134,14 @@ default['travis_build_environment']['clang']['version'] = '3.5.0'
 default['travis_build_environment']['clang']['download_url'] = "http://llvm.org/releases/#{node['travis_build_environment']['clang']['version']}/clang+llvm-#{node['travis_build_environment']['clang']['version']}-x86_64-linux-gnu-ubuntu-14.04.tar.xz"
 default['travis_build_environment']['clang']['extension'] = 'tar.xz'
 default['travis_build_environment']['clang']['checksum'] = 'b9b420b93d7681bb2b809c3271ebdf4389c9b7ca35a781c7189d07d483d8f201'
+
+default['travis_build_environment']['gimme']['url'] = 'https://raw.githubusercontent.com/travis-ci/gimme/v1.0.0/gimme'
+default['travis_build_environment']['gimme']['sha256sum'] = '7283e248184bada52442e01608e107fb27fd3ecfc691d6e632fc2b5dc6e255ce'
+default['travis_build_environment']['gimme']['default_version'] = ''
+default['travis_build_environment']['gimme']['versions'] = %w()
+default['travis_build_environment']['gimme']['install_user'] = 'travis'
+default['travis_build_environment']['gimme']['install_user_home'] = '/home/travis'
+default['travis_build_environment']['gimme']['debug'] = false
 
 default['travis_build_environment']['sysctl_kernel_shmmax'] = 45_794_432
 

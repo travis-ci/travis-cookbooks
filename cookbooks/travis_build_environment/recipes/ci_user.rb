@@ -119,25 +119,6 @@ install_rubies(
   user: node['travis_build_environment']['user']
 )
 
-gimme_default_version = node['gimme']['default_version'].to_s
-gimme_versions = Array(node['gimme']['versions'])
-gimme_versions += [gimme_default_version] unless gimme_default_version.empty?
-
-gimme_versions.each do |version|
-  version = version.sub('go', '')
-  next if version < '1.5'
-
-  Array(node['travis_build_environment']['golang_libraries']).each do |lib|
-    bash "install #{lib} for go #{version}" do
-      code %{eval "$(gimme #{version})" && go get -u #{lib}}
-      flags '-l'
-      user node['travis_build_environment']['user']
-      group node['travis_build_environment']['group']
-      environment('HOME' => node['travis_build_environment']['home'])
-    end
-  end
-end
-
 unless Array(node['travis_build_environment']['otp_releases']).empty?
   include_recipe 'travis_build_environment::kerl'
 end
