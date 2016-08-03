@@ -7,7 +7,6 @@ long_description 'Travis build environment'
 
 depends 'apt'
 depends 'ark'
-depends 'gimme'
 depends 'iptables'
 depends 'mysql'
 depends 'packagecloud'

@@ -135,6 +135,14 @@ default['travis_build_environment']['clang']['download_url'] = "http://llvm.org/
 default['travis_build_environment']['clang']['extension'] = 'tar.xz'
 default['travis_build_environment']['clang']['checksum'] = 'b9b420b93d7681bb2b809c3271ebdf4389c9b7ca35a781c7189d07d483d8f201'
 
+default['travis_build_environment']['gimme']['url'] = 'https://raw.githubusercontent.com/travis-ci/gimme/v1.0.0/gimme'
+default['travis_build_environment']['gimme']['sha256sum'] = '7283e248184bada52442e01608e107fb27fd3ecfc691d6e632fc2b5dc6e255ce'
+default['travis_build_environment']['gimme']['default_version'] = ''
+default['travis_build_environment']['gimme']['versions'] = %w()
+default['travis_build_environment']['gimme']['install_user'] = 'travis'
+default['travis_build_environment']['gimme']['install_user_home'] = '/home/travis'
+default['travis_build_environment']['gimme']['debug'] = false
+
 default['travis_build_environment']['sysctl_kernel_shmmax'] = 45_794_432
 
 default['tz'] = 'UTC'
