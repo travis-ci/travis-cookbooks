@@ -47,6 +47,7 @@ package %w(
   unzip
   vim
   wamerican
+  wget
   zip
 ) do
   action [:install, :upgrade]
@@ -66,7 +67,6 @@ include_recipe 'travis_build_environment::cmake'
 include_recipe 'travis_build_environment::clang_tarball'
 include_recipe 'travis_build_environment::packer'
 include_recipe 'travis_build_environment::heroku_toolbelt'
-include_recipe 'travis_build_environment::wget'
 include_recipe 'travis_build_environment::locale'
 include_recipe 'travis_build_environment::hostname'
 include_recipe 'travis_build_environment::sysctl'
