@@ -47,4 +47,6 @@ cookbook_file '/etc/default/grub.d/99-travis-settings.cfg' do
   mode 0640
 end
 
-execute 'update-grub'
+execute 'update-grub' do
+  only_if { node['travis_docker']['update_grub'] }
+end
