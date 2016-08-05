@@ -43,6 +43,13 @@ cookbook_file '/etc/apt/apt.conf.d/10periodic' do
   mode 0644
 end
 
+template '/etc/apt/apt.conf.d/99compression-workaround' do
+  source 'etc/apt/compression.erb'
+  owner 'root'
+  group 'root'
+  mode 0644
+end
+
 package 'software-properties-common'
 
 %w(
