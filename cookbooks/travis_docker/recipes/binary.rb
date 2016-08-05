@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-ark 'docker-binary' do
+ark 'docker' do
   url node['travis_docker']['binary']['url']
   version node['travis_docker']['binary']['version']
   checksum node['travis_docker']['binary']['checksum']
