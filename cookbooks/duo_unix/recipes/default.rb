@@ -12,6 +12,8 @@ apt_repository 'duosecurity' do
   distribution 'trusty'
   components ['main']
   key 'duosecurity.gpg'
+  retries 2
+  retry_delay 30
 end
 
 package 'duo-unix' do

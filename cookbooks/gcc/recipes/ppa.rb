@@ -26,6 +26,8 @@ apt_repository 'ubuntu-toolchain-r-test' do
   components ['main']
   key 'BA9EF27F'
   keyserver 'keyserver.ubuntu.com'
+  retries 2
+  retry_delay 30
   action :add
 end
 

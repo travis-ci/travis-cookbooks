@@ -26,7 +26,8 @@ apt_repository 'pypy' do
   components ['main']
   key '68854915'
   keyserver 'keyserver.ubuntu.com'
-
+  retries 2
+  retry_delay 30
   action :add
 end
 

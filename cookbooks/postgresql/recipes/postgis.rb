@@ -9,7 +9,8 @@ if node['lsb']['codename'] == 'precise'
     components ['main']
     key '314DF160'
     keyserver 'keyserver.ubuntu.com'
-
+    retries 2
+    retry_delay 30
     action :add
   end
 end

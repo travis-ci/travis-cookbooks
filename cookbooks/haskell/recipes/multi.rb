@@ -83,6 +83,8 @@ apt_repository 'cabal-install-ppa' do
   components ['main']
   key '9DF71E85'
   keyserver 'keyserver.ubuntu.com'
+  retries 2
+  retry_delay 30
   action :add
   only_if { node['lsb']['codename'] == 'precise' }
 end

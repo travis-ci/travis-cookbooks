@@ -9,7 +9,8 @@ apt_repository 'webupd8team-java-ppa' do
   components ['main']
   key 'EEA14886'
   keyserver 'keyserver.ubuntu.com'
-
+  retries 2
+  retry_delay 30
   action :add
 end
 
