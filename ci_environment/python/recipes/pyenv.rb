@@ -55,16 +55,14 @@ Chef::Log.info("installing pythons: #{node['python']['pyenv']['pythons'].inspect
 
 # Install the baked in versions of Python we are offering
 node.python.pyenv.pythons.each do |py|
-  # Get our on disk name for this python
-  if /^\d+\.\d+(?:\.\d+)?(?:-dev)?$/ =~ py
-    pyname = "python#{py}"
-  else
-    pyname = py
-  end
+  tarball_basename = "python-#{py}.tar.bz2"
+  tarball_basename = "#{py}.tar.bz2" if py =~ /pypy/
+  pyname = ::File.basename(tarball_basename, '.tar.bz2')
+  pyname = "python#{py}" if py =~ /^\d+\.\d+(?:\.\d+)?(?:-dev)?$/
 
   venv_fullname = "#{virtualenv_root}/#{pyname}"
 
-  downloaded_tarball = "#{Chef::Config[:file_cache_path]}/python-#{py}.tar.bz2"
+  downloaded_tarball = "#{Chef::Config[:file_cache_path]}/#{tarball_basename}"
 
   remote_file downloaded_tarball do
     source ::File.join(
@@ -72,7 +70,7 @@ node.python.pyenv.pythons.each do |py|
       node['platform'],
       node['platform_version'],
       node['kernel']['machine'],
-      ::File.basename(downloaded_tarball)
+      tarball_basename
     )
     owner 'root'
     group 'root'
