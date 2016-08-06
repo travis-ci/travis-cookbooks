@@ -55,19 +55,41 @@ Chef::Log.info("installing pythons: #{node['python']['pyenv']['pythons'].inspect
 
 # Install the baked in versions of Python we are offering
 node.python.pyenv.pythons.each do |py|
-  # Get our on disk name for this python
-  if /^\d+\.\d+(?:\.\d+)?(?:-dev)?$/ =~ py
-    pyname = "python#{py}"
-  else
-    pyname = py
-  end
+  tarball_basename = "python-#{py}.tar.bz2"
+  tarball_basename = "#{py}.tar.bz2" if py =~ /pypy/
+  pyname = ::File.basename(tarball_basename, '.tar.bz2')
+  pyname = "python#{py}" if py =~ /^\d+\.\d+(?:\.\d+)?(?:-dev)?$/
 
   venv_fullname = "#{virtualenv_root}/#{pyname}"
 
-  # Actually do the installation/building to the full version python
-  execute "python-build #{py} /opt/python/#{py}" do
+  downloaded_tarball = "#{Chef::Config[:file_cache_path]}/#{tarball_basename}"
+
+  remote_file downloaded_tarball do
+    source ::File.join(
+      'https://s3.amazonaws.com/travis-python-archives/binaries',
+      node['platform'],
+      node['platform_version'],
+      node['kernel']['machine'],
+      tarball_basename
+    )
+    owner 'root'
+    group 'root'
+    mode 0644
+    ignore_failure true
+  end
+
+  bash "extract #{downloaded_tarball}" do
+    code "tar -xjf #{downloaded_tarball} --directory /"
     creates "/opt/python/#{py}"
     environment build_environment
+    only_if { File.exist?(downloaded_tarball) }
+  end
+
+  bash "build #{py}" do
+    code "python-build #{py} /opt/python/#{py}"
+    creates "/opt/python/#{py}"
+    environment build_environment
+    not_if { File.exist?("/opt/python/#{py}") }
   end
 
   # Add a nonstandard pythonX.Y.Z command in order to support multiple installs
