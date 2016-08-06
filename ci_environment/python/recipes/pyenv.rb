@@ -64,10 +64,34 @@ node.python.pyenv.pythons.each do |py|
 
   venv_fullname = "#{virtualenv_root}/#{pyname}"
 
-  # Actually do the installation/building to the full version python
-  execute "python-build #{py} /opt/python/#{py}" do
+  downloaded_tarball = "#{Chef::Config[:file_cache_path]}/python-#{py}.tar.bz2"
+
+  remote_file downloaded_tarball do
+    source ::File.join(
+      'https://s3.amazonaws.com/travis-python-archives/binaries',
+      node['platform'],
+      node['platform_version'],
+      node['kernel']['machine'],
+      ::File.basename(downloaded_tarball)
+    )
+    owner 'root'
+    group 'root'
+    mode 0644
+    ignore_failure true
+  end
+
+  bash "extract #{downloaded_tarball}" do
+    code "tar -xjf #{downloaded_tarball} --directory /"
     creates "/opt/python/#{py}"
     environment build_environment
+    only_if { File.exist?(downloaded_tarball) }
+  end
+
+  bash "build #{py}" do
+    code "python-build #{py} /opt/python/#{py}"
+    creates "/opt/python/#{py}"
+    environment build_environment
+    not_if { File.exist?("/opt/python/#{py}") }
   end
 
   # Add a nonstandard pythonX.Y.Z command in order to support multiple installs
