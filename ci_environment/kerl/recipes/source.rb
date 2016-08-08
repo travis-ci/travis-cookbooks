@@ -107,7 +107,7 @@ node.kerl.releases.each do |rel|
   bash "extract Erlang #{rel}" do
     code <<-EOF.gsub(/^\s+>\s/, '')
       > set -o xtrace
-      > tar -xjvf #{local_archive} -C #{installation_root}
+      > tar -xjvf #{local_archive} -C /
       > echo '#{rel},#{rel}' >> #{home}/.kerl/otp_builds
       > echo '#{rel} #{home}/otp/#{rel}' >> #{home}/.kerl/otp_builds
     EOF
