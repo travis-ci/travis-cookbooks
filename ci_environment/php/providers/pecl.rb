@@ -7,10 +7,9 @@ action :install do
     @run_context.include_recipe recipe
   end
 
-  new_resource.before_packages.each do |pkg|
-    package pkg do
-      action :install
-    end
+  package Array(new_resource.before_packages) do
+    retries 2
+    retry_delay 30
   end
 
   bash "before installing PECL extension #{extension} script" do
