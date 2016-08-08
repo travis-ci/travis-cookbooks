@@ -25,6 +25,8 @@ apt_repository 'docker' do
   distribution 'ubuntu-trusty'
   components ['main']
   key 'https://apt.dockerproject.org/gpg'
+  retries 2
+  retry_delay 30
   action :add
 end
 

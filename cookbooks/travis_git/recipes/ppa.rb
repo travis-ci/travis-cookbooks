@@ -18,6 +18,8 @@
 apt_repository 'git-ppa' do
   uri 'ppa:git-core/ppa'
   distribution node['lsb']['codename']
+  retries 2
+  retry_delay 30
 end
 
 package 'git'

@@ -27,7 +27,8 @@ apt_repository 'rwky-redis' do
   components ['main']
   key '5862E31D'
   keyserver 'keyserver.ubuntu.com'
-
+  retries 2
+  retry_delay 30
   action :add
 end
 
