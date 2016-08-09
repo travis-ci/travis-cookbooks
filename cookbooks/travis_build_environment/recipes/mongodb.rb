@@ -31,3 +31,7 @@ apt_repository 'mongodb-3.2' do
 end
 
 package 'mongodb-org'
+
+service 'mongod' do
+  action [:stop, :disable]
+end
