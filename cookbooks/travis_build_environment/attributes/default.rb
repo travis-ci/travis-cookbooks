@@ -143,6 +143,7 @@ default['travis_build_environment']['gimme']['install_user_home'] = '/home/travi
 default['travis_build_environment']['gimme']['debug'] = false
 
 default['travis_build_environment']['sysctl_kernel_shmmax'] = 45_794_432
+default['travis_build_environment']['sysctl_disable_ipv6'] = true
 default['travis_build_environment']['wget']['version'] = '1.18'
 
 default['tz'] = 'UTC'
