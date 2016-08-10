@@ -15,3 +15,4 @@ default[:travis_build_environment][:apt] = {
   :retries => 2
 }
 default[:travis_build_environment][:arch] = (kernel['machine'] =~ /x86_64/ ? "amd64" : "i386")
+default[:travis_build_environment][:sysctl_disable_ipv6] = true
