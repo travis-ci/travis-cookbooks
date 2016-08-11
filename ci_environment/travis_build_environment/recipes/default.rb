@@ -32,6 +32,7 @@ include_recipe "unarchivers"
 include_recipe "travis_build_environment::root"
 include_recipe "travis_build_environment::ci_user"
 include_recipe "travis_build_environment::cloud_init"
+include_recipe "travis_build_environment::sysctl"
 
 cookbook_file "/etc/default/locale" do
   owner "root"
