@@ -58,12 +58,15 @@ gimme_default_version = node['travis_build_environment']['gimme']['default_versi
 gimme_versions = Array(node['travis_build_environment']['gimme']['versions'])
 gimme_versions += [gimme_default_version] unless gimme_default_version.empty?
 
-install_env = {
-  'GIMME_ENV_PREFIX' => "#{node['travis_build_environment']['home']}/.gimme/envs",
-  'GIMME_VERSION_PREFIX' => "#{node['travis_build_environment']['home']}/.gimme/versions",
+default_env = {
   'GOPATH' => "#{node['travis_build_environment']['home']}/gopath",
   'HOME' => node['travis_build_environment']['home']
 }
+
+install_env = default_env.merge(
+  'GIMME_ENV_PREFIX' => "#{node['travis_build_environment']['home']}/.gimme/envs",
+  'GIMME_VERSION_PREFIX' => "#{node['travis_build_environment']['home']}/.gimme/versions"
+)
 
 install_env['GIMME_DEBUG'] = '1' if node['travis_build_environment']['gimme']['debug']
 
@@ -90,7 +93,7 @@ gimme_versions.each do |version|
       flags '-l'
       user node['travis_build_environment']['user']
       group node['travis_build_environment']['group']
-      environment('HOME' => node['travis_build_environment']['home'])
+      environment(default_env)
     end
   end
 end
