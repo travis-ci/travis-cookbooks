@@ -61,6 +61,7 @@ gimme_versions += [gimme_default_version] unless gimme_default_version.empty?
 install_env = {
   'GIMME_ENV_PREFIX' => "#{node['travis_build_environment']['home']}/.gimme/envs",
   'GIMME_VERSION_PREFIX' => "#{node['travis_build_environment']['home']}/.gimme/versions",
+  'GOPATH' => "#{node['travis_build_environment']['home']}/gopath",
   'HOME' => node['travis_build_environment']['home']
 }
 
