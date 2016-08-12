@@ -1,16 +1,7 @@
 # Managed by Chef on <%= node.name %> :heart:
 
-127.0.0.1       localhost
-127.0.1.1       <%= @hostname %>
-# host on which base box was built. Erlang services that use Mnesia
-# (like RabbitMQ) may create DB directories with this hostname in the name
-# during provisioning and if we change hostname later, they will have all
-# kinds of obscure issues. MK.
-127.0.0.1       nettuno
-
-# backwards compatibility. MK.
-127.0.0.1       travis
-127.0.0.1       vagrant
+127.0.0.1 localhost <%= @hostname %> nettuno travis vagrant
+127.0.1.1 ip4-loopback
 
 <% unless node['travis_build_environment']['sysctl_disable_ipv6'] %>
 <% if node['ip6address'] %>
