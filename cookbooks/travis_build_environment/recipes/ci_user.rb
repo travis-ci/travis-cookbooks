@@ -37,7 +37,7 @@ bash 'set git user.name and user.email' do
     > git config --global user.email #{node['travis_build_environment']['user_email']}
   EOF
   flags '-l'
-  owner node['travis_build_environment']['user']
+  user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
 end
 
