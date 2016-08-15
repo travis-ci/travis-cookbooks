@@ -1,6 +1,6 @@
 # Cookbook Name:: travis_build_environment
 # Recipe:: ci_user
-# Copyright 2011-2016, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
+# Copyright 2016, Travis CI GmbH <contact+travis-cookbooks@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,21 +21,30 @@
 # THE SOFTWARE.
 
 user node['travis_build_environment']['user'] do
+  comment node['travis_build_environment']['user_comment']
+  shell '/bin/bash'
   supports manage_home: true
   manage_home true
-  password node['travis_build_environment']['password']
-  comment 'Travis CI User'
-  shell '/bin/bash'
 end
 
 group node['travis_build_environment']['group'] do
   members [node['travis_build_environment']['user']]
 end
 
+bash 'set git user.name and user.email' do
+  code <<-EOF.gsub(/\s+> ?/, '')
+    > git config --global user.name #{node['travis_build_environment']['user_comment']}
+    > git config --global user.email #{node['travis_build_environment']['user_email']}
+  EOF
+  flags '-l'
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+end
+
 [
   { name: node['travis_build_environment']['home'] },
   { name: "#{node['travis_build_environment']['home']}/.ssh" },
-  { name: "#{node['travis_build_environment']['home']}/builds", perms: 0755 },
+  { name: "#{node['travis_build_environment']['home']}/builds", perms: 0o755 },
   { name: "#{node['travis_build_environment']['home']}/.m2" },
   { name: "#{node['travis_build_environment']['home']}/gopath" },
   { name: "#{node['travis_build_environment']['home']}/gopath/bin" }
@@ -43,34 +52,34 @@ end
   directory entry[:name] do
     owner node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    mode(entry[:perms] || 0750)
+    mode(entry[:perms] || 0o750)
   end
 end
 
 [
-  { src: 'dot_bashrc.sh.erb', dest: '.bashrc', mode: 0640 },
-  { src: 'dot_bash_profile.sh.erb', dest: '.bash_profile', mode: 0640 },
-  { src: 'ci_environment_metadata.yml.erb', dest: '.travis_ci_environment.yml', mode: 0640 }
+  { src: 'dot_bashrc.sh.erb', dest: '.bashrc', mode: 0o640 },
+  { src: 'dot_bash_profile.sh.erb', dest: '.bash_profile', mode: 0o640 },
+  { src: 'ci_environment_metadata.yml.erb', dest: '.travis_ci_environment.yml', mode: 0o640 }
 ].each do |entry|
   template "#{node['travis_build_environment']['home']}/#{entry[:dest]}" do
     source "ci_user/#{entry[:src]}"
     owner node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    mode(entry[:mode] || 0640)
+    mode(entry[:mode] || 0o640)
   end
 end
 
 [
-  { src: 'dot_gemrc.yml', dest: '.gemrc', mode: 0640 },
+  { src: 'dot_gemrc.yml', dest: '.gemrc', mode: 0o640 },
   { src: 'dot_erlang_dot_cookie', dest: '.erlang.cookie' },
-  { src: 'known_hosts', dest: '.ssh/known_hosts', mode: 0600 },
-  { src: 'maven_user_settings.xml', dest: '.m2/settings.xml', mode: 0640 }
+  { src: 'known_hosts', dest: '.ssh/known_hosts', mode: 0o600 },
+  { src: 'maven_user_settings.xml', dest: '.m2/settings.xml', mode: 0o640 }
 ].each do |entry|
   cookbook_file "#{node['travis_build_environment']['home']}/#{entry[:dest]}" do
     source "ci_user/#{entry[:src]}"
     owner node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    mode(entry[:mode] || 0400)
+    mode(entry[:mode] || 0o400)
   end
 end
 
@@ -102,7 +111,7 @@ remote_file "#{Chef::Config[:file_cache_path]}/mpapis.asc" do
   checksum '6ba1ebe6b02841db9ea3b73b85d4ede87192584efc7dfe13fe42a29416767ffa'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0644
+  mode 0o644
   notifies :run, 'bash[import mpapis.asc]', :immediately
 end
 
@@ -205,7 +214,7 @@ Array(node['travis_build_environment']['elixir_versions']).each do |elixir|
     source "http://s3.hex.pm/builds/elixir/v#{elixir}.zip"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    mode 0644
+    mode 0o644
   end
 
   bash "unpack #{local_archive}" do
@@ -227,7 +236,7 @@ Array(node['travis_build_environment']['elixir_versions']).each do |elixir|
     EOF
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    mode 0644
+    mode 0o644
   end
 end
 

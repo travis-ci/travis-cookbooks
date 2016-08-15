@@ -1,7 +1,8 @@
 default['travis_build_environment']['user'] = 'travis'
 default['travis_build_environment']['group'] = node['travis_build_environment']['user']
-default['travis_build_environment']['password'] = node['travis_build_environment']['user']
 default['travis_build_environment']['home'] = "/home/#{node['travis_build_environment']['user']}"
+default['travis_build_environment']['user_comment'] = 'Travis CI User'
+default['travis_build_environment']['user_email'] = 'travis@example.org'
 default['travis_build_environment']['hosts'] = {}
 default['travis_build_environment']['update_hosts'] = true
 default['travis_build_environment']['update_hostname'] = true
