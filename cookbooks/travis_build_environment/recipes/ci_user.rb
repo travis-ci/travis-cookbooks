@@ -49,7 +49,7 @@ end
 [
   { src: 'dot_bashrc.sh.erb', dest: '.bashrc', mode: 0o640 },
   { src: 'dot_bash_profile.sh.erb', dest: '.bash_profile', mode: 0o640 },
-  { src: 'ci_environment_metadata.yml.erb', dest: '.travis_ci_environment.yml', mode: 0o640 }
+  { src: 'ci_environment_metadata.yml.erb', dest: '.travis_ci_environment.yml', mode: 0o640 },
   { src: 'dot_gitconfig.erb', dest: '.gitconfig', mode: 0o640 }
 ].each do |entry|
   template "#{node['travis_build_environment']['home']}/#{entry[:dest]}" do
