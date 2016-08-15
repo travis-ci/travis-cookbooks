@@ -31,16 +31,6 @@ group node['travis_build_environment']['group'] do
   members [node['travis_build_environment']['user']]
 end
 
-bash 'set git user.name and user.email' do
-  code <<-EOF.gsub(/\s+> ?/, '')
-    > git config --global user.name #{node['travis_build_environment']['user_comment'].inspect} ;
-    > git config --global user.email #{node['travis_build_environment']['user_email'].inspect}
-  EOF
-  user node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  environment('HOME' => node['travis_build_environment']['home'])
-end
-
 [
   { name: node['travis_build_environment']['home'] },
   { name: "#{node['travis_build_environment']['home']}/.ssh" },
@@ -60,6 +50,7 @@ end
   { src: 'dot_bashrc.sh.erb', dest: '.bashrc', mode: 0o640 },
   { src: 'dot_bash_profile.sh.erb', dest: '.bash_profile', mode: 0o640 },
   { src: 'ci_environment_metadata.yml.erb', dest: '.travis_ci_environment.yml', mode: 0o640 }
+  { src: 'dot_gitconfig.erb', dest: '.gitconfig', mode: 0o640 }
 ].each do |entry|
   template "#{node['travis_build_environment']['home']}/#{entry[:dest]}" do
     source "ci_user/#{entry[:src]}"
