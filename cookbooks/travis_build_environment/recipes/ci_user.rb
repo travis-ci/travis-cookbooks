@@ -33,8 +33,8 @@ end
 
 bash 'set git user.name and user.email' do
   code <<-EOF.gsub(/\s+> ?/, '')
-    > git config --global user.name #{node['travis_build_environment']['user_comment']}
-    > git config --global user.email #{node['travis_build_environment']['user_email']}
+    > git config --global user.name #{node['travis_build_environment']['user_comment'].inspect} ;
+    > git config --global user.email #{node['travis_build_environment']['user_email'].inspect}
   EOF
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
