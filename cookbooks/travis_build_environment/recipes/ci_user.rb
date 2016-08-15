@@ -305,4 +305,5 @@ bash 'set global default php' do
   group node['travis_build_environment']['group']
   flags '-l'
   environment('HOME' => node['travis_build_environment']['home'])
+  not_if { Array(node['travis_build_environment']['php_versions']).empty? }
 end
