@@ -36,9 +36,9 @@ bash 'set git user.name and user.email' do
     > git config --global user.name #{node['travis_build_environment']['user_comment']}
     > git config --global user.email #{node['travis_build_environment']['user_email']}
   EOF
-  flags '-l'
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
+  environment('HOME' => node['travis_build_environment']['home'])
 end
 
 [
