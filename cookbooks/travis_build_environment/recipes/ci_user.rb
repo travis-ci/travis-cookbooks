@@ -295,3 +295,15 @@ end
 
 include_recipe 'travis_build_environment::hhvm' if \
   node['travis_build_environment']['hhvm_enabled']
+
+bash 'set global default php' do
+  # NOTE: It is important that this happens *after* the conditional inclusion of
+  # the travis_build_environment::hhvm recipe just above so that the default php
+  # version is not hhvm.
+  code "phpenv global #{node['travis_build_environment']['php_default_version']}"
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  flags '-l'
+  environment('HOME' => node['travis_build_environment']['home'])
+  not_if { Array(node['travis_build_environment']['php_versions']).empty? }
+end

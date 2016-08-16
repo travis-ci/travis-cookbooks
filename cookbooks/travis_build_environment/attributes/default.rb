@@ -114,6 +114,7 @@ php_versions = %w(
   5.6.24
 )
 default['travis_build_environment']['php_versions'] = php_versions
+default['travis_build_environment']['php_default_version'] = php_versions.max
 default['travis_build_environment']['php_aliases'] = Hash[
   php_versions.map { |v| [v.split('.')[0, 2].join('.'), v] }
 ]
