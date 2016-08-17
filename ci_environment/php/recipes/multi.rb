@@ -73,4 +73,9 @@ bash 'set global default php' do
   flags '-l'
   environment('HOME' => node['travis_build_environment']['home'])
   not_if { Array(node['php']['multi']['versions']).empty? }
+  action :nothing
+end
+
+log 'trigger setting global default php' do
+  notifies :run, 'bash[set global default php]'
 end

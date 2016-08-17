@@ -27,10 +27,12 @@ action :install do
         user        new_resource.owner
         group       new_resource.group
         cwd         "/tmp"
-        environment Hash["HOME" => node.travis_build_environment.home]
+        environment(
+          'HOME' => node.travis_build_environment.home,
+          'RBENV_VERSION' => php_version
+        )
         code        <<-EOF
           source /etc/profile.d/phpenv.sh
-          phpenv global #{php_version}
           #{new_resource.script}
         EOF
       end
@@ -38,10 +40,12 @@ action :install do
       bash "install PECL extension #{extension} for PHP #{php_version}" do
         user        new_resource.owner
         group       new_resource.group
-        environment Hash["HOME" => node.travis_build_environment.home]
+        environment(
+          'HOME' => node.travis_build_environment.home,
+          'RBENV_VERSION' => php_version
+        )
         code        <<-EOF
           source /etc/profile.d/phpenv.sh
-          phpenv global #{php_version}
 
           if [ ! -z "#{new_resource.channel}" ]; then
             pear channel-discover #{new_resource.channel}
