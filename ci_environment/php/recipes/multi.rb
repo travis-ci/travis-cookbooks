@@ -62,3 +62,20 @@ include_recipe "php::hhvm"
 include_recipe "php::hhvm-nightly"
 include_recipe "phpunit"
 include_recipe "composer"
+
+bash 'set global default php' do
+  # NOTE: It is important that this happens *after* the conditional inclusion of
+  # the php::hhvm recipe just above so that the default php
+  # version is not hhvm.
+  code "phpenv global #{node['php']['multi']['default_version']}"
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  flags '-l'
+  environment('HOME' => node['travis_build_environment']['home'])
+  not_if { Array(node['php']['multi']['versions']).empty? }
+  action :nothing
+end
+
+log 'trigger setting global default php' do
+  notifies :run, 'bash[set global default php]'
+end
