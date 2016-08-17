@@ -26,7 +26,7 @@ apt_repository 'rwky-redis' do
   distribution node['lsb']['codename']
   components ['main']
   key '5862E31D'
-  keyserver 'keyserver.ubuntu.com'
+  keyserver 'pgp.mit.edu'
   retries 2
   retry_delay 30
   action :add
