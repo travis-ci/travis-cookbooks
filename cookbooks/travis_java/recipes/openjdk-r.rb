@@ -3,7 +3,7 @@ apt_repository 'openjdk-r-java-ppa' do
   distribution node['lsb']['codename']
   components ['main']
   key '86F44E2A'
-  keyserver 'keyserver.ubuntu.com'
+  keyserver 'pgp.mit.edu'
   retries 2
   retry_delay 30
   action :add

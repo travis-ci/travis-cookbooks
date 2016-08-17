@@ -20,7 +20,7 @@ apt_repository 'couchdb-ppa' do
   distribution node['lsb']['codename']
   components ['main']
   key 'C17EAB57'
-  keyserver 'keyserver.ubuntu.com'
+  keyserver 'pgp.mit.edu'
   retries 2
   retry_delay 30
   action :add
