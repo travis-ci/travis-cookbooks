@@ -2,7 +2,7 @@ apt_repository "boost-backports" do
   uri          "http://ppa.launchpad.net/mapnik/boost/ubuntu"
   distribution node["lsb"]["codename"]
   components   ["main"]
-  keyserver    "keyserver.ubuntu.com"
+  keyserver    "hkp://ha.pool.sks-keyservers.net"
   key          "5D50B6BA"
   action       :add
 end

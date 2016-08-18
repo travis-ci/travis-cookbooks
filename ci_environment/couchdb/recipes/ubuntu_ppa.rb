@@ -20,7 +20,7 @@ apt_repository "couchdb-ppa" do
   distribution node['lsb']['codename']
   components   ["main"]
   key          "C17EAB57"
-  keyserver    "keyserver.ubuntu.com"
+  keyserver    "hkp://ha.pool.sks-keyservers.net"
 
   action :add
 end

@@ -26,7 +26,7 @@ apt_repository "rwky-redis" do
   distribution node['lsb']['codename']
   components   ["main"]
   key          "5862E31D"
-  keyserver    "keyserver.ubuntu.com"
+  keyserver    "hkp://ha.pool.sks-keyservers.net"
 
   action :add
 end

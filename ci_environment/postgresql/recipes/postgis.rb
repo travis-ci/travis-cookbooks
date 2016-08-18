@@ -8,7 +8,7 @@ if node['lsb']['codename'] == 'precise'
     distribution node['lsb']['codename']
     components   ["main"]
     key          "314DF160"
-    keyserver    "keyserver.ubuntu.com"
+    keyserver    "hkp://ha.pool.sks-keyservers.net"
 
     action :add
   end
