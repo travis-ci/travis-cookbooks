@@ -35,7 +35,7 @@ execute "apt-get update" do
 end
 
 execute "add 10gen apt key" do
-  command "apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10"
+  command "apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net --recv 7F0CEB10"
   action :nothing
 
   not_if "which mongod && which mongo"
