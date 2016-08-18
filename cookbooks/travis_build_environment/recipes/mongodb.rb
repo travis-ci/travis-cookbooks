@@ -24,7 +24,7 @@ apt_repository 'mongodb-3.2' do
   uri 'http://repo.mongodb.org/apt/ubuntu'
   distribution "#{node['lsb']['codename']}/mongodb-org/3.2"
   components %w(multiverse)
-  keyserver 'pgp.mit.edu'
+  keyserver 'hkp://ha.pool.sks-keyservers.net'
   key 'EA312927'
   retries 2
   retry_delay 30

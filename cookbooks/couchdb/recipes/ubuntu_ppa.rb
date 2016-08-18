@@ -18,9 +18,9 @@
 apt_repository 'couchdb-ppa' do
   uri 'http://ppa.launchpad.net/couchdb/stable/ubuntu'
   distribution node['lsb']['codename']
-  components ['main']
+  components %w(main)
   key 'C17EAB57'
-  keyserver 'pgp.mit.edu'
+  keyserver 'hkp://ha.pool.sks-keyservers.net'
   retries 2
   retry_delay 30
   action :add

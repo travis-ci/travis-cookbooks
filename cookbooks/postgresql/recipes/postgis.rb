@@ -8,7 +8,7 @@ if node['lsb']['codename'] == 'precise'
     distribution node['lsb']['codename']
     components ['main']
     key '314DF160'
-    keyserver 'pgp.mit.edu'
+    keyserver 'hkp://ha.pool.sks-keyservers.net'
     retries 2
     retry_delay 30
     action :add
