@@ -26,7 +26,7 @@ apt_repository "ubuntu-toolchain-r-test" do
   distribution node['lsb']['codename']
   components   ["main"]
   key          "BA9EF27F"
-  keyserver    "keyserver.ubuntu.com"
+  keyserver    "hkp://ha.pool.sks-keyservers.net"
   action       :add
 end
 

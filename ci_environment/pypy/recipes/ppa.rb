@@ -25,7 +25,7 @@ apt_repository "pypy" do
   distribution node['lsb']['codename']
   components   ["main"]
   key          "68854915"
-  keyserver    "keyserver.ubuntu.com"
+  keyserver    "hkp://ha.pool.sks-keyservers.net"
 
   action :add
 end

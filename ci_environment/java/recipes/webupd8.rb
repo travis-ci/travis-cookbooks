@@ -7,7 +7,7 @@ apt_repository "webupd8team-java-ppa" do
   distribution node['lsb']['codename']
   components   ["main"]
   key          "EEA14886"
-  keyserver    "keyserver.ubuntu.com"
+  keyserver    "hkp://ha.pool.sks-keyservers.net"
 
   action :add
 end

@@ -25,7 +25,7 @@ when "ubuntu"
     components   ['main']
 
     key          "75E9BCC5"
-    keyserver    "keyserver.ubuntu.com"
+    keyserver    "hkp://ha.pool.sks-keyservers.net"
 
     action :add
   end

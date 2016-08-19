@@ -25,7 +25,7 @@ apt_repository "git-ppa" do
   distribution node['lsb']['codename']
   components   ["main"]
   key          "E1DF1F24"
-  keyserver    "keyserver.ubuntu.com"
+  keyserver    "hkp://ha.pool.sks-keyservers.net"
 
   action :add
 end

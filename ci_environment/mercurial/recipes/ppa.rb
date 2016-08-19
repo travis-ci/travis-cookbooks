@@ -28,7 +28,7 @@ apt_repository "mercurial-ppa" do
   distribution node['lsb']['codename']
   components   ["main"]
   key          "323293EE"
-  keyserver    "keyserver.ubuntu.com"
+  keyserver    "hkp://ha.pool.sks-keyservers.net"
 
   action :add
 end

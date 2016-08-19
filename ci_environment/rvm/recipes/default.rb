@@ -46,7 +46,7 @@ bash "install RVM" do
   cwd         node.travis_build_environment.home
   environment Hash['HOME' => node.travis_build_environment.home, 'rvm_user_install_flag' => '1']
   code        <<-SH
-  gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 || (
+  gpg --keyserver hkp://ha.pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 || (
     curl -sSL https://rvm.io/mpapis.asc | gpg --import -
   )
   curl -s https://raw.githubusercontent.com/wayneeseguin/rvm/master/binscripts/rvm-installer -o /tmp/rvm-installer &&
