@@ -24,8 +24,11 @@
 #
 
 apt_repository 'cmake' do
-  uri 'ppa:george-edison55/cmake-3.x'
+  uri 'http://ppa.launchpad.net/george-edison55/cmake-3.x/ubuntu'
   distribution node['lsb']['codename']
+  components %w(main)
+  key '828AB726'
+  keyserver 'hkp://ha.pool.sks-keyservers.net'
   retries 2
   retry_delay 30
 end

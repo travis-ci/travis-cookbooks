@@ -25,7 +25,7 @@ apt_repository 'ubuntu-toolchain-r-test' do
   distribution node['lsb']['codename']
   components ['main']
   key 'BA9EF27F'
-  keyserver 'pgp.mit.edu'
+  keyserver 'hkp://ha.pool.sks-keyservers.net'
   retries 2
   retry_delay 30
   action :add

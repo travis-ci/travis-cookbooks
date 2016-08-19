@@ -150,3 +150,4 @@ default['travis_build_environment']['wget']['version'] = '1.18'
 
 default['tz'] = 'UTC'
 default['travis_java']['default_version'] = ''
+override['rvm']['gpg']['keyserver'] = 'hkp://ha.pool.sks-keyservers.net'

@@ -24,8 +24,11 @@
 
 Array(node['travis_build_environment']['sphinxsearch']['ppas']).each do |ppa|
   apt_repository ::File.basename(ppa) do
+    # TODO: uri http://ppa.launchpad.net/{path}/ubuntu
     uri ppa
     distribution node['lsb']['codename']
+    # TODO: key 'FAFAFAFA'
+    # TODO: keyserver 'hkp://ha.pool.sks-keyservers.net'
     retries 2
     retry_delay 30
   end

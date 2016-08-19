@@ -25,7 +25,7 @@ apt_repository 'pypy' do
   distribution node['lsb']['codename']
   components ['main']
   key '68854915'
-  keyserver 'pgp.mit.edu'
+  keyserver 'hkp://ha.pool.sks-keyservers.net'
   retries 2
   retry_delay 30
   action :add
