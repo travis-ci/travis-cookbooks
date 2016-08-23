@@ -1,6 +1,6 @@
 include_attribute 'travis_build_environment'
 
-default['travis_python']['pyenv']['revision'] = 'v20160629'
+default['travis_python']['pyenv']['revision'] = 'v1.0.0'
 
 # Order matters for this list of Pythons. It will be used to construct the
 # $PATH so items earlier in the list will take precedence over items later in
@@ -9,7 +9,7 @@ default['travis_python']['pyenv']['revision'] = 'v20160629'
 default['travis_python']['pyenv']['pythons'] = %w(
   2.7.12
   3.5.2
-  pypy-2.6.1
+  pypy-5.3.1
 )
 
 default['travis_python']['pyenv']['aliases'] = {
