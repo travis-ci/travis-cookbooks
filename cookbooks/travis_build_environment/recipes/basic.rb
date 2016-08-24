@@ -40,7 +40,6 @@ package %w(
   openssl
   ragel
   rsync
-  shellcheck
   sqlite3
   sqlite3-doc
   subversion
@@ -71,3 +70,9 @@ include_recipe 'travis_build_environment::heroku_toolbelt'
 include_recipe 'travis_build_environment::locale'
 include_recipe 'travis_build_environment::hostname'
 include_recipe 'travis_build_environment::sysctl'
+
+package %w(
+  shellcheck
+) do
+  action [:install, :upgrade]
+end
