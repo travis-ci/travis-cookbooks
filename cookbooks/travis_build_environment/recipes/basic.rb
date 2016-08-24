@@ -40,6 +40,7 @@ package %w(
   openssl
   ragel
   rsync
+  shellcheck
   sqlite3
   sqlite3-doc
   subversion

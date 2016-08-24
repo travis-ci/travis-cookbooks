@@ -73,6 +73,8 @@ end
   execute "apt-add-repository -y #{source_alias}"
 end
 
+execute 'apt-add-repository -y "deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe multiverse"'
+
 execute 'gencaches for travis_build_environment::apt' do
   command 'apt-cache gencaches'
 end
