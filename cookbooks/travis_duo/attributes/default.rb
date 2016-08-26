@@ -1,0 +1,6 @@
+default['travis_duo']['integration_key'] = ''
+default['travis_duo']['secret_key'] = ''
+default['travis_duo']['api_hostname'] = ''
+default['travis_duo']['user'] = 'sshd'
+default['travis_duo']['group'] = 'root'
+default['travis_duo']['failmode'] = 'safe'
