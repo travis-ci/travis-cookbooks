@@ -1,0 +1,5 @@
+# Managed by Chef on <%= node.name %> :heart:
+[duo]
+<% node['travis_duo']['conf'].each do |key, value| %>
+<%= key %> = <%= value %>
+<% end %>
