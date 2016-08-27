@@ -1,5 +1,5 @@
 # Managed by Chef on <%= node.name %> :heart:
 [duo]
-<% Array(@conf).each do |key, value| %>
+<% (@conf || {}).each do |key, value| %>
 <%= key %> = <% value %>
 <% end %>
