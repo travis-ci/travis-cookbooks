@@ -1,0 +1,7 @@
+# Managed by Chef on <%= node.name %> :heart:
+# cookbook:: travis_duo
+#     file:: templates/default/pam.d-common-auth.conf.erb
+
+auth  requisite pam_unix.so nullok_secure
+auth  [success=1 default=ignore] pam_duo.so
+auth  requisite pam_deny.so

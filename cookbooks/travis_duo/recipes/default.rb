@@ -45,3 +45,25 @@ package 'duo-unix'
     mode 0o600
   end
 end
+
+link '/lib/security/pam_duo.so' do
+  to '/lib64/security/pam_duo.so'
+  only_if do
+    ::File.exist?('/lib64/security/pam_duo.so') &&
+      !::File.exist?('/lib/security/pam_duo.so')
+  end
+end
+
+template '/etc/pam.d/sshd' do
+  source 'pam.d-sshd.conf.erb'
+  owner node['travis_duo']['user']
+  group node['travis_duo']['group'] || node['travis_duo']['user']
+  mode 0o600
+end
+
+template '/etc/pam.d/common-auth' do
+  source 'pam.d-common-auth.conf.erb'
+  owner node['travis_duo']['user']
+  group node['travis_duo']['group'] || node['travis_duo']['user']
+  mode 0o600
+end
