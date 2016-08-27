@@ -46,6 +46,12 @@ package 'duo-unix'
   end
 end
 
+directory '/lib/security' do
+  owner 'root'
+  group 'root'
+  mode 0o755
+end
+
 link '/lib/security/pam_duo.so' do
   to '/lib64/security/pam_duo.so'
   only_if do
