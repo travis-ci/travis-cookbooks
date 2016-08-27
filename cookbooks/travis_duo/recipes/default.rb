@@ -41,7 +41,6 @@ package 'duo-unix'
     source 'duo.conf.erb'
     owner node['travis_duo']['user']
     group node['travis_duo']['group'] || node['travis_duo']['user']
-    variables(conf: node['travis_duo']['conf'])
     mode 0o600
   end
 end
