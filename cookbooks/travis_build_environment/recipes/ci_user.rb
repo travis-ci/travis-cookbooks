@@ -307,3 +307,12 @@ bash 'set global default php' do
   environment('HOME' => node['travis_build_environment']['home'])
   not_if { Array(node['travis_build_environment']['php_versions']).empty? }
 end
+
+bash 'remove ~travis/.pearrc' do
+  code "rm -f #{node['travis_build_environment']['home']}/.pearrc"
+  action :nothing
+end
+
+log 'trigger ~travis/.pearrc removal' do
+  notifies :run, 'bash[remove ~travis/.pearrc]'
+end
