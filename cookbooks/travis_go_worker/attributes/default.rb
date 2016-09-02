@@ -9,6 +9,7 @@ default['travis_go_worker']['environment']['TRAVIS_WORKER_WARMED_DOCKER_IMAGES']
 default['travis_go_worker']['environment']['TRAVIS_WORKER_SELF_IMAGE'] = 'quay.io/travisci/worker:v2.3.1-61-g76a687b'
 
 default['travis_go_worker']['docker']['disable_install'] = false
+default['travis_go_worker']['docker']['disable_direct_lvm'] = false
 default['travis_go_worker']['docker']['volume']['device'] = '/dev/xvdc'
 default['travis_go_worker']['docker']['volume']['metadata_size'] = '2G'
 default['travis_go_worker']['docker']['dm_basesize'] = '12G'

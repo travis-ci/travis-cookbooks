@@ -34,3 +34,7 @@ template '/etc/init/travis-worker.conf' do
     node['travis_go_worker']['docker_image'].to_s.empty?
   end
 end
+
+service 'travis-worker' do
+  action [:enable, :start]
+end

@@ -31,7 +31,9 @@ pre-start script
                 done
         )
 
+        <% unless node['travis_go_worker']['docker']['disable_direct_lvm'] %>
         travis-docker-volume-setup
+        <% end %>
 end script
 
 script
