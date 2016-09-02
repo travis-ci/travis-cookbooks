@@ -28,10 +28,7 @@ template '/etc/init/travis-worker.conf' do
   owner 'root'
   group 'root'
   mode 0o644
-  variables(
-    docker_image: node['travis_go_worker']['docker_image'],
-    warmed_docker_images: node['travis_go_worker']['warmed_docker_images']
-  )
+  variables(docker_image: node['travis_go_worker']['docker_image'])
 
   not_if do
     node['travis_go_worker']['docker_image'].to_s.empty?
