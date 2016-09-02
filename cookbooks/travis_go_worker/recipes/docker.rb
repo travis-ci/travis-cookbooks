@@ -24,7 +24,7 @@ template '/etc/init/docker.conf' do
 end
 
 template '/etc/init/travis-worker.conf' do
-  source 'etc-init-travis-worker.conf'
+  source 'etc-init-travis-worker.conf.erb'
   owner 'root'
   group 'root'
   mode 0o644
