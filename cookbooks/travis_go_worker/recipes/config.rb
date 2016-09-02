@@ -7,8 +7,8 @@
     owner 'root'
     group 'root'
     mode 0o644
-    variables(environment: node['travis']['worker']['environment'])
+    variables(environment: node['travis_go_worker']['environment'])
 
-    not_if { node['travis']['worker']['disable_reconfiguration'] }
+    not_if { node['travis_go_worker']['disable_reconfiguration'] }
   end
 end
