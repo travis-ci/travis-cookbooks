@@ -23,16 +23,13 @@ template '/etc/init/docker.conf' do
   mode 0o644
 end
 
+include_recipe 'travis_go_worker::config'
+
 template '/etc/init/travis-worker.conf' do
   source 'etc-init-travis-worker.conf.erb'
   owner 'root'
   group 'root'
   mode 0o644
-  variables(docker_image: node['travis_go_worker']['docker_image'])
-
-  not_if do
-    node['travis_go_worker']['docker_image'].to_s.empty?
-  end
 end
 
 service 'travis-worker' do

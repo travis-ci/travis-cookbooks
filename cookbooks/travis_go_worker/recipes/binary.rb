@@ -11,3 +11,5 @@ remote_file '/usr/local/bin/travis-worker' do
 
   not_if { node['travis']['worker']['branch'].to_s.empty? }
 end
+
+include_recipe 'travis_go_worker::config'
