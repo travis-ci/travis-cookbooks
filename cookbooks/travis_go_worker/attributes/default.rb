@@ -1,17 +1,21 @@
 # Set this to a branch name to copy down a binary directly from S3
-default['travis']['worker']['branch'] = ''
+default['travis_go_worker']['branch'] = ''
 
 # Disables writing a new config, as with hosts configured via cloud-init
-default['travis']['worker']['disable_reconfiguration'] = false
+default['travis_go_worker']['disable_reconfiguration'] = false
+
+# Docker image for worker itself; used when local docker is available
+default['travis_go_worker']['docker_image'] = 'quay.io/travisci/worker:v2.3.1-61-g76a687b'
 
 # This should be the exact env vars
-default['travis']['worker']['environment'] = {}
+default['travis_go_worker']['environment'] = {}
 
-default['travis']['worker']['docker']['volume']['device'] = '/dev/xvdc'
-default['travis']['worker']['docker']['volume']['metadata_size'] = '2G'
-default['travis']['worker']['docker']['dm_basesize'] = '12G'
-default['travis']['worker']['docker']['dm_fs'] = 'xfs'
-default['travis']['worker']['docker']['dir'] = '/mnt/docker'
+default['travis_go_worker']['docker']['disable_install'] = false
+default['travis_go_worker']['docker']['volume']['device'] = '/dev/xvdc'
+default['travis_go_worker']['docker']['volume']['metadata_size'] = '2G'
+default['travis_go_worker']['docker']['dm_basesize'] = '12G'
+default['travis_go_worker']['docker']['dm_fs'] = 'xfs'
+default['travis_go_worker']['docker']['dir'] = '/mnt/docker'
 
 set['papertrail']['watch_files']['/var/log/upstart/travis-worker.log'] = 'travis-worker'
 

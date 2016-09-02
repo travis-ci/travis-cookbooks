@@ -6,3 +6,4 @@ description 'Installs/Configures the Travis Go Worker'
 version '0.1.0'
 
 depends 'packagecloud'
+depends 'travis_docker'
