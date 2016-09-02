@@ -30,6 +30,13 @@ script
   docker stop travis-worker >/dev/null 2>&1 || true
   docker rm -f travis-worker >/dev/null 2>&1 || true
 
+  <% Array(@warmed_docker_images).each do |image, tag| %>
+  docker pull <%= image %>
+  if [ -n "<%= tag %>" ] ; then
+    docker tag <%= tag %> <%= image %>
+  fi
+  <% end %>
+
   mv -v "${_TMP_ENV}" /var/tmp/travis-run.d/env
   docker run --rm \
     --name travis-worker \
