@@ -24,6 +24,7 @@ script
     if [ -f /etc/default/${config_file} ] ; then
       echo "# /etc/default/${config_file}" >> "${_TMP_ENV}"
       sed "s/^export //;s/\"//g;s/'//g" /etc/default/${config_file} >> "${_TMP_ENV}"
+      . /etc/default/${config_file}
     fi
   done
 
@@ -38,6 +39,7 @@ script
   docker run --rm \
     --name travis-worker \
     --hostname "`hostname`" \
+    -v /var/tmp:/var/tmp \
     --env-file /var/tmp/travis-run.d/env \
     --name travis-worker \
     "${TRAVIS_WORKER_SELF_IMAGE}" travis-worker
