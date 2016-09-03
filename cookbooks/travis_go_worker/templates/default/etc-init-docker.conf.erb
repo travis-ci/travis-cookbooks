@@ -10,80 +10,88 @@ limit nproc 524288 1048576
 respawn
 
 pre-start script
-        # see also https://github.com/tianon/cgroupfs-mount/blob/master/cgroupfs-mount
-        if grep -v '^#' /etc/fstab | grep -q cgroup \
-                || [ ! -e /proc/cgroups ] \
-                || [ ! -d /sys/fs/cgroup ]; then
-                exit 0
+  # see also https://github.com/tianon/cgroupfs-mount/blob/master/cgroupfs-mount
+  if grep -v '^#' /etc/fstab | grep -q cgroup \
+    || [ ! -e /proc/cgroups ] \
+    || [ ! -d /sys/fs/cgroup ]; then
+    exit 0
+  fi
+  if ! mountpoint -q /sys/fs/cgroup; then
+    mount -t tmpfs -o uid=0,gid=0,mode=0755 cgroup /sys/fs/cgroup
+  fi
+  (
+    cd /sys/fs/cgroup
+    for sys in $(awk '!/^#/ { if ($4 == 1) print $1 }' /proc/cgroups); do
+      mkdir -p $sys
+      if ! mountpoint -q $sys; then
+        if ! mount -n -t cgroup -o $sys cgroup $sys; then
+          rmdir $sys || true
         fi
-        if ! mountpoint -q /sys/fs/cgroup; then
-                mount -t tmpfs -o uid=0,gid=0,mode=0755 cgroup /sys/fs/cgroup
-        fi
-        (
-                cd /sys/fs/cgroup
-                for sys in $(awk '!/^#/ { if ($4 == 1) print $1 }' /proc/cgroups); do
-                        mkdir -p $sys
-                        if ! mountpoint -q $sys; then
-                                if ! mount -n -t cgroup -o $sys cgroup $sys; then
-                                        rmdir $sys || true
-                                fi
-                        fi
-                done
-        )
+      fi
+    done
+  )
 
-        <% unless node['travis_go_worker']['docker']['disable_direct_lvm'] %>
-        travis-docker-volume-setup
-        <% end %>
+  for filename in ${UPSTART_JOB}-chef ${UPSTART_JOB}-cloud-init ${UPSTART_JOB} ${UPSTART_JOB}-local ; do
+    if [ -f /etc/default/${filename} ] ; then
+      . /etc/default/${filename}
+    fi
+  done
+
+  if [ -z $TRAVIS_WORKER_DISABLE_DIRECT_LVM ] ; then
+    travis-docker-volume-setup
+  fi
 end script
 
 script
-        DOCKER=/usr/bin/$UPSTART_JOB
-        DOCKER_OPTS=
-        if [ -f /etc/default/${UPSTART_JOB}.chef ] ; then
-                . /etc/default/${UPSTART_JOB}.chef
-        fi
-        if [ -f /etc/default/${UPSTART_JOB}.cloud-init ] ; then
-                . /etc/default/${UPSTART_JOB}.cloud-init
-        fi
-        export DOCKER_STORAGE_OPT_DM_BASESIZE
-        export DOCKER_STORAGE_OPT_DM_FS
-        export DOCKER_GRAPH_DIR
-        if [ -f /etc/default/$UPSTART_JOB ]; then
-                . /etc/default/$UPSTART_JOB
-        fi
-        exec "$DOCKER" daemon $DOCKER_OPTS
+  DOCKER=/usr/bin/$UPSTART_JOB
+  DOCKER_OPTS=
+  for filename in ${UPSTART_JOB}-chef ${UPSTART_JOB}-cloud-init ; do
+    if [ -f /etc/default/${filename} ] ; then
+      . /etc/default/${filename}
+    fi
+  done
+  export DOCKER_STORAGE_OPT_DM_BASESIZE
+  export DOCKER_STORAGE_OPT_DM_FS
+  export DOCKER_GRAPH_DIR
+  for filename in ${UPSTART_JOB} ${UPSTART_JOB}-local ; do
+    if [ -f /etc/default/${filename} ] ; then
+      . /etc/default/${filename}
+    fi
+  done
+  exec "$DOCKER" daemon $DOCKER_OPTS
 end script
 
 # Don't emit "started" event until docker.sock is ready.
 # See https://github.com/docker/docker/issues/6647
 post-start script
-        DOCKER_OPTS=
-        DOCKER_SOCKET=
-        if [ -f /etc/default/${UPSTART_JOB}.chef ] ; then
-                . /etc/default/${UPSTART_JOB}.chef
-        fi
-        if [ -f /etc/default/${UPSTART_JOB}.cloud-init ] ; then
-                . /etc/default/${UPSTART_JOB}.cloud-init
-        fi
-        export DOCKER_STORAGE_OPT_DM_BASESIZE
-        export DOCKER_STORAGE_OPT_DM_FS
-        export DOCKER_GRAPH_DIR
-        if [ -f /etc/default/$UPSTART_JOB ]; then
-                . /etc/default/$UPSTART_JOB
-        fi
+  DOCKER_OPTS=
+  DOCKER_SOCKET=
+  for filename in ${UPSTART_JOB}-chef ${UPSTART_JOB}-cloud-init ; do
+    if [ -f /etc/default/${filename} ] ; then
+      . /etc/default/${filename}
+    fi
+  done
+  export DOCKER_STORAGE_OPT_DM_BASESIZE
+  export DOCKER_STORAGE_OPT_DM_FS
+  export DOCKER_GRAPH_DIR
+  for filename in ${UPSTART_JOB} ${UPSTART_JOB}-local ; do
+    if [ -f /etc/default/${filename} ] ; then
+      . /etc/default/${filename}
+    fi
+  done
 
-        if ! printf "%s" "$DOCKER_OPTS" | grep -qE -e '-H|--host'; then
-                DOCKER_SOCKET=/var/run/docker.sock
-        else
-                DOCKER_SOCKET=$(printf "%s" "$DOCKER_OPTS" | grep -oP -e '(-H|--host)\W*unix://\K(\S+)')
-        fi
+  if ! printf "%s" "$DOCKER_OPTS" | grep -qE -e '-H|--host'; then
+    DOCKER_SOCKET=/var/run/docker.sock
+  else
+    DOCKER_SOCKET=$(printf "%s" "$DOCKER_OPTS" | grep -oP -e '(-H|--host)\W*unix://\K(\S+)')
+  fi
 
-        if [ -n "$DOCKER_SOCKET" ]; then
-                while ! [ -e "$DOCKER_SOCKET" ]; do
-                        initctl status $UPSTART_JOB | grep -qE "(stop|respawn)/" && exit 1
-                        echo "Waiting for $DOCKER_SOCKET"
-                        sleep 0.1
-                done
-                echo "$DOCKER_SOCKET is up"
-        fi
+  if [ -n "$DOCKER_SOCKET" ]; then
+    while ! [ -e "$DOCKER_SOCKET" ]; do
+      initctl status $UPSTART_JOB | grep -qE "(stop|respawn)/" && exit 1
+      echo "Waiting for $DOCKER_SOCKET"
+      sleep 0.1
+    done
+    echo "$DOCKER_SOCKET is up"
+  fi
 end script

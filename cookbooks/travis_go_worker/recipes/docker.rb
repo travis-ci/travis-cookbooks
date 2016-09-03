@@ -2,8 +2,8 @@ unless node['travis_go_worker']['docker']['disable_install']
   include_recipe 'travis_docker'
 end
 
-template '/etc/default/docker.chef' do
-  source 'etc-default-docker.chef.sh.erb'
+template '/etc/default/docker-chef' do
+  source 'etc-default-docker-chef.sh.erb'
   owner 'root'
   group 'root'
   mode 0o644

@@ -7,6 +7,7 @@ default['travis_go_worker']['disable_reconfiguration'] = false
 # The members under `environment` should be the exact env vars
 default['travis_go_worker']['environment']['TRAVIS_WORKER_WARMED_DOCKER_IMAGES'] = ''
 default['travis_go_worker']['environment']['TRAVIS_WORKER_SELF_IMAGE'] = 'quay.io/travisci/worker:v2.3.1-61-g76a687b'
+default['travis_go_worker']['environment']['TRAVIS_WORKER_DISABLE_DIRECT_LVM'] = ''
 
 default['travis_go_worker']['docker']['disable_install'] = false
 default['travis_go_worker']['docker']['disable_direct_lvm'] = false
