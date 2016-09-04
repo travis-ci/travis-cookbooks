@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: users
+# Cookbook Name:: travis_users
 # Recipe:: default
 #
-# Copyright 2015, Travis CI GmbH
+# Copyright 2016, Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -25,15 +25,31 @@
 #
 
 package 'zsh' do
-  action :upgrade
-  only_if { node['users'].any? { |u| u['shell'] == '/bin/zsh' } }
+  action [:install, :upgrade]
+  only_if { node['travis_users'].any? { |u| u['shell'] =~ /zsh/ } }
 end
 
-Array(node['users']).each do |user|
+Array(node['travis_users']).each do |user|
   user user['id'] do
     supports manage_home: true
     home "/home/#{user['id']}"
     shell user['shell']
+  end
+
+  file "/home/#{user['id']}/.zshrc" do
+    content '# this space intentionally left blank'
+    mode 0o640
+    owner user['id']
+    group user['id']
+    only_if { user['shell'] =~ /zsh/ }
+  end
+
+  Array(user['groups']).each do |group_name|
+    group group_name do
+      action :modify
+      members user['id']
+      append true
+    end
   end
 
   %W(
