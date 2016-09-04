@@ -24,6 +24,10 @@ template '/etc/init/docker.conf' do
   mode 0o644
 end
 
+service 'docker' do
+  action [:enable, :start]
+end
+
 include_recipe 'travis_worker::config'
 
 template '/etc/init/travis-worker.conf' do
