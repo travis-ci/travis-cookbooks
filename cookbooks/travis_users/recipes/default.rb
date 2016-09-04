@@ -72,7 +72,7 @@ Array(node['travis_users']).each do |user|
     not_if { Array(user['ssh_keys']).empty? }
   end
 
-  users_github_keys user['id'] do
+  travis_users_github_keys user['id'] do
     github_username user['github_username']
 
     only_if do
