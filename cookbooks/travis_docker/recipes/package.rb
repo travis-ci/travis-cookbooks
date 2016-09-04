@@ -31,7 +31,7 @@ apt_repository 'docker' do
 end
 
 package %w(
-  linux-generic-lts-vivid
+  linux-generic-lts-xenial
   lxc
 )
 
