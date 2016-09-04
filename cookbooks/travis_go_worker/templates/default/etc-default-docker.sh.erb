@@ -3,12 +3,13 @@ DOCKER_OPTS="\
   --icc=false \
   -H tcp://127.0.0.1:4243 \
   -H unix:///var/run/docker.sock \
-  <% unless node['travis_go_worker']['docker']['disable_direct_lvm'] %>
+"
+
+DOCKER_OPTS_DIRECT_LVM="
   -s devicemapper \
   -g $DOCKER_GRAPH_DIR \
   --storage-opt dm.basesize=$DOCKER_STORAGE_OPT_DM_BASESIZE \
   --storage-opt dm.datadev=/dev/direct-lvm/data \
   --storage-opt dm.metadatadev=/dev/direct-lvm/metadata \
   --storage-opt dm.fs=$DOCKER_STORAGE_OPT_DM_FS \
-  <% end %>
 "

@@ -58,6 +58,9 @@ script
       . /etc/default/${filename}
     fi
   done
+  if [ -z $TRAVIS_WORKER_DISABLE_DIRECT_LVM ] ; then
+    DOCKER_OPTS="$DOCKER_OPTS $DOCKER_OPTS_DIRECT_LVM"
+  fi
   exec "$DOCKER" daemon $DOCKER_OPTS
 end script
 

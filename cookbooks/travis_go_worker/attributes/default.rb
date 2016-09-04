@@ -10,7 +10,6 @@ default['travis_go_worker']['environment']['TRAVIS_WORKER_SELF_IMAGE'] = 'quay.i
 default['travis_go_worker']['environment']['TRAVIS_WORKER_DISABLE_DIRECT_LVM'] = ''
 
 default['travis_go_worker']['docker']['disable_install'] = false
-default['travis_go_worker']['docker']['disable_direct_lvm'] = false
 default['travis_go_worker']['docker']['volume']['device'] = '/dev/xvdc'
 default['travis_go_worker']['docker']['volume']['metadata_size'] = '2G'
 default['travis_go_worker']['docker']['dm_basesize'] = '12G'
