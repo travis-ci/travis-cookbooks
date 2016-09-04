@@ -1,4 +1,4 @@
-unless node['travis_go_worker']['docker']['disable_install']
+unless node['travis_worker']['docker']['disable_install']
   include_recipe 'travis_docker'
 end
 
@@ -23,7 +23,7 @@ template '/etc/init/docker.conf' do
   mode 0o644
 end
 
-include_recipe 'travis_go_worker::config'
+include_recipe 'travis_worker::config'
 
 template '/etc/init/travis-worker.conf' do
   source 'etc-init-travis-worker.conf.erb'

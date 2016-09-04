@@ -9,7 +9,7 @@ template '/usr/local/bin/travis-docker-volume-setup' do
   group 'root'
   mode 0755
   variables(
-    device: node['travis_go_worker']['docker']['volume']['device'],
-    metadata_size: node['travis_go_worker']['docker']['volume']['metadata_size']
+    device: node['travis_worker']['docker']['volume']['device'],
+    metadata_size: node['travis_worker']['docker']['volume']['metadata_size']
   )
 end
