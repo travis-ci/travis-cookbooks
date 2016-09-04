@@ -1,5 +1,6 @@
 unless node['travis_worker']['docker']['disable_install']
   include_recipe 'travis_docker'
+  include_recipe 'travis_worker::devicemapper'
 end
 
 template '/etc/default/docker-chef' do
