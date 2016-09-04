@@ -6,5 +6,5 @@ $ActionResumeRetryCount -1 # infinite retries on insert failure
 $ActionQueueSaveOnShutdown on # save in-memory data if rsyslog shuts down
 
 <% @servers.each do |server| -%>
-*.* :omrelp:<%= "#{server}:#{node['rsyslog']['relp_port']}" %><%= node['rsyslog']['default_remote_template'] ? ';' + node['rsyslog']['default_remote_template'] : nil %>
+<%= node['rsyslog']['logs_to_forward'] %> :omrelp:<%= "#{server['server']}:#{node['rsyslog']['relp_port']}" %><% if server['remote_template'] -%>;<%= server['remote_template'] %> <% elsif node['rsyslog']['default_remote_template'] -%>;<%= node['rsyslog']['default_remote_template'] %><% end -%>
 <% end -%>

@@ -58,5 +58,5 @@ news.notice             -?PerHostNewsNotice
 # Stop processing of all non-local messages. You can process remote messages
 # on levels less than 35.
 #
-:fromhost-ip,!isequal,"127.0.0.1" ~
+:fromhost-ip,!isequal,"127.0.0.1" stop
 <% end -%>

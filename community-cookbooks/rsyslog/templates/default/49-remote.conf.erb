@@ -16,13 +16,18 @@ $DefaultNetstreamDriverKeyFile <%= node['rsyslog']['tls_key_file'] %>
 $DefaultNetstreamDriver gtls
 $ActionSendStreamDriverMode 1
 $ActionSendStreamDriverAuthMode <%= node['rsyslog']['tls_auth_mode'] %>
+<% if node['rsyslog']['tls_permitted_peer'] -%>
+$ActionSendStreamDriverPermittedPeer <%= node['rsyslog']['tls_permitted_peer'] %>
+<% end -%>
 <% end -%>
 
 <% @servers.each do |server| -%>
-<%   case node['rsyslog']['protocol'] -%>
-<%   when "tcp" -%>
-<%= node['rsyslog']['logs_to_forward'] %> @@<%= server %>:<%= node['rsyslog']['port'] %><%= node["rsyslog"]["default_remote_template"] ? ';' + node["rsyslog"]["default_remote_template"] : nil %>
-<%   when "udp" -%>
-<%= node['rsyslog']['logs_to_forward'] %> @<%= server %>:<%= node['rsyslog']['port'] %><%= node["rsyslog"]["default_remote_template"] ? ';' + node["rsyslog"]["default_remote_template"] : nil %>
+<%   case server['protocol'] -%>
+<%     when "tcp" -%>
+<%=      server['logs'] ? server['logs'] : node['rsyslog']['logs_to_forward'] %> @@<%= server['server']  %>:<%= server['port'] ? server['port'] : node['rsyslog']['port'] %><%= server['remote_template'] ? ';' + server['remote_template'] : nil %>
+<%     when "udp" -%>
+<%=      server['logs'] ? server['logs'] : node['rsyslog']['logs_to_forward'] %> @<%= server['server']  %>:<%= server['port'] ? server['port'] : node['rsyslog']['port'] %><%= server['remote_template'] ? ';' + server['remote_template'] : nil %>
+<%     else -%>
+<%=      server['logs'] ? server['logs'] : node['rsyslog']['logs_to_forward'] %><%= node['rsyslog']['protocol'] == "tcp" ? " @@" : " @" %><%= server['server']  %>:<%= server['port'] ? server['port'] : node['rsyslog']['port'] %><%= server['remote_template'] ? ';' + server['remote_template'] : nil %>
 <%   end -%>
 <% end -%>

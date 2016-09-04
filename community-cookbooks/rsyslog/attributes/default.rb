@@ -2,7 +2,7 @@
 # Cookbook Name:: rsyslog
 # Attributes:: default
 #
-# Copyright 2009-2014, Chef Software, Inc.
+# Copyright 2009-2015, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+default['rsyslog']['local_host_name']           = nil
 default['rsyslog']['default_log_dir']           = '/var/log'
 default['rsyslog']['log_dir']                   = '/srv/rsyslog'
 default['rsyslog']['working_dir']               = '/var/spool/rsyslog'
@@ -37,7 +38,7 @@ default['rsyslog']['repeated_msg_reduction']    = 'on'
 default['rsyslog']['logs_to_forward']           = '*.*'
 default['rsyslog']['enable_imklog']             = true
 default['rsyslog']['config_prefix']             = '/etc'
-default['rsyslog']['default_file_template']    = nil
+default['rsyslog']['default_file_template']     = nil
 default['rsyslog']['default_remote_template']   = nil
 default['rsyslog']['rate_limit_interval']       = nil
 default['rsyslog']['rate_limit_burst']          = nil
@@ -47,8 +48,10 @@ default['rsyslog']['tls_ca_file']               = nil
 default['rsyslog']['tls_certificate_file']      = nil
 default['rsyslog']['tls_key_file']              = nil
 default['rsyslog']['tls_auth_mode']             = 'anon'
+default['rsyslog']['tls_permitted_peer']        = nil
 default['rsyslog']['use_local_ipv4']            = false
 default['rsyslog']['allow_non_local']           = false
+default['rsyslog']['custom_remote']             = [{}]
 default['rsyslog']['additional_directives'] = {}
 
 # The most likely platform-specific attributes
@@ -60,8 +63,50 @@ default['rsyslog']['priv_user']                 = nil
 default['rsyslog']['priv_group']                = nil
 default['rsyslog']['modules']                   = %w(imuxsock imklog)
 
+# platform specific attributes
+case node['platform']
+when 'ubuntu'
+  # syslog user introduced with natty package
+  if node['platform_version'].to_f >= 11.04
+    default['rsyslog']['user'] = 'syslog'
+    default['rsyslog']['group'] = 'adm'
+    default['rsyslog']['priv_seperation'] = true
+    default['rsyslog']['priv_group'] = 'syslog'
+  end
+when 'arch'
+  default['rsyslog']['service_name'] = 'rsyslogd'
+when 'smartos'
+  default['rsyslog']['config_prefix'] = '/opt/local/etc'
+  default['rsyslog']['modules'] = %w(immark imsolaris imtcp imudp)
+  default['rsyslog']['group'] = 'root'
+when 'omnios'
+  default['rsyslog']['service_name'] = 'system/rsyslogd'
+  default['rsyslog']['modules'] = %w(immark imsolaris imtcp imudp)
+  default['rsyslog']['group'] = 'root'
+end
+
 # platform family specific attributes
 case node['platform_family']
+when 'suse'
+  default['rsyslog']['service_name'] = 'syslog'
+  default['rsyslog']['group'] = 'root'
+  default['rsyslog']['default_facility_logs'] = {
+    '*.emerg' => ':omusrmsg:*',
+    'mail.*' => "-#{node['rsyslog']['default_log_dir']}/mail.log",
+    'mail.info' => "-#{node['rsyslog']['default_log_dir']}/mail.info",
+    'mail.warning' => "-#{node['rsyslog']['default_log_dir']}/mail.warn",
+    'mail.err' => "#{node['rsyslog']['default_log_dir']}/mail.err",
+    'news.crit' => "#{node['rsyslog']['default_log_dir']}/news/news.crit",
+    'news.err' => "#{node['rsyslog']['default_log_dir']}/news/news.err",
+    'news.notice' => "-#{node['rsyslog']['default_log_dir']}/news/news.notice",
+    '*.=warning;*.=err' => "-#{node['rsyslog']['default_log_dir']}/warn",
+    '*.crit' => "#{node['rsyslog']['default_log_dir']}/warn",
+    '*.*;mail.none;news.none' => "#{node['rsyslog']['default_log_dir']}/messages",
+    'local0.*;local1.*' => "-#{node['rsyslog']['default_log_dir']}/localmessages",
+    'local2.*;local3.*' => "-#{node['rsyslog']['default_log_dir']}/localmessages",
+    'local4.*;local5.*' => "-#{node['rsyslog']['default_log_dir']}/localmessages",
+    'local6.*;local7.*' => "-#{node['rsyslog']['default_log_dir']}/localmessages"
+  }
 when 'rhel', 'fedora'
   default['rsyslog']['working_dir'] = '/var/lib/rsyslog'
   # format { facility => destination }
@@ -103,28 +148,4 @@ end
 # rsyslog 3/4 do not support the new :omusrmsg:* format and need * instead
 if (node['platform'] == 'ubuntu' && node['platform_version'].to_i < 12) || (node['platform_family'] == 'rhel' && node['platform_version'].to_i < 6)
   default['rsyslog']['default_facility_logs']['*.emerg'] = '*'
-end
-
-# platform specific attributes
-case node['platform']
-when 'ubuntu'
-  # syslog user introduced with natty package
-  if node['platform_version'].to_f >= 11.04
-    default['rsyslog']['user'] = 'syslog'
-    default['rsyslog']['group'] = 'adm'
-    default['rsyslog']['priv_seperation'] = true
-    default['rsyslog']['priv_group'] = 'syslog'
-  end
-when 'arch'
-  default['rsyslog']['service_name'] = 'rsyslogd'
-when 'smartos'
-  default['rsyslog']['config_prefix'] = '/opt/local/etc'
-  default['rsyslog']['modules'] = %w(immark imsolaris imtcp imudp)
-  default['rsyslog']['group'] = 'root'
-when 'omnios'
-  default['rsyslog']['service_name'] = 'system/rsyslogd'
-  default['rsyslog']['modules'] = %w(immark imsolaris imtcp imudp)
-  default['rsyslog']['group'] = 'root'
-when 'suse'
-  default['rsyslog']['service_name'] = 'syslog'
 end
