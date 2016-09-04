@@ -1,20 +1,53 @@
-rsyslog Cookbook CHANGELOG
-==========================
+# rsyslog Cookbook CHANGELOG
 This file is used to list changes made in each version of the rsyslog cookbook.
 
-v.2.1.0 (2015-07-22)
-----------
+## v.4.0.1 (2016-07-20)
+- PR #76 Validate the config file using `rsyslogd -N 1` via eherot
+- PR #105 Use correct file name for remote.conf via mfenner
+- PR #105 Add $LocalHostName directive via mfenner
+- PR #105 Change directive `:fromhost-ip,!isequal,"127.0.0.1"` from using ~ to stop via mfenner
+- PR #110 Add support for permitted peer via dastergon
+- Add SUSE support
+- Clean up travis configuration
+
+## v.4.0.0 (2015-12-09)
+- Removed support for Chef Solo. Since this cookbook now supports Chef 12+ only it makes far more sense to use Chef Zero (local mode) if a Chef server is not available.
+- Removed yum from the Berksfile as it wasn't being used
+- Fixed bad variables being passed in the file_input custom resource
+- Added Chefspec matchers
+
+## v.3.0.0 (2015-11-09)
+- Breaking change: The file_input LWRP has been updated to be a Chef 12.5 custom_resource, with backwards compatibility to all Chef 12.x released provided by compat_resource. Additionally the 'source' and 'cookbook' attributes in the file_input resource have been renamed to 'template_source' and 'cookbook_source' to prevent failures.
+- Helpers for determining the service provider on Ubuntu have been removed since Chef 12 does the right thing with Init, Upstart, and systemd.
+- rsyslog::client no longer fails if there are no servers to forward logs to. Instead forwarding isn't configuring and a warning is written to the chef client log
+- Fix broken templating of /etc/rsyslog.d/49-remote.conf when relp was enabled.  Added testing to prevent future regressions here.
+- Test Kitchen integration tests are now run via Travis so all PRs will be fully tested
+
+## v.2.2.0 (2015-10-05)
+- Add why-run support to the file_input LWRP
+- Added support for rsyslog under systemd on Ubuntu 15.04+
+- Added new attribute node['rsyslog']['custom_remote'].  See readme for additional information
+- Added source_url and issues_url metadata for Supermarket
+- Fixed 49-relp.conf to honor logs_to_forward so it didn't just forward everything
+- Updated contributing and testing docs
+- Set the minimum supported Chef release to 11.0
+- Added maintainers.toml and maintainers.md files
+- Added Amazon Linux, Oracle, and Scientific Linux to the metadata
+- Removed all pre-Ruby 1.9 hash rockets
+- Updated development dependencies in the
+- Fix a bad example attribute in the readme
+- Updated Travis CI config to test on all modern Ruby releases
+
+## v.2.1.0 (2015-07-22)
 - Fixed minor markdown errors in the readme
-- Alow the server to listen on both TCP and UDP.  For both set node['rsyslog']['protocol'] to 'udptcp'
+- Allow the server to listen on both TCP and UDP.  For both set node['rsyslog']['protocol'] to 'udptcp'
 - Move the include for /etc/rsyslog.d/ to the very end of the rsyslog.conf config
 - Added the ability to bind to a specific IP when running the server on UDP with node['rsyslog']['bind']
 - Sync the comments in the rsyslog.conf file with the latest upstream rsyslog release
-- Change emerg to log to :omusrmsg:* vs. * on modern rsyslog releases to avoid deprecation warnings
+- Change emerg to log to :omusrmsg:_ vs. _ on modern rsyslog releases to avoid deprecation warnings
 
-v.2.0.0 (2015-05-18)
---------------------
+## v.2.0.0 (2015-05-18)
 Note: This version includes several breaking changes for Ubuntu users. Be sure to take care when deploying these changes to production systems.
-
 - 49-relp.conf now properly uses the list of servers discovered in the client recipe
 - Fixed a typo that prevented file-input.conf from properly templating
 - Added allow_non_local attribute to allow non-local messages. This defaults to false, which preserves the previous functionality
@@ -22,8 +55,7 @@ Note: This version includes several breaking changes for Ubuntu users. Be sure t
 - Properly drop permissions on Ubuntu systems to syslog/syslog.  Introduces 2 new attributes to control the user/group: priv_user and priv_group
 - Remove logging to /dev/xconsole in 50-default.conf on Ubuntu systems.  This is generally not something you'd want to do and produces error messages at startup.
 
-v.1.15.0 (2015-02-23)
----------------------
+## v.1.15.0 (2015-02-23)
 - Change minimum supported Fedora release to 20 to align with the Fedora product lifecycle
 - Add supports CentOS to metadata
 - Update Rubocop and Test Kitchen dependencies to the latest versions
@@ -31,8 +63,7 @@ v.1.15.0 (2015-02-23)
 - Fix CentOS 5 support in the Kitchen config
 - Fix rsyslog service notification in the file_input LWRP
 
-v.1.14.0 (2015-01-30)
----------------------
+## v.1.14.0 (2015-01-30)
 - Don't attempt to use journald on Amazon Linux since Amazon Linux doesn't use systemd
 - Fixed setting bad permissions on the working directory by using the rsyslog user/group variables.
 - Fixed bad variable in the 49-relp.conf template that prevented Chef converges from completing.
@@ -42,8 +73,7 @@ v.1.14.0 (2015-01-30)
 - Added a new file_input LWRP for defining configs.
 - Added support for chef solo search cookbook.
 
-v1.13.0 (2014-11-25)
---------------------
+## v1.13.0 (2014-11-25)
 - Rsyslog's working directory is now an attribute and is set to the appropriate directory on RHEL based distros
 - The working directory is now 0700 vs 0755 for additional security
 - Add the ActionQueueMaxDiskSpace directive with a default of 1GB to prevent out of disk events during large buffering
@@ -61,19 +91,14 @@ v1.13.0 (2014-11-25)
 - Updated the Berksfile to point to Supermarket
 - Refactored the specs to be more dry
 
-v1.12.2 (2014-02-28)
---------------------
+## v1.12.2 (2014-02-28)
 Fixing bug fix in rsyslog.conf
 
-
-v1.12.0 (2014-02-27)
---------------------
+## v1.12.0 (2014-02-27)
 - [COOK-4021] Allow specifying default templates for local and remote
 - [COOK-4126] rsyslog cookbook fails restarts due to not using upstart
 
-
-v1.11.0 (2014-02-19)
---------------------
+## v1.11.0 (2014-02-19)
 ### Bug
 - **[COOK-4256](https://tickets.opscode.com/browse/COOK-4256)** - Fix syntax errors in default.conf on rhel
 
@@ -81,23 +106,17 @@ v1.11.0 (2014-02-19)
 - **[COOK-4022](https://tickets.opscode.com/browse/COOK-4022)** - Add use_local_ipv4 option to allow selecting internal interface on cloud systems
 - **[COOK-4018](https://tickets.opscode.com/browse/COOK-4018)** - rsyslog TLS encryption support
 
-
-v1.10.2
--------
+## v1.10.2
 No change. Version bump for toolchain.
 
-
-v1.10.0
--------
+## v1.10.0
 ### New Feature
 - **[COOK-4021](https://tickets.opscode.com/browse/COOK-4021)** - Allow specifying default templates for local and remote
 
 ### Improvement
 - **[COOK-3876](https://tickets.opscode.com/browse/COOK-3876)** - Cater for setting rate limits
 
-
-v1.9.0
-------
+## v1.9.0
 ### New Feature
 - **[COOK-3736](https://tickets.opscode.com/browse/COOK-3736)** - Support OmniOS
 
@@ -108,24 +127,20 @@ v1.9.0
 - **[COOK-3608](https://tickets.opscode.com/browse/COOK-3608)** - Add 50-default template knobs
 - **[COOK-3600](https://tickets.opscode.com/browse/COOK-3600)** - SmartOS support
 
-
-v1.8.0
-------
+## v1.8.0
 ### Improvement
 - **[COOK-3573](https://tickets.opscode.com/browse/COOK-3573)** -  Add Test Kitchen, Specs, and Travis CI
 
 ### New Feature
 - **[COOK-3435](https://tickets.opscode.com/browse/COOK-3435)** - Add support for relp
 
-v1.7.0
-------
+## v1.7.0
 ### Improvement
 - **[COOK-3253](https://tickets.opscode.com/browse/COOK-3253)** - Enable repeated message reduction
 - **[COOK-3190](https://tickets.opscode.com/browse/COOK-3190)** - Allow specifying which logs to send to remote server
 - **[COOK-2355](https://tickets.opscode.com/browse/COOK-2355)** - Support forwarding events to more than one server
 
-v1.6.0
-------
+## v1.6.0
 ### New Feature
 - [COOK-2831]: enable high precision timestamps
 
@@ -138,29 +153,23 @@ v1.6.0
 - [COOK-2356]: rsyslog service supports status. Service should use it.
 - [COOK-2357]: rsyslog cookbook copies in wrong defaults file on Ubuntu !9.10/10.04
 
-v1.5.0
-------
+## v1.5.0
 - [COOK-2141] - Add `$PreserveFQDN` configuration directive
 
-v1.4.0
-------
+## v1.4.0
 - [COOK-1877] - RHEL 6 support and refactoring
 
-v1.3.0
-------
+## v1.3.0
 - [COOK-1189] - template change does not restart rsyslog on Ubuntu
 
 This actually went into 1.2.0 with action `:reload`, but that change has been reverted and the action is back to `:restart`.
 
-v1.2.0
-------
+## v1.2.0
 - [COOK-1678] - syslog user does not exist on debian 6.0 and ubuntu versions lower than 11.04
 - [COOK-1650] - enable max message size configuration via attribute
 
-v1.1.0
-------
+## v1.1.0
 Changes from COOK-1167:
-
 - More versatile server discovery - use the IP as an attribute, or use search (see README)
 - Removed cron dependency.
 - Removed log archival; logrotate is recommended.
@@ -168,9 +177,7 @@ Changes from COOK-1167:
 - Works with Chef Solo now.
 - Set debian/ubuntu default user and group. Drop privileges to `syslog.adm`.
 
-
-v1.0.0
-------
+## v1.0.0
 - [COOK-836] - use an attribute to specify the role to search for instead of relying on the rsyslog['server'] attribute.
 - Clean up attribute usage to use strings instead of symbols.
 - Update this README.

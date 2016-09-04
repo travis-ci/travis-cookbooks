@@ -30,10 +30,7 @@ apt_repository 'docker' do
   action :add
 end
 
-package %w(
-  linux-generic-lts-vivid
-  lxc
-)
+package 'linux-generic-lts-xenial'
 
 package 'docker-engine' do
   version node['travis_docker']['version']

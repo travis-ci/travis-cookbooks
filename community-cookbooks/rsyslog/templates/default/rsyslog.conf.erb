@@ -7,6 +7,12 @@
 #
 #  Default logging rules can be found in /etc/rsyslog.d/50-default.conf
 #
+# Set hostname
+#
+<% if node['rsyslog']['local_host_name'] -%>
+$LocalHostName <%= node['rsyslog']['local_host_name'] %>
+<% end %>
+#
 # Set max message size
 #
 $MaxMessageSize <%= node['rsyslog']['max_message_size'] %>
