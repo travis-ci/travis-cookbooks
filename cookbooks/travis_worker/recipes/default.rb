@@ -1,1 +1,1 @@
-include_recipe 'travis_worker::package'
+include_recipe 'travis_worker::docker'
