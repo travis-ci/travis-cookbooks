@@ -40,7 +40,7 @@ script
   fi
 
   mv -v "${_TMP_ENV}" /var/tmp/travis-run.d/env
-  docker run --rm \
+  exec docker run --rm \
     --name travis-worker \
     --hostname "`hostname`" \
     -v /var/tmp:/var/tmp \
