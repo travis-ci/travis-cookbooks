@@ -18,29 +18,33 @@ post-stop exec sleep 5
 
 script
   mkdir -p /var/tmp/travis-run.d
-  _TMP_ENV=/var/tmp/travis-run.d/env.`date -u +%s`
+  _TMP_ENV="/var/tmp/travis-run.d/env.`date -u +%s`"
 
-  for config_file in travis-enterprise ${UPSTART_JOB}-chef ${UPSTART_JOB} ${UPSTART_JOB}-local ; do
-    if [ -f /etc/default/${config_file} ] ; then
-      echo "# /etc/default/${config_file}" >> "${_TMP_ENV}"
-      sed "s/^export //;s/\"//g;s/'//g" /etc/default/${config_file} >> "${_TMP_ENV}"
-      . /etc/default/${config_file}
+  for config_file in travis-enterprise \
+                     "${UPSTART_JOB}-chef" \
+                     "${UPSTART_JOB}" \
+                     "${UPSTART_JOB}-cloud-init" \
+                     "${UPSTART_JOB}-local"; do
+    if [ -f "/etc/default/${config_file}" ]; then
+      echo "# /etc/default/${config_file}" >>"${_TMP_ENV}"
+      sed "s/^export //;s/\"//g;s/'//g" "/etc/default/${config_file}" >>"${_TMP_ENV}"
+      . "/etc/default/${config_file}"
     fi
   done
 
   docker stop travis-worker >/dev/null 2>&1 || true
   docker rm -f travis-worker >/dev/null 2>&1 || true
 
-  for docker_image in $TRAVIS_WORKER_WARMED_DOCKER_IMAGES ; do
-    docker pull "${docker_image}"
-  done
+  if [ -f "${TRAVIS_WORKER_PRESTART_HOOK}" ]; then
+    "${TRAVIS_WORKER_PRESTART_HOOK}"
+  fi
 
   mv -v "${_TMP_ENV}" /var/tmp/travis-run.d/env
-  docker run --rm \
+  exec docker run --rm \
     --name travis-worker \
     --hostname "`hostname`" \
     -v /var/tmp:/var/tmp \
+    -v /var/run:/var/run \
     --env-file /var/tmp/travis-run.d/env \
-    --name travis-worker \
     "${TRAVIS_WORKER_SELF_IMAGE}" travis-worker
 end script

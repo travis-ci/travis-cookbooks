@@ -3,7 +3,7 @@
   /etc/default/travis-worker-chef
 ).each do |filename|
   template filename do
-    source 'travis-worker.erb'
+    source 'etc-default-travis-worker.sh.erb'
     owner 'root'
     group 'root'
     mode 0o644
