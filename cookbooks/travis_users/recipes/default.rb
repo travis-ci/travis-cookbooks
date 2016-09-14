@@ -36,6 +36,12 @@ Array(node['travis_users']).each do |user|
     shell user['shell']
   end
 
+  directory "/home/#{user['id']}" do
+    mode 0o750
+    owner user['id']
+    group user['id']
+  end
+
   file "/home/#{user['id']}/.zshrc" do
     content "# this space intentionally left blank\n"
     mode 0o640
