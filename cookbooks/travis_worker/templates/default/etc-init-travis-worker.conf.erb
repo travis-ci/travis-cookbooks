@@ -19,6 +19,7 @@ post-stop exec sleep 5
 script
   mkdir -p /var/tmp/travis-run.d
   _TMP_ENV="/var/tmp/travis-run.d/env.`date -u +%s`"
+  touch "${_TMP_ENV}"
 
   for config_file in travis-enterprise \
                      "${UPSTART_JOB}-chef" \
