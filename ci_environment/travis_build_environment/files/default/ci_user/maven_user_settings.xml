@@ -83,6 +83,9 @@
           <url>https://repository.apache.org/snapshots/</url>
         </repository>
 
+        <!-- codehaus.org is no longer available, see https://github.com/travis-ci/travis-ci/issues/4629 -->
+        <!-- commenting out instead of removing to avoid breaking `before_install` workarounds -->
+        <!--
         <repository>
           <id>codehaus-snapshots</id>
           <name>Codehaus (snapshots)</name>
@@ -98,6 +101,7 @@
           </snapshots>
           <url>https://nexus.codehaus.org/snapshots/</url>
         </repository>
+        -->
       </repositories>
     </profile>
   </profiles>
