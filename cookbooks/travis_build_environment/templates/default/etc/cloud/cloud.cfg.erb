@@ -30,25 +30,15 @@ cloud_config_modules:
 - emit_upstart
 - disk_setup
 - mounts
-- ssh-import-id
 - locale
-- set-passwords
 - grub-dpkg
 - apt-pipelining
 - apt-configure
-- package-update-upgrade-install
-- landscape
 - timezone
-- puppet
-- chef
-- salt-minion
-- mcollective
 - disable-ec2-metadata
 - runcmd
-- byobu
 
 cloud_final_modules:
-- rightscale_userdata
 - scripts-vendor
 - scripts-per-once
 - scripts-per-boot
@@ -56,14 +46,13 @@ cloud_final_modules:
 - scripts-user
 - ssh-authkey-fingerprints
 - keys-to-console
-- phone-home
 - final-message
 - power-state-change
 
 system_info:
   distro: ubuntu
   default_user:
-    name: ubuntu
+    name: travis
     lock_passwd: True
     gecos: Ubuntu
     groups: [adm, audio, cdrom, dialout, dip, floppy, netdev, plugdev, sudo, video]
@@ -73,19 +62,4 @@ system_info:
     cloud_dir: /var/lib/cloud/
     templates_dir: /etc/cloud/templates/
     upstart_dir: /etc/init/
-  package_mirrors:
-  - arches: [i386, amd64]
-    failsafe:
-      primary: 'http://archive.ubuntu.com/ubuntu'
-      security: 'http://security.ubuntu.com/ubuntu'
-    search:
-      primary:
-      - 'http://%(ec2_region)s.ec2.archive.ubuntu.com/ubuntu/'
-      - 'http://%(availability_zone)s.clouds.archive.ubuntu.com/ubuntu/'
-      - 'http://%(region)s.clouds.archive.ubuntu.com/ubuntu/'
-      security: []
-  - arches: [armhf, armel, default]
-    failsafe:
-      primary: 'http://ports.ubuntu.com/ubuntu-ports'
-      security: 'http://ports.ubuntu.com/ubuntu-ports'
   ssh_svcname: ssh
