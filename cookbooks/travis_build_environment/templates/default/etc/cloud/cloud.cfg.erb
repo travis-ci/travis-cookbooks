@@ -2,17 +2,10 @@
 ## cookbook:: travis_build_environment
 ##     file:: templates/default/etc/cloud/cloud.cfg.erb
 
-users:
-- travis
-
 disable_root: true
-
 preserve_hostname: false
-
 manage_etc_hosts: template
-
 cloud_init_modules:
-- migrator
 - seed_random
 - bootcmd
 - write-files
@@ -21,45 +14,17 @@ cloud_init_modules:
 - set_hostname
 - update_hostname
 - update_etc_hosts
-- ca-certs
-- rsyslog
-- users-groups
+<% if node['travis_build_environment']['ssh_host_key_regen'] %>
 - ssh
-
+<% end %>
 cloud_config_modules:
 - emit_upstart
-- disk_setup
-- mounts
-- locale
-- grub-dpkg
 - apt-pipelining
 - apt-configure
-- timezone
-- disable-ec2-metadata
 - runcmd
-
 cloud_final_modules:
 - scripts-vendor
 - scripts-per-once
 - scripts-per-boot
 - scripts-per-instance
 - scripts-user
-- ssh-authkey-fingerprints
-- keys-to-console
-- final-message
-- power-state-change
-
-system_info:
-  distro: ubuntu
-  default_user:
-    name: travis
-    lock_passwd: True
-    gecos: Ubuntu
-    groups: [adm, audio, cdrom, dialout, dip, floppy, netdev, plugdev, sudo, video]
-    sudo: ['ALL=(ALL) NOPASSWD:ALL']
-    shell: /bin/bash
-  paths:
-    cloud_dir: /var/lib/cloud/
-    templates_dir: /etc/cloud/templates/
-    upstart_dir: /etc/init/
-  ssh_svcname: ssh
