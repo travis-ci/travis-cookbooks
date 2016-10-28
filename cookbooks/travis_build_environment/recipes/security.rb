@@ -61,7 +61,7 @@ end
 
 execute '/usr/sbin/update-ca-certificates -f'
 
-cookbook_file '/var/lib/cloud/scripts/per-boot/iptables-lockdown' do
+cookbook_file '/var/lib/cloud/scripts/per-boot/99-travis-iptables-lockdown' do
   source 'cloud-init-per-boot-iptables-lockdown.bash'
   owner 'root'
   group 'root'
