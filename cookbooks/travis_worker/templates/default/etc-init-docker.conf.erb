@@ -50,16 +50,13 @@ script
       . /etc/default/${filename}
     fi
   done
-  export DOCKER_STORAGE_OPT_DM_BASESIZE
-  export DOCKER_STORAGE_OPT_DM_FS
-  export DOCKER_GRAPH_DIR
   for filename in ${UPSTART_JOB} ${UPSTART_JOB}-local ; do
     if [ -f /etc/default/${filename} ] ; then
       . /etc/default/${filename}
     fi
   done
   if [ -z $TRAVIS_WORKER_DISABLE_DIRECT_LVM ] ; then
-    DOCKER_OPTS="$DOCKER_OPTS $DOCKER_OPTS_DIRECT_LVM"
+    DOCKER_OPTS="$DOCKER_OPTS --config-file=/etc/docker/daemon-direct-lvm.json"
   fi
   exec "$DOCKER" daemon $DOCKER_OPTS
 end script
@@ -74,9 +71,6 @@ post-start script
       . /etc/default/${filename}
     fi
   done
-  export DOCKER_STORAGE_OPT_DM_BASESIZE
-  export DOCKER_STORAGE_OPT_DM_FS
-  export DOCKER_GRAPH_DIR
   for filename in ${UPSTART_JOB} ${UPSTART_JOB}-local ; do
     if [ -f /etc/default/${filename} ] ; then
       . /etc/default/${filename}
