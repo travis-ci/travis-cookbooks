@@ -30,6 +30,13 @@ template '/etc/apt/apt.conf.d/60assumeyes' do
   mode 0644
 end
 
+template '/etc/apt/apt.conf.d/10confold' do
+  source 'etc/apt/confold.erb'
+  owner 'root'
+  group 'root'
+  mode 0644
+end
+
 template '/etc/apt/apt.conf.d/37timeouts' do
   source 'etc/apt/timeouts.erb'
   owner 'root'
