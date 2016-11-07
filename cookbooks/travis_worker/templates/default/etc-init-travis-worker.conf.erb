@@ -44,6 +44,7 @@ script
   exec docker run --rm \
     --name travis-worker \
     --hostname "`hostname`" \
+    --userns host \
     -v /var/tmp:/var/tmp \
     -v /var/run:/var/run \
     --env-file /var/tmp/travis-run.d/env \
