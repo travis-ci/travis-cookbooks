@@ -12,6 +12,13 @@ template '/etc/default/docker-chef' do
   mode 0o644
 end
 
+file '/etc/default/docker' do
+  content "# this space intentionally left blank\n"
+  owner 'root'
+  group 'root'
+  mode 0o644
+end
+
 daemon_json = {
   'graph' => node['travis_worker']['docker']['dir'],
   'hosts' => %w(
