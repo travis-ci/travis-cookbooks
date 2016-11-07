@@ -30,7 +30,9 @@ apt_repository 'docker' do
   action :add
 end
 
-package 'linux-generic-lts-xenial'
+package %w(linux-generic-lts-xenial linux-image-generic-lts-xenial) do
+  action %i(install upgrade)
+end
 
 package 'docker-engine' do
   version node['travis_docker']['version']

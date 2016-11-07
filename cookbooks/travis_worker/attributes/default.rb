@@ -5,7 +5,7 @@ default['travis_worker']['branch'] = ''
 default['travis_worker']['disable_reconfiguration'] = false
 
 # The members under `environment` should be the exact env vars
-default['travis_worker']['environment']['TRAVIS_WORKER_SELF_IMAGE'] = 'quay.io/travisci/worker:v2.4.0'
+default['travis_worker']['environment']['TRAVIS_WORKER_SELF_IMAGE'] = 'quay.io/travisci/worker:v2.5.0'
 
 # The members under `environment` should be the exact env vars
 default['travis_worker']['docker']['environment']['TRAVIS_WORKER_DISABLE_DIRECT_LVM'] = ''
