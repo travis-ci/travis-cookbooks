@@ -27,27 +27,34 @@ template '/etc/apt/apt.conf.d/60assumeyes' do
   source 'etc/apt/assumeyes.erb'
   owner 'root'
   group 'root'
-  mode 0644
+  mode 0o644
+end
+
+template '/etc/apt/apt.conf.d/10confold' do
+  source 'etc/apt/confold.erb'
+  owner 'root'
+  group 'root'
+  mode 0o644
 end
 
 template '/etc/apt/apt.conf.d/37timeouts' do
   source 'etc/apt/timeouts.erb'
   owner 'root'
   group 'root'
-  mode 0644
+  mode 0o644
 end
 
 cookbook_file '/etc/apt/apt.conf.d/10periodic' do
   owner 'root'
   group 'root'
-  mode 0644
+  mode 0o644
 end
 
 template '/etc/apt/apt.conf.d/99compression-workaround' do
   source 'etc/apt/compression.erb'
   owner 'root'
   group 'root'
-  mode 0644
+  mode 0o644
 end
 
 package 'software-properties-common'
@@ -61,7 +68,7 @@ package 'software-properties-common'
     source 'etc/cloud/templates/sources.list.tmpl.erb'
     owner 'root'
     group 'root'
-    mode 0644
+    mode 0o644
   end
 end
 
