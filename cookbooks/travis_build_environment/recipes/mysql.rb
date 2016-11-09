@@ -20,6 +20,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+package %w(mysql-client-5.5 mysql-client-core-5.5 mysql-server-5.5) do
+  action :remove
+end
+
+mysql_client 'default' do
+  version '5.6'
+end
+
 mysql_service '5.6' do
   port '3306'
   version '5.6'
@@ -27,4 +35,12 @@ mysql_service '5.6' do
   action [:create, :start]
 end
 
-mysql_client 'default'
+template "#{node['travis_build_environment']['home']}/.my.cnf" do
+  source 'ci_user/dot_my.cnf.erb'
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0640
+  variables(
+    password: node['travis_build_environment']['mysql']['password']
+  )
+end
