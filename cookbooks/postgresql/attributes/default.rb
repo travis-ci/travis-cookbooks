@@ -1,7 +1,7 @@
 include_attribute 'travis_build_environment'
 
-default['postgresql']['default_version']     = '9.1'
-default['postgresql']['alternate_versions']  = %w(9.2 9.3 9.4 9.5)
+default['postgresql']['default_version']     = '9.3'
+default['postgresql']['alternate_versions']  = %w(9.1 9.2 9.4 9.5 9.6)
 
 default['postgresql']['enabled']             = true    # is default instance started on machine boot?
 
