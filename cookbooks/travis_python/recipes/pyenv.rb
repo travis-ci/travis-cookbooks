@@ -82,15 +82,19 @@ build_environment = {
 bindirs = %w(/opt/pyenv/bin)
 
 node['travis_python']['pyenv']['pythons'].each do |py|
+  pyname = py
+  downloaded_tarball = ::File.join(
+    Chef::Config[:file_cache_path], "#{py}.tar.bz2"
+  )
+
   if /^\d+\.\d+(?:\.\d+)?(?:-dev)?$/ =~ py
     pyname = "python#{py}"
-  else
-    pyname = py
+    downloaded_tarball = ::File.join(
+      Chef::Config[:file_cache_path], "python-#{py}.tar.bz2"
+    )
   end
 
   venv_fullname = "#{virtualenv_root}/#{pyname}"
-
-  downloaded_tarball = "#{Chef::Config[:file_cache_path]}/python-#{py}.tar.bz2"
 
   remote_file downloaded_tarball do
     source ::File.join(
