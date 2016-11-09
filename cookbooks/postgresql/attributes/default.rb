@@ -1,7 +1,7 @@
 include_attribute 'travis_build_environment'
 
-default['postgresql']['default_version']     = '9.3'
-default['postgresql']['alternate_versions']  = %w(9.1 9.2 9.4 9.5 9.6)
+default['postgresql']['default_version']     = '9.2'
+default['postgresql']['alternate_versions']  = %w(9.3 9.4 9.5 9.6)
 
 default['postgresql']['enabled']             = true    # is default instance started on machine boot?
 
@@ -25,6 +25,6 @@ default['postgresql']['contrib_modules']     = true    # enabled to install addi
 
 default['postgresql']['client_packages']     = %w(postgresql-client libpq-dev)
 
-default['postgresql']['postgis_version']     = '2.2'
+default['postgresql']['postgis_version']     = '2.3'
 
 default['postgresql']['superusers']          = [node['travis_build_environment']['user'], 'rails']
