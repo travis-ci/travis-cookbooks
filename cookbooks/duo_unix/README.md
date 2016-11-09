@@ -1,1 +1,0 @@
-# duo_unix cookbook

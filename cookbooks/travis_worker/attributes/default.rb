@@ -1,21 +1,25 @@
-default['travis']['worker']['home'] = '/home/deploy'
-default['travis']['worker']['repository'] = 'git://github.com/travis-ci/travis-worker.git'
-default['travis']['worker']['ref'] = 'master'
-default['travis']['worker']['amqp']['host'] = 'localhost'
-default['travis']['worker']['amqp']['port'] = 1234
-default['travis']['worker']['amqp']['username'] = 'travis'
-default['travis']['worker']['amqp']['password'] = 'travis'
-default['travis']['worker']['amqp']['virtual_host'] = 'travis'
-default['travis']['worker']['vms'] = 20
-default['travis']['worker']['env'] = 'ruby'
-default['travis']['worker']['hostname'] = "#{node['hostname']}.bluebox.travis-ci.com"
-default['travis']['worker']['log_level'] = 'info'
-default['travis']['worker']['workers'] = 1
-default['travis']['worker']['hosts'] = {}
-default['travis']['worker']['restart_sleep'] = rand(0..900)
-default['travis']['worker']['restart_begin_hour'] = 2
-default['papertrail']['watch_files'] = {}
+# Set this to a branch name to copy down a binary directly from S3
+default['travis_worker']['branch'] = ''
 
-1.upto(node['travis']['worker']['workers']) do |num|
-  set['papertrail']['watch_files']["/etc/sv/travis-worker-#{num}/log/main/current"] = 'travis-worker'
-end
+# Disables writing a new config, as with hosts configured via cloud-init
+default['travis_worker']['disable_reconfiguration'] = false
+
+# The members under `environment` should be the exact env vars
+default['travis_worker']['environment']['TRAVIS_WORKER_SELF_IMAGE'] = 'quay.io/travisci/worker:v2.5.0'
+
+# The members under `environment` should be the exact env vars
+default['travis_worker']['docker']['environment']['TRAVIS_WORKER_DISABLE_DIRECT_LVM'] = ''
+
+default['travis_worker']['docker']['disable_install'] = false
+default['travis_worker']['docker']['volume']['device'] = '/dev/xvdc'
+default['travis_worker']['docker']['volume']['metadata_size'] = '2G'
+default['travis_worker']['docker']['dm_basesize'] = '12G'
+default['travis_worker']['docker']['dm_fs'] = 'xfs'
+default['travis_worker']['docker']['dir'] = '/mnt/docker'
+
+set['papertrail']['watch_files']['/var/log/upstart/travis-worker.log'] = 'travis-worker'
+
+# rsyslogd must be root in order to read upstart logs :'(
+set['rsyslog']['user'] = 'root'
+set['rsyslog']['group'] = 'root'
+set['rsyslog']['priv_seperation'] = false

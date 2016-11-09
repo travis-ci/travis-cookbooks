@@ -8,7 +8,8 @@ apt_repository 'basho-riak' do
   distribution node['lsb']['codename']
   components ['main']
   key 'https://packagecloud.io/gpg.key'
-
+  retries 2
+  retry_delay 30
   action :add
 end
 

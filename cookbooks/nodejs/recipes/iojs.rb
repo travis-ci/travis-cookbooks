@@ -33,7 +33,7 @@ node['iojs']['versions'].each do |version|
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     cwd node['travis_build_environment']['home']
-    environment('HOME' => "#{node['travis_build_environment']['home']}")
+    environment('HOME' => node['travis_build_environment']['home'].to_s)
     code "#{nvm} install iojs-v#{version}"
   end
 
@@ -47,7 +47,7 @@ node['iojs']['versions'].each do |version|
       user node['travis_build_environment']['user']
       group node['travis_build_environment']['group']
       cwd node['travis_build_environment']['home']
-      environment('HOME' => "#{node['travis_build_environment']['home']}")
+      environment('HOME' => node['travis_build_environment']['home'].to_s)
       code "#{nvm} use iojs-v#{version}; npm install -g #{mod}"
     end
   end

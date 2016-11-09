@@ -1,8 +1,7 @@
 # On Ubuntu 12.04, there are some package conflicts between 'tzdata',
 # 'tzdata-java' and opendjdk packages.  Workaround consists in forcing
 # re-installation of "compatible" versions of tzdata and tzdata-java...  See
-# also 'java::openjdk6' recipe and 'travis_timezone' cookbook.
-include_recipe 'travis_timezone'
+# also 'java::openjdk6' recipe.
 
 node['travis_java']['alternate_versions'].each do |java_version|
   Chef::Log.info("Installing Java #{java_version}.")

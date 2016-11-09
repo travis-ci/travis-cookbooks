@@ -25,13 +25,14 @@ apt_repository 'docker' do
   distribution 'ubuntu-trusty'
   components ['main']
   key 'https://apt.dockerproject.org/gpg'
+  retries 2
+  retry_delay 30
   action :add
 end
 
-package %w(
-  linux-generic-lts-vivid
-  lxc
-)
+package %w(linux-generic-lts-xenial linux-image-generic-lts-xenial) do
+  action %i(install upgrade)
+end
 
 package 'docker-engine' do
   version node['travis_docker']['version']

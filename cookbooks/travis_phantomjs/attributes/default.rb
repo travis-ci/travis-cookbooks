@@ -1,7 +1,12 @@
 version = '1.9.8'
-arch = kernel['machine'] =~ /x86_64/ ? 'x86_64' : 'i686'
 
 default['travis_phantomjs']['version'] = version
-default['travis_phantomjs']['arch'] = arch
-default['travis_phantomjs']['tarball']['url'] = "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-#{version}-linux-#{arch}.tar.bz2"
-default['travis_phantomjs']['tarball']['checksum'] = 'a1d9628118e270f26c4ddd1d7f3502a93b48ede334b8585d11c1c3ae7bc7163a'
+default['travis_phantomjs']['arch'] = node['kernel']['machine']
+default['travis_phantomjs']['tarball']['url'] = ::File.join(
+  'https://s3.amazonaws.com/travis-phantomjs/binaries',
+  node['platform'],
+  node['platform_version'],
+  node['kernel']['machine'],
+  "phantomjs-#{version}.tar.bz2"
+)
+default['travis_phantomjs']['tarball']['checksum'] = '0afac5ea87f77f567dbc65ba586371b62b0cca1a440c2f9d122e5520bb522c6c'

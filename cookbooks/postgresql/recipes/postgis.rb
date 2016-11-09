@@ -8,8 +8,9 @@ if node['lsb']['codename'] == 'precise'
     distribution node['lsb']['codename']
     components ['main']
     key '314DF160'
-    keyserver 'keyserver.ubuntu.com'
-
+    keyserver 'hkp://ha.pool.sks-keyservers.net'
+    retries 2
+    retry_delay 30
     action :add
   end
 end
@@ -18,8 +19,5 @@ end
 # At the moment, the same PostGIS *single* version is installed for all PostgreSQL instances
 #
 ([node['postgresql']['default_version']] + node['postgresql']['alternate_versions']).each do |pg_version|
-  # For now, skip 9.4 Beta, which is not integrated yet in ubuntugis stable PPA
-  if pg_version != '9.4'
-    package "postgresql-#{pg_version}-postgis-#{node['postgresql']['postgis_version']}"
-  end
+  package "postgresql-#{pg_version}-postgis-#{node['postgresql']['postgis_version']}"
 end

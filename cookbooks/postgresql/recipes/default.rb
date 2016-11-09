@@ -20,7 +20,7 @@
 #
 
 unless %w(precise trusty).include? node['lsb']['codename']
-  fail 'Sorry, but this cookbook is currently designed for Ubuntu 12.04 and 14.04 only!'
+  raise 'Sorry, but this cookbook is currently designed for Ubuntu 12.04 and 14.04 only!'
 end
 
 #

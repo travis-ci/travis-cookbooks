@@ -10,7 +10,7 @@
 
 # Create base directory on RAMFS before creating cluster
 #
-include_recipe 'ramfs' if node['postgresql']['data_on_ramfs']
+include_recipe 'travis_build_environment::ramfs' if node['postgresql']['data_on_ramfs']
 
 create_superusers_script = File.join(Chef::Config[:file_cache_path], 'postgresql_create_superusers.sql')
 if !node['postgresql']['superusers'].to_a.empty? && !File.exist?(create_superusers_script)
