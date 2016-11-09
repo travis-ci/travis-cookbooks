@@ -49,7 +49,6 @@ end
 [
   { src: 'dot_bashrc.sh.erb', dest: '.bashrc', mode: 0o640 },
   { src: 'dot_bash_profile.sh.erb', dest: '.bash_profile', mode: 0o640 },
-  { src: 'ci_environment_metadata.yml.erb', dest: '.travis_ci_environment.yml', mode: 0o640 },
   { src: 'dot_gitconfig.erb', dest: '.gitconfig', mode: 0o640 }
 ].each do |entry|
   template "#{node['travis_build_environment']['home']}/#{entry[:dest]}" do
@@ -58,6 +57,16 @@ end
     group node['travis_build_environment']['group']
     mode(entry[:mode] || 0o640)
   end
+end
+
+file "#{node['travis_build_environment']['home']}/.travis_ci_environment.yml" do
+  content YAML.dump(
+    timestamp: Time.now.to_i,
+    recipes: node.recipes.map(&:to_s)
+  ) + "\n"
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0o640
 end
 
 [
