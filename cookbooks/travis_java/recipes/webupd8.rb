@@ -25,5 +25,4 @@ end
 #        will be auto-installed as dependency (a bit noisy, but it shoudn't hurt)
 #
 # Possible variant: install a copy of ubuntu java keystore as cookbook_file or remote_file
-#
 package 'ca-certificates-java'
