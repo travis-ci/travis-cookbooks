@@ -6,7 +6,7 @@ package %w(
 apt_repository 'webupd8team-java-ppa' do
   uri 'http://ppa.launchpad.net/webupd8team/java/ubuntu'
   distribution node['lsb']['codename']
-  components ['main']
+  components %w(main)
   key 'EEA14886'
   keyserver 'hkp://ha.pool.sks-keyservers.net'
   retries 2
