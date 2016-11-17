@@ -1,5 +1,3 @@
-package 'unzip'
-
 default_jvm = nil
 
 unless node['travis_java']['default_version'].to_s.empty?
@@ -16,6 +14,7 @@ template '/etc/profile.d/travis-java.sh' do
   mode 0o755
   variables(
     jdk_switcher_default: node['travis_java']['default_version'],
+    jdk_switcher_path: node['travis_java']['jdk_switcher_path'],
     jvm_base_dir: node['travis_java']['jvm_base_dir'],
     jvm_name: default_jvm
   )
