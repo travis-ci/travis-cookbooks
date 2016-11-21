@@ -56,8 +56,7 @@ end
 execute 'rm -rf /etc/update-motd.d/*'
 
 include_recipe 'rvm'
-include_recipe 'travis_git::ppa'
-include_recipe 'travis_git::lfs'
+include_recipe 'travis_build_environment::git'
 include_recipe 'travis_build_environment::timezone'
 include_recipe 'travis_build_environment::gimme'
 include_recipe 'travis_build_environment::apt'
