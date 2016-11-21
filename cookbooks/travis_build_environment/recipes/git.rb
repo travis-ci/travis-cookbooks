@@ -8,8 +8,8 @@ apt_repository 'git-ppa' do
   retry_delay 30
 end
 
-package 'git' do
-  action :upgrade
+package %w(git git-core) do
+  action %i(install upgrade)
 end
 
 packagecloud_repo 'github/git-lfs' do
