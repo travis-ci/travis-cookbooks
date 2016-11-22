@@ -148,6 +148,11 @@ default['travis_build_environment']['sysctl_kernel_shmmax'] = 45_794_432
 default['travis_build_environment']['sysctl_disable_ipv6'] = true
 default['travis_build_environment']['wget']['version'] = '1.18'
 
+default['travis_build_environment']['yarn_url'] = 'https://yarnpkg.com/downloads/0.17.8/yarn-v0.17.8.tar.gz'
+default['travis_build_environment']['yarn_version'] = '0.17.8'
+default['travis_build_environment']['yarn_checksum'] = 'b54e762e2a54f1fb23c6b0f9c239c3791aae05aface5ea0d6498f2a7979b541c'
+default['travis_build_environment']['yarn_binaries'] = %w(bin/yarn bin/yarnpkg bin/yarn.js)
+
 default['tz'] = 'UTC'
 default['travis_java']['default_version'] = ''
 override['rvm']['gpg']['keyserver'] = 'hkp://ha.pool.sks-keyservers.net'
