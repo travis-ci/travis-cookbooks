@@ -31,6 +31,7 @@ end
 mysql_service '5.6' do
   port '3306'
   version '5.6'
+  socket node['travis_build_environment']['mysql']['socket']
   initial_root_password node['travis_build_environment']['mysql']['password']
   action %i(create start stop)
 end
@@ -41,7 +42,8 @@ template "#{node['travis_build_environment']['home']}/.my.cnf" do
   group node['travis_build_environment']['group']
   mode 0o640
   variables(
-    password: node['travis_build_environment']['mysql']['password']
+    password: node['travis_build_environment']['mysql']['password'],
+    socket: node['travis_build_environment']['mysql']['socket']
   )
 end
 
@@ -57,8 +59,15 @@ end
   end
 
   link from do
-    to '/run/mysql-5.6/mysqld.sock'
+    to node['travis_build_environment']['mysql']['socket']
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
   end
+end
+
+file '/etc/profile.d/travis-mysql.sh' do
+  content "export MYSQL_UNIX_PORT=#{node['travis_build_environment']['mysql']['socket']}\n"
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0o755
 end
