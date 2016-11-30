@@ -21,10 +21,10 @@
 # THE SOFTWARE.
 
 package %w(mysql-client-5.5 mysql-client-core-5.5 mysql-server-5.5) do
-  action :remove
+  action %i(remove purge)
 end
 
-mysql_client 'default' do
+mysql_client '5.6' do
   version '5.6'
 end
 
@@ -32,15 +32,33 @@ mysql_service '5.6' do
   port '3306'
   version '5.6'
   initial_root_password node['travis_build_environment']['mysql']['password']
-  action [:create, :start]
+  action %i(create start stop)
 end
 
 template "#{node['travis_build_environment']['home']}/.my.cnf" do
   source 'ci_user/dot_my.cnf.erb'
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0640
+  mode 0o640
   variables(
     password: node['travis_build_environment']['mysql']['password']
   )
+end
+
+%w(
+  /var/run/mysqld/mysqld.sock
+  /run/mysqld/mysqld.sock
+).each do |from|
+  directory ::File.dirname(from) do
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    mode 0o750
+    recursive true
+  end
+
+  link from do
+    to '/run/mysql-5.6/mysqld.sock'
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+  end
 end
