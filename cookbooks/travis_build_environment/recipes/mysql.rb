@@ -62,14 +62,12 @@ file mysql_users_passwords_sql do
   EOF
 end
 
-bash 'setup mysql users and passwords' do
-  code "mysql -u root <#{mysql_users_passwords_sql}"
-  action :nothing
-end
-
 service 'mysql' do
   action %i(enable start)
-  notifies :run, 'bash[setup mysql users and passwords]', :immediately
+end
+
+bash 'setup mysql users and passwords' do
+  code "mysql -u root <#{mysql_users_passwords_sql}"
 end
 
 template "#{node['travis_build_environment']['home']}/.my.cnf" do
