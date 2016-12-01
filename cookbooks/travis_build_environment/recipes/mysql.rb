@@ -33,8 +33,7 @@ end
   root_password
   root_password_again
 ).each do |selection|
-  execute "echo 'mysql-server-5.6 mysql-server/#{selection} password ' " +
-          '| debconf-set-selections'
+  execute "echo 'mysql-server-5.6 mysql-server/#{selection} password ' | debconf-set-selections"
 end
 
 package %w(
