@@ -56,10 +56,9 @@ mysql_users_passwords_sql = ::File.join(
 
 file mysql_users_passwords_sql do
   content <<-EOF.gsub(/^\s+> /, '')
-    > CREATE USER 'travis'@'%' IDENTIFIED WITH mysql_native_password;
     > SET old_passwords = 0;
+    > CREATE USER 'travis'@'%' IDENTIFIED BY '';
     > SET PASSWORD FOR 'root'@'%' = PASSWORD('');
-    > SET PASSWORD FOR 'travis'@'%' = PASSWORD('');
   EOF
 end
 
