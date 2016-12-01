@@ -58,7 +58,8 @@ file mysql_users_passwords_sql do
   content <<-EOF.gsub(/^\s+> /, '')
     > SET old_passwords = 0;
     > CREATE USER 'travis'@'%' IDENTIFIED BY '';
-    > SET PASSWORD FOR 'root'@'%' = PASSWORD('');
+    > SET PASSWORD FOR 'root'@'localhost' = PASSWORD('');
+    > SET PASSWORD FOR 'root'@'127.0.0.1' = PASSWORD('');
   EOF
 end
 
