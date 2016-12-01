@@ -29,7 +29,6 @@ execute "set #{default_jvm} as default alternative" do
   not_if { default_jvm.nil? }
 end
 
-
 # HACK: these files and symlinks are created by *something* (presumably the
 # oracle-java8-installer), and they point to a version that is different and
 # older than /usr/lib/jvm/java-8-oracle, which is *very confusing*, so let's get
