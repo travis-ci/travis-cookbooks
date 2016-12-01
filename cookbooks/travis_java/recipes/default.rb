@@ -24,7 +24,22 @@ unless Array(node['travis_java']['alternate_versions']).empty?
   include_recipe 'travis_java::multi'
 end
 
-execute "Set #{default_jvm} as default alternative" do
+execute "set #{default_jvm} as default alternative" do
   command "update-java-alternatives -s #{default_jvm}"
   not_if { default_jvm.nil? }
+end
+
+# HACK: these files and symlinks are created by *something* (presumably the
+# oracle-java8-installer), and they point to a version that is different and
+# older than /usr/lib/jvm/java-8-oracle, which is *very confusing*, so let's get
+# rid of them OK?
+%w(
+  /usr/lib/jvm/default-java
+  /usr/lib/jvm/java-8-oracle-amd64
+  /usr/lib/jvm/.java-8-oracle-amd64.jinfo
+).each do |filename|
+  file filename do
+    ignore_failure true
+    action :delete
+  end
 end
