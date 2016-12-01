@@ -33,8 +33,12 @@ end
   root_password
   root_password_again
 ).each do |selection|
-  full_selection = "mysql-server-5.6 mysql-server/#{selection} password " \
-                   node['travis_build_environment']['mysql']['password'].to_s
+  full_selection = %W(
+    mysql-server-5.6
+    mysql-server/#{selection}
+    password
+    #{node['travis_build_environment']['mysql']['password']}
+  ).join(' ')
   execute "echo '#{full_selection}' | debconf-set-selections"
 end
 
