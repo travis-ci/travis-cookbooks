@@ -33,13 +33,8 @@ end
   root_password
   root_password_again
 ).each do |selection|
-  full_selection = %W(
-    mysql-server-5.6
-    mysql-server/#{selection}
-    password
-    #{node['travis_build_environment']['mysql']['password']}
-  ).join(' ')
-  execute "echo '#{full_selection}' | debconf-set-selections"
+  execute "echo 'mysql-server-5.6 mysql-server/#{selection} password ' " +
+          '| debconf-set-selections'
 end
 
 package %w(
@@ -54,8 +49,28 @@ package %w(
   action %i(install upgrade)
 end
 
+mysql_users_passwords_sql = ::File.join(
+  Chef::Config[:file_cache_path],
+  'mysql_users_passwords.sql'
+)
+
+file mysql_users_passwords_sql do
+  content <<-EOF.gsub(/^\s+> /, '')
+    > CREATE USER 'travis'@'%' IDENTIFIED WITH mysql_native_password;
+    > SET old_passwords = 0;
+    > SET PASSWORD FOR 'root'@'%' = PASSWORD('');
+    > SET PASSWORD FOR 'travis'@'%' = PASSWORD('');
+  EOF
+end
+
+bash 'setup mysql users and passwords' do
+  code "mysql -u root <#{mysql_users_passwords_sql}"
+  action :nothing
+end
+
 service 'mysql' do
   action %i(enable start)
+  notifies :run, 'bash[setup mysql users and passwords]', :immediately
 end
 
 template "#{node['travis_build_environment']['home']}/.my.cnf" do
@@ -63,10 +78,7 @@ template "#{node['travis_build_environment']['home']}/.my.cnf" do
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode 0o640
-  variables(
-    password: node['travis_build_environment']['mysql']['password'],
-    socket: node['travis_build_environment']['mysql']['socket']
-  )
+  variables(socket: node['travis_build_environment']['mysql']['socket'])
 end
 
 file '/etc/profile.d/travis-mysql.sh' do
