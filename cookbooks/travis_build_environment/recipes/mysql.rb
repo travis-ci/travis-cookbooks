@@ -29,13 +29,13 @@ package %w(
   action %i(remove purge)
 end
 
-bash 'set password for mysql root user' do
-  code <<-EOF.gsub(/^\s+> /, '')
-    > echo 'mysql-server-5.6 mysql-server/root_password password #{node['travis_build_environment']['mysql']['password']}' | sudo debconf-set-selections'
-    > echo 'mysql-server-5.6 mysql-server/root_password_again password #{node['travis_build_environment']['mysql']['password']}' | sudo debconf-set-selections'
-  EOF
-  user 'root'
-  group 'root'
+%w(
+  root_password
+  root_password_again
+).each do |selection|
+  full_selection = "mysql-server-5.6 mysql-server/#{selection} password " \
+                   node['travis_build_environment']['mysql']['password'].to_s
+  execute "echo '#{full_selection}' | debconf-set-selections"
 end
 
 package %w(
