@@ -20,20 +20,38 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package %w(mysql-client-5.5 mysql-client-core-5.5 mysql-server-5.5) do
+package %w(
+  mysql-client-5.5
+  mysql-client-core-5.5
+  mysql-common
+  mysql-server-5.5
+) do
   action %i(remove purge)
 end
 
-mysql_client '5.6' do
-  version '5.6'
+bash 'set password for mysql root user' do
+  code <<-EOF.gsub(/^\s+> /, '')
+    > echo 'mysql-server-5.6 mysql-server/root_password password #{node['travis_build_environment']['mysql']['password']}' | sudo debconf-set-selections'
+    > echo 'mysql-server-5.6 mysql-server/root_password_again password #{node['travis_build_environment']['mysql']['password']}' | sudo debconf-set-selections'
+  EOF
+  user 'root'
+  group 'root'
 end
 
-mysql_service '5.6' do
-  port '3306'
-  version '5.6'
-  socket node['travis_build_environment']['mysql']['socket']
-  initial_root_password node['travis_build_environment']['mysql']['password']
-  action %i(create start stop)
+package %w(
+  libmysqlclient-dev
+  libmysqlclient18
+  mysql-client-5.6
+  mysql-client-core-5.6
+  mysql-common-5.6
+  mysql-server-5.6
+  mysql-server-core-5.6
+) do
+  action %i(install upgrade)
+end
+
+service 'mysql' do
+  action %i(enable start)
 end
 
 template "#{node['travis_build_environment']['home']}/.my.cnf" do
