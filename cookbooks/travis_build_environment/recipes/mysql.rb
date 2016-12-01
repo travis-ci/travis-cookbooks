@@ -69,24 +69,6 @@ template "#{node['travis_build_environment']['home']}/.my.cnf" do
   )
 end
 
-%w(
-  /var/run/mysqld/mysqld.sock
-  /run/mysqld/mysqld.sock
-).each do |from|
-  directory ::File.dirname(from) do
-    user node['travis_build_environment']['user']
-    group node['travis_build_environment']['group']
-    mode 0o750
-    recursive true
-  end
-
-  link from do
-    to node['travis_build_environment']['mysql']['socket']
-    user node['travis_build_environment']['user']
-    group node['travis_build_environment']['group']
-  end
-end
-
 file '/etc/profile.d/travis-mysql.sh' do
   content "export MYSQL_UNIX_PORT=#{node['travis_build_environment']['mysql']['socket']}\n"
   owner node['travis_build_environment']['user']
