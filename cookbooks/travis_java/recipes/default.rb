@@ -26,7 +26,7 @@ end
 
 execute "set #{default_jvm} as default alternative" do
   command "update-java-alternatives -s #{default_jvm}"
-  not_if { default_jvm.nil? }
+  action :nothing
 end
 
 # HACK: these files and symlinks are created by *something* (presumably the
@@ -46,4 +46,10 @@ end
 log 'trigger jvm symlink cleanup' do
   level :info
   notifies :run, 'execute[clean up busted jvm symlinks]'
+end
+
+log 'trigger setting default java' do
+  level :info
+  notifies :run, "execute[set #{default_jvm} as default alternative]"
+  not_if { default_jvm.nil? }
 end
