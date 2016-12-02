@@ -5,7 +5,12 @@ remote_file '/usr/local/bin/lein' do
   mode 0o755
 end
 
-execute 'lein self-install' do
+bash 'run lein self-install' do
+  flags '-l'
+  code 'lein self-install'
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
+  environment(
+    'HOME' => node['travis_build_environment']['home']
+  )
 end
