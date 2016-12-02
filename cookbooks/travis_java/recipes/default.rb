@@ -33,13 +33,17 @@ end
 # oracle-java8-installer), and they point to a version that is different and
 # older than /usr/lib/jvm/java-8-oracle, which is *very confusing*, so let's get
 # rid of them OK?
-%w(
-  /usr/lib/jvm/default-java
-  /usr/lib/jvm/java-8-oracle-amd64
-  /usr/lib/jvm/.java-8-oracle-amd64.jinfo
-).each do |filename|
-  file filename do
-    ignore_failure true
-    action :delete
-  end
+execute 'clean up busted jvm symlinks' do
+  command %w(
+    rm -f
+    /usr/lib/jvm/default-java
+    /usr/lib/jvm/java-8-oracle-amd64
+    /usr/lib/jvm/.java-8-oracle-amd64.jinfo
+  ).join(' ')
+  action :nothing
+end
+
+log 'trigger jvm symlink cleanup' do
+  level :info
+  notifies :run, 'execute[clean up busted jvm symlinks]'
 end
