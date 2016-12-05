@@ -1,0 +1,7 @@
+#!/bin/sh
+# Managed by chef on <%= node.name %> :heart_eyes_cat:
+# This is a shim intended to run cqlsh.py without issue in the Travis Build
+# Environment, what with its various versions of Python installed.  The stock
+# `cqlsh` loader script is still available at `/usr/bin/cqlsh`.
+export PYTHONPATH=/usr/lib/python2.7/dist-packages
+exec /usr/bin/python2.7 /usr/bin/cqlsh.py "$@"

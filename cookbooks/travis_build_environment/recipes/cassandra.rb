@@ -14,7 +14,8 @@ service 'cassandra' do
   action %i(disable stop)
 end
 
-cookbook_file '/etc/profile.d/travis-cassandra.sh' do
+template '/usr/local/bin/cqlsh' do
+  source 'cqlsh.sh.erb'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode 0o755
