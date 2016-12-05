@@ -6,5 +6,5 @@ apt_repository 'cassandra' do
 end
 
 service 'cassandra' do
-  action %i(disable start)
+  action %i(disable stop)
 end
