@@ -24,7 +24,7 @@
 apt_repository 'rwky-redis' do
   uri 'http://ppa.launchpad.net/rwky/redis/ubuntu'
   distribution node['lsb']['codename']
-  components ['main']
+  components %w(main)
   key '5862E31D'
   keyserver 'hkp://ha.pool.sks-keyservers.net'
   retries 2
@@ -36,12 +36,20 @@ package 'redis-server' do
   action :install
 end
 
+cookbook_file '/etc/init.d/redis-server' do
+  source 'etc-init-d-redis-server.sh'
+  owner 'root'
+  group 'root'
+  mode 0o755
+  only_if { node['redis']['write_sysvinit_shim'] }
+end
+
 service 'redis-server' do
   provider Chef::Provider::Service::Upstart
   supports restart: true, status: true, reload: true
   if node.redis.service.enabled
-    action [:enable, :start]
+    action %i(enable start)
   else
-    action [:disable, :start]
+    action %i(disable start)
   end
 end
