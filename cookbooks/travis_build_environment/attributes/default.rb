@@ -136,7 +136,7 @@ default['travis_build_environment']['firefox_version'] = '50.0.2'
 default['travis_build_environment']['firefox_download_url'] = ::File.join(
   'https://releases.mozilla.org/pub/firefox/releases',
   node['travis_build_environment']['firefox_version'],
-  "linux-#{kernel['machine']}/en-US"
+  "linux-#{kernel['machine']}/en-US",
   "firefox-#{node['travis_build_environment']['firefox_version']}.tar.bz2"
 )
 
