@@ -144,6 +144,24 @@ default['travis_build_environment']['gimme']['install_user'] = 'travis'
 default['travis_build_environment']['gimme']['install_user_home'] = '/home/travis'
 default['travis_build_environment']['gimme']['debug'] = false
 
+default['travis_build_environment']['haskell_ghc_versions'] = %w(
+  7.0.4
+  7.4.2
+  7.6.3
+  7.8.4
+  7.10.3
+  8.0.2
+)
+default['travis_build_environment']['haskell_cabal_versions'] = %w(
+  1.16
+  1.18
+  1.20
+  1.22
+  1.24
+)
+default['travis_build_environment']['haskell_default_ghc'] = '7.6.3'
+default['travis_build_environment']['haskell_default_cabal'] = '1.18'
+
 default['travis_build_environment']['lein_url'] = 'https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein'
 
 default['travis_build_environment']['sysctl_kernel_shmmax'] = 45_794_432
