@@ -20,31 +20,62 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+include_recipe 'apt'
+include_recipe 'travis_build_environment::cloud_init'
+
 template '/etc/apt/apt.conf.d/60assumeyes' do
   source 'etc/apt/assumeyes.erb'
   owner 'root'
   group 'root'
-  mode 0644
+  mode 0o644
+end
+
+template '/etc/apt/apt.conf.d/10confold' do
+  source 'etc/apt/confold.erb'
+  owner 'root'
+  group 'root'
+  mode 0o644
 end
 
 template '/etc/apt/apt.conf.d/37timeouts' do
   source 'etc/apt/timeouts.erb'
   owner 'root'
   group 'root'
-  mode 0644
+  mode 0o644
 end
 
 cookbook_file '/etc/apt/apt.conf.d/10periodic' do
   owner 'root'
   group 'root'
-  mode 0644
+  mode 0o644
+end
+
+template '/etc/apt/apt.conf.d/99compression-workaround' do
+  source 'etc/apt/compression.erb'
+  owner 'root'
+  group 'root'
+  mode 0o644
 end
 
 package 'software-properties-common'
 
 %w(
-  universe
+  /etc/cloud/templates/sources.list.debian.tmpl
+  /etc/cloud/templates/sources.list.tmpl
+  /etc/cloud/templates/sources.list.ubuntu.tmpl
+).each do |filename|
+  template filename do
+    source 'etc/cloud/templates/sources.list.tmpl.erb'
+    owner 'root'
+    group 'root'
+    mode 0o644
+  end
+end
+
+%w(
   multiverse
+  restricted
+  universe
 ).each do |source_alias|
   execute "apt-add-repository -y #{source_alias}"
 end

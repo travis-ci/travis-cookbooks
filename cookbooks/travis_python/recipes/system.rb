@@ -33,6 +33,8 @@ end
 
 node['travis_python']['system']['pythons'].each do |py|
   pyname = "python#{py}"
+  venv_name = "#{pyname}_with_system_site_packages"
+  venv_fullname = "#{virtualenv_root}/#{venv_name}"
 
   virtualenv_name = "#{virtualenv_root}/#{pyname}_with_system_site_packages"
 

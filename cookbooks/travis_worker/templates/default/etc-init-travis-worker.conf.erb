@@ -1,0 +1,52 @@
+# Managed by Chef on <%= node.name %> :heart:
+# vim:filetype=upstart
+author "Travis CI GmbH <contact+travis-worker-upstart@travis-ci.com>"
+description "Travis CI Worker"
+start on docker
+stop on runlevel [!2345]
+
+respawn
+respawn limit 3 30
+
+umask 022
+chdir /
+setuid travis
+setgid travis
+console log
+
+post-stop exec sleep 5
+
+script
+  mkdir -p /var/tmp/travis-run.d
+  _TMP_ENV="/var/tmp/travis-run.d/env.`date -u +%s`"
+  touch "${_TMP_ENV}"
+
+  for config_file in travis-enterprise \
+                     "${UPSTART_JOB}-chef" \
+                     "${UPSTART_JOB}" \
+                     "${UPSTART_JOB}-cloud-init" \
+                     "${UPSTART_JOB}-local"; do
+    if [ -f "/etc/default/${config_file}" ]; then
+      echo "# /etc/default/${config_file}" >>"${_TMP_ENV}"
+      sed "s/^export //;s/\"//g;s/'//g" "/etc/default/${config_file}" >>"${_TMP_ENV}"
+      . "/etc/default/${config_file}"
+    fi
+  done
+
+  docker stop travis-worker >/dev/null 2>&1 || true
+  docker rm -f travis-worker >/dev/null 2>&1 || true
+
+  if [ -f "${TRAVIS_WORKER_PRESTART_HOOK}" ]; then
+    "${TRAVIS_WORKER_PRESTART_HOOK}"
+  fi
+
+  mv -v "${_TMP_ENV}" /var/tmp/travis-run.d/env
+  exec docker run --rm \
+    --name travis-worker \
+    --hostname "`hostname`" \
+    --userns host \
+    -v /var/tmp:/var/tmp \
+    -v /var/run:/var/run \
+    --env-file /var/tmp/travis-run.d/env \
+    "${TRAVIS_WORKER_SELF_IMAGE}" travis-worker
+end script

@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+include_recipe 'travis_build_environment::cloud_init'
+
 bits = (node['kernel']['machine'] =~ /x86_64/ ? 64 : 32)
 hostname = case [node['platform'], node['platform_version']]
            when ['ubuntu', '11.04'] then
@@ -39,6 +41,29 @@ template '/etc/hosts' do
   mode 0644
   variables(hostname: hostname)
   only_if { node['travis_build_environment']['update_hosts'] }
+end
+
+%w(
+  /etc/cloud
+  /etc/cloud/templates
+).each do |dirname|
+  directory dirname do
+    mode 0755
+  end
+end
+
+%w(
+  /etc/cloud/templates/hosts.debian.tmpl
+  /etc/cloud/templates/hosts.tmpl
+  /etc/cloud/templates/hosts.ubuntu.tmpl
+).each do |filename|
+  template filename do
+    source 'etc/cloud/templates/hosts.tmpl.erb'
+    owner 'root'
+    group 'root'
+    mode 0644
+    variables(hostname: hostname)
+  end
 end
 
 template '/etc/hostname' do

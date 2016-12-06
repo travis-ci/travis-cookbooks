@@ -9,3 +9,4 @@ long_description 'No really, install docker!'
 supports 'ubuntu', '>= 14.04'
 
 depends 'apt'
+depends 'ark'

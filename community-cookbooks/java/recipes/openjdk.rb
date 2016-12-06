@@ -1,11 +1,11 @@
 # Author:: Bryan W. Berry (<bryan.berry@gmail.com>)
-# Author:: Seth Chisamore (<schisamo@opscode.com>)
-# Author:: Joshua Timberman (<joshua@opscode.com>)
+# Author:: Seth Chisamore (<schisamo@chef.io>)
+# Author:: Joshua Timberman (<joshua@chef.io>)
 #
 # Cookbook Name:: java
 # Recipe:: openjdk
 #
-# Copyright 2010-2013, Opscode, Inc.
+# Copyright 2010-2015, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,6 +39,14 @@ if platform_requires_license_acceptance?
     mode "0400"
     action :create
     only_if { node['java']['accept_license_agreement'] }
+  end
+end
+
+if node['platform'] == 'ubuntu'
+  include_recipe 'apt'
+  apt_repository 'openjdk-r-ppa' do
+    uri 'ppa:openjdk-r'
+    distribution node['lsb']['codename']
   end
 end
 

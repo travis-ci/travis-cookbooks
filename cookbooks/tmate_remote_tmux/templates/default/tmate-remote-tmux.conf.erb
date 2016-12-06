@@ -1,0 +1,18 @@
+description "tmate-remote-tmux"
+
+start on runlevel [2345]
+stop on runlevel [!2345]
+
+respawn
+respawn limit unlimited
+kill timeout 5
+
+setuid root
+setgid root
+
+script
+  cd <%= @app_path %>
+  exec ./tmate-remote-tmux -k <%= @keys_dir %> -p <%= @listen_port %> \
+    <%= @log_level %> <%= @use_syslog ? "-s" : "" %> \
+    <%= @has_proxy ? "-x localhost" : "" %>
+end script

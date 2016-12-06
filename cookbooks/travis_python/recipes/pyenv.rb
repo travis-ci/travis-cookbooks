@@ -91,10 +91,16 @@ build_environment = {
 bindirs = %w(/opt/pyenv/bin)
 
 node['travis_python']['pyenv']['pythons'].each do |py|
+  pyname = py
+  downloaded_tarball = ::File.join(
+    Chef::Config[:file_cache_path], "#{py}.tar.bz2"
+  )
+
   if /^\d+\.\d+(?:\.\d+)?(?:-dev)?$/ =~ py
     pyname = "python#{py}"
-  else
-    pyname = py
+    downloaded_tarball = ::File.join(
+      Chef::Config[:file_cache_path], "python-#{py}.tar.bz2"
+    )
   end
 
   bindirs << "/opt/python/#{py}/bin"
@@ -169,7 +175,7 @@ node['travis_python']['pyenv']['pythons'].each do |py|
     end
 
     link "#{virtualenv_root}/#{pyaliasname}" do
-      to "#{virtualenv_root}/#{pyname}"
+      to venv_fullname
       owner node['travis_build_environment']['user']
       group node['travis_build_environment']['group']
     end
@@ -183,6 +189,7 @@ node['travis_python']['pyenv']['pythons'].each do |py|
   end
 
   packages = []
+
   node['travis_python']['pyenv']['aliases'].fetch(py, []).concat(['default', py]).each do |name|
     packages.concat(node['travis_python']['pip']['packages'].fetch(name, []))
   end

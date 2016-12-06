@@ -20,11 +20,67 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-mysql_service '5.6' do
-  port '3306'
-  version '5.6'
-  initial_root_password node['travis_build_environment']['mysql']['password']
-  action [:create, :start]
+package %w(
+  mysql-client-5.5
+  mysql-client-core-5.5
+  mysql-common
+  mysql-server-5.5
+) do
+  action %i(remove purge)
 end
 
-mysql_client 'default'
+%w(
+  root_password
+  root_password_again
+).each do |selection|
+  execute "echo 'mysql-server-5.6 mysql-server/#{selection} password ' | debconf-set-selections"
+end
+
+package %w(
+  libmysqlclient-dev
+  libmysqlclient18
+  mysql-client-5.6
+  mysql-client-core-5.6
+  mysql-common-5.6
+  mysql-server-5.6
+  mysql-server-core-5.6
+) do
+  action %i(install upgrade)
+end
+
+mysql_users_passwords_sql = ::File.join(
+  Chef::Config[:file_cache_path],
+  'mysql_users_passwords.sql'
+)
+
+file mysql_users_passwords_sql do
+  content <<-EOF.gsub(/^\s+> /, '')
+    > SET old_passwords = 0;
+    > CREATE USER 'travis'@'%' IDENTIFIED BY '';
+    > SET PASSWORD FOR 'root'@'localhost' = PASSWORD('');
+    > SET PASSWORD FOR 'root'@'127.0.0.1' = PASSWORD('');
+  EOF
+end
+
+service 'mysql' do
+  action %i(enable start)
+end
+
+bash 'setup mysql users and passwords' do
+  code "mysql -u root <#{mysql_users_passwords_sql}"
+end
+
+template "#{node['travis_build_environment']['home']}/.my.cnf" do
+  source 'ci_user/dot_my.cnf.erb'
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0o640
+  variables(socket: node['travis_build_environment']['mysql']['socket'])
+end
+
+file '/etc/profile.d/travis-mysql.sh' do
+  content "export MYSQL_UNIX_PORT=#{node['travis_build_environment']['mysql']['socket']}\n"
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0o755
+end

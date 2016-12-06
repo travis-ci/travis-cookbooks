@@ -1,0 +1,4 @@
+# Chef manages this file on <%= node.name %> <3 <3 <3
+<% Array(node['travis_worker']['docker']['environment']).each do |key, value| %>
+<%= key %>=<%= value %>
+<% end %>

@@ -27,7 +27,8 @@ apt_repository 'datastax' do
   distribution 'stable'
   components ['main']
   key 'http://debian.datastax.com/debian/repo_key'
-
+  retries 2
+  retry_delay 30
   action :add
 end
 

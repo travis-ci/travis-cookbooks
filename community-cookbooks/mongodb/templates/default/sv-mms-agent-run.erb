@@ -1,6 +1,0 @@
-#!/bin/sh
-
-cd <%= @options[:mms_agent_dir] %>
-
-exec 2>&1
-exec chpst -u <%= @options[:mms_agent_user] %>:<%= @options[:mms_agent_group] %> python <%= @options[:mms_agent_dir] %>/agent.py 2>&1

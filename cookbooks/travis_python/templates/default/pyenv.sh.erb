@@ -1,11 +1,12 @@
-# Managed by Chef! :heart_eyes_cat:
-
-# Export the $PATH with the pyenv bindirs prepended to it
+# Managed by Chef on <%= node.name %>! :heart_eyes_cat:
+<% if @bindirs.nil? || @bindirs.empty? %>
+# NOTE: No pythons?  No PATH munging.
+<% else %>
+<%# Export the $PATH with the pyenv bindirs prepended to it %>
 export PATH="<%= @bindirs.join(':') %>:$PATH"
-
-# Configure python-build for consistent build options
+<% end %>
+<%# Configure python-build for consistent build options %>
 <% @build_environment.each do |key, value| %>
 export <%= key %>="<%= value %>"
 <% end %>
-
-eval "`pyenv init -`"
+eval "$(pyenv init -)"

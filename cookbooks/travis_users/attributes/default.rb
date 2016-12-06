@@ -1,0 +1,1 @@
+default['travis_users'] = []
