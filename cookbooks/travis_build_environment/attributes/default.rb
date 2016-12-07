@@ -132,6 +132,9 @@ default['travis_build_environment']['sphinxsearch']['ppas'] = %w(
   ppa:builds/sphinxsearch-rel22
 )
 
+default['travis_build_environment']['elasticsearch']['version'] = '5.0.2'
+default['travis_build_environment']['elasticsearch']['service_enabled'] = false
+
 default['travis_build_environment']['firefox_version'] = '50.0.2'
 default['travis_build_environment']['firefox_download_url'] = ::File.join(
   'https://releases.mozilla.org/pub/firefox/releases',
