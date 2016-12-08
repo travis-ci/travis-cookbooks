@@ -62,6 +62,8 @@ bash "installing #{default_ruby} with RVM arguments #{default_ruby_arguments}" d
   setup.call(self)
   code   "#{bin_rvm} install #{default_ruby} --verify-downloads 1 -j 3 #{default_ruby_arguments} && #{rvm} alias create default #{default_ruby}"
   not_if "#{rvm} #{default_ruby} do echo 'Found'"
+  retries 2
+  retry_delay 30
 end
 
 node.rvm.rubies.
@@ -73,6 +75,8 @@ node.rvm.rubies.
     # with all the Rubies we provide, checking for various directories under .rvm/rubies/* is pretty much impossible without
     # depending on the exact versions provided. So we use this neat technique suggested by mpapis. MK.
     not_if "#{rvm} #{rb[:name]} do echo 'Found'"
+    retries 2
+    retry_delay 30
   end
 end
 
