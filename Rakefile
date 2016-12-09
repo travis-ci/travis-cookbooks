@@ -24,7 +24,9 @@ FoodCritic::Rake::LintTask.new do |t|
       ~FC022
       ~FC023
       ~FC024
+      ~FC031
       ~FC043
+      ~FC045
       ~FC047
       ~FC048
       ~FC053
