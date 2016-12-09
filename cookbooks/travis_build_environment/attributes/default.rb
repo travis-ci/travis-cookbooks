@@ -131,6 +131,10 @@ default['travis_build_environment']['sphinxsearch']['ppas'] = %w(
   ppa:builds/sphinxsearch-rel21
   ppa:builds/sphinxsearch-rel22
 )
+
+default['travis_build_environment']['elasticsearch']['version'] = '5.0.2'
+default['travis_build_environment']['elasticsearch']['service_enabled'] = false
+
 default['travis_build_environment']['clang']['version'] = '3.5.0'
 default['travis_build_environment']['clang']['download_url'] = "http://llvm.org/releases/#{node['travis_build_environment']['clang']['version']}/clang+llvm-#{node['travis_build_environment']['clang']['version']}-x86_64-linux-gnu-ubuntu-14.04.tar.xz"
 default['travis_build_environment']['clang']['extension'] = 'tar.xz'
@@ -154,6 +158,11 @@ default['travis_build_environment']['lein_url'] = 'https://raw.githubusercontent
 default['travis_build_environment']['sysctl_kernel_shmmax'] = 45_794_432
 default['travis_build_environment']['sysctl_disable_ipv6'] = true
 default['travis_build_environment']['wget']['version'] = '1.18'
+
+default['travis_build_environment']['shellcheck_url'] = 'https://s3.amazonaws.com/travis-blue-public/binaries/ubuntu/14.04/x86_64/shellcheck-0.4.5.tar.bz2'
+default['travis_build_environment']['shellcheck_version'] = '0.4.5'
+default['travis_build_environment']['shellcheck_checksum'] = '82397d9993d01daee52cebb672e782c596dc7ec928a199c709a20bd24c2941c9'
+default['travis_build_environment']['shellcheck_binaries'] = %w(shellcheck)
 
 default['travis_build_environment']['yarn_url'] = 'https://yarnpkg.com/downloads/0.17.8/yarn-v0.17.8.tar.gz'
 default['travis_build_environment']['yarn_version'] = '0.17.8'

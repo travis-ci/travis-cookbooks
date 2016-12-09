@@ -1,10 +1,11 @@
-# Copyright 2012-2013, Travis CI Development Team <contact@travis-ci.org>
+#
+# Copyright 2016, Noah Kantrowitz
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+# http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,15 +14,7 @@
 # limitations under the License.
 #
 
-# https://launchpad.net/~couchdb/+archive/stable
 
-apt_repository 'couchdb-ppa' do
-  uri 'http://ppa.launchpad.net/couchdb/stable/ubuntu'
-  distribution node['lsb']['codename']
-  components %w(main)
-  key 'C17EAB57'
-  keyserver 'hkp://ha.pool.sks-keyservers.net'
-  retries 2
-  retry_delay 30
-  action :add
+module PoiseProfiler
+  VERSION = '1.0.1'
 end
