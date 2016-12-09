@@ -25,8 +25,8 @@ package %w(
 end
 
 ark 'firefox' do
-  url node['firefox']['tarball']['download_url']
-  version node['firefox']['tarball']['version']
+  url node['travis_build_environment']['firefox_download_url']
+  version node['travis_build_environment']['firefox_version']
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   has_binaries %w(firefox firefox-bin)
