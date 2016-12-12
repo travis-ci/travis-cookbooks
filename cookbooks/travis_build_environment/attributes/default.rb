@@ -135,6 +135,14 @@ default['travis_build_environment']['sphinxsearch']['ppas'] = %w(
 default['travis_build_environment']['elasticsearch']['version'] = '5.0.2'
 default['travis_build_environment']['elasticsearch']['service_enabled'] = false
 
+default['travis_build_environment']['firefox_version'] = '50.0.2'
+default['travis_build_environment']['firefox_download_url'] = ::File.join(
+  'https://releases.mozilla.org/pub/firefox/releases',
+  node['travis_build_environment']['firefox_version'],
+  "linux-#{kernel['machine']}/en-US",
+  "firefox-#{node['travis_build_environment']['firefox_version']}.tar.bz2"
+)
+
 default['travis_build_environment']['clang']['version'] = '3.5.0'
 default['travis_build_environment']['clang']['download_url'] = "http://llvm.org/releases/#{node['travis_build_environment']['clang']['version']}/clang+llvm-#{node['travis_build_environment']['clang']['version']}-x86_64-linux-gnu-ubuntu-14.04.tar.xz"
 default['travis_build_environment']['clang']['extension'] = 'tar.xz'
