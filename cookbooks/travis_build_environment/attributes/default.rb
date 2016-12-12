@@ -156,6 +156,11 @@ default['travis_build_environment']['gimme']['install_user'] = 'travis'
 default['travis_build_environment']['gimme']['install_user_home'] = '/home/travis'
 default['travis_build_environment']['gimme']['debug'] = false
 
+gradle_version = '3.2.1'
+default['travis_build_environment']['gradle_version'] = gradle_version
+default['travis_build_environment']['gradle_url'] = "https://services.gradle.org/distributions/gradle-#{gradle_version}-bin.zip"
+default['travis_build_environment']['gradle_checksum'] = '9843a3654d3e57dce54db06d05f18b664b95c22bf90c6becccb61fc63ce60689'
+
 default['travis_build_environment']['lein_url'] = 'https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein'
 
 default['travis_build_environment']['sysctl_kernel_shmmax'] = 45_794_432
