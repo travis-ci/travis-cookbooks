@@ -20,6 +20,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+directory '/etc/rabbitmq' do
+  owner 'root'
+  group 'root'
+  mode 0o755
+end
+
+file '/etc/rabbitmq/rabbitmq-env.conf' do
+  content "NODENAME=rabbit@localhost\n"
+  owner 'root'
+  group 'root'
+  mode 0o644
+end
+
 packagecloud_repo 'rabbitmq/rabbitmq-server' do
   type 'deb'
 end
@@ -29,5 +42,5 @@ package 'rabbitmq-server'
 execute 'rabbitmq-plugins enable rabbitmq_management'
 
 service 'rabbitmq-server' do
-  action [:stop, :disable]
+  action %i(stop disable)
 end
