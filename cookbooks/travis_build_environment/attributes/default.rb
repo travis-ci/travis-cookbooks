@@ -158,6 +158,24 @@ default['travis_build_environment']['gimme']['install_user'] = 'travis'
 default['travis_build_environment']['gimme']['install_user_home'] = '/home/travis'
 default['travis_build_environment']['gimme']['debug'] = false
 
+default['travis_build_environment']['haskell_ghc_versions'] = %w(
+  7.0.4
+  7.4.2
+  7.6.3
+  7.8.4
+  7.10.3
+  8.0.2
+)
+default['travis_build_environment']['haskell_cabal_versions'] = %w(
+  1.16
+  1.18
+  1.20
+  1.22
+  1.24
+)
+default['travis_build_environment']['haskell_default_ghc'] = '7.6.3'
+default['travis_build_environment']['haskell_default_cabal'] = '1.18'
+
 gradle_version = '3.2.1'
 default['travis_build_environment']['gradle_version'] = gradle_version
 default['travis_build_environment']['gradle_url'] = "https://services.gradle.org/distributions/gradle-#{gradle_version}-bin.zip"
