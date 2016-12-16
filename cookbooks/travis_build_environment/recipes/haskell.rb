@@ -29,9 +29,3 @@ template '/etc/profile.d/travis-haskell.sh' do
     ghc_root: '/opt/ghc'
   )
 end
-
-cookbook_file '/etc/profile.d/cabal.sh' do
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  mode 0o755
-end
