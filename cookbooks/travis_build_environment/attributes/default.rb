@@ -135,6 +135,8 @@ default['travis_build_environment']['sphinxsearch']['ppas'] = %w(
 default['travis_build_environment']['elasticsearch']['version'] = '5.0.2'
 default['travis_build_environment']['elasticsearch']['service_enabled'] = false
 
+default['travis_build_environment']['redis']['service_enabled'] = false
+
 default['travis_build_environment']['firefox_version'] = '50.0.2'
 default['travis_build_environment']['firefox_download_url'] = ::File.join(
   'https://releases.mozilla.org/pub/firefox/releases',
@@ -189,6 +191,9 @@ default['travis_build_environment']['shellcheck_url'] = 'https://s3.amazonaws.co
 default['travis_build_environment']['shellcheck_version'] = '0.4.5'
 default['travis_build_environment']['shellcheck_checksum'] = '82397d9993d01daee52cebb672e782c596dc7ec928a199c709a20bd24c2941c9'
 default['travis_build_environment']['shellcheck_binaries'] = %w(shellcheck)
+
+default['travis_build_environment']['shfmt_url'] = 'https://github.com/mvdan/sh/releases/download/v1.0.0/shfmt_v1.0.0_linux_amd64'
+default['travis_build_environment']['shfmt_checksum'] = '172d2cf2d7d71191b7b0cd0d7169d703475825cdd270a6982899a349dcd98588'
 
 default['travis_build_environment']['yarn_url'] = 'https://yarnpkg.com/downloads/0.17.8/yarn-v0.17.8.tar.gz'
 default['travis_build_environment']['yarn_version'] = '0.17.8'
