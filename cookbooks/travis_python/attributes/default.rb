@@ -9,13 +9,13 @@ default['travis_python']['pyenv']['revision'] = 'v1.0.0'
 default['travis_python']['pyenv']['pythons'] = %w(
   2.7.12
   3.5.2
-  pypy-5.3.1
+  pypy2-5.4.1
 )
 
 default['travis_python']['pyenv']['aliases'] = {
   '2.7.12' => %w(2.7),
   '3.5.2' => %w(3.5),
-  'pypy-2.6.1' => %w(pypy)
+  'pypy2-5.4.1' => %w(pypy)
 }
 
 default['travis_python']['pip']['packages'] = {
