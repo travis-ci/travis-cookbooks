@@ -1,4 +1,6 @@
-# Managed by Chef on <%= node.name %> :heart:
+# Managed by Chef on <%= node.name %> :heart_eyes_cat:
+# cookbook:: travis_build_environment
+#     file:: templates/default/etc/hosts.erb
 
 127.0.0.1 localhost nettuno travis vagrant
 127.0.1.1 ip4-loopback <%= @hostname %>
@@ -6,7 +8,7 @@
 <% unless node['travis_build_environment']['sysctl_disable_ipv6'] %>
 <% if node['ip6address'] %>
 # The following lines are desirable for IPv6 capable hosts
-<% [node['ip6address'], '::1'].each do |addr| %>
+<% %W(#{node['ip6address']} ::1).each do |addr| %>
 <%= addr %> localhost ip6-localhost ip6-loopback <%= @hostname %> travis vagrant nettuno
 <% end %>
 fe00::0 ip6-localnet
