@@ -3,13 +3,12 @@
 \##     file:: templates/default/etc/cloud/templates/hosts.tmpl.erb
 
 127.0.0.1 localhost nettuno travis vagrant
-127.0.1.1 $hostname $fqdn ip4-loopback <%= @hostname %>
+127.0.1.1 ip4-loopback <%= @hostname %>
 
 <% unless node['travis_build_environment']['sysctl_disable_ipv6'] %>
 <% if node['ip6address'] %>
 <% %W(#{node['ip6address']} ::1).each do |addr| %>
-<%= addr %> $hostname $fqdn
-<%= addr %> localhost <%= @hostname %> nettuno travis vagrant ip6-localhost ip6-loopback
+<%= addr %> localhost ip6-localhost ip6-loopback <%= @hostname %> travis vagrant nettuno
 <% end %>
 fe00::0 ip6-localnet
 ff00::0 ip6-mcastprefix
