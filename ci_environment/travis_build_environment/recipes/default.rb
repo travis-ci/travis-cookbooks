@@ -50,52 +50,7 @@ execute "dpkg-reconfigure locales" do
   user "root"
 end
 
-bits     = (node.kernel.machine =~ /x86_64/ ? 64 : 32)
-hostname = case [node[:platform], node[:platform_version]]
-           when ["ubuntu", "11.04"] then
-             "natty#{bits}"
-           when ["ubuntu", "11.10"] then
-             "oneiric#{bits}"
-           when ["ubuntu", "12.04"] then
-             "precise#{bits}"
-           end
-
-template "/etc/hosts" do
-  owner "root"
-  group "root"
-  mode 0644
-  variables(:hostname => hostname)
-  source "etc/hosts.erb"
-  not_if { !node[:travis_build_environment][:update_hosts] }
-end
-
-%w(
-  /etc/cloud/templates/hosts.debian.tmpl
-  /etc/cloud/templates/hosts.tmpl
-  /etc/cloud/templates/hosts.ubuntu.tmpl
-).each do |filename|
-  template filename do
-    source 'etc/cloud/templates/hosts.tmpl.erb'
-    owner 'root'
-    group 'root'
-    mode 0644
-    variables(hostname: hostname)
-  end
-end
-
-template "/etc/hostname" do
-  owner "root"
-  group "root"
-  mode 0644
-  variables(:hostname => hostname)
-  source "etc/hostname.erb"
-  not_if { !node[:travis_build_environment][:update_hosts] }
-end
-
-execute "hostname #{hostname}" do
-  user "root"
-end
-
+include_recipe 'travis_build_environment::hostname'
 
 template "/etc/security/limits.conf" do
   owner "root"
