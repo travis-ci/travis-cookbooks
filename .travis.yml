@@ -1,5 +1,5 @@
 language: generic
-
+dist: trusty
 sudo: false
 
 env:
@@ -12,11 +12,8 @@ env:
 addons:
   apt:
     sources:
-    - chef-stable-precise
+    - chef-current-trusty
     packages:
     - chefdk
 
-script:
-- which rubocop
-- find /opt/chef* -name rubocop | while read -r line; do echo "---> ${line} --verbose-version"; "${line}" --verbose-version; done
-- ./runtests
+script: ./runtests
