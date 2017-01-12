@@ -27,7 +27,7 @@
 # Memory units:  kB = kilobytes        Time units:  ms  = milliseconds
 #                MB = megabytes                     s   = seconds
 #                GB = gigabytes                     min = minutes
-#                                                   h   = hours
+#                TB = terabytes                     h   = hours
 #                                                   d   = days
 
 
@@ -38,15 +38,15 @@
 # The default values of these variables are driven from the -D command-line
 # option or PGDATA environment variable, represented here as ConfigDir.
 
-data_directory = '<%= node['postgresql']['data_dir'] %>/9.2/main'		# use data in another directory
+data_directory = '<%= node['travis_postgresql']['data_dir'] %>/9.5/main'		# use data in another directory
 					# (change requires restart)
-hba_file = '/etc/postgresql/9.2/main/pg_hba.conf'	# host-based authentication file
+hba_file = '/etc/postgresql/9.5/main/pg_hba.conf'	# host-based authentication file
 					# (change requires restart)
-ident_file = '/etc/postgresql/9.2/main/pg_ident.conf'	# ident configuration file
+ident_file = '/etc/postgresql/9.5/main/pg_ident.conf'	# ident configuration file
 					# (change requires restart)
 
 # If external_pid_file is not explicitly set, no extra PID file is written.
-external_pid_file = '/var/run/postgresql/9.2-main.pid'			# write an extra PID file
+external_pid_file = '/var/run/postgresql/9.5-main.pid'			# write an extra PID file
 					# (change requires restart)
 
 
@@ -60,12 +60,13 @@ external_pid_file = '/var/run/postgresql/9.2-main.pid'			# write an extra PID fi
 					# comma-separated list of addresses;
 					# defaults to 'localhost'; use '*' for all
 					# (change requires restart)
-port = <%= node['postgresql']['port'] %>				# (change requires restart)
-max_connections = <%= node['postgresql']['max_connections'] %>			# (change requires restart)
+port = <%= node['travis_postgresql']['port'] %>				# (change requires restart)
+max_connections = <%= node['travis_postgresql']['max_connections'] %>			# (change requires restart)
 # Note:  Increasing max_connections costs ~400 bytes of shared memory per
 # connection slot, plus lock space (see max_locks_per_transaction).
 #superuser_reserved_connections = 3	# (change requires restart)
-unix_socket_directory = '/var/run/postgresql'		# (change requires restart)
+unix_socket_directories = '/var/run/postgresql'	# comma-separated list of directories
+					# (change requires restart)
 #unix_socket_group = ''			# (change requires restart)
 #unix_socket_permissions = 0777		# begin with 0 to use octal notation
 					# (change requires restart)
@@ -77,20 +78,21 @@ unix_socket_directory = '/var/run/postgresql'		# (change requires restart)
 # - Security and Authentication -
 
 #authentication_timeout = 1min		# 1s-600s
-ssl = <%= node['postgresql']['ssl'] %>				# (change requires restart)
-#ssl_ciphers = 'ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH'	# allowed SSL ciphers
+ssl = <%= node['travis_postgresql']['ssl'] %>				# (change requires restart)
+#ssl_ciphers = 'HIGH:MEDIUM:+3DES:!aNULL' # allowed SSL ciphers
 					# (change requires restart)
-#ssl_renegotiation_limit = 512MB	# amount of data between renegotiations
+#ssl_prefer_server_ciphers = on		# (change requires restart)
+#ssl_ecdh_curve = 'prime256v1'		# (change requires restart)
 ssl_cert_file = '/etc/ssl/certs/ssl-cert-snakeoil.pem'		# (change requires restart)
 ssl_key_file = '/etc/ssl/private/ssl-cert-snakeoil.key'		# (change requires restart)
 #ssl_ca_file = ''			# (change requires restart)
 #ssl_crl_file = ''			# (change requires restart)
 #password_encryption = on
 #db_user_namespace = off
+#row_security = on
 
-# Kerberos and GSSAPI
+# GSSAPI using Kerberos
 #krb_server_keyfile = ''
-#krb_srvname = 'postgres'		# (Kerberos only)
 #krb_caseins_users = off
 
 # - TCP Keepalives -
@@ -110,7 +112,9 @@ ssl_key_file = '/etc/ssl/private/ssl-cert-snakeoil.key'		# (change requires rest
 
 # - Memory -
 
-shared_buffers = 24MB			# min 128kB
+shared_buffers = 128MB			# min 128kB
+					# (change requires restart)
+#huge_pages = try			# on, off, or try
 					# (change requires restart)
 #temp_buffers = 8MB			# min 800kB
 #max_prepared_transactions = 0		# zero disables the feature
@@ -119,9 +123,17 @@ shared_buffers = 24MB			# min 128kB
 # per transaction slot, plus lock space (see max_locks_per_transaction).
 # It is not advisable to set max_prepared_transactions nonzero unless you
 # actively intend to use prepared transactions.
-#work_mem = 1MB				# min 64kB
-#maintenance_work_mem = 16MB		# min 1MB
+#work_mem = 4MB				# min 64kB
+#maintenance_work_mem = 64MB		# min 1MB
+#autovacuum_work_mem = -1		# min 1MB, or -1 to use maintenance_work_mem
 #max_stack_depth = 2MB			# min 100kB
+dynamic_shared_memory_type = posix	# the default is the first option
+					# supported by the operating system:
+					#   posix
+					#   sysv
+					#   windows
+					#   mmap
+					# use none to disable dynamic shared memory
 
 # - Disk -
 
@@ -136,7 +148,7 @@ shared_buffers = 24MB			# min 128kB
 
 # - Cost-Based Vacuum Delay -
 
-#vacuum_cost_delay = 0ms		# 0-100 milliseconds
+#vacuum_cost_delay = 0			# 0-100 milliseconds
 #vacuum_cost_page_hit = 1		# 0-10000 credits
 #vacuum_cost_page_miss = 10		# 0-10000 credits
 #vacuum_cost_page_dirty = 20		# 0-10000 credits
@@ -151,6 +163,7 @@ shared_buffers = 24MB			# min 128kB
 # - Asynchronous Behavior -
 
 #effective_io_concurrency = 1		# 1-1000; 0 disables prefetching
+#max_worker_processes = 8
 
 
 #------------------------------------------------------------------------------
@@ -159,9 +172,9 @@ shared_buffers = 24MB			# min 128kB
 
 # - Settings -
 
-#wal_level = minimal			# minimal, archive, or hot_standby
+#wal_level = minimal			# minimal, archive, hot_standby, or logical
 					# (change requires restart)
-fsync = <%= node['postgresql']['fsync'] %>				# turns forced synchronization on or off
+fsync = <%= node['travis_postgresql']['fsync'] %>				# turns forced synchronization on or off
 #synchronous_commit = on		# synchronization level;
 					# off, local, remote_write, or on
 #wal_sync_method = fsync		# the default is the first option
@@ -171,7 +184,10 @@ fsync = <%= node['postgresql']['fsync'] %>				# turns forced synchronization on 
 					#   fsync
 					#   fsync_writethrough
 					#   open_sync
-full_page_writes = <%= node['postgresql']['full_page_writes'] %>			# recover from partial page writes
+full_page_writes = <%= node['travis_postgresql']['full_page_writes'] %>			# recover from partial page writes
+#wal_compression = off			# enable compression of full-page writes
+#wal_log_hints = off			# also do full page writes of non-critical updates
+					# (change requires restart)
 #wal_buffers = -1			# min 32kB, -1 sets based on shared_buffers
 					# (change requires restart)
 #wal_writer_delay = 200ms		# 1-10000 milliseconds
@@ -181,14 +197,15 @@ full_page_writes = <%= node['postgresql']['full_page_writes'] %>			# recover fro
 
 # - Checkpoints -
 
-#checkpoint_segments = 3		# in logfile segments, min 1, 16MB each
 #checkpoint_timeout = 5min		# range 30s-1h
+#max_wal_size = 1GB
+#min_wal_size = 80MB
 #checkpoint_completion_target = 0.5	# checkpoint target duration, 0.0 - 1.0
 #checkpoint_warning = 30s		# 0 disables
 
 # - Archiving -
 
-#archive_mode = off		# allows archiving to be done
+#archive_mode = off		# enables archiving; off, on, or always
 				# (change requires restart)
 #archive_command = ''		# command to use to archive a logfile segment
 				# placeholders: %p = path of file to archive
@@ -209,7 +226,12 @@ full_page_writes = <%= node['postgresql']['full_page_writes'] %>			# recover fro
 #max_wal_senders = 0		# max number of walsender processes
 				# (change requires restart)
 #wal_keep_segments = 0		# in logfile segments, 16MB each; 0 disables
-#replication_timeout = 60s	# in milliseconds; 0 disables
+#wal_sender_timeout = 60s	# in milliseconds; 0 disables
+
+#max_replication_slots = 0	# max number of replication slots
+				# (change requires restart)
+#track_commit_timestamp = off	# collect timestamp of transaction commit
+				# (change requires restart)
 
 # - Master Server -
 
@@ -236,6 +258,11 @@ full_page_writes = <%= node['postgresql']['full_page_writes'] %>			# recover fro
 					# 0 disables
 #hot_standby_feedback = off		# send info from standby to prevent
 					# query conflicts
+#wal_receiver_timeout = 60s		# time that receiver waits for
+					# communication from master
+					# in milliseconds; 0 disables
+#wal_retrieve_retry_interval = 5s	# time to wait before retrying to
+					# retrieve WAL after a failed attempt
 
 
 #------------------------------------------------------------------------------
@@ -263,7 +290,7 @@ full_page_writes = <%= node['postgresql']['full_page_writes'] %>			# recover fro
 #cpu_tuple_cost = 0.01			# same scale as above
 #cpu_index_tuple_cost = 0.005		# same scale as above
 #cpu_operator_cost = 0.0025		# same scale as above
-#effective_cache_size = 128MB
+#effective_cache_size = 4GB
 
 # - Genetic Query Optimizer -
 
@@ -332,7 +359,7 @@ full_page_writes = <%= node['postgresql']['full_page_writes'] %>			# recover fro
 
 # - When to Log -
 
-client_min_messages = <%= node['postgresql']['client_min_messages'] %>		# values in order of decreasing detail:
+client_min_messages = <%= node['travis_postgresql']['client_min_messages'] %>		# values in order of decreasing detail:
 					#   debug5
 					#   debug4
 					#   debug3
@@ -358,12 +385,12 @@ client_min_messages = <%= node['postgresql']['client_min_messages'] %>		# values
 					#   panic
 
 #log_min_error_statement = error	# values in order of decreasing detail:
-				 	#   debug5
+					#   debug5
 					#   debug4
 					#   debug3
 					#   debug2
 					#   debug1
-				 	#   info
+					#   info
 					#   notice
 					#   warning
 					#   error
@@ -389,7 +416,7 @@ client_min_messages = <%= node['postgresql']['client_min_messages'] %>		# values
 #log_duration = off
 #log_error_verbosity = default		# terse, default, or verbose messages
 #log_hostname = off
-log_line_prefix = '%t '			# special values:
+log_line_prefix = '%t [%p-%l] %q%u@%d '			# special values:
 					#   %a = application name
 					#   %u = user name
 					#   %d = database name
@@ -411,10 +438,18 @@ log_line_prefix = '%t '			# special values:
 					# e.g. '<%u%%%d> '
 #log_lock_waits = off			# log lock waits >= deadlock_timeout
 #log_statement = 'none'			# none, ddl, mod, all
+#log_replication_commands = off
 #log_temp_files = -1			# log temporary files equal or larger
 					# than the specified size in kilobytes;
 					# -1 disables, 0 logs all temp files
 log_timezone = 'UTC'
+
+
+# - Process Title -
+
+#cluster_name = ''			# added to process titles if nonempty
+					# (change requires restart)
+#update_process_title = on
 
 
 #------------------------------------------------------------------------------
@@ -427,9 +462,8 @@ log_timezone = 'UTC'
 #track_counts = on
 #track_io_timing = off
 #track_functions = none			# none, pl, all
-#track_activity_query_size = 1024 	# (change requires restart)
-#update_process_title = on
-#stats_temp_directory = 'pg_stat_tmp'
+#track_activity_query_size = 1024	# (change requires restart)
+stats_temp_directory = '/var/run/postgresql/9.5-main.pg_stat_tmp'
 
 
 # - Statistics Monitoring -
@@ -461,6 +495,9 @@ log_timezone = 'UTC'
 #autovacuum_analyze_scale_factor = 0.1	# fraction of table size before analyze
 #autovacuum_freeze_max_age = 200000000	# maximum XID age before forced vacuum
 					# (change requires restart)
+#autovacuum_multixact_freeze_max_age = 400000000	# maximum multixact age
+					# before forced vacuum
+					# (change requires restart)
 #autovacuum_vacuum_cost_delay = 20ms	# default vacuum cost delay for
 					# autovacuum, in milliseconds;
 					# -1 means use vacuum_cost_delay
@@ -475,7 +512,7 @@ log_timezone = 'UTC'
 
 # - Statement Behavior -
 
-#search_path = '"$user",public'		# schema names
+#search_path = '"$user", public'	# schema names
 #default_tablespace = ''		# a tablespace name, '' uses the default
 #temp_tablespaces = ''			# a list of tablespace names, '' uses
 					# only default tablespace
@@ -485,11 +522,16 @@ log_timezone = 'UTC'
 #default_transaction_deferrable = off
 #session_replication_role = 'origin'
 #statement_timeout = 0			# in milliseconds, 0 is disabled
+#lock_timeout = 0			# in milliseconds, 0 is disabled
 #vacuum_freeze_min_age = 50000000
 #vacuum_freeze_table_age = 150000000
+#vacuum_multixact_freeze_min_age = 5000000
+#vacuum_multixact_freeze_table_age = 150000000
 #bytea_output = 'hex'			# hex, escape
 #xmlbinary = 'base64'
 #xmloption = 'content'
+#gin_fuzzy_search_limit = 0
+#gin_pending_list_limit = 4MB
 
 # - Locale and Formatting -
 
@@ -499,7 +541,7 @@ timezone = 'UTC'
 #timezone_abbreviations = 'Default'     # Select the set of available time zone
 					# abbreviations.  Currently, there are
 					#   Default
-					#   Australia
+					#   Australia (historical usage)
 					#   India
 					# You can create your own file in
 					# share/timezonesets/.
@@ -521,6 +563,7 @@ default_text_search_config = 'pg_catalog.english'
 
 #dynamic_library_path = '$libdir'
 #local_preload_libraries = ''
+#session_preload_libraries = ''
 
 
 #------------------------------------------------------------------------------
@@ -548,6 +591,7 @@ default_text_search_config = 'pg_catalog.english'
 #default_with_oids = off
 #escape_string_warning = on
 #lo_compat_privileges = off
+#operator_precedence_warning = off
 #quote_all_identifiers = off
 #sql_inheritance = on
 #standard_conforming_strings = on
@@ -564,6 +608,19 @@ default_text_search_config = 'pg_catalog.english'
 
 #exit_on_error = off			# terminate session on any error?
 #restart_after_crash = on		# reinitialize after backend crash?
+
+
+#------------------------------------------------------------------------------
+# CONFIG FILE INCLUDES
+#------------------------------------------------------------------------------
+
+# These options allow settings to be loaded from files other than the
+# default postgresql.conf.
+
+#include_dir = 'conf.d'			# include files ending in '.conf' from
+					# directory 'conf.d'
+#include_if_exists = 'exists.conf'	# include file only if it exists
+#include = 'special.conf'		# include file
 
 
 #------------------------------------------------------------------------------

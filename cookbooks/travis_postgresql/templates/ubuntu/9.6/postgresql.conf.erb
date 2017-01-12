@@ -38,7 +38,7 @@
 # The default values of these variables are driven from the -D command-line
 # option or PGDATA environment variable, represented here as ConfigDir.
 
-data_directory = '<%= node['postgresql']['data_dir'] %>/9.6/main'         # use data in another directory
+data_directory = '<%= node['travis_postgresql']['data_dir'] %>/9.6/main'         # use data in another directory
                                         # (change requires restart)
 hba_file = '/etc/postgresql/9.6/main/pg_hba.conf'       # host-based authentication file
                                         # (change requires restart)
@@ -60,8 +60,8 @@ external_pid_file = '/var/run/postgresql/9.6-main.pid'                  # write 
                                         # comma-separated list of addresses;
                                         # defaults to 'localhost'; use '*' for all
                                         # (change requires restart)
-port = <%= node['postgresql']['port'] %>                             # (change requires restart)
-max_connections = <%= node['postgresql']['max_connections'] %>                   # (change requires restart)
+port = <%= node['travis_postgresql']['port'] %>                             # (change requires restart)
+max_connections = <%= node['travis_postgresql']['max_connections'] %>                   # (change requires restart)
 #superuser_reserved_connections = 3     # (change requires restart)
 unix_socket_directories = '/var/run/postgresql' # comma-separated list of directories
                                         # (change requires restart)
@@ -76,7 +76,7 @@ unix_socket_directories = '/var/run/postgresql' # comma-separated list of direct
 # - Security and Authentication -
 
 #authentication_timeout = 1min          # 1s-600s
-ssl = <%= node['postgresql']['ssl'] %>                              # (change requires restart)
+ssl = <%= node['travis_postgresql']['ssl'] %>                              # (change requires restart)
 #ssl_ciphers = 'HIGH:MEDIUM:+3DES:!aNULL' # allowed SSL ciphers
                                         # (change requires restart)
 #ssl_prefer_server_ciphers = on         # (change requires restart)
@@ -177,7 +177,7 @@ dynamic_shared_memory_type = posix      # the default is the first option
 
 #wal_level = minimal                    # minimal, replica, or logical
                                         # (change requires restart)
-fsync = <%= node['postgresql']['fsync'] %>                             # flush data to disk for crash safety
+fsync = <%= node['travis_postgresql']['fsync'] %>                             # flush data to disk for crash safety
                                                 # (turning this off can cause
                                                 # unrecoverable data corruption)
 #synchronous_commit = on                # synchronization level;
@@ -189,7 +189,7 @@ fsync = <%= node['postgresql']['fsync'] %>                             # flush d
                                         #   fsync
                                         #   fsync_writethrough
                                         #   open_sync
-full_page_writes = <%= node['postgresql']['full_page_writes'] %>                  # recover from partial page writes
+full_page_writes = <%= node['travis_postgresql']['full_page_writes'] %>                  # recover from partial page writes
 #wal_compression = off                  # enable compression of full-page writes
 #wal_log_hints = off                    # also do full page writes of non-critical updates
                                         # (change requires restart)
@@ -373,7 +373,7 @@ full_page_writes = <%= node['postgresql']['full_page_writes'] %>                
 
 # - When to Log -
 
-client_min_messages = <%= node['postgresql']['client_min_messages'] %>           # values in order of decreasing detail:
+client_min_messages = <%= node['travis_postgresql']['client_min_messages'] %>           # values in order of decreasing detail:
                                         #   debug5
                                         #   debug4
                                         #   debug3

@@ -38,7 +38,7 @@ elif [ -n "$1" ] && [ $1 = 'stop' ]; then
 elif [ -n "$running_version"  ]; then
     versions="$running_version"
 else
-    versions="<%= node['postgresql']['default_version'] %>"
+    versions="<%= node['travis_postgresql']['default_version'] %>"
 fi
 
 if [ -n "$1" ] && [ $1 != 'stop' ] && [ $1 != 'status' ]; then
@@ -52,13 +52,13 @@ if [ -n "$1" ] && [ $1 != 'stop' ] && [ $1 != 'status' ]; then
     fi
 fi
 
-<% if node['postgresql']['data_on_ramfs'] %>
+<% if node['travis_postgresql']['data_on_ramfs'] %>
 # Copy initial databases to RAMFS
 for data_dir in /var/lib/postgresql/*; do
     v=$(basename $data_dir)
-    if [ -d $(dirname <%= node['postgresql']['data_dir'] %>) -a ! -d <%= node['postgresql']['data_dir'] %>/$v ]; then
-        mkdir -p <%= node['postgresql']['data_dir'] %>/$v
-        cp -rp $data_dir <%= node['postgresql']['data_dir'] %>/
+    if [ -d $(dirname <%= node['travis_postgresql']['data_dir'] %>) -a ! -d <%= node['travis_postgresql']['data_dir'] %>/$v ]; then
+        mkdir -p <%= node['travis_postgresql']['data_dir'] %>/$v
+        cp -rp $data_dir <%= node['travis_postgresql']['data_dir'] %>/
     fi
 done
 <% end %>
