@@ -31,10 +31,11 @@ package deb do
 end
 
 service 'elasticsearch' do
-  supports restart: true, status: true
   if node['travis_build_environment']['elasticsearch']['service_enabled']
-    action [:enable, :start]
+    action %i(enable start)
   else
-    action [:disable, :start]
+    action %i(disable start)
   end
+  retries 4
+  retry_delay 30
 end
