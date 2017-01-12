@@ -24,7 +24,7 @@ template '/etc/environment' do
   source 'etc/environment.sh.erb'
   owner 'root'
   group 'root'
-  mode 0644
+  mode 0o644
 end
 
 %w(
@@ -36,6 +36,6 @@ end
   cookbook_file "/etc/profile.d/#{profile_file}.sh" do
     owner node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    mode 0755
+    mode 0o755
   end
 end

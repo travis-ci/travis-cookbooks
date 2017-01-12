@@ -23,7 +23,7 @@
 directory node['travis_build_environment']['ramfs_dir'] do
   owner 'root'
   group 'root'
-  mode 0755
+  mode 0o755
   action :create
 end
 

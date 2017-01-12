@@ -34,5 +34,5 @@ cookbook_file '/etc/profile.d/phantomjs.sh' do
   source 'etc/profile.d/phantomjs.sh'
   owner 'root'
   group 'root'
-  mode 0644
+  mode 0o644
 end

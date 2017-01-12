@@ -24,5 +24,5 @@ template '/root/.bashrc' do
   source 'root/dot_bashrc.sh.erb'
   owner 'root'
   group 'root'
-  mode 0640
+  mode 0o640
 end

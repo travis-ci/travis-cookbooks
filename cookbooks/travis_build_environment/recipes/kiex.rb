@@ -24,7 +24,7 @@ kiex_install_path = "#{Chef::Config[:file_cache_path]}/kiex-install"
 
 remote_file kiex_install_path do
   source 'https://raw.githubusercontent.com/taylor/kiex/master/install'
-  mode 0755
+  mode 0o755
 end
 
 execute kiex_install_path do

@@ -24,7 +24,7 @@
 permissions_setup = proc do |resource|
   resource.owner node['travis_build_environment']['user']
   resource.group node['travis_build_environment']['group']
-  resource.mode 0750
+  resource.mode 0o750
 end
 
 directory "#{node.travis_build_environment.home}/.nvm" do

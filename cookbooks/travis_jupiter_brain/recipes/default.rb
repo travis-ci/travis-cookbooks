@@ -8,7 +8,7 @@ remote_file '/usr/local/bin/jb-server' do
   checksum node['travis_jupiter_brain']['checksum']
   owner 'root'
   group 'root'
-  mode 0755
+  mode 0o755
 end
 
 Array(node['travis_jupiter_brain']['instances']).each do |instance|
@@ -18,7 +18,7 @@ Array(node['travis_jupiter_brain']['instances']).each do |instance|
     source 'upstart.conf.erb'
     owner 'root'
     group 'root'
-    mode 0644
+    mode 0o644
     variables instance
   end
 
@@ -26,7 +26,7 @@ Array(node['travis_jupiter_brain']['instances']).each do |instance|
     source 'etc-default.erb'
     owner 'root'
     group 'root'
-    mode 0644
+    mode 0o644
     variables instance
   end
 
@@ -35,7 +35,7 @@ Array(node['travis_jupiter_brain']['instances']).each do |instance|
       content "# Managed by Chef\nexport JUPITER_BRAIN_ADDR='#{instance["#{color}_addr"]}'\n"
       owner 'root'
       group 'root'
-      mode 0644
+      mode 0o644
       only_if { instance['blue_green'] && instance["#{color}_addr"] }
     end
   end

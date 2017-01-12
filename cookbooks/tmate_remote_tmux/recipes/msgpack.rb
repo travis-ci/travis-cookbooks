@@ -25,7 +25,7 @@ end
 
 remote_file "#{Chef::Config.file_cache_path}/#{msgpack_tar}" do
   source msgpack_url
-  mode 0644
+  mode 0o644
   checksum msgpack_sum
   notifies :run, "execute[msgpack-extract-source]", :immediately
 end

@@ -31,20 +31,20 @@ cookbook_file '/etc/default/docker' do
   source 'etc/default/docker'
   owner 'root'
   group 'root'
-  mode 0640
+  mode 0o640
 end
 
 directory '/etc/default/grub.d' do
   owner 'root'
   group 'root'
-  mode 0755
+  mode 0o755
 end
 
 cookbook_file '/etc/default/grub.d/99-travis-settings.cfg' do
   source 'etc/default/grub.d/99-travis-settings.cfg'
   owner 'root'
   group 'root'
-  mode 0640
+  mode 0o640
 end
 
 execute 'update-grub' do

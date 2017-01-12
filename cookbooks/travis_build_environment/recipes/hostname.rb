@@ -38,7 +38,7 @@ template '/etc/hosts' do
   source 'etc/hosts.erb'
   owner 'root'
   group 'root'
-  mode 0644
+  mode 0o644
   variables(hostname: hostname)
   only_if { node['travis_build_environment']['update_hosts'] }
 end
@@ -48,7 +48,7 @@ end
   /etc/cloud/templates
 ).each do |dirname|
   directory dirname do
-    mode 0755
+    mode 0o755
   end
 end
 
@@ -61,7 +61,7 @@ end
     source 'etc/cloud/templates/hosts.tmpl.erb'
     owner 'root'
     group 'root'
-    mode 0644
+    mode 0o644
     variables(hostname: hostname)
   end
 end
@@ -70,7 +70,7 @@ template '/etc/hostname' do
   source 'etc/hostname.erb'
   owner 'root'
   group 'root'
-  mode 0644
+  mode 0o644
   variables(hostname: hostname)
   only_if { node['travis_build_environment']['update_hosts'] }
 end

@@ -43,5 +43,5 @@ cookbook_file '/etc/profile.d/pypy.sh' do
   source 'etc/profile.d/pypy.sh'
   owner 'root'
   group 'root'
-  mode 0644
+  mode 0o644
 end

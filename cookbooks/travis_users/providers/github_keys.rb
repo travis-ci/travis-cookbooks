@@ -45,6 +45,6 @@ end
 def fix_perms(authorized_keys_file, user_id)
   require 'fileutils'
 
-  FileUtils.chmod(0600, authorized_keys_file)
+  FileUtils.chmod(0o600, authorized_keys_file)
   FileUtils.chown(user_id, user_id, authorized_keys_file)
 end
