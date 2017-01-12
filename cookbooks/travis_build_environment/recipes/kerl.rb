@@ -33,12 +33,12 @@ installation_root = "/home/#{node['travis_build_environment']['user']}/otp"
 directory installation_root do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0755
+  mode 0o755
 end
 
 remote_file node['travis_build_environment']['kerl_path'] do
   source 'https://raw.githubusercontent.com/spawngrid/kerl/master/kerl'
-  mode 0755
+  mode 0o755
 end
 
 env = {
@@ -57,7 +57,7 @@ end
 
 cookbook_file "#{node['travis_build_environment']['home']}/.erlang.cookie" do
   source 'erlang.cookie'
-  mode 0600
+  mode 0o600
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
 end
@@ -66,5 +66,5 @@ cookbook_file "#{node['travis_build_environment']['home']}/.build_plt" do
   source 'build_plt'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0700
+  mode 0o700
 end

@@ -53,7 +53,7 @@ template '/etc/init.d/postgresql' do
   source 'initd_postgresql.erb'
   owner 'root'
   group 'root'
-  mode 0755
+  mode 0o755
 end
 
 #
@@ -65,7 +65,7 @@ end
     source "#{pg_version}/postgresql.conf.erb"
     owner 'postgres'
     group 'postgres'
-    mode 0644 # apply same permissions as in 'pdpg' packages
+    mode 0o644 # apply same permissions as in 'pdpg' packages
   end
 
   # pg_hba.conf template is the same for all PostgreSQL versions (so far)
@@ -73,6 +73,6 @@ end
     source 'pg_hba.conf.erb'
     owner 'postgres'
     group 'postgres'
-    mode 0640 # apply same permissions as in 'pdpg' packages
+    mode 0o640 # apply same permissions as in 'pdpg' packages
   end
 end

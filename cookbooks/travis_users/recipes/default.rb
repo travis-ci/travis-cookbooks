@@ -65,14 +65,14 @@ Array(node['travis_users']).each do |user|
     directory dirname do
       owner user['id']
       group user['id']
-      mode 0700
+      mode 0o700
     end
   end
 
   template "/home/#{user['id']}/.ssh/authorized_keys" do
     owner user['id']
     group user['id']
-    mode 0644
+    mode 0o644
     source 'authorized_keys.erb'
     variables(keys: user['ssh_keys'])
     not_if { Array(user['ssh_keys']).empty? }

@@ -54,7 +54,7 @@ node['travis_perlbrew']['perls'].each do |pl|
     )
     owner 'root'
     group 'root'
-    mode 0644
+    mode 0o644
     ignore_failure true
   end
 

@@ -37,6 +37,6 @@ cookbook_file '/etc/default/locale' do
   source 'etc/default/locale.sh'
   owner 'root'
   group 'root'
-  mode 0644
+  mode 0o644
   notifies :run, 'execute[dpkg-reconfigure locales]', :immediately
 end
