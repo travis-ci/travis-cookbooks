@@ -1,7 +1,7 @@
 default['travis_docker']['version'] = '1.12.6-0~ubuntu-trusty'
 default['travis_docker']['users'] = %w(travis)
 default['travis_docker']['compose']['url'] = 'https://github.com/docker/compose/releases/download/1.9.0/docker-compose-Linux-x86_64'
-default['travis_docker']['compose']['sha256sum'] = 'd5fca08d54f59649b93b66a781b22998955f2bd701244fcfd650c00daa9e948c'
+default['travis_docker']['compose']['sha256sum'] = 'eeca988428d29534fecdff2768fa2e8c293b812b1c77da8ab5daf7f441c92e5b'
 default['travis_docker']['update_grub'] = true
 default['travis_docker']['binary']['url'] = 'https://get.docker.com/builds/Linux/x86_64/docker-1.12.6.tgz'
 default['travis_docker']['binary']['version'] = '1.12.6'
