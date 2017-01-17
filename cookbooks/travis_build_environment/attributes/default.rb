@@ -66,9 +66,6 @@ default['travis_build_environment']['rvmrc_env'] = {
   'rvm_without_gems' => 'rubygems-bundler',
   'rvm_autolibs_flag' => 'read-fail'
 }
-default['travis_build_environment']['golang_libraries'] = %w(
-  golang.org/x/tools/cmd/cover
-)
 default['travis_build_environment']['rebar_release'] = \
   'https://github.com/rebar/rebar/wiki/rebar'
 default['travis_build_environment']['kerl_path'] = '/usr/local/bin/kerl'
