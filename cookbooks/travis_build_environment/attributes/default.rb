@@ -116,6 +116,22 @@ default['travis_build_environment']['php_aliases'] = Hash[
   php_versions.map { |v| [v.split('.')[0, 2].join('.'), v] }
 ]
 
+nodejs_versions = %w(
+  7.4.0
+)
+
+default['travis_build_environment']['nodejs_versions'] = nodejs_versions
+default['travis_build_environment']['nodejs_default'] = nodejs_versions.max
+default['travis_build_environment']['nodejs_aliases'] = Hash[
+  nodejs_versions.map { |v| [v.split('.')[0, 2].join('.'), v] }
+]
+default['travis_build_environment']['nodejs_default_modules'] = %w(
+  grunt-cli
+)
+
+default['travis_build_environment']['nvm']['url'] = 'https://raw.githubusercontent.com/creationix/nvm/v0.33.0/nvm.sh'
+default['travis_build_environment']['nvm']['sha256sum'] = '40208b5d10788c257fa4bf7619f4fde57476c75d3e99e17b1cd9b9f413d11a39'
+
 default['travis_build_environment']['arch'] = 'i386'
 if kernel['machine'] =~ /x86_64/
   default['travis_build_environment']['arch'] = 'amd64'

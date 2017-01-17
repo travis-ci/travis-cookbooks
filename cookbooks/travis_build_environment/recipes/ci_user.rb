@@ -325,3 +325,73 @@ end
 log 'trigger ~travis/.pearrc removal' do
   notifies :run, 'bash[remove ~travis/.pearrc]'
 end
+
+nvm_sh = ::File.join(node['travis_build_environment']['home'], '.nvm', 'nvm.sh')
+
+directory ::File.dirname(nvm_sh) do
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['user']
+  mode 0o750
+end
+
+remote_file nvm_sh do
+  source node['travis_build_environment']['nvm']['url']
+  checksum node['travis_build_environment']['nvm']['sha256sum']
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['user']
+  mode 0o750
+end
+
+template '/etc/profile.d/travis-nvm.sh' do
+  source 'ci_user/etc-profile.d-travis-nvm.sh.erb'
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['user']
+  mode 0o750
+end
+
+Array(node['travis_build_environment']['nodejs_versions']).each do |version|
+  bash "installing node version #{version}" do
+    code "source #{nvm_sh}; nvm install v#{version}"
+    creates "#{node['travis_build_environment']['home']}/.nvm/v#{version}"
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    cwd node['travis_build_environment']['home']
+    environment(
+      'HOME' => node['travis_build_environment']['home']
+    )
+  end
+
+  node['travis_build_environment']['nodejs_default_modules'].each do |mod|
+    bash "install #{mod} for node version #{version}" do
+      code "source #{nvm_sh}; nvm use #{version}; npm install -g #{mod}"
+      creates "#{node['travis_build_environment']['home']}/.nvm/#{version}/lib/node_modules/#{mod}"
+      user node['travis_build_environment']['user']
+      group node['travis_build_environment']['group']
+      cwd node['travis_build_environment']['home']
+      environment('HOME' => node['travis_build_environment']['home'])
+    end
+  end
+end
+
+bash 'alias default node' do
+  code "source #{nvm_sh}; nvm alias default v#{node['travis_build_environment']['nodejs_default']}"
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  not_if { node['travis_build_environment']['nodejs_default'].to_s.empty? }
+end
+
+Array(node['travis_build_environment']['nodejs_aliases']).each do |existing_name, new_name|
+  bash "alias node #{existing_name} => #{new_name}" do
+    code "source #{nvm_sh}; nvm alias #{new_name} v#{existing_name}"
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    cwd node['travis_build_environment']['home']
+    environment('HOME' => node['travis_build_environment']['home'])
+  end
+end
+
+bash 'clean up nvm build artifacts & sources' do
+  code "rm -rf #{node['travis_build_environment']['home']}/.nvm/src"
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+end
