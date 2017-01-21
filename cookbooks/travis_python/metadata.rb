@@ -10,7 +10,6 @@ supports 'ubuntu'
 
 depends 'apt'
 depends 'build-essential'
-depends 'pypy'
 depends 'travis_build_environment'
 
 recipe 'travis_python', 'Installs python, pip, and virtualenv'

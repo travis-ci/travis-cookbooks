@@ -77,23 +77,11 @@ gimme_versions.each do |version|
     level :info
   end
 
-  execute "gimme_install_#{version}" do
+  execute "gimme install #{version}" do
     command 'gimme'
     environment(install_env.merge('GIMME_GO_VERSION' => version))
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     umask 0o077
-  end
-
-  next if version < '1.5'
-
-  Array(node['travis_build_environment']['golang_libraries']).each do |lib|
-    bash "install #{lib} for go #{version}" do
-      code %{eval "$(gimme #{version})" && go get -u #{lib}}
-      flags '-l'
-      user node['travis_build_environment']['user']
-      group node['travis_build_environment']['group']
-      environment(default_env)
-    end
   end
 end
