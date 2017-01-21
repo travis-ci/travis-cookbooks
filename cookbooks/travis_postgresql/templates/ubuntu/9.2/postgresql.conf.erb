@@ -38,15 +38,19 @@
 # The default values of these variables are driven from the -D command-line
 # option or PGDATA environment variable, represented here as ConfigDir.
 
-data_directory = '<%= node['postgresql']['data_dir'] %>/9.1/main'		# use data in another directory
+<% if ::File.directory?('/var/ramfs') -%>
+data_directory = '/var/ramfs/postgresql/9.2/main'		# use data in another directory
+<% else -%>
+data_directory = '/var/lib/postgresql/9.2/main'		# use data in another directory
+<% end -%>
 					# (change requires restart)
-hba_file = '/etc/postgresql/9.1/main/pg_hba.conf'	# host-based authentication file
+hba_file = '/etc/postgresql/9.2/main/pg_hba.conf'	# host-based authentication file
 					# (change requires restart)
-ident_file = '/etc/postgresql/9.1/main/pg_ident.conf'	# ident configuration file
+ident_file = '/etc/postgresql/9.2/main/pg_ident.conf'	# ident configuration file
 					# (change requires restart)
 
 # If external_pid_file is not explicitly set, no extra PID file is written.
-external_pid_file = '/var/run/postgresql/9.1-main.pid'		# write an extra PID file
+external_pid_file = '/var/run/postgresql/9.2-main.pid'			# write an extra PID file
 					# (change requires restart)
 
 
@@ -58,10 +62,10 @@ external_pid_file = '/var/run/postgresql/9.1-main.pid'		# write an extra PID fil
 
 #listen_addresses = 'localhost'		# what IP address(es) to listen on;
 					# comma-separated list of addresses;
-					# defaults to 'localhost', '*' = all
+					# defaults to 'localhost'; use '*' for all
 					# (change requires restart)
-port = <%= node['postgresql']['port'] %>				# (change requires restart)
-max_connections = <%= node['postgresql']['max_connections'] %>			# (change requires restart)
+port = <%= node['travis_postgresql']['port'] %>				# (change requires restart)
+max_connections = <%= node['travis_postgresql']['max_connections'] %>			# (change requires restart)
 # Note:  Increasing max_connections costs ~400 bytes of shared memory per
 # connection slot, plus lock space (see max_locks_per_transaction).
 #superuser_reserved_connections = 3	# (change requires restart)
@@ -77,10 +81,14 @@ unix_socket_directory = '/var/run/postgresql'		# (change requires restart)
 # - Security and Authentication -
 
 #authentication_timeout = 1min		# 1s-600s
-ssl = <%= node['postgresql']['ssl'] %>				# (change requires restart)
+ssl = <%= node['travis_postgresql']['ssl'] %>				# (change requires restart)
 #ssl_ciphers = 'ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH'	# allowed SSL ciphers
 					# (change requires restart)
 #ssl_renegotiation_limit = 512MB	# amount of data between renegotiations
+ssl_cert_file = '/etc/ssl/certs/ssl-cert-snakeoil.pem'		# (change requires restart)
+ssl_key_file = '/etc/ssl/private/ssl-cert-snakeoil.key'		# (change requires restart)
+#ssl_ca_file = ''			# (change requires restart)
+#ssl_crl_file = ''			# (change requires restart)
 #password_encryption = on
 #db_user_namespace = off
 
@@ -119,6 +127,11 @@ shared_buffers = 24MB			# min 128kB
 #maintenance_work_mem = 16MB		# min 1MB
 #max_stack_depth = 2MB			# min 100kB
 
+# - Disk -
+
+#temp_file_limit = -1			# limits per-session temp file space
+					# in kB, or -1 for no limit
+
 # - Kernel Resource Usage -
 
 #max_files_per_process = 1000		# min 25
@@ -141,7 +154,7 @@ shared_buffers = 24MB			# min 128kB
 
 # - Asynchronous Behavior -
 
-#effective_io_concurrency = 1		# 1-1000. 0 disables prefetching
+#effective_io_concurrency = 1		# 1-1000; 0 disables prefetching
 
 
 #------------------------------------------------------------------------------
@@ -152,8 +165,9 @@ shared_buffers = 24MB			# min 128kB
 
 #wal_level = minimal			# minimal, archive, or hot_standby
 					# (change requires restart)
-fsync = <%= node['postgresql']['fsync'] %>				# turns forced synchronization on or off
-#synchronous_commit = on		# synchronization level; on, off, or local
+fsync = <%= node['travis_postgresql']['fsync'] %>				# turns forced synchronization on or off
+#synchronous_commit = on		# synchronization level;
+					# off, local, remote_write, or on
 #wal_sync_method = fsync		# the default is the first option
 					# supported by the operating system:
 					#   open_datasync
@@ -161,7 +175,7 @@ fsync = <%= node['postgresql']['fsync'] %>				# turns forced synchronization on 
 					#   fsync
 					#   fsync_writethrough
 					#   open_sync
-full_page_writes = <%= node['postgresql']['full_page_writes'] %>			# recover from partial page writes
+full_page_writes = <%= node['travis_postgresql']['full_page_writes'] %>			# recover from partial page writes
 #wal_buffers = -1			# min 32kB, -1 sets based on shared_buffers
 					# (change requires restart)
 #wal_writer_delay = 200ms		# 1-10000 milliseconds
@@ -181,6 +195,9 @@ full_page_writes = <%= node['postgresql']['full_page_writes'] %>			# recover fro
 #archive_mode = off		# allows archiving to be done
 				# (change requires restart)
 #archive_command = ''		# command to use to archive a logfile segment
+				# placeholders: %p = path of file to archive
+				#               %f = file name only
+				# e.g. 'test ! -f /mnt/server/archivedir/%f && cp %p /mnt/server/archivedir/%f'
 #archive_timeout = 0		# force a logfile segment switch after this
 				# number of seconds; 0 disables
 
@@ -189,23 +206,27 @@ full_page_writes = <%= node['postgresql']['full_page_writes'] %>			# recover fro
 # REPLICATION
 #------------------------------------------------------------------------------
 
-# - Master Server -
+# - Sending Server(s) -
 
-# These settings are ignored on a standby server
+# Set these on the master and on any standby that will send replication data.
 
 #max_wal_senders = 0		# max number of walsender processes
 				# (change requires restart)
-#wal_sender_delay = 1s		# walsender cycle time, 1-10000 milliseconds
 #wal_keep_segments = 0		# in logfile segments, 16MB each; 0 disables
-#vacuum_defer_cleanup_age = 0	# number of xacts by which cleanup is delayed
 #replication_timeout = 60s	# in milliseconds; 0 disables
+
+# - Master Server -
+
+# These settings are ignored on a standby server.
+
 #synchronous_standby_names = ''	# standby servers that provide sync rep
 				# comma-separated list of application_name
 				# from standby(s); '*' = all
+#vacuum_defer_cleanup_age = 0	# number of xacts by which cleanup is delayed
 
 # - Standby Servers -
 
-# These settings are ignored on a master server
+# These settings are ignored on a master server.
 
 #hot_standby = off			# "on" allows queries during recovery
 					# (change requires restart)
@@ -231,6 +252,7 @@ full_page_writes = <%= node['postgresql']['full_page_writes'] %>			# recover fro
 #enable_hashagg = on
 #enable_hashjoin = on
 #enable_indexscan = on
+#enable_indexonlyscan = on
 #enable_material = on
 #enable_mergejoin = on
 #enable_nestloop = on
@@ -309,15 +331,12 @@ full_page_writes = <%= node['postgresql']['full_page_writes'] %>			# recover fro
 #syslog_facility = 'LOCAL0'
 #syslog_ident = 'postgres'
 
-#silent_mode = off			# Run server silently.
-					# DO NOT USE without syslog or
-					# logging_collector
-					# (change requires restart)
-
+# This is only relevant when logging to eventlog (win32):
+#event_source = 'PostgreSQL'
 
 # - When to Log -
 
-client_min_messages = <%= node['postgresql']['client_min_messages'] %>		# values in order of decreasing detail:
+client_min_messages = <%= node['travis_postgresql']['client_min_messages'] %>		# values in order of decreasing detail:
 					#   debug5
 					#   debug4
 					#   debug3
@@ -399,7 +418,7 @@ log_line_prefix = '%t '			# special values:
 #log_temp_files = -1			# log temporary files equal or larger
 					# than the specified size in kilobytes;
 					# -1 disables, 0 logs all temp files
-#log_timezone = '(defaults to server environment setting)'
+log_timezone = 'UTC'
 
 
 #------------------------------------------------------------------------------
@@ -410,6 +429,7 @@ log_line_prefix = '%t '			# special values:
 
 #track_activities = on
 #track_counts = on
+#track_io_timing = off
 #track_functions = none			# none, pl, all
 #track_activity_query_size = 1024 	# (change requires restart)
 #update_process_title = on
@@ -479,7 +499,7 @@ log_line_prefix = '%t '			# special values:
 
 datestyle = 'iso, mdy'
 #intervalstyle = 'postgres'
-#timezone = '(defaults to server environment setting)'
+timezone = 'UTC'
 #timezone_abbreviations = 'Default'     # Select the set of available time zone
 					# abbreviations.  Currently, there are
 					#   Default
@@ -520,6 +540,7 @@ default_text_search_config = 'pg_catalog.english'
 #max_pred_locks_per_transaction = 64	# min 10
 					# (change requires restart)
 
+
 #------------------------------------------------------------------------------
 # VERSION/PLATFORM COMPATIBILITY
 #------------------------------------------------------------------------------
@@ -545,12 +566,12 @@ default_text_search_config = 'pg_catalog.english'
 # ERROR HANDLING
 #------------------------------------------------------------------------------
 
-#exit_on_error = off				# terminate session on any error?
-#restart_after_crash = on			# reinitialize after backend crash?
+#exit_on_error = off			# terminate session on any error?
+#restart_after_crash = on		# reinitialize after backend crash?
 
 
 #------------------------------------------------------------------------------
 # CUSTOMIZED OPTIONS
 #------------------------------------------------------------------------------
 
-#custom_variable_classes = ''		# list of custom variable class names
+# Add settings for extensions here
