@@ -52,16 +52,16 @@ if [ -n "$1" ] && [ $1 != 'stop' ] && [ $1 != 'status' ]; then
     fi
 fi
 
-<% if node['travis_postgresql']['data_on_ramfs'] %>
-# Copy initial databases to RAMFS
-for data_dir in /var/lib/postgresql/*; do
-    v=$(basename $data_dir)
-    if [ -d $(dirname <%= node['travis_postgresql']['data_dir'] %>) -a ! -d <%= node['travis_postgresql']['data_dir'] %>/$v ]; then
-        mkdir -p <%= node['travis_postgresql']['data_dir'] %>/$v
-        cp -rp $data_dir <%= node['travis_postgresql']['data_dir'] %>/
-    fi
-done
-<% end %>
+if [ -d /var/ramfs ]; then
+    # Copy initial databases to RAMFS
+    for data_dir in /var/lib/postgresql/*; do
+        v=$(basename $data_dir)
+        if [ -d $(dirname /var/ramfs/postgresql) -a ! -d /var/ramfs/postgresql/$v ]; then
+            mkdir -p /var/ramfs/postgresql/$v
+            cp -rp $data_dir /var/ramfs/postgresql/
+        fi
+    done
+fi
 
 case "$1" in
     start|stop|restart|reload)

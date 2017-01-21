@@ -38,7 +38,11 @@
 # The default values of these variables are driven from the -D command-line
 # option or PGDATA environment variable, represented here as ConfigDir.
 
-data_directory = '<%= node['travis_postgresql']['data_dir'] %>/9.5/main'		# use data in another directory
+<% if ::File.directory?('/var/ramfs') -%>
+data_directory = '/var/ramfs/postgresql/9.5/main'		# use data in another directory
+<% else -%>
+data_directory = '/var/lib/postgresql/9.5/main'		# use data in another directory
+<% end -%>
 					# (change requires restart)
 hba_file = '/etc/postgresql/9.5/main/pg_hba.conf'	# host-based authentication file
 					# (change requires restart)

@@ -1,5 +1,3 @@
-include_attribute 'travis_build_environment'
-
 default['travis_postgresql']['default_version'] = '9.2'
 default['travis_postgresql']['alternate_versions'] = %w(9.3 9.4 9.5 9.6)
 
@@ -12,14 +10,6 @@ default['travis_postgresql']['fsync'] = false # disabled for CI purpose
 default['travis_postgresql']['full_page_writes'] = false # disabled for CI purpose
 default['travis_postgresql']['client_min_messages'] = 'error' # suppress warning output from build clients
 
-default['travis_postgresql']['data_on_ramfs'] = true # enabled for CI purpose
-
-if node['travis_postgresql']['data_on_ramfs']
-  default['travis_postgresql']['data_dir'] = "#{node['travis_build_environment']['ramfs_dir']}/postgresql"
-else
-  default['travis_postgresql']['data_dir'] = '/var/lib/postgresql'
-end
-
 default['travis_postgresql']['contrib_modules'] = true # enabled to install additional modules, like `hstore`
 # (see full list at http://www.postgresql.org/docs/devel/static/contrib.html)
 
@@ -27,4 +17,4 @@ default['travis_postgresql']['client_packages'] = %w(postgresql-client libpq-dev
 
 default['travis_postgresql']['postgis_version'] = '2.3'
 
-default['travis_postgresql']['superusers'] = [node['travis_build_environment']['user'], 'rails']
+default['travis_postgresql']['superusers'] = %w(travis rails)
