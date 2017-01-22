@@ -24,7 +24,7 @@ tmp_project_dir = File.join(
 remote_file script_absolute_path do
   source node['travis_sbt_extras']['download_url']
   backup false
-  mode 0755
+  mode 0o755
   owner node['travis_sbt_extras']['owner']
   group node['travis_sbt_extras']['group']
 end
@@ -35,7 +35,7 @@ end
 directory node['travis_sbt_extras']['config_dir'] do
   owner node['travis_sbt_extras']['owner']
   group node['travis_sbt_extras']['group']
-  mode 0755
+  mode 0o755
 end
 
 jvmopts_path = if node['travis_sbt_extras']['jvmopts']['filename'].to_s.empty?
@@ -51,7 +51,7 @@ template jvmopts_path do
   source 'jvmopts.erb'
   owner node['travis_sbt_extras']['owner']
   group node['travis_sbt_extras']['group']
-  mode 0644
+  mode 0o644
   not_if { jvmopts_path.empty? }
 end
 
@@ -68,7 +68,7 @@ template sbtopts_path do
   source 'sbtopts.erb'
   owner node['travis_sbt_extras']['owner']
   group node['travis_sbt_extras']['group']
-  mode 0644
+  mode 0o644
   not_if { sbtopts_path.empty? }
 end
 
@@ -76,7 +76,7 @@ template "/etc/profile.d/#{node['travis_sbt_extras']['script_name']}.sh" do
   source 'profile_sbt.sh.erb'
   owner node['travis_sbt_extras']['owner']
   group node['travis_sbt_extras']['group']
-  mode 0640
+  mode 0o640
 
   variables(
     jvmopts: jvmopts_path,

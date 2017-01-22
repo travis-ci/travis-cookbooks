@@ -1,0 +1,10 @@
+#!/bin/sh
+# Managed by Chef on <%= node.name %> :heart:
+export TRAVIS_CABAL_DEFAULT='<%= @default_cabal %>'
+export TRAVIS_CABAL_ROOT='<%= @cabal_root %>'
+export TRAVIS_GHC_DEFAULT='<%= @default_ghc %>'
+export TRAVIS_GHC_ROOT='<%= @ghc_root %>'
+export PATH="$PATH:<%= @ghc_root %>/bin"
+if [[ -d "${HOME}/.cabal/bin" ]]; then
+  export PATH="${HOME}/.cabal/bin:${PATH}"
+fi

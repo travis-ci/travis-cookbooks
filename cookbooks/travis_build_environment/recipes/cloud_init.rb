@@ -39,7 +39,7 @@ end
   /etc/cloud/templates
 ).each do |dirname|
   directory dirname do
-    mode 0755
+    mode 0o755
   end
 end
 
@@ -47,5 +47,5 @@ template '/etc/cloud/cloud.cfg' do
   source 'etc/cloud/cloud.cfg.erb'
   owner 'root'
   group 'root'
-  mode 0644
+  mode 0o644
 end

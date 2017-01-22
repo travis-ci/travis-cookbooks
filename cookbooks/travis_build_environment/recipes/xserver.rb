@@ -29,7 +29,7 @@ package %w(
 cookbook_file '/etc/init.d/xvfb' do
   owner 'root'
   group 'root'
-  mode 0644
+  mode 0o644
 
   source 'etc-init.d-xvfb.sh'
 end

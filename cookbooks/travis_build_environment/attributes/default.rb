@@ -66,9 +66,6 @@ default['travis_build_environment']['rvmrc_env'] = {
   'rvm_without_gems' => 'rubygems-bundler',
   'rvm_autolibs_flag' => 'read-fail'
 }
-default['travis_build_environment']['golang_libraries'] = %w(
-  golang.org/x/tools/cmd/cover
-)
 default['travis_build_environment']['rebar_release'] = \
   'https://github.com/rebar/rebar/wiki/rebar'
 default['travis_build_environment']['kerl_path'] = '/usr/local/bin/kerl'
@@ -119,6 +116,22 @@ default['travis_build_environment']['php_aliases'] = Hash[
   php_versions.map { |v| [v.split('.')[0, 2].join('.'), v] }
 ]
 
+nodejs_versions = %w(
+  7.4.0
+)
+
+default['travis_build_environment']['nodejs_versions'] = nodejs_versions
+default['travis_build_environment']['nodejs_default'] = nodejs_versions.max
+default['travis_build_environment']['nodejs_aliases'] = Hash[
+  nodejs_versions.map { |v| [v.split('.')[0, 2].join('.'), v] }
+]
+default['travis_build_environment']['nodejs_default_modules'] = %w(
+  grunt-cli
+)
+
+default['travis_build_environment']['nvm']['url'] = 'https://raw.githubusercontent.com/creationix/nvm/v0.33.0/nvm.sh'
+default['travis_build_environment']['nvm']['sha256sum'] = '40208b5d10788c257fa4bf7619f4fde57476c75d3e99e17b1cd9b9f413d11a39'
+
 default['travis_build_environment']['arch'] = 'i386'
 if kernel['machine'] =~ /x86_64/
   default['travis_build_environment']['arch'] = 'amd64'
@@ -131,6 +144,20 @@ default['travis_build_environment']['sphinxsearch']['ppas'] = %w(
   ppa:builds/sphinxsearch-rel21
   ppa:builds/sphinxsearch-rel22
 )
+
+default['travis_build_environment']['elasticsearch']['version'] = '5.0.2'
+default['travis_build_environment']['elasticsearch']['service_enabled'] = false
+
+default['travis_build_environment']['redis']['service_enabled'] = false
+
+default['travis_build_environment']['firefox_version'] = '50.0.2'
+default['travis_build_environment']['firefox_download_url'] = ::File.join(
+  'https://releases.mozilla.org/pub/firefox/releases',
+  node['travis_build_environment']['firefox_version'],
+  "linux-#{kernel['machine']}/en-US",
+  "firefox-#{node['travis_build_environment']['firefox_version']}.tar.bz2"
+)
+
 default['travis_build_environment']['clang']['version'] = '3.5.0'
 default['travis_build_environment']['clang']['download_url'] = "http://llvm.org/releases/#{node['travis_build_environment']['clang']['version']}/clang+llvm-#{node['travis_build_environment']['clang']['version']}-x86_64-linux-gnu-ubuntu-14.04.tar.xz"
 default['travis_build_environment']['clang']['extension'] = 'tar.xz'
@@ -144,11 +171,42 @@ default['travis_build_environment']['gimme']['install_user'] = 'travis'
 default['travis_build_environment']['gimme']['install_user_home'] = '/home/travis'
 default['travis_build_environment']['gimme']['debug'] = false
 
+default['travis_build_environment']['haskell_ghc_versions'] = %w(
+  7.0.4
+  7.4.2
+  7.6.3
+  7.8.4
+  7.10.3
+  8.0.2
+)
+default['travis_build_environment']['haskell_cabal_versions'] = %w(
+  1.16
+  1.18
+  1.20
+  1.22
+  1.24
+)
+default['travis_build_environment']['haskell_default_ghc'] = '7.6.3'
+default['travis_build_environment']['haskell_default_cabal'] = '1.18'
+
+gradle_version = '3.2.1'
+default['travis_build_environment']['gradle_version'] = gradle_version
+default['travis_build_environment']['gradle_url'] = "https://services.gradle.org/distributions/gradle-#{gradle_version}-bin.zip"
+default['travis_build_environment']['gradle_checksum'] = '9843a3654d3e57dce54db06d05f18b664b95c22bf90c6becccb61fc63ce60689'
+
 default['travis_build_environment']['lein_url'] = 'https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein'
 
 default['travis_build_environment']['sysctl_kernel_shmmax'] = 45_794_432
 default['travis_build_environment']['sysctl_disable_ipv6'] = true
 default['travis_build_environment']['wget']['version'] = '1.18'
+
+default['travis_build_environment']['shellcheck_url'] = 'https://s3.amazonaws.com/travis-blue-public/binaries/ubuntu/14.04/x86_64/shellcheck-0.4.5.tar.bz2'
+default['travis_build_environment']['shellcheck_version'] = '0.4.5'
+default['travis_build_environment']['shellcheck_checksum'] = '82397d9993d01daee52cebb672e782c596dc7ec928a199c709a20bd24c2941c9'
+default['travis_build_environment']['shellcheck_binaries'] = %w(shellcheck)
+
+default['travis_build_environment']['shfmt_url'] = 'https://github.com/mvdan/sh/releases/download/v1.0.0/shfmt_v1.0.0_linux_amd64'
+default['travis_build_environment']['shfmt_checksum'] = '172d2cf2d7d71191b7b0cd0d7169d703475825cdd270a6982899a349dcd98588'
 
 default['travis_build_environment']['yarn_url'] = 'https://yarnpkg.com/downloads/0.17.8/yarn-v0.17.8.tar.gz'
 default['travis_build_environment']['yarn_version'] = '0.17.8'

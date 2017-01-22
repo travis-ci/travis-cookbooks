@@ -24,14 +24,14 @@ template '/etc/security/limits.conf' do
   source 'etc/security/limits.conf.erb'
   owner 'root'
   group 'root'
-  mode 0644
+  mode 0o644
 end
 
 cookbook_file '/etc/sudoers.d/env_keep' do
   source 'etc/sudoers/env_keep'
   owner 'root'
   group 'root'
-  mode 0440
+  mode 0o440
 end
 
 ruby_block 'require pam_limits.so for su' do
@@ -54,7 +54,7 @@ template '/etc/init.d/disable-apparmor' do
   source 'etc/init.d/disable-apparmor.sh.erb'
   owner 'root'
   group 'root'
-  mode 0750
+  mode 0o750
   notifies :run, 'execute[update-rc.d disable-apparmor defaults]'
   only_if { node['travis_build_environment']['disable_apparmor'] }
 end

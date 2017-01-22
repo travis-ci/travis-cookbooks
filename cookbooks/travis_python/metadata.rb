@@ -11,7 +11,6 @@ supports 'ubuntu'
 depends 'apt'
 depends 'build-essential'
 depends 'poise-python'
-depends 'pypy'
 depends 'travis_build_environment'
 
 recipe 'travis_python', 'No-op!'

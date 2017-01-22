@@ -41,14 +41,14 @@ remote_file "#{hhvm_path}/bin/composer" do
   source 'http://getcomposer.org/composer.phar'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0755
+  mode 0o755
 end
 
 remote_file "#{hhvm_path}/bin/phpunit" do
   source 'https://phar.phpunit.de/phpunit.phar'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0755
+  mode 0o755
 end
 
 directory "#{phpenv_path}/rbenv.d/exec" do

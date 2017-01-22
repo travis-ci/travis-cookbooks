@@ -56,7 +56,7 @@ execute '/opt/pyenv/plugins/python-build/install.sh'
 directory '/opt/python' do
   owner 'root'
   group 'root'
-  mode 0755
+  mode 0o755
 end
 
 %W(
@@ -68,6 +68,12 @@ end
     group node['travis_build_environment']['group']
     mode 0755
   end
+end
+
+directory virtualenv_root do
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0o755
 end
 
 build_environment = {
@@ -117,7 +123,7 @@ node['travis_python']['pyenv']['pythons'].each do |py|
     )
     owner 'root'
     group 'root'
-    mode 0644
+    mode 0o644
     ignore_failure true
   end
 
@@ -229,7 +235,7 @@ template '/etc/profile.d/pyenv.sh' do
   source 'pyenv.sh.erb'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0644
+  mode 0o644
   variables(
     bindirs: bindirs,
     build_environment: build_environment

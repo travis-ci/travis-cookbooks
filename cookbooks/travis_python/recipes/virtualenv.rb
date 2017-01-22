@@ -24,5 +24,5 @@
 directory "#{node['travis_build_environment']['home']}/virtualenv" do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0755
+  mode 0o755
 end
