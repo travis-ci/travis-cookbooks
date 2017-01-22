@@ -21,9 +21,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-virtualenv_root = "#{node['travis_build_environment']['home']}/virtualenv"
-
 include_recipe 'travis_python::virtualenv'
+
+virtualenv_root = "#{node['travis_build_environment']['home']}/virtualenv"
+ug_perms = %W(
+  #{node['travis_build_environment']['user']}
+  #{node['travis_build_environment']['group']}
+).join(':')
 
 package %w(
   build-essential
@@ -53,6 +57,17 @@ directory '/opt/python' do
   owner 'root'
   group 'root'
   mode 0o755
+end
+
+%W(
+  #{node['travis_build_environment']['home']}/.pyenv
+  #{node['travis_build_environment']['home']}/.pyenv/versions
+).each do |dirname|
+  directory dirname do
+    owner node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    mode 0755
+  end
 end
 
 directory virtualenv_root do
@@ -94,7 +109,9 @@ node['travis_python']['pyenv']['pythons'].each do |py|
     )
   end
 
-  venv_fullname = "#{virtualenv_root}/#{pyname}"
+  bindirs << "/opt/python/#{py}/bin"
+  virtualenv_name = "#{virtualenv_root}/#{pyname}"
+  downloaded_tarball = "#{Chef::Config[:file_cache_path]}/python-#{py}.tar.bz2"
 
   remote_file downloaded_tarball do
     source ::File.join(
@@ -114,14 +131,14 @@ node['travis_python']['pyenv']['pythons'].each do |py|
     code "tar -xjf #{downloaded_tarball} --directory /"
     creates "/opt/python/#{py}"
     environment build_environment
-    only_if { File.exist?(downloaded_tarball) }
+    only_if { ::File.exist?(downloaded_tarball) }
   end
 
   bash "build #{py}" do
     code "python-build #{py} /opt/python/#{py}"
     creates "/opt/python/#{py}"
     environment build_environment
-    not_if { File.exist?("/opt/python/#{py}") }
+    not_if { ::File.exist?("/opt/python/#{py}") }
   end
 
   link "/opt/python/#{py}/bin/#{pyname}" do
@@ -130,13 +147,29 @@ node['travis_python']['pyenv']['pythons'].each do |py|
     group node['travis_build_environment']['group']
   end
 
-  bindirs << "/opt/python/#{py}/bin"
-
-  travis_python_virtualenv "python_#{py}" do
+  link "#{node['travis_build_environment']['home']}/.pyenv/versions/#{py}" do
+    to "/opt/python/#{py}"
     owner node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    interpreter "/opt/python/#{py}/bin/python"
-    path venv_fullname
+  end
+
+  bash "fix pyenv #{pyname} perms" do
+    code "chown -R #{ug_perms} /opt/python/#{py}"
+  end
+
+  base_pyexe = "/opt/python/#{py}/bin/python"
+
+  bash "install pyenv base #{pyname} packages" do
+    code "#{base_pyexe} -m pip.__main__ install -U setuptools wheel virtualenv"
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    environment('HOME' => node['travis_build_environment']['home'])
+  end
+
+  python_virtualenv virtualenv_name do
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    python "/opt/python/#{py}/bin/python"
     action :create
   end
 
@@ -167,23 +200,35 @@ node['travis_python']['pyenv']['pythons'].each do |py|
     packages.concat(node['travis_python']['pip']['packages'].fetch(name, []))
   end
 
-  execute "install wheel in #{py}" do
-    command "#{venv_fullname}/bin/pip install --upgrade wheel"
-    user node['travis_build_environment']['user']
-    group node['travis_build_environment']['group']
-    environment(
-      'HOME' => node['travis_build_environment']['home']
-    )
+  venv = resources("python_virtualenv[#{virtualenv_name}]")
+  pyexe = venv.python_binary
+
+  bash "fix #{pyname} virtualenv perms" do
+    code "chown -R #{ug_perms} #{venv.path}"
   end
 
-  execute "install packages in #{py}" do
-    command "#{venv_fullname}/bin/pip install --upgrade #{packages.join(' ')}"
+  bash "install pyenv #{pyname} packages" do
+    code "#{pyexe} -m pip.__main__ install #{Shellwords.join(packages)}"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    environment(
-      'HOME' => node['travis_build_environment']['home']
-    )
+    environment('HOME' => node['travis_build_environment']['home'])
   end
+
+  # This fails with perms errors on `/root/.cache`, but seems we can't set
+  # environment('HOME' => ...) or equiv easily.
+  #
+  # python_package packages do
+  #   virtualenv virtualenv_name
+  #   user node['travis_build_environment']['user']
+  #   group node['travis_build_environment']['group']
+  # end
+end
+
+file "#{node['travis_build_environment']['home']}/.pyenv/version" do
+  content "#{node['travis_python']['pyenv']['pythons'].first}\n"
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0644
 end
 
 template '/etc/profile.d/pyenv.sh' do
@@ -196,4 +241,11 @@ template '/etc/profile.d/pyenv.sh' do
     build_environment: build_environment
   )
   backup false
+end
+
+bash 'pyenv rehash' do
+  code 'source /etc/profile.d/pyenv.sh && pyenv rehash'
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  environment('HOME' => node['travis_build_environment']['home'])
 end

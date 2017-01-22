@@ -21,18 +21,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-virtualenv_root = File.join(node['travis_build_environment']['home'], 'virtualenv')
+include_recipe 'travis_python::virtualenv'
 
-# Install Python2 and Python3
-package %w(python-dev python3-dev)
+virtualenv_root = "#{node['travis_build_environment']['home']}/virtualenv"
 
-# Create a directory to store our virtualenvs in
-directory virtualenv_root do
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  mode '0755'
-
-  action :create
+node['travis_python']['system']['pythons'].each do |python_version|
+  python_runtime python_version do
+    options :system, dev_package: true
+  end
 end
 
 node['travis_python']['system']['pythons'].each do |py|
@@ -40,14 +36,13 @@ node['travis_python']['system']['pythons'].each do |py|
   venv_name = "#{pyname}_with_system_site_packages"
   venv_fullname = "#{virtualenv_root}/#{venv_name}"
 
-  travis_python_virtualenv venv_name.to_s do
-    owner node['travis_build_environment']['user']
-    group node['travis_build_environment']['group']
-    interpreter "/usr/bin/#{pyname}"
-    path venv_fullname
-    system_site_packages true
+  virtualenv_name = "#{virtualenv_root}/#{pyname}_with_system_site_packages"
 
-    action :create
+  python_virtualenv virtualenv_name do
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    python "/usr/bin/#{pyname}"
+    system_site_packages true
   end
 
   packages = []
@@ -56,21 +51,22 @@ node['travis_python']['system']['pythons'].each do |py|
     packages.concat node['travis_python']['pip']['packages'].fetch(name, [])
   end
 
-  execute "install wheel in #{venv_name}" do
-    command "#{venv_fullname}/bin/pip install --upgrade wheel"
+  pyexe = resources("python_virtualenv[#{virtualenv_name}]").python_binary
+
+  bash "install system #{pyname} packages" do
+    code "#{pyexe} -m pip.__main__ install #{Shellwords.join(packages)}"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    environment(
-      'HOME' => node['travis_build_environment']['home']
-    )
+    environment('HOME' => node['travis_build_environment']['home'])
   end
 
-  execute "install packages in #{venv_name}" do
-    command "#{venv_fullname}/bin/pip install --upgrade #{packages.join(' ')}"
-    user node['travis_build_environment']['user']
-    group node['travis_build_environment']['group']
-    environment(
-      'HOME' => node['travis_build_environment']['home']
-    )
-  end
+  # This fails with perms errors on `/root/.cache`, but seems we can't set
+  # environment('HOME' => ...) or equiv easily.
+  #
+  # python_package packages do
+  #   virtualenv virtualenv_name
+  #   user node['travis_build_environment']['user']
+  #   group node['travis_build_environment']['group']
+  #   action :nothing
+  # end
 end

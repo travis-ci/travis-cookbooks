@@ -10,11 +10,10 @@ supports 'ubuntu'
 
 depends 'apt'
 depends 'build-essential'
+depends 'poise-python'
 depends 'travis_build_environment'
 
-recipe 'travis_python', 'Installs python, pip, and virtualenv'
-recipe 'travis_python::package', 'Installs python using packages.'
-recipe 'travis_python::pip', 'Installs pip from source.'
+recipe 'travis_python', 'No-op!'
 recipe 'travis_python::pyenv', "Installs python using pyenv's python-build."
-recipe 'travis_python::source', 'Installs python from source.'
-recipe 'travis_python::virtualenv', 'Installs virtualenv using the python_pip resource.'
+recipe 'travis_python::system', 'Installs system python and other stuff.'
+recipe 'travis_python::devshm', 'Goofs around with /dev/shm maybe.'

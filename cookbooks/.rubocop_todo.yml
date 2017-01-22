@@ -7,9 +7,9 @@
 # versions of RuboCop, may require this file to be generated again.
 
 # Offense count: 1
-Lint/HandleExceptions:
+Lint/UselessAssignment:
   Exclude:
-    - 'travis_python/providers/pip.rb'
+    - 'travis_python/recipes/system.rb'
 
 # Offense count: 1
 Metrics/AbcSize:
@@ -26,7 +26,7 @@ Metrics/BlockLength:
 Metrics/LineLength:
   Max: 249
 
-# Offense count: 3
+# Offense count: 2
 # Configuration parameters: CountComments.
 Metrics/MethodLength:
   Max: 42

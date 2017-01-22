@@ -1,8 +1,7 @@
 # Cookbook Name:: travis_python
 # Recipe:: virtualenv
 #
-# Copyright 2011, Opscode, Inc.
-# Copyright:: 2011-2015, Travis CI GmbH <contact+travis-cookbooks-travis-python@travis-ci.org>
+# Copyright 2011-2015, Travis CI Development Team <contact@travis-ci.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,15 +21,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe 'travis_python::pip'
-
-cookbook_file '/etc/profile.d/virtualenv_settings.sh' do
+directory "#{node['travis_build_environment']['home']}/virtualenv" do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode 0o755
-end
-
-travis_python_pip 'virtualenv' do
-  version '13.1.0'
-  action :install
 end
