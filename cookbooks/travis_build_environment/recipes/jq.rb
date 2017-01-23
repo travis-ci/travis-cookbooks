@@ -1,7 +1,7 @@
 # Cookbook Name:: travis_build_environment
 # Recipe:: default
 #
-# Copyright 2015, Travis CI GmbH
+# Copyright 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the

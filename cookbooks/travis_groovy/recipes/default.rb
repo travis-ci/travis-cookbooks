@@ -1,7 +1,7 @@
 # Cookbook Name:: travis_groovy
 # Recipe:: default
 #
-# Copyright 2015, Travis CI GmbH
+# Copyright 2017 Travis CI GmbH
 
 ark 'groovy' do
   url node['travis_groovy']['url']
