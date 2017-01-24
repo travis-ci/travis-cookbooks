@@ -15,3 +15,7 @@ end
 packagecloud_repo 'github/git-lfs' do
   type 'deb'
 end
+
+package 'git-lfs' do
+  action %i(install upgrade)
+end
