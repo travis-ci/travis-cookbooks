@@ -35,7 +35,6 @@ package %w(
   libsqlite3-dev
   lsof
   md5deep
-  mercurial
   netcat-openbsd
   openssl
   ragel
@@ -69,6 +68,7 @@ include_recipe 'travis_build_environment::heroku_toolbelt'
 include_recipe 'travis_build_environment::yarn'
 include_recipe 'travis_build_environment::shellcheck'
 include_recipe 'travis_build_environment::shfmt'
+include_recipe 'travis_build_environment::mercurial'
 include_recipe 'travis_build_environment::locale'
 include_recipe 'travis_build_environment::hostname'
 include_recipe 'travis_build_environment::sysctl'
