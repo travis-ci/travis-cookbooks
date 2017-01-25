@@ -22,7 +22,14 @@
 # THE SOFTWARE.
 
 remote_file '/usr/local/bin/rebar' do
-  source node['travis_build_environment']['rebar_release']
+  source node['travis_build_environment']['rebar_url']
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0o755
+end
+
+remote_file '/usr/local/bin/rebar3' do
+  source node['travis_build_environment']['rebar3_url']
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode 0o755
