@@ -66,8 +66,10 @@ default['travis_build_environment']['rvmrc_env'] = {
   'rvm_without_gems' => 'rubygems-bundler',
   'rvm_autolibs_flag' => 'read-fail'
 }
-default['travis_build_environment']['rebar_release'] = \
+default['travis_build_environment']['rebar_url'] = \
   'https://github.com/rebar/rebar/wiki/rebar'
+default['travis_build_environment']['rebar3_url'] = \
+  'https://s3.amazonaws.com/rebar3/rebar3'
 default['travis_build_environment']['kerl_path'] = '/usr/local/bin/kerl'
 default['travis_build_environment']['kerl_base_dir'] = \
   "#{node['travis_build_environment']['home']}/.kerl"
