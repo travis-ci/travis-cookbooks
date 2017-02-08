@@ -1,11 +1,23 @@
-deb = "elasticsearch-#{node['travis_build_environment']['elasticsearch']['version']}.deb"
-path = File.join(Chef::Config[:file_cache_path], deb)
+package_name = "elasticsearch-#{node['travis_build_environment']['elasticsearch']['version']}.deb"
+deb_download_dest = File.join(
+  Chef::Config[:file_cache_path],
+  package_name
+)
 
-remote_file path do
-  source "https://artifacts.elastic.co/downloads/elasticsearch/#{deb}"
+remote_file deb_download_dest do
+  source "https://artifacts.elastic.co/downloads/elasticsearch/#{package_name}"
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  not_if 'which elasticsearch'
+end
+
+template '/etc/elasticsearch/jvm.options' do
+  source 'etc-elasticsearch-jvm.options.erb'
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0o644
+  variables(
+    jvm_heap: node['travis_build_environment']['elasticsearch']['jvm_heap']
+  )
 end
 
 ruby_block 'create-symbolic-links' do
@@ -22,8 +34,8 @@ ruby_block 'create-symbolic-links' do
   action :nothing
 end
 
-package deb do
-  source path
+package package_name do
+  source deb_download_dest
   provider Chef::Provider::Package::Dpkg
   notifies :create, 'ruby_block[create-symbolic-links]'
   action :install
