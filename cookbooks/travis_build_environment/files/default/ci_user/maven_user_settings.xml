@@ -82,22 +82,6 @@
           </snapshots>
           <url>https://repository.apache.org/snapshots/</url>
         </repository>
-
-        <repository>
-          <id>codehaus-snapshots</id>
-          <name>Codehaus (snapshots)</name>
-          <releases>
-            <enabled>false</enabled>
-            <updatePolicy>always</updatePolicy>
-            <checksumPolicy>warn</checksumPolicy>
-          </releases>
-          <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-            <checksumPolicy>fail</checksumPolicy>
-          </snapshots>
-          <url>https://nexus.codehaus.org/snapshots/</url>
-        </repository>
       </repositories>
     </profile>
   </profiles>
