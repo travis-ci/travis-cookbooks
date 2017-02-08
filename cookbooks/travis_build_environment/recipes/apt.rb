@@ -65,7 +65,7 @@ package 'software-properties-common'
   /etc/cloud/templates/sources.list.ubuntu.tmpl
 ).each do |filename|
   template filename do
-    source 'etc/cloud/templates/sources.list.tmpl.erb'
+    source 'etc-cloud-templates-sources.list.tmpl.erb'
     owner 'root'
     group 'root'
     mode 0o644
