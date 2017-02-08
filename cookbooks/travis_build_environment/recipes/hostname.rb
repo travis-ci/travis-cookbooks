@@ -58,7 +58,7 @@ end
   /etc/cloud/templates/hosts.ubuntu.tmpl
 ).each do |filename|
   template filename do
-    source 'etc/cloud/templates/hosts.tmpl.erb'
+    source 'etc-cloud-templates-hosts.tmpl.erb'
     owner 'root'
     group 'root'
     mode 0o644
