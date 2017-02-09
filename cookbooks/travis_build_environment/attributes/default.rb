@@ -151,6 +151,9 @@ default['travis_build_environment']['elasticsearch']['version'] = '5.0.2'
 default['travis_build_environment']['elasticsearch']['service_enabled'] = false
 default['travis_build_environment']['elasticsearch']['jvm_heap'] = '128m'
 
+default['travis_build_environment']['neo4j']['service_enabled'] = false
+default['travis_build_environment']['neo4j']['jvm_heap'] = '128m'
+
 default['travis_build_environment']['redis']['service_enabled'] = false
 
 default['travis_build_environment']['firefox_version'] = '50.0.2'
