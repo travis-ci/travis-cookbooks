@@ -25,7 +25,7 @@ package %w(
   g++
   gawk
   gcc
-  gpg2
+  gnupg2
   libc6-dev
   libffi-dev
   libgdbm-dev
