@@ -89,7 +89,11 @@ bash 'run rvm installer' do
 end
 
 bash "install default ruby #{node['travis_build_environment']['default_ruby']}" do
-  code "#{rvm_script_path} install #{node['travis_build_environment']['default_ruby']} --binary --fuzzy"
+  code %W(
+    #{rvm_script_path} install
+    #{node['travis_build_environment']['default_ruby']}
+    --autolibs=disable --binary --fuzzy
+  ).join(' ')
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   environment('HOME' => node['travis_build_environment']['home'])
@@ -97,7 +101,10 @@ bash "install default ruby #{node['travis_build_environment']['default_ruby']}" 
 end
 
 bash "create default alias for #{node['travis_build_environment']['default_ruby']}" do
-  code "#{rvm_script_path} alias create default #{node['travis_build_environment']['default_ruby']}"
+  code %W(
+    #{rvm_script_path} alias create
+    default #{node['travis_build_environment']['default_ruby']}
+  ).join(' ')
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   environment('HOME' => node['travis_build_environment']['home'])
@@ -112,8 +119,13 @@ bash 'install global gems' do
 end
 
 Array(node['travis_build_environment']['rubies']).each do |ruby_def|
+  next if ruby_def == node['travis_build_environment']['default_ruby']
+
   bash "install ruby #{ruby_def}" do
-    code "#{rvm_script_path} use #{ruby_def} --install --binary --fuzzy"
+    code %W(
+      #{rvm_script_path} install
+      #{ruby_def} --autolibs=disable --binary --fuzzy
+    ).join(' ')
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment('HOME' => node['travis_build_environment']['home'])
