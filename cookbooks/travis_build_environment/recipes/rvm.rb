@@ -17,12 +17,34 @@ global_gems = Array(
   node['travis_build_environment']['global_gems']
 ).map { |g| g[:name] }.join(' ')
 
-bash 'import mpapis.asc' do
-  code "gpg2 --import #{gpg_key_path}"
-  user node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  environment('HOME' => node['travis_build_environment']['home'])
-  action :nothing
+package %w(
+  bash
+  bison
+  bzip2
+  curl
+  g++
+  gawk
+  gcc
+  gpg2
+  libc6-dev
+  libffi-dev
+  libgdbm-dev
+  libgmp-dev
+  libncurses5-dev
+  libreadline6-dev
+  libsqlite3-dev
+  libssl-dev
+  libtool
+  libyaml-dev
+  make
+  openssl
+  patch
+  pkg-config
+  sqlite3
+  zlib1g
+  zlib1g-dev
+) do
+  action %i(install upgrade)
 end
 
 remote_file gpg_key_path do
@@ -31,7 +53,14 @@ remote_file gpg_key_path do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode 0o644
-  notifies :run, 'bash[import mpapis.asc]', :immediately
+end
+
+bash 'import mpapis.asc' do
+  code "gpg2 --import #{gpg_key_path}"
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  environment('HOME' => node['travis_build_environment']['home'])
+  only_if { ::File.exist?(gpg_key_path) }
 end
 
 remote_file rvm_installer_path do
@@ -39,6 +68,13 @@ remote_file rvm_installer_path do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode 0o755
+end
+
+file rvmrc_path do
+  content rvmrc_content
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0o644
 end
 
 bash 'run rvm installer' do
@@ -52,15 +88,8 @@ bash 'run rvm installer' do
   environment('HOME' => node['travis_build_environment']['home'])
 end
 
-file rvmrc_path do
-  content rvmrc_content
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  mode 0o644
-end
-
 bash "install default ruby #{node['travis_build_environment']['default_ruby']}" do
-  code "#{rvm_script_path} install #{node['travis_build_environment']['default_ruby']} --binary --fuzzy --autolibs=3"
+  code "#{rvm_script_path} install #{node['travis_build_environment']['default_ruby']} --binary --fuzzy"
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   environment('HOME' => node['travis_build_environment']['home'])
@@ -84,7 +113,7 @@ end
 
 Array(node['travis_build_environment']['rubies']).each do |ruby_def|
   bash "install ruby #{ruby_def}" do
-    code "#{rvm_script_path} use #{ruby_def} --install --binary --fuzzy --autolibs=3"
+    code "#{rvm_script_path} use #{ruby_def} --install --binary --fuzzy"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment('HOME' => node['travis_build_environment']['home'])
