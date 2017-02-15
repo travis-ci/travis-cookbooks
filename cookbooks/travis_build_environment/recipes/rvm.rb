@@ -53,6 +53,8 @@ remote_file gpg_key_path do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode 0o644
+  retries 2
+  retry_delay 30
 end
 
 bash 'import mpapis.asc' do
@@ -68,6 +70,8 @@ remote_file rvm_installer_path do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode 0o755
+  retries 2
+  retry_delay 30
 end
 
 file rvmrc_path do
@@ -86,6 +90,8 @@ bash 'run rvm installer' do
     '.rvm', 'VERSION'
   )
   environment('HOME' => node['travis_build_environment']['home'])
+  retries 2
+  retry_delay 30
 end
 
 bash "install default ruby #{node['travis_build_environment']['default_ruby']}" do
@@ -98,6 +104,8 @@ bash "install default ruby #{node['travis_build_environment']['default_ruby']}" 
   group node['travis_build_environment']['group']
   environment('HOME' => node['travis_build_environment']['home'])
   not_if { node['travis_build_environment']['default_ruby'].to_s.empty? }
+  retries 2
+  retry_delay 30
 end
 
 bash "create default alias for #{node['travis_build_environment']['default_ruby']}" do
@@ -116,6 +124,8 @@ bash 'install global gems' do
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   environment('HOME' => node['travis_build_environment']['home'])
+  retries 2
+  retry_delay 30
 end
 
 Array(node['travis_build_environment']['rubies']).each do |ruby_def|
@@ -129,5 +139,7 @@ Array(node['travis_build_environment']['rubies']).each do |ruby_def|
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment('HOME' => node['travis_build_environment']['home'])
+    retries 2
+    retry_delay 30
   end
 end
