@@ -60,7 +60,7 @@ file rvmrc_path do
 end
 
 bash "install default ruby #{node['travis_build_environment']['default_ruby']}" do
-  code "#{rvm_script_path} install #{node['travis_build_environment']['default_ruby']} --binary --fuzzy"
+  code "#{rvm_script_path} install #{node['travis_build_environment']['default_ruby']} --binary --fuzzy --autolibs=3"
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   environment('HOME' => node['travis_build_environment']['home'])
@@ -84,7 +84,7 @@ end
 
 Array(node['travis_build_environment']['rubies']).each do |ruby_def|
   bash "install ruby #{ruby_def}" do
-    code "#{rvm_script_path} use #{ruby_def} --install --binary --fuzzy"
+    code "#{rvm_script_path} use #{ruby_def} --install --binary --fuzzy --autolibs=3"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment('HOME' => node['travis_build_environment']['home'])
