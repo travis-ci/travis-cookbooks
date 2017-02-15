@@ -233,4 +233,3 @@ default['travis_build_environment']['yarn_binaries'] = %w(bin/yarn bin/yarnpkg b
 
 default['tz'] = 'UTC'
 default['travis_java']['default_version'] = ''
-override['rvm']['gpg']['keyserver'] = 'hkp://ha.pool.sks-keyservers.net'
