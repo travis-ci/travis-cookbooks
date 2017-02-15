@@ -34,8 +34,15 @@ remote_file gpg_key_path do
   notifies :run, 'bash[import mpapis.asc]', :immediately
 end
 
+remote_file rvm_installer_path do
+  source 'https://get.rvm.io'
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0o755
+end
+
 bash 'run rvm installer' do
-  code "#{rvm_installer_path} --stable"
+  code "#{rvm_installer_path} stable"
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   creates ::File.join(
@@ -43,7 +50,6 @@ bash 'run rvm installer' do
     '.rvm', 'VERSION'
   )
   environment('HOME' => node['travis_build_environment']['home'])
-  action :nothing
 end
 
 file rvmrc_path do
@@ -51,14 +57,6 @@ file rvmrc_path do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode 0o644
-end
-
-remote_file rvm_installer_path do
-  source 'https://get.rvm.io'
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  mode 0o755
-  notifies :run, 'bash[run rvm installer]', :immediately
 end
 
 bash "install default ruby #{node['travis_build_environment']['default_ruby']}" do
