@@ -9,7 +9,7 @@ rvmrc_path = ::File.join(
 )
 rvmrc_content = Array(
   node['travis_build_environment']['rvmrc_env']
-).map { |k, v| "#{k}=#{v}" }.join("\n")
+).map { |k, v| "#{k}='#{v}'" }.join("\n")
 rvm_script_path = ::File.join(
   node['travis_build_environment']['home'], '.rvm', 'bin', 'rvm'
 )
