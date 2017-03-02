@@ -5,9 +5,10 @@ default['android-sdk']['setup_root']                = nil  # ark defaults (/usr/
 default['android-sdk']['with_symlink']              = true # use ark's :install action when true; use ark's :put action when false
 default['android-sdk']['set_environment_variables'] = true
 
-default['android-sdk']['version']                   = '24.4'
-default['android-sdk']['checksum']                  = 'f2bb546534d16e2004665257ee530060338c684adad14a49cd4bbde08098d8a4'
-default['android-sdk']['download_url']              = "http://dl.google.com/android/android-sdk_r#{node['android-sdk']['version']}-linux.tgz"
+default['android-sdk']['version']                   = '25.2.3'
+default['android-sdk']['checksum']                  = 'aafe7f28ac51549784efc2f3bdfc620be8a08213'
+default['android-sdk']['download_url']              = "https://dl.google.com/android/repository/tools_r#{node['android-sdk']['version']}-linux.zip"
+
 
 #
 # List of Android SDK components to preinstall:
