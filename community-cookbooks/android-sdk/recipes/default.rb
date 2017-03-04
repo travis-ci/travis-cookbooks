@@ -62,16 +62,17 @@ ark node['android-sdk']['name'] do
   prefix_home node['android-sdk']['setup_root']
   owner node['android-sdk']['owner']
   group node['android-sdk']['group']
+  strip_components 0
   action node['android-sdk']['with_symlink'] ? :install : :put
 end
 
 #
 # Fix non-friendly 0750 permissions in order to make android-sdk available to all system users
 #
-%w(add-ons platforms tools).each do |subfolder|
-  directory File.join(android_home, subfolder) do
-    mode 0755
-  end
+directory File.join(android_home, 'tools') do
+  mode 0755
+  user node['android-sdk']['owner']
+  group node['android-sdk']['group']
 end
 # TODO: find a way to handle 'chmod stuff' below with own chef resource (idempotence stuff...)
 execute 'Grant all users to read android files' do

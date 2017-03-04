@@ -5,9 +5,9 @@ default['android-sdk']['setup_root']                = nil  # ark defaults (/usr/
 default['android-sdk']['with_symlink']              = true # use ark's :install action when true; use ark's :put action when false
 default['android-sdk']['set_environment_variables'] = true
 
-default['android-sdk']['version']                   = '24.4'
-default['android-sdk']['checksum']                  = 'f2bb546534d16e2004665257ee530060338c684adad14a49cd4bbde08098d8a4'
-default['android-sdk']['download_url']              = "http://dl.google.com/android/android-sdk_r#{node['android-sdk']['version']}-linux.tgz"
+default['android-sdk']['version']                   = '25.2.3'
+default['android-sdk']['checksum']                  = '1b35bcb94e9a686dff6460c8bca903aa0281c6696001067f34ec00093145b560'
+default['android-sdk']['download_url']              = "https://dl.google.com/android/repository/tools_r#{node['android-sdk']['version']}-linux.zip"
 
 #
 # List of Android SDK components to preinstall:
@@ -21,7 +21,9 @@ default['android-sdk']['download_url']              = "http://dl.google.com/andr
 # Note that it will require (waste) some extra download effort.
 #
 default['android-sdk']['components']                = %w( platform-tools
-                                                          build-tools-23.0.1
+                                                          build-tools-25.0.2
+                                                          android-25
+                                                          android-24
                                                           android-23
                                                           sys-img-armeabi-v7a-android-23
                                                           sys-img-armeabi-v7a-android-tv-23
