@@ -49,7 +49,7 @@ end
 
 remote_file gpg_key_path do
   source 'https://rvm.io/mpapis.asc'
-  checksum '6ba1ebe6b02841db9ea3b73b85d4ede87192584efc7dfe13fe42a29416767ffa'
+  checksum '08f64631c598cbe4398c5850725c8e6ab60dc5d86b6214e069d7ced1d546043b'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode 0o644
