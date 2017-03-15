@@ -1,9 +1,9 @@
-apt_repository 'rwky-redis' do
-  uri 'http://ppa.launchpad.net/rwky/redis/ubuntu'
+apt_repository 'chris-lea-redis-server' do
+  uri 'http://ppa.launchpad.net/chris-lea/redis-server/ubuntu'
   distribution node['lsb']['codename']
   components ['main']
-  key '5862E31D'
-  keyserver 'hkp://ha.pool.sks-keyservers.net'
+  key 'C7917B12'
+  keyserver 'hkp://keyserver.ubuntu.com'
   retries 2
   retry_delay 30
   action :add
