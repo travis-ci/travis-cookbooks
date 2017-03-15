@@ -14,7 +14,7 @@ package 'redis-server' do
 end
 
 service 'redis-server' do
-  provider Chef::Provider::Service::Upstart
+  provider Chef::Provider::Service::Init::Debian, service
   supports restart: true, status: true, reload: true
   if node['travis_build_environment']['redis']['service_enabled']
     action %i(enable start)
