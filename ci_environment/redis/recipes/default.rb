@@ -21,11 +21,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-apt_repository "rwky-redis" do
-  uri          "http://ppa.launchpad.net/rwky/redis/ubuntu"
+apt_repository "chrislea-redis-server" do
+  uri          "http://ppa.launchpad.net/chrislea/redis-server/ubuntu"
   distribution node['lsb']['codename']
   components   ["main"]
-  key          "5862E31D"
+  key          "C6917B12"
   keyserver    "hkp://ha.pool.sks-keyservers.net"
 
   action :add
