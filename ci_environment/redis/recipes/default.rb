@@ -26,7 +26,7 @@ apt_repository "chrislea-redis-server" do
   distribution node['lsb']['codename']
   components   ["main"]
   key          "C6917B12"
-  keyserver    "hkp://ha.pool.sks-keyservers.net"
+  keyserver    "hkp://keyserver.ubuntu.com"
 
   action :add
 end
