@@ -25,7 +25,7 @@ apt_repository "chrislea-redis-server" do
   uri          "http://ppa.launchpad.net/chrislea/redis-server/ubuntu"
   distribution node['lsb']['codename']
   components   ["main"]
-  key          "C6917B12"
+  key          "136221EE520DDFAF0A905689B9316A7BC7917B12"
   keyserver    "hkp://keyserver.ubuntu.com"
 
   action :add
