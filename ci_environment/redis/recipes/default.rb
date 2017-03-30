@@ -21,8 +21,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-apt_repository "chrislea-redis-server" do
-  uri          "http://ppa.launchpad.net/chrislea/redis-server/ubuntu"
+apt_repository "chris-lea-redis-server" do
+  uri          "http://ppa.launchpad.net/chris-lea/redis-server/ubuntu"
   distribution node['lsb']['codename']
   components   ["main"]
   key          "136221EE520DDFAF0A905689B9316A7BC7917B12"
