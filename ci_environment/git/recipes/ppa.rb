@@ -24,7 +24,7 @@ apt_repository "git-ppa" do
   uri          "http://ppa.launchpad.net/git-core/v1.8/ubuntu"
   distribution node['lsb']['codename']
   components   ["main"]
-  key          "E1DF1F24"
+  key          "0xE1DF1F24"
   keyserver    "hkp://ha.pool.sks-keyservers.net"
 
   action :add
