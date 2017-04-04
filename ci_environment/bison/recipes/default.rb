@@ -25,27 +25,26 @@ require "tmpdir"
 tmp = Dir.tmpdir
 case node[:platform]
 when "debian", "ubuntu"
-  # This is broken, we should just install it with apt.
-  # path = File.join(tmp, node.bison.filename)
+   path = File.join(tmp, node.bison.filename)
 
-  # remote_file(path) do
-  #   source node.bison.url
+   remote_file(path) do
+   source node.bison.url
 
-  #   owner node.travis_build_environment.user
-  #   group node.travis_build_environment.group
-  # end
+     owner node.travis_build_environment.user
+     group node.travis_build_environment.group
+   end
 
-  # file(path) do
-  #   action :nothing
-  # end
+   file(path) do
+     action :nothing
+   end
 
-  # package(path) do
-  #   action   :install
-  #   source   path
-  #   provider Chef::Provider::Package::Dpkg
+   package(path) do
+     action   :install
+     source   path
+     provider Chef::Provider::Package::Dpkg
 
-  #   notifies :delete, resources(:file => path)
-  # end
+     notifies :delete, resources(:file => path)
+   end
   package "bison" do
     action [:install, :upgrade]
   end
