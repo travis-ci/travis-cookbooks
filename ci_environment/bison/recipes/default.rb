@@ -45,7 +45,4 @@ when "debian", "ubuntu"
 
      notifies :delete, resources(:file => path)
    end
-  package "bison" do
-    action [:install, :upgrade]
-  end
 end # case
