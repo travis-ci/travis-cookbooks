@@ -18,6 +18,6 @@ end
 
 package node["hhvm"]["package"]["name"] do
   action  :install
-  options "--allow"
+  options "--allow-change-held-packages"
   not_if { node['hhvm']['package']['disabled'] }
 end
