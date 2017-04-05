@@ -26,7 +26,7 @@ apt_repository "chris-lea-redis-server" do
   distribution node['lsb']['codename']
   components   ["main"]
   key          "136221EE520DDFAF0A905689B9316A7BC7917B12"
-  keyserver    "hkp://keyserver.ubuntu.com"
+  keyserver    "hkp://ha.pool.sks-keyservers.net"
 
   action :add
 end
