@@ -21,6 +21,10 @@ execute "apt-get-clean-hhvm" do
 end
 
 execute "apt-get-update-hhvm" do
+  command "rm -rf /var/lib/apt/lists/*"
+end
+
+execute "apt-get-update-hhvm" do
   command "apt-get update"
 end
 
