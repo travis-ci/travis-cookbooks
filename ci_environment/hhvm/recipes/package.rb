@@ -16,6 +16,14 @@ apt_repository "hhvm-repository" do
   not_if { node['hhvm']['package']['disabled'] }
 end
 
+execute "apt-get-clean-hhvm" do
+  command "apt-get clean"
+end
+
+execute "apt-get-update-hhvm" do
+  command "apt-get update"
+end
+
 package node["hhvm"]["package"]["name"] do
   action  :install
   options "--allow-change-held-packages --allow-downgrades"
