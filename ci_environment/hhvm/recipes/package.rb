@@ -16,12 +16,8 @@ apt_repository "hhvm-repository" do
   not_if { node['hhvm']['package']['disabled'] }
 end
 
-execute "apt-get-clean-hhvm" do
-  command "apt-get clean"
-end
-
-execute "apt-get-update-hhvm" do
-  command "rm -rf /var/lib/apt/lists/*"
+execute "add-hhvm-manually" do
+  command "echo deb http://dl.hhvm.com/ubuntu precise main | sudo tee /etc/apt/sources.list.d/hhvm.list"
 end
 
 execute "apt-get-update-hhvm" do
