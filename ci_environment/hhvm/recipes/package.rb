@@ -18,6 +18,6 @@ end
 
 package node["hhvm"]["package"]["name"] do
   action  :install
-  options "--allow-change-held-packages"
+  options "--allow-change-held-packages --allow-downgrades"
   not_if { node['hhvm']['package']['disabled'] }
 end
