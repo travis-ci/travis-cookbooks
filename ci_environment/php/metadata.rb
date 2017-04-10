@@ -19,4 +19,4 @@ depends "composer"
 depends "phpbuild"
 depends "phpenv"
 
-depends "hhvm"
+#depends "hhvm"
