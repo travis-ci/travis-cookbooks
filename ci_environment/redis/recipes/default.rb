@@ -27,7 +27,6 @@ apt_repository "chris-lea-redis-server" do
   components   ["main"]
   key          "0xC7917B12"
   keyserver    "hkp://ha.pool.sks-keyservers.net"
-
   action :add
 end
 
