@@ -25,11 +25,8 @@ apt_repository "chris-lea-redis-server" do
   uri          "http://ppa.launchpad.net/chris-lea/redis-server/ubuntu"
   distribution node['lsb']['codename']
   components   ["main"]
-<<<<<<< HEAD
   key          "136221EE520DDFAF0A905689B9316A7BC7917B12"
-=======
   key          "0xC7917B12"
->>>>>>> switch chris lea redis-server ppa to ha.pool keyserver
   keyserver    "hkp://ha.pool.sks-keyservers.net"
 
   action :add
