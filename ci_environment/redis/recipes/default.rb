@@ -21,13 +21,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-apt_repository "rwky-redis" do
-  uri          "http://ppa.launchpad.net/rwky/redis/ubuntu"
+apt_repository "chris-lea-redis-server" do
+  uri          "http://ppa.launchpad.net/chris-lea/redis-server/ubuntu"
   distribution node['lsb']['codename']
   components   ["main"]
-  key          "5862E31D"
+  key          "0xC7917B12"
   keyserver    "hkp://ha.pool.sks-keyservers.net"
-
   action :add
 end
 
@@ -36,7 +35,7 @@ package "redis-server" do
 end
 
 service "redis-server" do
-  provider Chef::Provider::Service::Upstart
+  provider Chef::Provider::Service::Init::Debian
   supports :restart => true, :status => true, :reload => true
   if node.redis.service.enabled
     action [:enable, :start]

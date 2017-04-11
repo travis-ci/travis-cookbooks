@@ -18,5 +18,3 @@ depends "phpunit"
 depends "composer"
 depends "phpbuild"
 depends "phpenv"
-
-depends "hhvm"
