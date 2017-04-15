@@ -1,0 +1,30 @@
+env: <%= @worker[:env] %>
+mac_osx:
+<% if @worker[:logging_channel] -%>
+  logging_channel: <%= @worker[:logging_channel] %>
+<% end -%>
+  host: <%= @hostname %>
+  log_level: <%= @worker[:log_level] %>
+  amqp:
+  <% @amqp.each do |key, value| -%>
+    <%= key %>: <%= value %>
+  <% end -%>
+  vms:
+    provider: <%= @worker[:provider] %>
+    count: <%= @worker[:vms] %>
+  sauce_labs:
+    api_endpoint: <%= @saucelabs[:api_endpoint] %>
+    private_key_passphrase: <%= @saucelabs[:private_key_passphrase] %>
+    private_key_path: <%= @saucelabs[:private_key_path] %>
+  librato:
+    email: <%= @librato[:email] %>
+    token: <%= @librato[:api_token] %>
+<% if @worker[:timeouts] -%>
+  timeouts:
+  <% @worker[:timeouts].each do |timeout, value| -%>
+    <%= timeout -%>: <%= value %>
+  <% end -%>
+<% end -%>
+<% if @worker[:shutdown_timeout] -%>
+  shutdown_timeout: <%= @worker[:shutdown_timeout] %>
+<% end -%>
