@@ -72,3 +72,9 @@ include_recipe 'travis_build_environment::mercurial'
 include_recipe 'travis_build_environment::locale'
 include_recipe 'travis_build_environment::hostname'
 include_recipe 'travis_build_environment::sysctl'
+
+package %w(
+  shellcheck
+) do
+  action [:install, :upgrade]
+end
