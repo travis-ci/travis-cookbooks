@@ -60,3 +60,11 @@ template '/etc/init.d/disable-apparmor' do
 end
 
 execute '/usr/sbin/update-ca-certificates -f'
+
+cookbook_file '/var/lib/cloud/scripts/per-boot/99-travis-iptables-lockdown' do
+  source 'cloud-init-per-boot-iptables-lockdown.bash'
+  owner 'root'
+  group 'root'
+  mode 0755
+  only_if { File.directory?('/var/lib/cloud/scripts/per-boot') }
+end

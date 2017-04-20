@@ -204,6 +204,7 @@ default['travis_build_environment']['lein_url'] = 'https://raw.githubusercontent
 
 default['travis_build_environment']['sysctl_kernel_shmmax'] = 45_794_432
 default['travis_build_environment']['sysctl_disable_ipv6'] = true
+default['travis_build_environment']['ssh_host_key_regen'] = false
 default['travis_build_environment']['wget']['version'] = '1.18'
 
 default['travis_build_environment']['maven_url'] = 'https://www.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz'

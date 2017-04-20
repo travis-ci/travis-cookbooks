@@ -2,17 +2,10 @@
 ## cookbook:: travis_build_environment
 ##     file:: templates/default/etc/cloud/cloud.cfg.erb
 
-users:
-- travis
-
 disable_root: true
-
 preserve_hostname: false
-
 manage_etc_hosts: template
-
 cloud_init_modules:
-- migrator
 - seed_random
 - bootcmd
 - write-files
@@ -21,71 +14,17 @@ cloud_init_modules:
 - set_hostname
 - update_hostname
 - update_etc_hosts
-- ca-certs
-- rsyslog
-- users-groups
+<% if node['travis_build_environment']['ssh_host_key_regen'] %>
 - ssh
-
+<% end %>
 cloud_config_modules:
 - emit_upstart
-- disk_setup
-- mounts
-- ssh-import-id
-- locale
-- set-passwords
-- grub-dpkg
 - apt-pipelining
 - apt-configure
-- package-update-upgrade-install
-- landscape
-- timezone
-- puppet
-- chef
-- salt-minion
-- mcollective
-- disable-ec2-metadata
 - runcmd
-- byobu
-
 cloud_final_modules:
-- rightscale_userdata
 - scripts-vendor
 - scripts-per-once
 - scripts-per-boot
 - scripts-per-instance
 - scripts-user
-- ssh-authkey-fingerprints
-- keys-to-console
-- phone-home
-- final-message
-- power-state-change
-
-system_info:
-  distro: ubuntu
-  default_user:
-    name: ubuntu
-    lock_passwd: True
-    gecos: Ubuntu
-    groups: [adm, audio, cdrom, dialout, dip, floppy, netdev, plugdev, sudo, video]
-    sudo: ['ALL=(ALL) NOPASSWD:ALL']
-    shell: /bin/bash
-  paths:
-    cloud_dir: /var/lib/cloud/
-    templates_dir: /etc/cloud/templates/
-    upstart_dir: /etc/init/
-  package_mirrors:
-  - arches: [i386, amd64]
-    failsafe:
-      primary: 'http://archive.ubuntu.com/ubuntu'
-      security: 'http://security.ubuntu.com/ubuntu'
-    search:
-      primary:
-      - 'http://%(ec2_region)s.ec2.archive.ubuntu.com/ubuntu/'
-      - 'http://%(availability_zone)s.clouds.archive.ubuntu.com/ubuntu/'
-      - 'http://%(region)s.clouds.archive.ubuntu.com/ubuntu/'
-      security: []
-  - arches: [armhf, armel, default]
-    failsafe:
-      primary: 'http://ports.ubuntu.com/ubuntu-ports'
-      security: 'http://ports.ubuntu.com/ubuntu-ports'
-  ssh_svcname: ssh
