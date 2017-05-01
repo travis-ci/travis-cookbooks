@@ -21,10 +21,10 @@
 # THE SOFTWARE.
 
 apt_repository 'docker' do
-  uri 'https://apt.dockerproject.org/repo'
-  distribution 'ubuntu-trusty'
-  components ['main']
-  key 'https://apt.dockerproject.org/gpg'
+  uri 'https://download.docker.com/linux/ubuntu'
+  distribution 'trusty'
+  components ['stable', 'edge']
+  key 'https://download.docker.com/linux/ubuntu/gpg'
   retries 2
   retry_delay 30
   action :add
