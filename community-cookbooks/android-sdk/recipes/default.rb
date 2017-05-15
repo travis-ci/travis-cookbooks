@@ -27,7 +27,7 @@ include_recipe 'java' unless node['android-sdk']['java_from_system']
 
 setup_root       = node['android-sdk']['setup_root'].to_s.empty? ? node['ark']['prefix_home'] : node['android-sdk']['setup_root']
 android_home     = File.join(setup_root, node['android-sdk']['name'])
-android_bin      = File.join(android_home, 'tools', 'android')
+android_bin      = File.join(android_home, 'tools', 'bin')
 
 #
 # Install required libraries
@@ -121,7 +121,7 @@ unless File.exist?("#{setup_root}/#{node['android-sdk']['name']}/temp")
       group node['android-sdk']['group']
       # TODO: use --force or not?
       code <<-EOF
-        spawn #{android_bin} update sdk --no-ui --all --filter #{sdk_component}
+        spawn #{android_bin}sdkmanager sdk #{sdk_component}
         set timeout 1800
         expect {
           -regexp "Do you accept the license '(#{node['android-sdk']['license']['white_list'].join('|')})'.*" {
