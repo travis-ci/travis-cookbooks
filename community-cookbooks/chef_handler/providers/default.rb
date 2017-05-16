@@ -3,7 +3,7 @@
 # Cookbook Name:: chef_handler
 # Provider:: default
 #
-# Copyright:: 2011-2013, Chef Software, Inc <legal@chef.io>
+# Copyright:: 2011-2016, Chef Software, Inc <legal@chef.io>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@
 
 include ::ChefHandler::Helpers
 
+use_inline_resources
+
 def whyrun_supported?
   true
 end
@@ -29,39 +31,31 @@ end
 action :enable do
   class_name = new_resource.class_name
   new_resource.supports.each do |type, enable|
-    if enable
-      converge_by("disable #{class_name} as a #{type} handler") do
-        unregister_handler(type, class_name)
-      end
-    end
-  end
-  
-  handler = nil
-  converge_by("load #{class_name} from #{new_resource.source}") do
-    require new_resource.source
-    _, klass = get_class(class_name)
-    handler = klass.send(:new, *collect_args(new_resource.arguments))
+    next unless enable
+    unregister_handler(type, class_name)
   end
 
+  handler = nil
+
+  require new_resource.source unless new_resource.source.nil?
+
+  _, klass = get_class(class_name)
+  handler = klass.send(:new, *collect_args(new_resource.arguments))
+
   new_resource.supports.each do |type, enable|
-    if enable
-      converge_by("enable #{new_resource} as a #{type} handler") do
-        register_handler(type, handler)
-      end
-    end
+    next unless enable
+    register_handler(type, handler)
   end
 end
 
 action :disable do
   new_resource.supports.each_key do |type|
-    converge_by("disable #{new_resource} as a #{type} handler") do
-      unregister_handler(type, new_resource.class_name)
-    end
+    unregister_handler(type, new_resource.class_name)
   end
 end
 
 def load_current_resource
-  @current_resource = Chef::Resource::ChefHandler.new(new_resource.name)
+  @current_resource = Chef::Resource.resource_for_node(new_resource.declared_type, run_context.node).new(new_resource.name)
   @current_resource.class_name(new_resource.class_name)
   @current_resource.source(new_resource.source)
   @current_resource
@@ -76,4 +70,3 @@ def collect_args(resource_args = [])
     [resource_args]
   end
 end
-

@@ -1,9 +1,9 @@
 #
 # Author:: Seth Chisamore (<schisamo@chef.io>)
-# Cookbook Name:: chef_handlers
+# Cookbook Name:: chef_handler
 # Recipe:: json_file
 #
-# Copyright 2011, Chef Software, Inc.
+# Copyright 2011-2016, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,11 +18,11 @@
 # limitations under the License.
 #
 
-# force resource actions in compile phase so exception handler 
+# force resource actions in compile phase so exception handler
 # fires for compile phase exceptions
 
-chef_handler "Chef::Handler::JsonFile" do
-  source "chef/handler/json_file"
-  arguments :path => '/var/chef/reports'
+chef_handler 'Chef::Handler::JsonFile' do
+  source 'chef/handler/json_file'
+  arguments path: '/var/chef/reports'
   action :nothing
 end.run_action(:enable)

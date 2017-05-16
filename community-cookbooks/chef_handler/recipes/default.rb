@@ -1,9 +1,9 @@
 #
 # Author:: Seth Chisamore (<schisamo@chef.io>)
-# Cookbook Name:: chef_handlers
+# Cookbook Name:: chef_handler
 # Recipe:: default
 #
-# Copyright 2011, Chef Software, Inc.
+# Copyright 2011-2016, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,16 +18,15 @@
 # limitations under the License.
 #
 
-Chef::Log.info("Chef Handlers will be at: #{node['chef_handler']['handler_path']}")
+Chef::Log.info("Chef Handlers will be located at: #{node['chef_handler']['handler_path']}")
 
 remote_directory node['chef_handler']['handler_path'] do
   source 'handlers'
-  # Just inherit permissions on Windows, don't try to set POSIX perms
-  if node["platform"] != "windows"
-    owner node['chef_handler']['root_user']
-    group node['chef_handler']['root_group']
-    mode "0755"
+  unless platform?('windows')
+    owner 'root'
+    mode '0755'
     recursive true
   end
+  group node['root_group']
   action :nothing
 end.run_action(:create)
