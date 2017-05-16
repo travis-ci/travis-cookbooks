@@ -1,9 +1,9 @@
 #
-# Author:: Seth Chisamore (<schisamo@opscode.com>)
-# Cookbook Name:: 7-zip
-# Recipe:: default
+# Author:: Shawn Neal (<sneal@sneal.net>)
+# Cookbook Name:: seven_zip
+# Resource:: archive
 #
-# Copyright 2011, Opscode, Inc.
+# Copyright:: 2013, Daptiv Solutions LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,14 +18,12 @@
 # limitations under the License.
 #
 
-windows_package node['7-zip']['package_name'] do
-  source node['7-zip']['url']
-  checksum node['7-zip']['checksum']
-  options "INSTALLDIR=\"#{node['7-zip']['home']}\""
-  action :install
-end
+default_action :extract
 
-# update path
-windows_path node['7-zip']['home'] do
-  action :add
-end
+actions :extract
+
+attribute :path, kind_of: String, name_attribute: true
+attribute :source, kind_of: String
+attribute :overwrite, kind_of: [TrueClass, FalseClass], default: false
+attribute :checksum, kind_of: String
+attribute :timeout, kind_of: Integer
