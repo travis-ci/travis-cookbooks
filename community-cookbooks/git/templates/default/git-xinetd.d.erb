@@ -5,6 +5,6 @@ service git
         wait            = no
         user            = nobody
         server          = <%= @git_daemon_binary %>
-        server_args     = --base-path=<%= node["git"]["server"]["base_path"] %> <% if node["git"]["server"]["export_all"] == "true" %>--export-all <% end %>--syslog --inetd --verbose
+        server_args     = --base-path=<%= node["git"]["server"]["base_path"] %> <%= node['git']['server']['export_all'] ? '--export-all' : nil %> --syslog --inetd --verbose
         log_on_failure  += USERID
 }
