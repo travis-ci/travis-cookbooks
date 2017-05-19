@@ -25,7 +25,7 @@ apt_repository 'pollinate' do
   distribution node['lsb']['codename']
   components %w(main)
   key '43732553'
-  keyserver 'hkp//ha.pool.sks-keyservers.net'
+  keyserver 'hkp://p80.pool.sks-keyservers.net:80'
   retries 2
   retry_delay 30
 end
