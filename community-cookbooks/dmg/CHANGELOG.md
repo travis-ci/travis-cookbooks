@@ -1,78 +1,130 @@
-dmg Cookbook CHANGELOG
-======================
-This file is used to list changes made in each version of the dmg ookbook.
+# dmg Cookbook CHANGELOG
 
-v2.2.2 (2014-11-12)
--------------------
-- #23, add chefspec matchers
+This file is used to list changes made in each version of the dmg cookbook.
 
-v2.2.0 (2014-02-25)
--------------------
+## 4.0.0 (2017-04-27)
+
+- Converted the existing LWRP to a custom resource which increases the required chef-client release to 12.5+
+- Added Test Kitchen config with private atlas boxes for 10.10 and 10.11
+- Added a test recipe to installed Tunnelblick
+- Added an Inspec test to confirm that Tunnelblick actually installs
+- Remove unused attributes and the entire attributes file
+- Add a warning if you include the default recipe on your runlist
+- Update specs to run on 10.12 and against the test recipe since dmg::default is empty and the existing spec tested nothing
+
+## 3.1.1 (2017-04-11)
+
+- Cookstyle updates
+- Test with Local Delivery and not Rake
+- Update apache2 license string
+- Remove foodcritic exclusions
+
+## 3.1.0 (2017-01-18)
+
+- Fixed pkg,mpkg installation when it was using mounted app name while it was actually mounted under different name for some applications
+- Cookstyle fixes
+
+## 3.0.0 (2016-09-06)
+
+- Add chef_version metadata
+- Run the specs against a mock of OS X
+- Testing updates
+- Require Chef 12+
+
+## v2.4.0 (2016-04-26)
+
+- Added support for local .dmg files with the file property. See the readme for details
+- Resolved all rubocop warnings
+
+## v2.3.0 (2015-10-20)
+
+- Add new headers property to the LWRP for custom http headers. See the readme for more information
+- Removed pivotal tracker example in the readme
+- Added travis and cookbook version badges to the readme
+- Added a .foodcritic file to exclude rules
+- Updated chefignore and .gitignore files
+- Updated platforms in Test Kitchen
+- Added standard Rubocop file
+- Updated Travis to test using ChefDK for the latest deps
+- Added a Berksfile
+- Updated contributing and testing docs
+- Updated Gemfile with the latest testing deps
+- Added maintainers.md and maintainers.toml
+- Added rakefile for simplified testing
+- Added source_url and issues_url metadata
+- Added basic converge chefspec
+
+## v2.2.2 (2014-11-12)
+
+- # 23, add chefspec matchers
+
+## v2.2.0 (2014-02-25)
+
 - [COOK-4285] Accept long EULAs
 
+## v2.1.4 (2014-01-26)
 
-v2.1.4 (2014-01-26)
--------------------
-* [COOK-4157] - dmg_package LWRP broken due to "puts" instead of "system"
-* [COOK-4065] - dmg cookbook outputs the name of packages when checking if they are installed
+- [COOK-4157] - dmg_package LWRP broken due to "puts" instead of "system"
+- [COOK-4065] - dmg cookbook outputs the name of packages when checking if they are installed
 
+## v2.1.2
 
-v2.1.2
-------
 Cleaning up merge errors
 
+## v2.1.0
 
-v2.1.0
-------
 ### Bug
-- **[COOK-3946](https://tickets.opscode.com/browse/COOK-3946)** - Syntax error in resources/package.rb
-- **[COOK-2672](https://tickets.opscode.com/browse/COOK-2672)** - EULA for package is displayed instead accepted
 
+- **[COOK-3946](https://tickets.chef.io/browse/COOK-3946)** - Syntax error in resources/package.rb
+- **[COOK-2672](https://tickets.chef.io/browse/COOK-2672)** - EULA for package is displayed instead accepted
 
-v2.0.8
-------
+## v2.0.8
+
 Adding a Chef 10 compatibility check in provider
 
+## v2.0.6
 
-v2.0.6
-------
 # BUG
+
 - [COOK-3302] - Sometimes hdiutil detach fails due to cfprefsd running in background
-# IMPROVEMENT
+
+  # IMPROVEMENT
+
 - Adding foodcritic and rubocop to .travis.yml
 
+## v2.0.4
 
-v2.0.4
-------
 ### Bug
-- **[COOK-3331](https://tickets.opscode.com/browse/COOK-3331)** - Fix an issue where `dmg_package` with no source raises an exception
 
+- **[COOK-3331](https://tickets.chef.io/browse/COOK-3331)** - Fix an issue where `dmg_package` with no source raises an exception
 
-v2.0.2
-------
+## v2.0.2
+
 ### Bug
-- **[COOK-3578](https://tickets.opscode.com/browse/COOK-3578)** - Support `package_id`s with spaces
-- **[COOK-3302](https://tickets.opscode.com/browse/COOK-3302)** - Fix an issue where `hdiutil detach` fails due to `cfprefsd` running in the background
 
-v2.0.0
-------
+- **[COOK-3578](https://tickets.chef.io/browse/COOK-3578)** - Support `package_id`s with spaces
+- **[COOK-3302](https://tickets.chef.io/browse/COOK-3302)** - Fix an issue where `hdiutil detach` fails due to `cfprefsd` running in the background
+
+## v2.0.0
+
 ### Bug
-- **[COOK-3389](https://tickets.opscode.com/browse/COOK-3389)** - Use `rsync` instead of `cp` (potentially a breaking change on some systems)
 
-v1.1.0
-------
+- **[COOK-3389](https://tickets.chef.io/browse/COOK-3389)** - Use `rsync` instead of `cp` (potentially a breaking change on some systems)
+
+## v1.1.0
+
 - [COOK-1847] - accept owner parameter for installing packages
 
-v1.0.0
-------
+## v1.0.0
+
 - [COOK-852] - Support "pkg" in addition to "mpkg" package types
 
-v0.7.0
-------
+## v0.7.0
+
 - [COOK-854] - use `cp -R` instead of `cp -r`
 - [COOK-855] - specify a file or directory to check for prior install
 
-v0.6.0
-------
+## v0.6.0
+
 - option to install software that is an .mpkg inside a .dmg
 - ignore failure on chmod in case mode is already set, or is root owned
