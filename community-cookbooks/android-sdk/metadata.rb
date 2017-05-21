@@ -1,9 +1,11 @@
 name 'android-sdk'
 maintainer 'Gilles Cornu'
 maintainer_email 'foss@gilles.cornu.name'
+issues_url 'https://github.com/gildegoma/chef-android-sdk/issues' if respond_to?(:issues_url)
+source_url 'https://github.com/gildegoma/chef-android-sdk' if respond_to?(:source_url)
 license 'Apache 2.0'
 description 'Installs Google Android SDK'
-version '0.2.0'
+version '0.2.1'
 
 %w(java ark).each do |dep|
   depends dep

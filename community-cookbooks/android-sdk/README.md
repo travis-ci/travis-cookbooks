@@ -13,8 +13,9 @@ The **default** recipe of this Chef cookbook will:
 Requirements
 ------------
 
-* Depends on **opscode/ark** and **opscode/java** cookbooks
-* This cookbook currently supports Ubuntu 12.04+ and CentOS 6.6+, but more Linux distributions are welcome (depending on community interests)
+* Chef 12.5+ (due to transitive cookbook dependencies, and to avoid a dependency on compat_resource cookbook)
+* Depends on **chef-cookbooks/ark** and **chef-cookbooks/java** cookbooks
+* This cookbook currently supports Ubuntu 12.04+ and CentOS 6.6+, but more Linux distributions are welcome (depending on community interests). Support for MacOS and Windows is also on the [roadmap](https://github.com/gildegoma/chef-android-sdk/pull/33) thanks to @rjaros87.
 
 Attributes
 ----------
@@ -24,9 +25,9 @@ TODO (work in progress)
 Installation and Usage
 ----------------------
 
-This cookbook is released at http://community.opscode.com/cookbooks/android-sdk and its original git repository is https://github.com/gildegoma/chef-android-sdk.
+This cookbook is released at https://supermarket.chef.io/cookbooks/android-sdk and its original git repository is https://github.com/gildegoma/chef-android-sdk.
 
-* Find your favourite way ([Berkhelf](http://berkshelf.com/), [Librarian-Chef](https://github.com/applicationsonline/librarian#readme), knife-github-cookbooks, Git submodule, Opscode community API or even tarball download) to install this cookbook (and its dependency).
+* Find your favourite way ([Berkhelf](http://berkshelf.com/), [Librarian-Chef](https://github.com/applicationsonline/librarian#readme), Chef Supermarket API, Git submodule, or even tarball download) to install this cookbook (and its dependencies).
 * Include the `android-sdk::default` recipe to your run list or inside your cookbook.
 * Provision!
 
