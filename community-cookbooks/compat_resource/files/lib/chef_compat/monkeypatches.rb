@@ -9,6 +9,11 @@ class Chef
   end
 end
 
+# fix to quiet constant redefined warnings
+if defined?(Chef::RunContext::ChildRunContext::CHILD_STATE)
+  Chef::RunContext::ChildRunContext.send(:remove_const, :CHILD_STATE)
+end
+
 require 'chef_compat/monkeypatches/chef'
 require 'chef_compat/monkeypatches/chef/exceptions'
 require 'chef_compat/monkeypatches/chef/log'
