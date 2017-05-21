@@ -1,7 +1,0 @@
-language: ruby
-sudo: false
-rvm:
-  - 2.0
-  - 2
-bundler_args: --without integration
-cache: bundler
