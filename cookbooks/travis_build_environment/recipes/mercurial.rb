@@ -6,6 +6,6 @@ apt_repository 'mercurial' do
   retry_delay 30
 end
 
-package %w[mercurial-common mercurial] do
-  action %i[install upgrade]
+package %w(mercurial-common mercurial) do
+  action %i(install upgrade)
 end
