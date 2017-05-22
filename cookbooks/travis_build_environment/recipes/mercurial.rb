@@ -7,5 +7,6 @@ apt_repository 'mercurial' do
 end
 
 package %w(mercurial-common mercurial) do
+  version node['travis_build_environment']['mercurial_version']
   action %i(install upgrade)
 end

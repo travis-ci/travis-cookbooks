@@ -218,6 +218,8 @@ default['travis_build_environment']['maven_binaries'] = %w(
   bin/mvnyjp
 )
 
+default['travis_build_environment']['mercurial_version'] = '4.2~trusty1'
+
 default['travis_build_environment']['shellcheck_url'] = 'https://s3.amazonaws.com/travis-blue-public/binaries/ubuntu/14.04/x86_64/shellcheck-0.4.5.tar.bz2'
 default['travis_build_environment']['shellcheck_version'] = '0.4.5'
 default['travis_build_environment']['shellcheck_checksum'] = '82397d9993d01daee52cebb672e782c596dc7ec928a199c709a20bd24c2941c9'
