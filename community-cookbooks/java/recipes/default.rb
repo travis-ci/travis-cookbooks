@@ -1,9 +1,9 @@
 #
 # Author:: Seth Chisamore (<schisamo@chef.io>)
-# Cookbook Name:: java
+# Cookbook:: java
 # Recipe:: default
 #
-# Copyright 2008-2015, Chef Software, Inc.
+# Copyright:: 2008-2015, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,5 +18,5 @@
 # limitations under the License.
 #
 
-include_recipe "java::set_attributes_from_version"
+include_recipe 'java::set_attributes_from_version'
 include_recipe "java::#{node['java']['install_flavor']}"

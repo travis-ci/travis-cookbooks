@@ -7,7 +7,14 @@ Unattended-Upgrade::Allowed-Origins {
 <% end -%>
 };
 
+<% unless node['apt']['unattended_upgrades']['origins_patterns'].empty? -%>
+Unattended-Upgrade::Origins-Pattern {
+<% node['apt']['unattended_upgrades']['origins_patterns'].each do |pattern| -%>
+	"<%= pattern %>";
+<% end -%>
+};
 
+<% end -%>
 // List of packages to not update
 Unattended-Upgrade::Package-Blacklist {
 <% unless node['apt']['unattended_upgrades']['package_blacklist'].empty? -%>

@@ -1,0 +1,7 @@
+---
+platforms:
+  - name: macosx-10.10
+    driver:
+      box: macosx-10.10
+    run_list:
+    - recipe[homebrew]

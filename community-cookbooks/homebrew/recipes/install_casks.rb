@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: apt
-# library:: network
+# Cookbook:: homebrew
+# Recipe:: install_casks
 #
-# Copyright 2013, Chef Software, Inc.
+# Copyright:: 2014-2017, Chef Software, Inc <legal@chef.io>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,15 +17,8 @@
 # limitations under the License.
 #
 
-module ::Apt
-  def interface_ipaddress(host, interface)
-    if interface
-      addresses = host['network']['interfaces'][interface]['addresses']
-      addresses.select do |ip, data|
-        return ip if data['family'].eql?('inet')
-      end
-    else
-      return host.ipaddress
-    end
-  end
+include_recipe 'homebrew::cask'
+
+node['homebrew']['casks'].each do |cask|
+  homebrew_cask cask
 end
