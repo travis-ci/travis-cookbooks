@@ -34,6 +34,6 @@ package %w(linux-generic-lts-xenial linux-image-generic-lts-xenial) do
   action %i(install upgrade)
 end
 
-package 'docker-engine' do
+package 'docker-ce' do
   version node['travis_docker']['version']
 end
