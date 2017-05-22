@@ -5,9 +5,6 @@ license 'Apache 2.0'
 description 'Installs Python, pip and virtualenv'
 version '2.0.0'
 
-supports 'debian'
-supports 'ubuntu'
-
 depends 'apt'
 depends 'build-essential'
 depends 'travis_build_environment'

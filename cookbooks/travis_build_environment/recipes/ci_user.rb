@@ -23,7 +23,6 @@
 user node['travis_build_environment']['user'] do
   comment node['travis_build_environment']['user_comment']
   shell '/bin/bash'
-  supports manage_home: true
   manage_home true
 end
 
