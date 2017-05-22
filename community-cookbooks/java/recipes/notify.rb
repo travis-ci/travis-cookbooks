@@ -1,5 +1,9 @@
+#
+# Author:: Eric Helgeson (<eric@agileorbit.com>)
 # Cookbook:: java
-# Recipe:: purge_packages
+# Recipe:: notify
+#
+# Copyright:: 2008-2015, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +16,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-%w(sun-java6-jdk sun-java6-bin sun-java6-jre).each do |pkg|
-  package pkg do
-    action :purge
-  end
+# This resource is avalible for other recipes to subscribe to so they can be notified
+# notified of a JDK change. For example you want to restart a service to take
+# advantage of the new JDK
+# eg:
+# service 'somejavaservice'
+#   action :restart
+#   subscribes :write, 'log[jdk-version-changed]', :delayed
+# end
+log 'jdk-version-changed' do
+  message 'A new version of java was installed'
+  level :info
+  action :nothing
 end

@@ -2,6 +2,110 @@ Java Cookbook CHANGELOG
 =======================
 This file is used to list changes made in each version of the Java cookbook.
 
+v1.49.0 - 04/21/2017
+----
+- potential 'curl' resource cloning #415
+- Oracle 8u131
+- Add chefspec matchers for java_certificate resource
+- Remove unnecessary apt update
+
+v1.48.0 - 03/31/2017
+----
+- Update Oracle Java links from 101 to 121
+- Remove convergence report
+- Remove Fedora 24 testing
+- Fix test cookbook license
+- Update platforms in the specs
+- Remove testing on EOL platforms
+
+v1.47.0 - 01/30/2017
+-----
+- Fix typo in method name (#397)
+- Remove useless ruby_block[set-env-java-home]
+- Update README: using java::notify
+- Add forgotten "do" to README
+
+v1.46.0 - 01/09/2017
+-----
+- fix jce installation on windows #386
+
+v1.45.0 - 12/27/2016
+-----
+- Update to resolve latest rubocop rules
+
+v1.44.0 - 12/27/2016
+-----
+- Unpublished due to newer rubocop rules in travis
+- Added zlinux defaults
+
+v1.43.0 - 12/6/2016
+-----
+- Switch recursive chown from executing on the jdk parent directory to executing on the jdk directory itself.
+- Added proxy support to curl
+- add java_certificate LWRP from java-libraries cookbook - java-libraries now depricated.
+- (Windows) support removal of obsolete JREs via optional attribute
+- (Windows) Can download from s3 only using an IAM profile
+- (Windows) aws session token for windows java download
+
+v1.42.0 - 8/8/2016
+-----
+- Use openjdk ppa for all ubuntu versions to allow for older/newer jdks to be installed. Fixes #368
+- update oracle java 8u101 - Use sha256 hash (seems to help with downloading each converge)
+- Mac default converge fails since notify is not included by homebrew
+- Remove chef 14(!) depreciation warning in tests
+- Resolve chef-12 related warning
+
+v1.41.0 - 7/15/2016
+-----
+- Feature: Add new resource for cookbooks to subscribe to, see README
+- Use a remote_file resource for JCE download instead of curl in an execute block.
+- Since v1.40.4 Travis deploys cookbook to supermarket - expect more frequent,
+  smaller releases.
+
+v1.40.4 - 7/12/2016
+-----
+- Automated deploy, no cookbook changes.
+
+v1.40.3 - 7/12/2016
+-----
+- Attempt to have travis publish this.
+- Mac depends on homebrew.
+- Fixed typo in platform family spelling for OS X
+- fix openjdk version logic for freebsd
+- Enable Ark provider to handle URI with get parameters
+
+v1.40.1 - 7/8/2016
+-----
+- Fixed: JAVA_HOME not set on systems with restrictive umask #359
+
+v1.40 - 6/29/2016
+-----
+- Travis build green
+- Add Windows JCE support
+- Changes to prevent re-execution of resource creating file '/etc/profile.d/jdk.sh'
+- Fix JDK checksum
+- Update ibm_jdk.installer.properties.erb for IBM JDK 1.8
+- Install OpenJDK from distribution if Ubuntu version >= 15.10
+- Fixes #342 - Tar is included in macosx and homebrews package is gnutar which
+  causes this to fail
+- Add 12.04 to jdk8 test suite
+- Add source and issues urls to supermarket
+- Distinguishing the Java version for installing on the Mac OS X
+- Doc and cruft cleanup
+
+v1.39 - 1/14/2016
+-----
+- Travis debugging only, no code changes.
+
+v1.38 - 1/13/2016
+-----
+- (Win) Fix for Java install failing on Windows (introduced in #315)
+- Travis fixes/badge
+
+v1.37 - 11/9/2015
+------
+- (Win) Attirbute for specifying the install directory for the public jre #315
+
 v1.36 - 9/3/2015
 ------
 - Oracle JDK 1.8.0_65
