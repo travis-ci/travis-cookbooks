@@ -23,7 +23,7 @@
 apt_repository 'docker' do
   uri 'https://download.docker.com/linux/ubuntu'
   distribution 'trusty'
-  components ['stable', 'edge']
+  components %w(stable edge)
   key 'https://download.docker.com/linux/ubuntu/gpg'
   retries 2
   retry_delay 30
