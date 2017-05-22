@@ -135,7 +135,7 @@ default['travis_build_environment']['nvm']['url'] = 'https://raw.githubuserconte
 default['travis_build_environment']['nvm']['sha256sum'] = '40208b5d10788c257fa4bf7619f4fde57476c75d3e99e17b1cd9b9f413d11a39'
 
 default['travis_build_environment']['arch'] = 'i386'
-if kernel['machine'] =~ /x86_64/
+if node['kernel']['machine'] =~ /x86_64/
   default['travis_build_environment']['arch'] = 'amd64'
 end
 
@@ -160,7 +160,7 @@ default['travis_build_environment']['firefox_version'] = '50.0.2'
 default['travis_build_environment']['firefox_download_url'] = ::File.join(
   'https://releases.mozilla.org/pub/firefox/releases',
   node['travis_build_environment']['firefox_version'],
-  "linux-#{kernel['machine']}/en-US",
+  "linux-#{node['kernel']['machine']}/en-US",
   "firefox-#{node['travis_build_environment']['firefox_version']}.tar.bz2"
 )
 
