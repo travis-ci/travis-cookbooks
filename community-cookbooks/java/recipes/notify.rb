@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-# This resource is avalible for other recipes to subscribe to so they can be notified
+# This resource is avalible for other recipes to subscribe to so they can be
 # notified of a JDK change. For example you want to restart a service to take
 # advantage of the new JDK
 # eg:

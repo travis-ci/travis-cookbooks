@@ -22,7 +22,7 @@ include_recipe 'java::set_attributes_from_version'
 jdk_version = node['java']['jdk_version'].to_s
 jce_url = node['java']['oracle']['jce'][jdk_version]['url']
 jce_checksum = node['java']['oracle']['jce'][jdk_version]['checksum']
-jce_cookie = node['java']['oracle']['accept_oracle_download_terms'] ? 'oraclelicense=accept-securebackup-cookie;gpw_e24=http://edelivery.oracle.com' : ''
+jce_cookie = node['java']['oracle']['accept_oracle_download_terms'] ? 'oraclelicense=accept-securebackup-cookie' : ''
 
 directory ::File.join(node['java']['oracle']['jce']['home'], jdk_version) do
   mode '0755'

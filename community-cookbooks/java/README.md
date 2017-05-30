@@ -6,6 +6,21 @@ java cookbook
 This cookbook installs a Java JDK/JRE. It defaults to installing
 OpenJDK, but it can also install Oracle and IBM JDKs.
 
+
+Production Deployment with Oracle Java
+-----
+Oracle has been known to change the behavior of its download site frequently. It is recommended you store the archives on an artifact server or s3 bucket. You can then override the attributes in a cookbook, role, or environment:
+
+```ruby
+default['java']['jdk_version'] = '8'
+default['java']['install_flavor'] = 'oracle'
+default['java']['jdk']['7']['x86_64']['url'] = 'http://artifactory.example.com/artifacts/jdk-7u65-linux-x64.tar.gz'
+default['java']['jdk']['7']['x86_64']['checksum'] = 'The SHA-256 checksum of the JDK archive'
+default['java']['oracle']['accept_oracle_download_terms'] = true
+```
+
+NOTE: Oracle JDK 6 & 7 are unable to be automatically downloaded at this time.
+
 Usage
 -----
 
@@ -314,7 +329,7 @@ By default, the extracted directory is extracted to
 ```ruby
 # install jdk6 from Oracle
 java_ark "jdk" do
-    url 'http://download.oracle.com/otn-pub/java/jdk/6u29-b11/jdk-6u29-linux-x64.bin'
+    url 'http://download.oracle.com/otn/java/jdk/6u29-b11/jdk-6u29-linux-x64.bin'
     checksum  'a8603fa62045ce2164b26f7c04859cd548ffe0e33bfc979d9fa73df42e3b3365'
     app_home '/usr/local/java/default'
     bin_cmds ["java", "javac"]
@@ -391,17 +406,6 @@ Only one of the following
     end
 
 
-Production Deployment with Oracle Java
------
-Oracle has been known to change the behavior of its download site frequently. It is recommended you store the archives on an artifact server or s3 bucket. You can then override the attributes in a cookbook, role, or environment:
-
-```ruby
-default['java']['jdk_version'] = '7'
-default['java']['install_flavor'] = 'oracle'
-default['java']['jdk']['7']['x86_64']['url'] = 'http://artifactory.example.com/artifacts/jdk-7u65-linux-x64.tar.gz'
-default['java']['jdk']['7']['x86_64']['checksum'] = 'The SHA-256 checksum of the JDK archive'
-default['java']['oracle']['accept_oracle_download_terms'] = true
-```
 
 Recommendations for inclusion in community cookbooks
 -----

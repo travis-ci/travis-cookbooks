@@ -119,7 +119,7 @@ action :install do
       end
     end
 
-    if new_resource.url =~ /^http:\/\/download.oracle.com.*$/
+    if new_resource.url =~ /oracle\.com.*$/
       download_path = "#{Chef::Config[:file_cache_path]}/#{tarball_name}"
       if oracle_downloaded?(download_path, new_resource)
         Chef::Log.debug('oracle tarball already downloaded, not downloading again')

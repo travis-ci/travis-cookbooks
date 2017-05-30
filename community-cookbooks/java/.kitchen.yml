@@ -39,7 +39,7 @@ suites:
       - ubuntu-14.04
     run_list:
       - recipe[java::default]
-      - recipe[test_java::java_cert]
+      # - recipe[test_java::java_cert]
   - name: openjdk-7
     includes:
       - centos-6.8
@@ -52,7 +52,7 @@ suites:
       - freebsd-11.0
     run_list:
       - recipe[java::default]
-      - recipe[test_java::java_cert]
+      # - recipe[test_java::java_cert]
     attributes:
       java:
         jdk_version: "7"
@@ -65,7 +65,7 @@ suites:
       - fedora-25
     run_list:
       - recipe[java::default]
-      - recipe[test_java::java_cert]
+      # - recipe[test_java::java_cert]
     attributes:
       java:
         jdk_version: "8"
@@ -73,7 +73,7 @@ suites:
     run_list:
       - recipe[test_java::default]
       - recipe[java::default]
-      - recipe[test_java::java_cert]
+      # - recipe[test_java::java_cert]
     attributes:
       java:
         oracle:
@@ -85,7 +85,7 @@ suites:
     run_list:
       - recipe[test_java::default]
       - recipe[java::default]
-      - recipe[test_java::java_cert]
+      # - recipe[test_java::java_cert]
     attributes:
       java:
         jdk_version: "7"
@@ -98,7 +98,7 @@ suites:
     run_list:
       - recipe[test_java::default]
       - recipe[java::default]
-      - recipe[test_java::java_cert]
+      # - recipe[test_java::java_cert]
     attributes:
       java:
         jdk_version: "8"

@@ -2,6 +2,12 @@ Java Cookbook CHANGELOG
 =======================
 This file is used to list changes made in each version of the Java cookbook.
 
+v1.50.0 - 05/24/2017
+----
+- Oracle downloads changed again. Only Oracle 8 is able to be downloaded automatically.
+  - Please host your own copy internally to avoid issues such as this.
+- Add Log warning if download url contains oracle.com
+
 v1.49.0 - 04/21/2017
 ----
 - potential 'curl' resource cloning #415
