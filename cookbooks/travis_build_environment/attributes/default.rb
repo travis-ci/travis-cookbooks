@@ -96,7 +96,6 @@ if node['lsb']['codename'] == 'trusty'
   default['travis_build_environment']['system_python']['pythons'] = %w(2.7 3.4)
 end
 
-
 default['travis_build_environment']['rebar_url'] = \
   'https://github.com/rebar/rebar/wiki/rebar'
 default['travis_build_environment']['rebar3_url'] = \
