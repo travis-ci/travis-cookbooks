@@ -165,7 +165,6 @@ node['travis_build_environment']['pyenv']['pythons'].each do |py|
   end
 end
 
-template '/etc/profile.d/pyenv.sh' do
   source 'pyenv.sh.erb'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']

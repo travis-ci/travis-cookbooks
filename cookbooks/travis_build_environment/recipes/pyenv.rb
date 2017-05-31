@@ -1,6 +1,6 @@
 virtualenv_root = "#{node['travis_build_environment']['home']}/virtualenv"
 
-include_recipe 'travis_python::virtualenv'
+include_recipe 'travis_build_environment::virtualenv'
 
 package %w(
   build-essential
