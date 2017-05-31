@@ -114,7 +114,7 @@ node['travis_build_environment']['pyenv']['pythons'].each do |py|
   code "virtualenv --python=/opt/python/#{py}/bin/python #{venv_fullname}"
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-end
+  end
 
   node['travis_build_environment']['pyenv']['aliases'].fetch(py, []).each do |pyalias|
     if /^\d+\.\d+(?:\.\d+)?(?:-dev)?$/ =~ py
@@ -163,13 +163,13 @@ end
 end
 
 template '/etc/profile.d/pyenv.sh' do
-    source 'pyenv.sh.erb'
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  mode 0o644
-  variables(
+  source 'pyenv.sh.erb'
+    owner node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    mode 0o644
+    variables(
     bindirs: bindirs,
     build_environment: build_environment
   )
-  backup false
+    backup false
 end
