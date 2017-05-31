@@ -164,12 +164,12 @@ end
 
 template '/etc/profile.d/pyenv.sh' do
   source 'pyenv.sh.erb'
-    owner node['travis_build_environment']['user']
-    group node['travis_build_environment']['group']
-    mode 0o644
-    variables(
-      bindirs: bindirs,
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0o644
+  variables(
+    bindirs: bindirs,
     build_environment: build_environment
   )
-    backup false
+  backup false
 end
