@@ -12,7 +12,7 @@ directory virtualenv_root do
   action :create
 end
 
-node['travis_build_environment']['python']['pythons'].each do |py|
+node['travis_build_environment']['system_python']['pythons'].each do |py|
   pyname = "python#{py}"
   venv_name = "#{pyname}_with_system_site_packages"
   venv_fullname = "#{virtualenv_root}/#{venv_name}"
