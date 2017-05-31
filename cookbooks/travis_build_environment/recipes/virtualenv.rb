@@ -8,7 +8,7 @@ cookbook_file '/etc/profile.d/virtualenv_settings.sh' do
   mode 0o755
 end
 
-travis_build_environment_pip 'virtualenv' do
+travis_build_environment 'virtualenv' do
   version '13.1.0'
   action :install
 end
