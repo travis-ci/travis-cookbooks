@@ -12,7 +12,7 @@ directory virtualenv_root do
   action :create
 end
 
-node['travis_python']['system']['pythons'].each do |py|
+node['travis_build_environment']['python']['pythons'].each do |py|
   pyname = "python#{py}"
   venv_name = "#{pyname}_with_system_site_packages"
   venv_fullname = "#{virtualenv_root}/#{venv_name}"
@@ -29,8 +29,8 @@ node['travis_python']['system']['pythons'].each do |py|
 
   packages = []
 
-  node['travis_python']['pyenv']['aliases'].fetch(py, []).concat(['default', py]).each do |name|
-    packages.concat node['travis_python']['pip']['packages'].fetch(name, [])
+  node['travis_build_environment']['python']['aliases'].fetch(py, []).concat(['default', py]).each do |name|
+    packages.concat node['travis_build_environment']['pip']['packages'].fetch(name, [])
   end
 
   execute "install wheel in #{venv_name}" do
