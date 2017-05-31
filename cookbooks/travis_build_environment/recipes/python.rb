@@ -110,14 +110,11 @@ node['travis_build_environment']['pyenv']['pythons'].each do |py|
 
   bindirs << "/opt/python/#{py}/bin"
 
-  # TODO: implement this w/o resource
-  # travis_python_virtualenv "python_#{py}" do
-  #  owner node['travis_build_environment']['user']
-  #  group node['travis_build_environment']['group']
-  #  interpreter "/opt/python/#{py}/bin/python"
-  #  path venv_fullname
-  #  action :create
-  # end
+  bash "create virtualenv at #{venv_fullname} from #{py}" do
+  code "virtualenv --python=/opt/python/#{py}/bin/python #{venv_fullname}"
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+end
 
   node['travis_build_environment']['pyenv']['aliases'].fetch(py, []).each do |pyalias|
     if /^\d+\.\d+(?:\.\d+)?(?:-dev)?$/ =~ py
@@ -165,7 +162,8 @@ node['travis_build_environment']['pyenv']['pythons'].each do |py|
   end
 end
 
-  source 'pyenv.sh.erb'
+template '/etc/profile.d/pyenv.sh' do
+    source 'pyenv.sh.erb'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode 0o644
