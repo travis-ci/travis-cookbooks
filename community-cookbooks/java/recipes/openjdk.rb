@@ -2,10 +2,10 @@
 # Author:: Seth Chisamore (<schisamo@chef.io>)
 # Author:: Joshua Timberman (<joshua@chef.io>)
 #
-# Cookbook Name:: java
+# Cookbook:: java
 # Recipe:: openjdk
 #
-# Copyright 2010-2015, Chef Software, Inc.
+# Copyright:: 2010-2015, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,31 +19,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+include_recipe 'java::notify'
+
 unless node.recipe?('java::default')
-  Chef::Log.warn("Using java::default instead is recommended.")
+  Chef::Log.warn('Using java::default instead is recommended.')
 
   # Even if this recipe is included by itself, a safety check is nice...
-  [ node['java']['openjdk_packages'], node['java']['java_home'] ].each do |v|
-    if v.nil? or v.empty?
-      include_recipe "java::set_attributes_from_version"
-    end
+  [node['java']['openjdk_packages'], node['java']['java_home']].each do |v|
+    include_recipe 'java::set_attributes_from_version' if v.nil? || v.empty?
   end
 end
 
 jdk = Opscode::OpenJDK.new(node)
 
 if platform_requires_license_acceptance?
-  file "/opt/local/.dlj_license_accepted" do
-    owner "root"
-    group "root"
-    mode "0400"
+  file '/opt/local/.dlj_license_accepted' do
+    owner 'root'
+    group 'root'
+    mode '0400'
     action :create
     only_if { node['java']['accept_license_agreement'] }
   end
 end
 
 if node['platform'] == 'ubuntu'
-  include_recipe 'apt'
   apt_repository 'openjdk-r-ppa' do
     uri 'ppa:openjdk-r'
     distribution node['lsb']['codename']
@@ -53,27 +52,27 @@ end
 node['java']['openjdk_packages'].each do |pkg|
   package pkg do
     version node['java']['openjdk_version'] if node['java']['openjdk_version']
+    notifies :write, 'log[jdk-version-changed]', :immediately
   end
 end
 
-if platform_family?('debian', 'rhel', 'fedora')
-  java_alternatives 'set-java-alternatives' do
-    java_location jdk.java_home
-    default node['java']['set_default']
-    priority jdk.alternatives_priority
-    case node['java']['jdk_version'].to_s
-    when "6"
-      bin_cmds node['java']['jdk']['6']['bin_cmds']
-    when "7"
-      bin_cmds node['java']['jdk']['7']['bin_cmds']
-    when "8"
-      bin_cmds node['java']['jdk']['8']['bin_cmds']
-    end
-    action :set
+java_alternatives 'set-java-alternatives' do
+  java_location jdk.java_home
+  default node['java']['set_default']
+  priority jdk.alternatives_priority
+  case node['java']['jdk_version'].to_s
+  when '6'
+    bin_cmds node['java']['jdk']['6']['bin_cmds']
+  when '7'
+    bin_cmds node['java']['jdk']['7']['bin_cmds']
+  when '8'
+    bin_cmds node['java']['jdk']['8']['bin_cmds']
   end
+  action :set
+  only_if { platform_family?('debian', 'rhel', 'fedora') }
 end
 
-if node['java']['set_default'] and platform_family?('debian')
+if node['java']['set_default'] && platform_family?('debian')
   include_recipe 'java::default_java_symlink'
 end
 

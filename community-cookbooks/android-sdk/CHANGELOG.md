@@ -1,6 +1,12 @@
 CHANGELOG for Android-SDK cookbook
 ==================================
 
+v0.2.2 (2017-05-28)
+-------------------
+
+- Fix compatibility error with Chef 13.x [GH-40]
+  The `Chef::Resource::Script#path` property [has been removed in Chef 13](https://docs.chef.io/release_notes.html#the-path-property-of-the-execute-resource-has-been-removed).
+
 v0.2.1 (2017-03-04)
 -------------------
 

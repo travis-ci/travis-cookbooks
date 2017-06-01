@@ -1,7 +1,7 @@
 include_attribute 'travis_build_environment'
 
 default['travis_java']['arch'] = 'i386'
-default['travis_java']['arch'] = 'amd64' if kernel['machine'] =~ /x86_64/
+default['travis_java']['arch'] = 'amd64' if node['kernel']['machine'] =~ /x86_64/
 
 default['travis_java']['alternate_versions'] = []
 default['travis_java']['default_version'] = 'oraclejdk8'

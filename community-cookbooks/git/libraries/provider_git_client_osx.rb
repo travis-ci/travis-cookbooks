@@ -4,7 +4,7 @@ class Chef
       class Osx < Chef::Provider::GitClient
         include Chef::DSL::IncludeRecipe
 
-        provides :git_client, os: 'mac_os_x' if respond_to?(:provides)
+        provides :git_client, os: 'mac_os_x'
 
         action :install do
           dmg_package 'GitOSX-Installer' do

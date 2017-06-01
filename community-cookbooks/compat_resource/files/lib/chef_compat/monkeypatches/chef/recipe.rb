@@ -6,7 +6,7 @@
 # NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE
 #
 
-if Gem::Requirement.new('< 12.14.37').satisfied_by?(Gem::Version.new(Chef::VERSION))
+if Gem::Requirement.new('< 12.16.42').satisfied_by?(Gem::Version.new(Chef::VERSION))
 #--
 # Author:: Adam Jacob (<adam@chef.io>)
 # Author:: Christopher Walters (<cw@chef.io>)

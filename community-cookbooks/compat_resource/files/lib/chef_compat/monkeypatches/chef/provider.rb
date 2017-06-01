@@ -36,3 +36,30 @@ class Chef::Provider
     end
   end
 end
+
+
+class Chef
+  class Provider
+    class LWRPBase < Provider
+      if defined?(InlineResources)
+        module InlineResources
+          # since we upgrade the Chef::Runner and Chef::RunContext globally to >= 12.14 style classes, we need to also
+          # fix the use_inline_resources LWRPBase wrapper that creates a sub-resource collection with the ugpraded code
+          # from the Chef::Provider subclasses that do similar things in post-12.5 chef.
+          def recipe_eval_with_update_check(&block)
+            old_run_context = run_context
+            @run_context = run_context.create_child
+            return_value = instance_eval(&block)
+            Chef::Runner.new(run_context).converge
+            return_value
+          ensure
+            if run_context.resource_collection.any? { |r| r.updated? }
+              new_resource.updated_by_last_action(true)
+            end
+            @run_context = old_run_context
+          end
+        end
+      end
+    end
+  end
+end

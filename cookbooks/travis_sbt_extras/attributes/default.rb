@@ -1,11 +1,6 @@
 include_attribute 'travis_build_environment'
 
-case platform
-when 'mac_os_x'
-  set['travis_sbt_extras']['user_home_basedir'] = '/Users'
-else # usual base directory on unix systems:
-  set['travis_sbt_extras']['user_home_basedir'] = '/home'
-end
+default['travis_sbt_extras']['user_home_basedir'] = '/home'
 
 default['travis_sbt_extras']['download_url'] = 'https://raw.githubusercontent.com/paulp/sbt-extras/6ae480fa7989a0f58ce284bc769a7deeb1f27a21/sbt'
 

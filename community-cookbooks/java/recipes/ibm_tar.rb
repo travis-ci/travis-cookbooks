@@ -1,7 +1,7 @@
-# Cookbook Name:: java
+# Cookbook:: java
 # Recipe:: ibm_tar
 #
-# Copyright 2013-2015, Chef Software, Inc.
+# Copyright:: 2013-2015, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@
 
 require 'uri'
 
+include_recipe 'java::notify'
+
 source_url = node['java']['ibm']['url']
 jdk_uri = ::URI.parse(source_url)
 jdk_filename = ::File.basename(jdk_uri.path)
@@ -31,20 +33,20 @@ end
 
 remote_file "#{Chef::Config[:file_cache_path]}/#{jdk_filename}" do
   source source_url
-  mode 00755
+  mode '0755'
   if node['java']['ibm']['checksum']
     checksum node['java']['ibm']['checksum']
     action :create
   else
     action :create_if_missing
   end
-  notifies :create, "directory[create-java-home]", :immediately
-  notifies :run, "execute[untar-ibm-java]", :immediately
+  notifies :create, 'directory[create-java-home]', :immediately
+  notifies :run, 'execute[untar-ibm-java]', :immediately
 end
 
-directory "create-java-home" do
+directory 'create-java-home' do
   path node['java']['java_home']
-  mode 00755
+  mode '0755'
   recursive true
 end
 
@@ -52,19 +54,22 @@ java_alternatives 'set-java-alternatives' do
   java_location node['java']['java_home']
   default node['java']['set_default']
   case node['java']['jdk_version'].to_s
-  when "6"
+  when '6'
     bin_cmds node['java']['ibm']['6']['bin_cmds']
-  when "7"
+  when '7'
     bin_cmds node['java']['ibm']['7']['bin_cmds']
+  when '8'
+    bin_cmds node['java']['ibm']['8']['bin_cmds']
   end
   action :nothing
 end
 
-execute "untar-ibm-java" do
+execute 'untar-ibm-java' do
   cwd Chef::Config[:file_cache_path]
   command "tar xzf ./#{jdk_filename} -C #{node['java']['java_home']} --strip 1"
   notifies :set, 'java_alternatives[set-java-alternatives]', :immediately
+  notifies :write, 'log[jdk-version-changed]', :immediately
   creates "#{node['java']['java_home']}/jre/bin/java"
 end
 
-include_recipe "java::set_java_home"
+include_recipe 'java::set_java_home'

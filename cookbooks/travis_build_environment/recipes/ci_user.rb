@@ -23,7 +23,6 @@
 user node['travis_build_environment']['user'] do
   comment node['travis_build_environment']['user_comment']
   shell '/bin/bash'
-  supports manage_home: true
   manage_home true
 end
 
@@ -62,7 +61,7 @@ end
 file "#{node['travis_build_environment']['home']}/.travis_ci_environment.yml" do
   content YAML.dump(
     timestamp: Time.now.to_i,
-    recipes: node.recipes.map(&:to_s)
+    recipes: node.select_run_list.map(&:to_s)
   ) + "\n"
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']

@@ -38,7 +38,7 @@ class Chef < (defined?(::Chef) ? ::Chef : Object)
   class Resource < (defined?(::Chef::Resource) ? ::Chef::Resource : Object)
     class AptUpdate < (defined?(::Chef::Resource::AptUpdate) ? ::Chef::Resource::AptUpdate : Chef::Resource)
       resource_name :apt_update
-      provides :apt_update, os: "linux"
+      provides :apt_update
 
       property :frequency, Integer, default: 86_400
 

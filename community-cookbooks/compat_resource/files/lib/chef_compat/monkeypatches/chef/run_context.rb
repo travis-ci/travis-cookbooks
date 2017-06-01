@@ -6,7 +6,7 @@
 # NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE
 #
 
-if Gem::Requirement.new('< 12.14.37').satisfied_by?(Gem::Version.new(Chef::VERSION))
+if Gem::Requirement.new('< 12.16.42').satisfied_by?(Gem::Version.new(Chef::VERSION))
 #
 # Author:: Adam Jacob (<adam@chef.io>)
 # Author:: Christopher Walters (<cw@chef.io>)
@@ -92,6 +92,17 @@ class Chef
     #   root context.
     #
     attr_reader :parent_run_context
+
+    #
+    # The root run context.
+    #
+    # @return [Chef::RunContext] The root run context.
+    #
+    def root_run_context
+      rc = self
+      rc = rc.parent_run_context until rc.parent_run_context.nil?
+      rc
+    end
 
     #
     # The collection of resources intended to be converged (and able to be
@@ -662,6 +673,7 @@ ERROR_MESSAGE
         notifies_immediately
         notifies_delayed
         parent_run_context
+        root_run_context
         resource_collection
         resource_collection=
       }.map { |x| x.to_sym }

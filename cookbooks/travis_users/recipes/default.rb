@@ -31,7 +31,6 @@ end
 
 Array(node['travis_users']).each do |user|
   user user['id'] do
-    supports manage_home: true
     home "/home/#{user['id']}"
     shell user['shell']
   end
