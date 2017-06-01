@@ -21,7 +21,7 @@ package %w(
 
 git '/opt/pyenv' do
   repository 'https://github.com/yyuu/pyenv.git'
-  revision node['travis_build_environment']['pyenv']['revision']
+  revision node['travis_build_environment']['pyenv_revision']
   action :sync
 end
 
@@ -59,7 +59,7 @@ build_environment = {
 
 bindirs = %w(/opt/pyenv/bin)
 
-node['travis_build_environment']['pyenv']['pythons'].each do |py|
+node['travis_build_environment']['pythons'].each do |py|
   pyname = py
   downloaded_tarball = ::File.join(
     Chef::Config[:file_cache_path], "#{py}.tar.bz2"
@@ -116,7 +116,7 @@ node['travis_build_environment']['pyenv']['pythons'].each do |py|
     group node['travis_build_environment']['group']
   end
 
-  node['travis_build_environment']['pyenv']['aliases'].fetch(py, []).each do |pyalias|
+  node['travis_build_environment']['python_aliases'].fetch(py, []).each do |pyalias|
     if /^\d+\.\d+(?:\.\d+)?(?:-dev)?$/ =~ py
       pyaliasname = "python#{pyalias}"
     else
@@ -139,7 +139,7 @@ node['travis_build_environment']['pyenv']['pythons'].each do |py|
 
   packages = []
 
-  node['travis_build_environment']['pyenv']['aliases'].fetch(py, []).concat(['default', py]).each do |name|
+  node['travis_build_environment']['python_aliases'].fetch(py, []).concat(['default', py]).each do |name|
     packages.concat(node['travis_build_environment']['pip']['packages'].fetch(name, []))
   end
 
