@@ -66,6 +66,36 @@ default['travis_build_environment']['rvmrc_env'] = {
   'rvm_without_gems' => 'rubygems-bundler',
   'rvm_autolibs_flag' => 'read-fail'
 }
+
+default['travis_build_environment']['pyenv']['revision'] = 'v1.0.6'
+
+# Order matters for this list of Pythons. It will be used to construct the
+# $PATH so items earlier in the list will take precedence over items later in
+# the list. This order means that ``python`` will be 2.7.13, ``python2`` will be
+# 2.7.13, and ``python3`` will be 3.6.0
+default['travis_build_environment']['pyenv']['pythons'] = %w(
+  2.7.13
+  3.6.0
+  pypy2-5.6.0
+)
+
+default['travis_build_environment']['pyenv']['aliases'] = {
+  '2.7.13' => %w(2.7),
+  '3.6.0' => %w(3.6),
+  'pypy2-5.6.0' => %w(pypy)
+}
+
+default['travis_build_environment']['pip']['packages'] = {
+  'default' => %w(nose pytest mock wheel),
+  '2.7' => %w(numpy),
+  '3.6' => %w(numpy)
+}
+
+default['travis_build_environment']['system_python']['pythons'] = %w(2.7 3.2)
+if node['lsb']['codename'] == 'trusty'
+  default['travis_build_environment']['system_python']['pythons'] = %w(2.7 3.4)
+end
+
 default['travis_build_environment']['rebar_url'] = \
   'https://github.com/rebar/rebar/wiki/rebar'
 default['travis_build_environment']['rebar3_url'] = \

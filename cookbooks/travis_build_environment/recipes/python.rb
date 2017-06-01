@@ -1,29 +1,7 @@
-# Cookbook Name:: travis_python
-# Recipe:: pyenv
-#
-# Copyright 2017 Travis CI GmbH
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-# THE SOFTWARE.
 
 virtualenv_root = "#{node['travis_build_environment']['home']}/virtualenv"
 
-include_recipe 'travis_python::virtualenv'
+include_recipe 'travis_build_environment::virtualenv'
 
 package %w(
   build-essential
@@ -43,7 +21,7 @@ package %w(
 
 git '/opt/pyenv' do
   repository 'https://github.com/yyuu/pyenv.git'
-  revision node['travis_python']['pyenv']['revision']
+  revision node['travis_build_environment']['pyenv']['revision']
   action :sync
 end
 
@@ -81,7 +59,7 @@ build_environment = {
 
 bindirs = %w(/opt/pyenv/bin)
 
-node['travis_python']['pyenv']['pythons'].each do |py|
+node['travis_build_environment']['pyenv']['pythons'].each do |py|
   pyname = py
   downloaded_tarball = ::File.join(
     Chef::Config[:file_cache_path], "#{py}.tar.bz2"
@@ -132,15 +110,13 @@ node['travis_python']['pyenv']['pythons'].each do |py|
 
   bindirs << "/opt/python/#{py}/bin"
 
-  travis_python_virtualenv "python_#{py}" do
+  bash "create virtualenv at #{venv_fullname} from #{py}" do
+    code "virtualenv --python=/opt/python/#{py}/bin/python #{venv_fullname}"
     owner node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    interpreter "/opt/python/#{py}/bin/python"
-    path venv_fullname
-    action :create
   end
 
-  node['travis_python']['pyenv']['aliases'].fetch(py, []).each do |pyalias|
+  node['travis_build_environment']['pyenv']['aliases'].fetch(py, []).each do |pyalias|
     if /^\d+\.\d+(?:\.\d+)?(?:-dev)?$/ =~ py
       pyaliasname = "python#{pyalias}"
     else
@@ -163,8 +139,8 @@ node['travis_python']['pyenv']['pythons'].each do |py|
 
   packages = []
 
-  node['travis_python']['pyenv']['aliases'].fetch(py, []).concat(['default', py]).each do |name|
-    packages.concat(node['travis_python']['pip']['packages'].fetch(name, []))
+  node['travis_build_environment']['pyenv']['aliases'].fetch(py, []).concat(['default', py]).each do |name|
+    packages.concat(node['travis_build_environment']['pip']['packages'].fetch(name, []))
   end
 
   execute "install wheel in #{py}" do
