@@ -64,7 +64,7 @@ node['travis_perlbrew']['perls'].each do |pl|
   end
 
   args = pl['arguments'].to_s
-  args << ' --notest'
+  args += ' --notest'
 
   bash "installing #{pl['version']} as #{pl['name']} " \
        "with Perlbrew arguments: #{args}" do
