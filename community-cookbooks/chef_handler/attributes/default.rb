@@ -1,9 +1,9 @@
 #
 # Author:: Seth Chisamore (<schisamo@chef.io>)
-# Cookbook Name:: chef_handlers
-# Attribute:: default
+# Cookbook Name:: chef_handler
+# Attributes:: default
 #
-# Copyright 2011-2013, Chef Software, Inc
+# Copyright 2011-2016, Chef Software, Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,13 +18,4 @@
 # limitations under the License.
 #
 
-default["chef_handler"]["root_user"] = "root"
-
-case platform
-when "openbsd", "freebsd", "mac_os_x", "mac_os_x_server"
-  default["chef_handler"]["root_group"] = "wheel"
-else
-  default["chef_handler"]["root_group"] = "root"
-end
-
-default["chef_handler"]["handler_path"] = "#{File.expand_path(File.join(Chef::Config[:file_cache_path], '..'))}/handlers"
+default['chef_handler']['handler_path'] = "#{File.expand_path(File.join(Chef::Config[:file_cache_path], '..'))}/handlers"
