@@ -22,6 +22,7 @@
 
 apt_repository 'docker' do
   uri 'https://download.docker.com/linux/ubuntu'
+  arch 'amd64'
   distribution 'trusty'
   components %w(stable edge)
   key 'https://download.docker.com/linux/ubuntu/gpg'
