@@ -72,16 +72,16 @@ default['travis_build_environment']['pyenv_revision'] = 'v1.0.6'
 # Order matters for this list of Pythons. It will be used to construct the
 # $PATH so items earlier in the list will take precedence over items later in
 # the list. This order means that ``python`` will be 2.7.13, ``python2`` will be
-# 2.7.13, and ``python3`` will be 3.6.0
+# 2.7.13, and ``python3`` will be 3.6.1
 default['travis_build_environment']['pythons'] = %w(
   2.7.13
-  3.6.0
+  3.6.1
   pypy2-5.6.0
 )
 
 default['travis_build_environment']['python_aliases'] = {
   '2.7.13' => %w(2.7),
-  '3.6.0' => %w(3.6),
+  '3.6.1' => %w(3.6),
   'pypy2-5.6.0' => %w(pypy)
 }
 
