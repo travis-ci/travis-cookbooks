@@ -248,6 +248,17 @@ default['travis_build_environment']['maven_binaries'] = %w(
   bin/mvnyjp
 )
 
+default['travis_build_environment']['neo4j_url'] = 'https://neo4j.com/artifact.php?name=neo4j-community-3.2.1-unix.tar.gz'
+default['travis_build_environment']['neo4j_version'] = '3.2.1'
+default['travis_build_environment']['neo4j_checksum'] = '24fd6a704e0d80c4b4f9a3d17ce0db23f258a8cdcfa1eb28d7803b7d1811ee96'
+default['travis_build_environment']['neo4j_binaries'] = %w(
+  bin/cypher-shell
+  bin/neo4j-shell
+  bin/neo4j-import
+  bin/neo4j-admin
+  bin/neo4j
+)
+
 default['travis_build_environment']['mercurial_version'] = '4.1.3~trusty1'
 
 default['travis_build_environment']['shellcheck_url'] = 'https://s3.amazonaws.com/travis-blue-public/binaries/ubuntu/14.04/x86_64/shellcheck-0.4.5.tar.bz2'
