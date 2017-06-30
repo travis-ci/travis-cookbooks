@@ -3,6 +3,7 @@ ark 'neo4j' do
   version node['travis_build_environment']['neo4j_version']
   checksum node['travis_build_environment']['neo4j_checksum']
   has_binaries node['travis_build_environment']['neo4j_binaries']
+  extension 'tar.gz'
   retries 2
   retry_delay 30
   strip_components 1
