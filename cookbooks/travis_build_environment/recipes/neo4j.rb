@@ -1,10 +1,11 @@
 ark 'neo4j' do
   url node['travis_build_environment']['neo4j_url']
-  checksum node['travis_build_environment']['neo4j_checksum']
   version node['travis_build_environment']['neo4j_version']
-  binaries node['travis_build_environment']['neo4j_binaries']
+  checksum node['travis_build_environment']['neo4j_checksum']
+  has_binaries node['travis_build_environment']['neo4j_binaries']
   retries 2
   retry_delay 30
+  strip_components 1
 end
 
 template '/etc/neo4j/neo4j.conf' do
