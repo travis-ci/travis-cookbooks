@@ -9,14 +9,14 @@ ark 'neo4j' do
   strip_components 1
 end
 
-directory '/etc/neo4j' do
+directory '/usr/local/neo4j/conf' do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode 0o755
 end
 
-template '/etc/neo4j/neo4j.conf' do
-  source 'etc-neo4j-neo4j.conf.erb'
+template '/usr/local/neo4j/conf/neo4j.conf' do
+  source 'usr-local-neo4j-conf-neo4j.conf.erb'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode 0o644
