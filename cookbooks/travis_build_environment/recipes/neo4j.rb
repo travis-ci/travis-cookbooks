@@ -24,3 +24,10 @@ template '/usr/local/neo4j/conf/neo4j.conf' do
     jvm_heap: node['travis_build_environment']['neo4j']['jvm_heap']
   )
 end
+
+dirperms = [
+  node['travis_build_environment']['user'],
+  node['travis_build_environment']['group']
+].join(':')
+
+execute("chown -R #{dirperms} /usr/local/neo4j*")
