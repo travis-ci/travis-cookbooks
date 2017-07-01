@@ -2,6 +2,8 @@ ark 'neo4j' do
   url node['travis_build_environment']['neo4j_url']
   version node['travis_build_environment']['neo4j_version']
   checksum node['travis_build_environment']['neo4j_checksum']
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
   append_env_path true
   extension 'tar.gz'
   retries 2
