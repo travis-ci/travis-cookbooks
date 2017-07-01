@@ -1,16 +1,24 @@
-apt_repository 'neo4j' do
-  uri 'https://debian.neo4j.org/repo'
-  components %w(stable/)
-  distribution ''
-  key 'https://debian.neo4j.org/neotechnology.gpg.key'
+ark 'neo4j' do
+  url node['travis_build_environment']['neo4j_url']
+  version node['travis_build_environment']['neo4j_version']
+  checksum node['travis_build_environment']['neo4j_checksum']
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  append_env_path true
+  extension 'tar.gz'
+  retries 2
+  retry_delay 30
+  strip_components 1
 end
 
-package 'neo4j' do
-  action %i(install upgrade)
+directory '/usr/local/neo4j/conf' do
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0o755
 end
 
-template '/etc/neo4j/neo4j.conf' do
-  source 'etc-neo4j-neo4j.conf.erb'
+template '/usr/local/neo4j/conf/neo4j.conf' do
+  source 'usr-local-neo4j-conf-neo4j.conf.erb'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode 0o644
@@ -19,12 +27,9 @@ template '/etc/neo4j/neo4j.conf' do
   )
 end
 
-service 'neo4j' do
-  if node['travis_build_environment']['neo4j']['service_enabled']
-    action %i(enable start)
-  else
-    action %i(disable stop)
-  end
-  retries 4
-  retry_delay 30
-end
+dirperms = [
+  node['travis_build_environment']['user'],
+  node['travis_build_environment']['group']
+].join(':')
+
+execute("chown -R #{dirperms} /usr/local/neo4j*")
