@@ -16,17 +16,17 @@ template '/etc/init.d/neo4j' do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode 0o755
-	variables(
+  variables(
     neo4j_user: node['travis_build_environment']['user'],
     neo4j_version: node['travis_build_environment']['neo4j_version']
-	)
+  )
 end
 
 service 'neo4j' do
   if node['travis_build_environment']['neo4j']['service_enabled']
-    action %i[enable stop]
+    action %i(enable stop)
   else
-    action %i[disable stop]
+    action %i(disable stop)
   end
 end
 
