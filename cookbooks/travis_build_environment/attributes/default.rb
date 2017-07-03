@@ -76,13 +76,15 @@ default['travis_build_environment']['pyenv_revision'] = 'v1.0.6'
 default['travis_build_environment']['pythons'] = %w[
   2.7.13
   3.6.1
-  pypy2-5.6.0
+  pypy2-5.7.1
+  pypy3.5-5.8.0
 ]
 
 default['travis_build_environment']['python_aliases'] = {
   '2.7.13' => %w[2.7],
   '3.6.1' => %w[3.6],
-  'pypy2-5.6.0' => %w[pypy]
+  'pypy2-5.7.1' => %w[pypy],
+  'pypy3.5-5.8.0' => %w[pypy3]
 }
 
 default['travis_build_environment']['pip']['packages'] = {
