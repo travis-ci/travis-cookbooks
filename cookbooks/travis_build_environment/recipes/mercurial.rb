@@ -6,7 +6,7 @@ apt_repository 'mercurial' do
   retry_delay 30
 end
 
-package %w(mercurial-common mercurial) do
+package 'mercurial' do
   version node['travis_build_environment']['mercurial_version']
   action %i(install upgrade)
 end
