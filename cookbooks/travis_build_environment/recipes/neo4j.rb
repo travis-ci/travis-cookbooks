@@ -11,6 +11,25 @@ ark 'neo4j' do
   strip_components 1
 end
 
+template '/etc/init.d/neo4j' do
+  source 'etc-init.d-neo4j.sh.erb'
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0o755
+  variables(
+    neo4j_user: node['travis_build_environment']['user'],
+    neo4j_version: node['travis_build_environment']['neo4j_version']
+  )
+end
+
+service 'neo4j' do
+  if node['travis_build_environment']['neo4j']['service_enabled']
+    action %i(enable stop)
+  else
+    action %i(disable stop)
+  end
+end
+
 directory '/usr/local/neo4j/conf' do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
