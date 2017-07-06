@@ -11,16 +11,16 @@ end
 
 package 'mercurial' do
   version node['travis_build_environment']['mercurial_version']
-  action %i(install upgrade)
+  action %i[install upgrade]
   only_if do
     node['travis_build_environment']['mercurial_install_type'] == 'ppa'
   end
 end
 
-execute %W(
+execute %W[
   pip install
   "mercurial==#{node['travis_build_environment']['mercurial_version'].sub(/~.*/, '')}"
-).join(' ') do
+].join(' ') do
   user 'root'
   group 'root'
   only_if do

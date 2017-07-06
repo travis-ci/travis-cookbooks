@@ -24,7 +24,7 @@ include_recipe 'travis_docker::package'
 
 group 'docker' do
   members node['travis_docker']['users']
-  action [:create, :manage]
+  action %i[create manage]
 end
 
 cookbook_file '/etc/default/docker' do

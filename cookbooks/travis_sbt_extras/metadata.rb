@@ -8,7 +8,4 @@ version '0.3.0'
 
 depends 'travis_java'
 
-conflicts 'typesafe-stack' # See http://community.opscode.com/cookbooks/typesafe-stack
-conflicts 'chef-sbt' # See http://community.opscode.com/cookbooks/chef-sbt
-
 recipe 'travis_sbt_extras::default', 'Downloads and installs sbt-extras script'

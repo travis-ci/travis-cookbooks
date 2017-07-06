@@ -1,7 +1,7 @@
-package %w(
+package %w[
   lvm2
   xfsprogs
-)
+]
 
 template '/usr/local/bin/travis-docker-volume-setup' do
   source 'travis-docker-volume-setup.sh.erb'

@@ -1,7 +1,7 @@
 setup_blue_green = false
 
 remote_file '/usr/local/bin/jb-server' do
-  source sprintf(
+  source format(
     node['travis_jupiter_brain']['base_url'],
     node['travis_jupiter_brain']['version']
   )
@@ -30,7 +30,7 @@ Array(node['travis_jupiter_brain']['instances']).each do |instance|
     variables instance
   end
 
-  %w(blue green).each do |color|
+  %w[blue green].each do |color|
     file "/etc/default/#{instance['service_name']}-#{color}" do
       content "# Managed by Chef\nexport JUPITER_BRAIN_ADDR='#{instance["#{color}_addr"]}'\n"
       owner 'root'
@@ -51,7 +51,7 @@ Array(node['travis_jupiter_brain']['instances']).each do |instance|
     only_if { instance['blue_green'] && instance['frontend_bind'] }
   end
 
-  backend_servers = %w(blue green).map do |color|
+  backend_servers = %w[blue green].map do |color|
     addr = instance["#{color}_addr"]
     addr = "127.0.0.1#{addr}" if addr =~ /^:/
     "#{color} #{addr} weight 1 maxconn 100 check"

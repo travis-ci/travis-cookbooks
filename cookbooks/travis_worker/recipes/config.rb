@@ -1,7 +1,7 @@
-%w(
+%w[
   /etc/default/travis-worker
   /etc/default/travis-worker-chef
-).each do |filename|
+].each do |filename|
   template filename do
     source 'etc-default-travis-worker.sh.erb'
     owner 'root'

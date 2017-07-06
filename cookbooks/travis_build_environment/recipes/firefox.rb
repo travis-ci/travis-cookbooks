@@ -1,4 +1,4 @@
-package %w(
+package %w[
   libasound2
   libatk1.0-0
   libc6
@@ -20,8 +20,8 @@ package %w(
   libxrender1
   libxt6
   lsb-release
-) do
-  action %i(install upgrade)
+] do
+  action %i[install upgrade]
 end
 
 ark 'firefox' do
@@ -29,5 +29,5 @@ ark 'firefox' do
   version node['travis_build_environment']['firefox_version']
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  has_binaries %w(firefox firefox-bin)
+  has_binaries %w[firefox firefox-bin]
 end

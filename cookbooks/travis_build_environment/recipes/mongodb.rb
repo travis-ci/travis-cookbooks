@@ -23,7 +23,7 @@
 apt_repository 'mongodb-3.2' do
   uri 'http://repo.mongodb.org/apt/ubuntu'
   distribution "#{node['lsb']['codename']}/mongodb-org/3.2"
-  components %w(multiverse)
+  components %w[multiverse]
   keyserver 'hkp://ha.pool.sks-keyservers.net'
   key 'EA312927'
   retries 2
@@ -33,5 +33,5 @@ end
 package 'mongodb-org'
 
 service 'mongod' do
-  action [:stop, :disable]
+  action %i[stop disable]
 end

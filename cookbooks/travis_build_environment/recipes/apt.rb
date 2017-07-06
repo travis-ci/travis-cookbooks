@@ -59,11 +59,11 @@ end
 
 package 'software-properties-common'
 
-%w(
+%w[
   /etc/cloud/templates/sources.list.debian.tmpl
   /etc/cloud/templates/sources.list.tmpl
   /etc/cloud/templates/sources.list.ubuntu.tmpl
-).each do |filename|
+].each do |filename|
   template filename do
     source 'etc-cloud-templates-sources.list.tmpl.erb'
     owner 'root'
@@ -72,11 +72,11 @@ package 'software-properties-common'
   end
 end
 
-%w(
+%w[
   multiverse
   restricted
   universe
-).each do |source_alias|
+].each do |source_alias|
   execute "apt-add-repository -y #{source_alias}"
 end
 

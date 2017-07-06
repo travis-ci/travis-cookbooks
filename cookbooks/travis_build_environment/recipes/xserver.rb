@@ -20,11 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package %w(
+package %w[
   x11-xserver-utils
   xserver-xorg-core
   xvfb
-)
+]
 
 cookbook_file '/etc/init.d/xvfb' do
   owner 'root'

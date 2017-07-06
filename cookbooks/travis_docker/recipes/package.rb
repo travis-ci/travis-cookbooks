@@ -24,15 +24,15 @@ apt_repository 'docker' do
   uri 'https://download.docker.com/linux/ubuntu'
   arch 'amd64'
   distribution 'trusty'
-  components %w(stable edge)
+  components %w[stable edge]
   key 'https://download.docker.com/linux/ubuntu/gpg'
   retries 2
   retry_delay 30
   action :add
 end
 
-package %w(linux-generic-lts-xenial linux-image-generic-lts-xenial) do
-  action %i(install upgrade)
+package %w[linux-generic-lts-xenial linux-image-generic-lts-xenial] do
+  action %i[install upgrade]
 end
 
 package 'docker-ce' do

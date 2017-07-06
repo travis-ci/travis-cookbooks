@@ -20,11 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package %w(
+package %w[
   libicu-dev
   libjpeg-dev
   libpng-dev
-)
+]
 
 ark 'phantomjs' do
   url ::File.join(
@@ -36,6 +36,6 @@ ark 'phantomjs' do
   )
   version '2.0.0'
   checksum '785913935b14dfadf759e6f54fc6858eadab3c15b87f88a720b0942058b5b573'
-  has_binaries %w(phantomjs)
+  has_binaries %w[phantomjs]
   owner 'root'
 end
