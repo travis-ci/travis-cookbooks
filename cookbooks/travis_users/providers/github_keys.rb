@@ -1,8 +1,6 @@
 action :create do
-  ruby_block "add keys for #{new_resource.id}" do
-    block do
-      new_resource.updated_by_last_action(add_github_keys(new_resource))
-    end
+  converge_by "add keys for #{new_resource.id}" do
+    add_github_keys(new_resource)
   end
 end
 
