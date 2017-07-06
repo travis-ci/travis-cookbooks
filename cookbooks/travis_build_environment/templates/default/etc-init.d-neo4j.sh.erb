@@ -1,0 +1,69 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          neo4j
+# Required-Start:    $remote_fs $syslog $network
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Neo4j Graph Database server
+# Description:       Neo4j is a Graph Database, which is a compelling
+#                    alternative to an RDBMS. http://www.neo4j.org
+### END INIT INFO
+
+# Managed by Chef on <%= node.name %> :heart:
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/neo4j-<%= @neo4j_version %>/bin
+NAME=neo4j
+DAEMON=/usr/local/neo4j-<%= @neo4j_version %>/bin/${NAME}
+PIDDIR=/usr/local/neo4j-<%= @neo4j_version %>/run
+PIDFILE=${PIDDIR}/neo4j.pid
+SCRIPTNAME=/etc/init.d/${NAME}
+
+[ -x "$DAEMON" ] || exit 0
+[ -r /etc/default/$NAME ] && . /etc/default/$NAME
+[ -n "${NEO_USER}" ] || NEO_USER=<%= @neo4j_user %>
+
+do_start()
+{
+  do_ulimit
+  [ -d "${PIDDIR}" ] || mkdir -p "${PIDDIR}"
+  chown "${NEO_USER}:" "${PIDDIR}"
+  sudo -E -u "${NEO_USER}" "${DAEMON}" start
+}
+
+do_stop()
+{
+  sudo -E -u "${NEO_USER}" "${DAEMON}" stop
+}
+
+do_status()
+{
+  sudo -E -u "${NEO_USER}" "${DAEMON}" status
+}
+
+do_ulimit()
+{
+  if [ -n "${NEO4J_ULIMIT_NOFILE}" ]; then
+    ulimit -n "${NEO4J_ULIMIT_NOFILE}"
+  fi
+}
+
+case "$1" in
+  start)
+    do_start
+    ;;
+  stop)
+    do_stop
+    ;;
+  status)
+    do_status
+    ;;
+  restart|force-reload)
+    do_stop && do_start
+    ;;
+  *)
+    echo "Usage: $SCRIPTNAME {start|stop|status|restart|force-reload}" >&2
+    exit 3
+    ;;
+esac
