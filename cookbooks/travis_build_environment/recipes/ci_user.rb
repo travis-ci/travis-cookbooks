@@ -86,7 +86,7 @@ mount "#{node['travis_build_environment']['home']}/builds" do
   fstype 'tmpfs'
   device '/dev/null'
   options "defaults,size=#{node['travis_build_environment']['builds_volume_size']},noatime"
-  action [:mount, :enable]
+  action %i[mount enable]
   only_if { node['travis_build_environment']['use_tmpfs_for_builds'] }
 end
 

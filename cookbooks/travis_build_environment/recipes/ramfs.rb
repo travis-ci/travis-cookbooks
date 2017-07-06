@@ -30,10 +30,10 @@ end
 mount node['travis_build_environment']['ramfs_dir'] do
   fstype 'tmpfs'
   device 'none'
-  options %W(
+  options %W[
     defaults
     size=#{node['travis_build_environment']['ramfs_size']}
     noatime
-  )
-  action [:mount, :enable]
+  ]
+  action %i[mount enable]
 end

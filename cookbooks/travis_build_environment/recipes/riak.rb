@@ -5,5 +5,5 @@ end
 package 'riak'
 
 service 'riak' do
-  action %i(disable stop)
+  action %i[disable stop]
 end

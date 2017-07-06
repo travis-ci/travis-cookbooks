@@ -24,9 +24,9 @@ end
 
 service 'neo4j' do
   if node['travis_build_environment']['neo4j']['service_enabled']
-    action %i(enable stop)
+    action %i[enable stop]
   else
-    action %i(disable stop)
+    action %i[disable stop]
   end
 end
 

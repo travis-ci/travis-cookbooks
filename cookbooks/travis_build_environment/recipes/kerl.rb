@@ -20,13 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package %w(
+package %w[
   curl
   libncurses-dev
   libreadline-dev
   libssl-dev
   unixodbc-dev
-)
+]
 
 installation_root = "/home/#{node['travis_build_environment']['user']}/otp"
 

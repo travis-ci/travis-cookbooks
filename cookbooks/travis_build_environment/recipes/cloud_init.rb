@@ -23,7 +23,7 @@
 apt_repository 'pollinate' do
   uri 'http://ppa.launchpad.net/pollinate/ppa/ubuntu'
   distribution node['lsb']['codename']
-  components %w(main)
+  components %w[main]
   key '43732553'
   keyserver 'hkp://ha.pool.sks-keyservers.net'
   retries 2
@@ -31,13 +31,13 @@ apt_repository 'pollinate' do
 end
 
 package 'pollinate' do
-  action [:install, :upgrade]
+  action %i[install upgrade]
 end
 
-%w(
+%w[
   /etc/cloud
   /etc/cloud/templates
-).each do |dirname|
+].each do |dirname|
   directory dirname do
     mode 0o755
   end

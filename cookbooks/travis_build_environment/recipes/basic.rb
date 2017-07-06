@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package %w(
+package %w[
   bsdmainutils
   bzip2
   bzr
@@ -48,8 +48,8 @@ package %w(
   wamerican
   wget
   zip
-) do
-  action [:install, :upgrade]
+] do
+  action %i[install upgrade]
 end
 
 execute 'rm -rf /etc/update-motd.d/*'
