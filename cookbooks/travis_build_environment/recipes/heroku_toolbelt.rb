@@ -23,7 +23,7 @@
 apt_repository 'heroku-toolbelt' do
   uri 'http://toolbelt.heroku.com/ubuntu'
   distribution ''
-  components %w(./)
+  components %w[./]
   key 'https://toolbelt.heroku.com/apt/release.key'
   retries 2
   retry_delay 30

@@ -20,23 +20,23 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package %w(
+package %w[
   mysql-client-5.5
   mysql-client-core-5.5
   mysql-common
   mysql-server-5.5
-) do
-  action %i(remove purge)
+] do
+  action %i[remove purge]
 end
 
-%w(
+%w[
   root_password
   root_password_again
-).each do |selection|
+].each do |selection|
   execute "echo 'mysql-server-5.6 mysql-server/#{selection} password ' | debconf-set-selections"
 end
 
-package %w(
+package %w[
   libmysqlclient-dev
   libmysqlclient18
   mysql-client-5.6
@@ -44,8 +44,8 @@ package %w(
   mysql-common-5.6
   mysql-server-5.6
   mysql-server-core-5.6
-) do
-  action %i(install upgrade)
+] do
+  action %i[install upgrade]
 end
 
 mysql_users_passwords_sql = ::File.join(
@@ -63,7 +63,7 @@ file mysql_users_passwords_sql do
 end
 
 service 'mysql' do
-  action %i(enable start)
+  action %i[enable start]
 end
 
 bash 'setup mysql users and passwords' do

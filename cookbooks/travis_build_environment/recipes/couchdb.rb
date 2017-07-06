@@ -1,7 +1,7 @@
 apt_repository 'couchdb' do
   uri 'http://ppa.launchpad.net/couchdb/stable/ubuntu'
   distribution node['lsb']['codename']
-  components %w(main)
+  components %w[main]
   key 'C17EAB57'
   keyserver 'hkp://ha.pool.sks-keyservers.net'
   retries 2
@@ -12,7 +12,7 @@ end
 package 'couchdb'
 
 service 'couchdb' do
-  action %i(disable start)
+  action %i[disable start]
 end
 
 file '/etc/init/couchdb.override' do

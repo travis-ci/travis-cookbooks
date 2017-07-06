@@ -1,5 +1,5 @@
 package 'sudo' do
-  action %i(install upgrade)
+  action %i[install upgrade]
 end
 
 template '/etc/sudoers' do

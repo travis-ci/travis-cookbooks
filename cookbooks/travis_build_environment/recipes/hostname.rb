@@ -43,20 +43,20 @@ template '/etc/hosts' do
   only_if { node['travis_build_environment']['update_hosts'] }
 end
 
-%w(
+%w[
   /etc/cloud
   /etc/cloud/templates
-).each do |dirname|
+].each do |dirname|
   directory dirname do
     mode 0o755
   end
 end
 
-%w(
+%w[
   /etc/cloud/templates/hosts.debian.tmpl
   /etc/cloud/templates/hosts.tmpl
   /etc/cloud/templates/hosts.ubuntu.tmpl
-).each do |filename|
+].each do |filename|
   template filename do
     source 'etc-cloud-templates-hosts.tmpl.erb'
     owner 'root'

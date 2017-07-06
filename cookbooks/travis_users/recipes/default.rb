@@ -25,7 +25,7 @@
 #
 
 package 'zsh' do
-  action [:install, :upgrade]
+  action %i[install upgrade]
   only_if { node['travis_users'].any? { |u| u['shell'] =~ /zsh/ } }
 end
 
@@ -57,10 +57,10 @@ Array(node['travis_users']).each do |user|
     end
   end
 
-  %W(
+  %W[
     /home/#{user['id']}
     /home/#{user['id']}/.ssh
-  ).each do |dirname|
+  ].each do |dirname|
     directory dirname do
       owner user['id']
       group user['id']

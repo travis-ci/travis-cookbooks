@@ -42,5 +42,5 @@ package 'rabbitmq-server'
 execute 'rabbitmq-plugins enable rabbitmq_management'
 
 service 'rabbitmq-server' do
-  action %i(stop disable)
+  action %i[stop disable]
 end

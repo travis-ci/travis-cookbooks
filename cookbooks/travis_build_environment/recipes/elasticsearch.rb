@@ -44,9 +44,9 @@ end
 
 service 'elasticsearch' do
   if node['travis_build_environment']['elasticsearch']['service_enabled']
-    action %i(enable start)
+    action %i[enable start]
   else
-    action %i(disable start)
+    action %i[disable start]
   end
   retries 4
   retry_delay 30

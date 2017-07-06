@@ -17,7 +17,7 @@ global_gems = Array(
   node['travis_build_environment']['global_gems']
 ).map { |g| g[:name] }.join(' ')
 
-package %w(
+package %w[
   bash
   bison
   bzip2
@@ -43,8 +43,8 @@ package %w(
   sqlite3
   zlib1g
   zlib1g-dev
-) do
-  action %i(install upgrade)
+] do
+  action %i[install upgrade]
 end
 
 remote_file gpg_key_path do
@@ -95,11 +95,11 @@ bash 'run rvm installer' do
 end
 
 bash "install default ruby #{node['travis_build_environment']['default_ruby']}" do
-  code %W(
+  code %W[
     #{rvm_script_path} install
     #{node['travis_build_environment']['default_ruby']}
     --autolibs=disable --binary --fuzzy
-  ).join(' ')
+  ].join(' ')
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   environment('HOME' => node['travis_build_environment']['home'])
@@ -109,10 +109,10 @@ bash "install default ruby #{node['travis_build_environment']['default_ruby']}" 
 end
 
 bash "create default alias for #{node['travis_build_environment']['default_ruby']}" do
-  code %W(
+  code %W[
     #{rvm_script_path} alias create
     default #{node['travis_build_environment']['default_ruby']}
-  ).join(' ')
+  ].join(' ')
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   environment('HOME' => node['travis_build_environment']['home'])
@@ -132,10 +132,10 @@ Array(node['travis_build_environment']['rubies']).each do |ruby_def|
   next if ruby_def == node['travis_build_environment']['default_ruby']
 
   bash "install ruby #{ruby_def}" do
-    code %W(
+    code %W[
       #{rvm_script_path} install
       #{ruby_def} --autolibs=disable --binary --fuzzy
-    ).join(' ')
+    ].join(' ')
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment('HOME' => node['travis_build_environment']['home'])

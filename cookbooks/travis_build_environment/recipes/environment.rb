@@ -27,12 +27,12 @@ template '/etc/environment' do
   mode 0o644
 end
 
-%w(
+%w[
   travis_environment
   travis_environment_ruby
   travis_environment_php
   xdg_path
-).each do |profile_file|
+].each do |profile_file|
   cookbook_file "/etc/profile.d/#{profile_file}.sh" do
     owner node['travis_build_environment']['user']
     group node['travis_build_environment']['group']

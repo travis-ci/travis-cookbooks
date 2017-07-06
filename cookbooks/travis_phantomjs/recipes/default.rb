@@ -26,7 +26,7 @@ ark 'phantomjs' do
   url node['travis_phantomjs']['tarball']['url']
   version node['travis_phantomjs']['version']
   checksum node['travis_phantomjs']['tarball']['checksum']
-  has_binaries %w(phantomjs)
+  has_binaries %w[phantomjs]
   owner 'root'
 end
 

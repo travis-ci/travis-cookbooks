@@ -20,12 +20,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package %w(libssl-dev libpam-dev)
+package %w[libssl-dev libpam-dev]
 
 apt_repository 'duosecurity' do
   uri 'http://pkg.duosecurity.com/Ubuntu'
   distribution node['lsb']['codename']
-  components %w(main)
+  components %w[main]
   key 'https://duo.com/APT-GPG-KEY-DUO'
   retries 2
   retry_delay 30
@@ -33,10 +33,10 @@ end
 
 package 'duo-unix'
 
-%w(
+%w[
   /etc/duo/login_duo.conf
   /etc/duo/pam_duo.conf
-).each do |conf_path|
+].each do |conf_path|
   template conf_path do
     source 'duo.conf.erb'
     owner node['travis_duo']['user']

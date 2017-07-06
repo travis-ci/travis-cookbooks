@@ -21,10 +21,10 @@ end
 
 daemon_json = {
   'graph' => node['travis_worker']['docker']['dir'],
-  'hosts' => %w(
+  'hosts' => %w[
     tcp://127.0.0.1:4243
     unix:///var/run/docker.sock
-  ),
+  ],
   'icc' => false,
   'userns-remap' => 'default'
 }
@@ -61,7 +61,7 @@ template '/etc/init/docker.conf' do
 end
 
 service 'docker' do
-  action %i(enable start)
+  action %i[enable start]
 end
 
 include_recipe 'travis_worker::config'
@@ -74,5 +74,5 @@ template '/etc/init/travis-worker.conf' do
 end
 
 service 'travis-worker' do
-  action %i(enable start)
+  action %i[enable start]
 end

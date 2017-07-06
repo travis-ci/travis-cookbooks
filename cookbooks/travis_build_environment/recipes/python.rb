@@ -3,7 +3,7 @@ virtualenv_root = "#{node['travis_build_environment']['home']}/virtualenv"
 
 include_recipe 'travis_build_environment::virtualenv'
 
-package %w(
+package %w[
   build-essential
   curl
   libbz2-dev
@@ -17,7 +17,7 @@ package %w(
   tk-dev
   wget
   zlib1g-dev
-)
+]
 
 git '/opt/pyenv' do
   repository 'https://github.com/yyuu/pyenv.git'
@@ -40,24 +40,24 @@ directory virtualenv_root do
 end
 
 build_environment = {
-  'PYTHON_CONFIGURE_OPTS' => %w(
+  'PYTHON_CONFIGURE_OPTS' => %w[
     --enable-unicode=ucs4
     --with-wide-unicode
     --enable-shared
     --enable-ipv6
     --enable-loadable-sqlite-extensions
     --with-computed-gotos
-  ).join(' '),
-  'PYTHON_CFLAGS' => %w(
+  ].join(' '),
+  'PYTHON_CFLAGS' => %w[
     -g
     -fstack-protector
     --param=ssp-buffer-size=4
     -Wformat
     -Werror=format-security
-  ).join(' ')
+  ].join(' ')
 }
 
-bindirs = %w(/opt/pyenv/bin)
+bindirs = %w[/opt/pyenv/bin]
 
 node['travis_build_environment']['pythons'].each do |py|
   pyname = py
