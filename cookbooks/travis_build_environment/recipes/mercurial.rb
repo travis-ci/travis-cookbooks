@@ -27,3 +27,16 @@ execute %W[
     node['travis_build_environment']['mercurial_install_type'] == 'pip'
   end
 end
+
+if node['kernel']['machine'] == 'ppc64le'
+  package 'python-docutils'
+  ark 'mercurial' do
+    url node['travis_build_environment']['mercurial_url']
+    version node['travis_build_environment']['mercurial_ppc_version']
+    make_opts ['all']
+    action :install_with_make
+    only_if do
+      node['travis_build_environment']['mercurial_install_type'] == 'src'
+    end
+  end
+end

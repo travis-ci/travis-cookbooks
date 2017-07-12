@@ -20,10 +20,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-remote_file '/usr/local/bin/docker-compose' do
-  source node['travis_docker']['compose']['url']
-  checksum node['travis_docker']['compose']['sha256sum']
-  owner 'root'
-  group 'root'
-  mode 0o755
+if node['kernel']['machine'] == 'ppc64le'
+  if node['lsb']['codename'] == 'xenial'
+    package 'docker-compose'
+    link '/usr/local/bin/docker-compose' do
+      to '/usr/bin/docker-compose'
+      owner 'root'
+      group 'root'
+      mode 0o755
+    end
+  end
+else
+  remote_file '/usr/local/bin/docker-compose' do
+    source node['travis_docker']['compose']['url']
+    checksum node['travis_docker']['compose']['sha256sum']
+    owner 'root'
+    group 'root'
+    mode 0o755
+  end
 end

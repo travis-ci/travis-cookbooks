@@ -22,12 +22,22 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-arch = node['kernel']['machine'] =~ /x86_64/ ? '64' : '32'
+arch = node['kernel']['machine']
+if arch == 'ppc64le'
+  package 'jq'
 
-remote_file node['travis_build_environment']['jq_install_dest'] do
-  source "https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux#{arch}"
-  action :create_if_missing
-  mode 0o755
-  owner node['travis_build_environment']['owner']
-  group node['travis_build_environment']['group']
+  link '/usr/local/bin/jq' do
+    to '/usr/bin/jq'
+    owner node['travis_build_environment']['owner']
+  end
+
+else
+  arch = arch =~ /x86_64/ ? '64' : '32'
+  remote_file node['travis_build_environment']['jq_install_dest'] do
+    source "https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux#{arch}"
+    action :create_if_missing
+    mode 0o755
+    owner node['travis_build_environment']['owner']
+    group node['travis_build_environment']['group']
+  end
 end
