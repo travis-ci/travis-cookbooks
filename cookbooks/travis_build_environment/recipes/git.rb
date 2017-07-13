@@ -12,12 +12,12 @@ package %w[git git-core] do
   action %i[install upgrade]
 end
 
-if node['kernel']['machine'] != 'ppc64le'
-  packagecloud_repo 'github/git-lfs' do
-    type 'deb'
-  end
+packagecloud_repo 'github/git-lfs' do
+  type 'deb'
+  not_if { node['kernel']['machine'] == 'ppc64le' }
+end
 
-  package 'git-lfs' do
-    action %i[install upgrade]
-  end
+package 'git-lfs' do
+  action %i[install upgrade]
+  not_if { node['kernel']['machine'] == 'ppc64le' }
 end

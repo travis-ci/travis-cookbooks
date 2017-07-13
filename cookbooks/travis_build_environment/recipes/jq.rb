@@ -22,22 +22,24 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-arch = node['kernel']['machine']
-if arch == 'ppc64le'
-  package 'jq'
+arch = node['kernel']['machine'] =~ /x86_64/ ? '64' : '32'
 
-  link '/usr/local/bin/jq' do
-    to '/usr/bin/jq'
-    owner node['travis_build_environment']['owner']
-  end
+remote_file node['travis_build_environment']['jq_install_dest'] do
+  source "https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux#{arch}"
+  action :create_if_missing
+  mode 0o755
+  owner node['travis_build_environment']['owner']
+  group node['travis_build_environment']['group']
+  not_if { node['kernel']['machine'] == 'ppc64le' }
+end
 
-else
-  arch = arch =~ /x86_64/ ? '64' : '32'
-  remote_file node['travis_build_environment']['jq_install_dest'] do
-    source "https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux#{arch}"
-    action :create_if_missing
-    mode 0o755
-    owner node['travis_build_environment']['owner']
-    group node['travis_build_environment']['group']
-  end
+package 'jq' do
+  action %i[install upgrade]
+  only_if { node['kernel']['machine'] == 'ppc64le' }
+end
+
+link '/usr/local/bin/jq' do
+  to '/usr/bin/jq'
+  owner node['travis_build_environment']['owner']
+  only_if { node['kernel']['machine'] == 'ppc64le' }
 end
