@@ -22,7 +22,15 @@
 
 include_recipe 'travis_build_environment::cloud_init'
 
-bits = (node['kernel']['machine'] =~ /x86_64/ ? 64 : 32)
+bits = case node['kernel']['machine']
+       when /x86_64/
+         64
+       when 'ppc64le'
+         'ppc64le'
+       else
+         32
+       end
+
 hostname = case [node['platform'], node['platform_version']]
            when ['ubuntu', '11.04'] then
              "natty#{bits}"
@@ -32,6 +40,8 @@ hostname = case [node['platform'], node['platform_version']]
              "precise#{bits}"
            when ['ubuntu', '14.04'] then
              "trusty#{bits}"
+           when ['ubuntu', '16.04'] then
+             "xenial#{bits}"
            end
 
 template '/etc/hosts' do

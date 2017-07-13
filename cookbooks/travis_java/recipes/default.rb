@@ -1,8 +1,15 @@
 default_jvm = nil
+default_java_version = node['travis_java']['default_version']
 
-unless node['travis_java']['default_version'].to_s.empty?
-  include_recipe "travis_java::#{node['travis_java']['default_version']}"
-  default_jvm = node['travis_java'][node['travis_java']['default_version']]['jvm_name']
+if node['kernel']['machine'] == 'ppc64le'
+  if default_java_version =~ /oraclejdk/ || default_java_version == 'openjdk6'
+    default_java_version = ''
+  end
+end
+
+unless default_java_version.to_s.empty?
+  include_recipe "travis_java::#{default_java_version}"
+  default_jvm = node['travis_java'][default_java_version]['jvm_name']
 end
 
 include_recipe 'travis_java::jdk_switcher'
@@ -13,7 +20,7 @@ template '/etc/profile.d/travis-java.sh' do
   group node['travis_build_environment']['group']
   mode 0o755
   variables(
-    jdk_switcher_default: node['travis_java']['default_version'],
+    jdk_switcher_default: default_java_version,
     jdk_switcher_path: node['travis_java']['jdk_switcher_path'],
     jvm_base_dir: node['travis_java']['jvm_base_dir'],
     jvm_name: default_jvm

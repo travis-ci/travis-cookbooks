@@ -252,7 +252,13 @@ default['travis_build_environment']['neo4j_version'] = '3.2.1'
 default['travis_build_environment']['neo4j_checksum'] = '24fd6a704e0d80c4b4f9a3d17ce0db23f258a8cdcfa1eb28d7803b7d1811ee96'
 
 default['travis_build_environment']['mercurial_install_type'] = 'ppa'
+if node['kernel']['machine'] == 'ppc64le'
+  default['travis_build_environment']['mercurial_install_type'] = 'src'
+end
 default['travis_build_environment']['mercurial_version'] = '4.1.3~trusty1'
+mercurial_ppc_version = '4.1.3'
+default['travis_build_environment']['mercurial_ppc_version'] = mercurial_ppc_version
+default['travis_build_environment']['mercurial_url'] = "https://www.mercurial-scm.org/release/mercurial-#{mercurial_ppc_version}.tar.gz"
 
 default['travis_build_environment']['shellcheck_url'] = 'https://s3.amazonaws.com/travis-blue-public/binaries/ubuntu/14.04/x86_64/shellcheck-0.4.5.tar.bz2'
 default['travis_build_environment']['shellcheck_version'] = '0.4.5'

@@ -94,11 +94,16 @@ bash 'run rvm installer' do
   retry_delay 30
 end
 
+install_flag = "--autolibs=disable --binary --fuzzy"
+if node['kernel']['machine'] == "ppc64le"
+  install_flag = "--autolibs=disable --fuzzy"
+end
+
 bash "install default ruby #{node['travis_build_environment']['default_ruby']}" do
   code %W[
     #{rvm_script_path} install
     #{node['travis_build_environment']['default_ruby']}
-    --autolibs=disable --binary --fuzzy
+    #{install_flag}
   ].join(' ')
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
@@ -134,7 +139,7 @@ Array(node['travis_build_environment']['rubies']).each do |ruby_def|
   bash "install ruby #{ruby_def}" do
     code %W[
       #{rvm_script_path} install
-      #{ruby_def} --autolibs=disable --binary --fuzzy
+      #{ruby_def} #{install_flag}
     ].join(' ')
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']

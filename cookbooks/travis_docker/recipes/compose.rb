@@ -20,10 +20,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+package 'docker-compose' do
+  action %i[install upgrade]
+  only_if { node['kernel']['machine'] == 'ppc64le' }
+  only_if { node['lsb']['codename'] == 'xenial' }
+end
+
+link '/usr/local/bin/docker-compose' do
+  to '/usr/bin/docker-compose'
+  owner 'root'
+  group 'root'
+  mode 0o755
+  only_if { node['kernel']['machine'] == 'ppc64le' }
+  only_if { node['lsb']['codename'] == 'xenial' }
+end
+
 remote_file '/usr/local/bin/docker-compose' do
   source node['travis_docker']['compose']['url']
   checksum node['travis_docker']['compose']['sha256sum']
   owner 'root'
   group 'root'
   mode 0o755
+  not_if { node['kernel']['machine'] == 'ppc64le' }
 end

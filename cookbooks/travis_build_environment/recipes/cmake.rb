@@ -31,6 +31,7 @@ apt_repository 'cmake' do
   keyserver 'hkp://ha.pool.sks-keyservers.net'
   retries 2
   retry_delay 30
+  not_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
 package %w[cmake]
