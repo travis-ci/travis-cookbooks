@@ -187,14 +187,14 @@ default['travis_build_environment']['firefox_download_url'] = ::File.join(
   "firefox-#{node['travis_build_environment']['firefox_version']}.tar.bz2"
 )
 
-default['travis_build_environment']['clang']['version'] = '4.0.1'
+default['travis_build_environment']['clang']['version'] = '3.5.0'
 default['travis_build_environment']['clang']['download_url'] = ::File.join(
   'http://releases.llvm.org',
   node['travis_build_environment']['clang']['version'],
   "clang+llvm-#{node['travis_build_environment']['clang']['version']}-x86_64-linux-gnu-debian8.tar.xz"
 )
 default['travis_build_environment']['clang']['extension'] = 'tar.xz'
-default['travis_build_environment']['clang']['checksum'] = 'ca48a4def4cbc9dd6af3f46ce1dc2bd903d26c7ad51387f57884ad1eaa58e42f'
+default['travis_build_environment']['clang']['checksum'] = 'b9b420b93d7681bb2b809c3271ebdf4389c9b7ca35a781c7189d07d483d8f201'
 
 default['travis_build_environment']['gimme']['url'] = 'https://raw.githubusercontent.com/travis-ci/gimme/v1.2.0/gimme'
 default['travis_build_environment']['gimme']['sha256sum'] = '5b620d1caf12ef9d06dbaccbe6cd9ad8b4894666a0b9a182133bcec5c3500010'
