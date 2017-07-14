@@ -43,7 +43,7 @@ end
   { name: home.join('gopath') },
   { name: home.join('gopath/bin') }
 ].each do |entry|
-  directory entry[:name] do
+  directory entry[:name].to_s do
     owner node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     mode(entry[:perms] || 0o750)
