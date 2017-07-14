@@ -38,6 +38,7 @@ end
   { name: home },
   { name: home.join('.m2') },
   { name: home.join('.ssh') },
+  { name: home.join('bin'), perms: 0o755 },
   { name: home.join('builds'), perms: 0o755 },
   { name: home.join('gopath') },
   { name: home.join('gopath/bin') }
