@@ -30,4 +30,16 @@ remote_file node['travis_build_environment']['jq_install_dest'] do
   mode 0o755
   owner node['travis_build_environment']['owner']
   group node['travis_build_environment']['group']
+  not_if { node['kernel']['machine'] == 'ppc64le' }
+end
+
+package 'jq' do
+  action %i[install upgrade]
+  only_if { node['kernel']['machine'] == 'ppc64le' }
+end
+
+link '/usr/local/bin/jq' do
+  to '/usr/bin/jq'
+  owner node['travis_build_environment']['owner']
+  only_if { node['kernel']['machine'] == 'ppc64le' }
 end

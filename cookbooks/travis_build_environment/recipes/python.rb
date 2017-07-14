@@ -19,13 +19,15 @@ package %w[
   zlib1g-dev
 ]
 
-git '/opt/pyenv' do
-  repository 'https://github.com/yyuu/pyenv.git'
+pyenv_root = '/opt/pyenv'
+
+git pyenv_root do
+  repository 'https://github.com/pyenv/pyenv.git'
   revision node['travis_build_environment']['pyenv_revision']
   action :sync
 end
 
-execute '/opt/pyenv/plugins/python-build/install.sh'
+execute "#{pyenv_root}/plugins/python-build/install.sh"
 
 directory '/opt/python' do
   owner 'root'
@@ -56,8 +58,6 @@ build_environment = {
     -Werror=format-security
   ].join(' ')
 }
-
-bindirs = %w[/opt/pyenv/bin]
 
 node['travis_build_environment']['pythons'].each do |py|
   pyname = py
@@ -107,8 +107,6 @@ node['travis_build_environment']['pythons'].each do |py|
     owner node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
   end
-
-  bindirs << "/opt/python/#{py}/bin"
 
   bash "create virtualenv at #{venv_fullname} from #{py}" do
     code "virtualenv --python=/opt/python/#{py}/bin/python #{venv_fullname}"
@@ -162,13 +160,19 @@ node['travis_build_environment']['pythons'].each do |py|
   end
 end
 
+link "#{pyenv_root}/versions" do
+  to '/opt/python'
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+end
+
 template '/etc/profile.d/pyenv.sh' do
   source 'pyenv.sh.erb'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode 0o644
   variables(
-    bindirs: bindirs,
+    pyenv_root: pyenv_root,
     build_environment: build_environment
   )
   backup false

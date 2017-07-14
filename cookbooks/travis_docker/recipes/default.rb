@@ -20,7 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe 'travis_docker::package'
+if node['kernel']['machine'] == 'ppc64le'
+  package %w[docker docker.io]
+else
+  include_recipe 'travis_docker::package'
+end
 
 group 'docker' do
   members node['travis_docker']['users']

@@ -1,5 +1,5 @@
-# Cookbook Name:: travis_docker
-# Recipe:: package
+# Cookbook Name:: travis_build_environment
+# Recipe:: clang
 # Copyright 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,21 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-apt_repository 'docker' do
-  uri 'https://download.docker.com/linux/ubuntu'
-  arch 'amd64'
-  distribution node['lsb']['codename']
-  components %w[stable edge]
-  key 'https://download.docker.com/linux/ubuntu/gpg'
-  retries 2
-  retry_delay 30
-  action :add
-end
-
-package %w[linux-generic-lts-xenial linux-image-generic-lts-xenial] do
-  action %i[install upgrade]
-end
-
-package 'docker-ce' do
-  version node['travis_docker']['version']
+if node['kernel']['machine'] == 'ppc64le'
+  package 'clang'
+else
+  include_recipe 'travis_build_environment::clang_tarball'
 end
