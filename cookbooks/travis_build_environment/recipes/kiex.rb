@@ -35,6 +35,11 @@ execute kiex_install_path do
   environment('HOME' => node['travis_build_environment']['home'])
 end
 
-cookbook_file 'kiex.sh' do
-  path '/etc/profile.d/kiex.sh'
+include_recipe 'travis_build_environment::bash_profile_d'
+
+cookbook_file 'kiex.bash' do
+  path ::File.join(
+    node['travis_build_environment']['home'], '.bash_profile.d/kiex.bash'
+  )
+  mode 0o644
 end
