@@ -43,8 +43,13 @@ bash 'install perlbrew' do
   end
 end
 
-cookbook_file '/etc/profile.d/perlbrew.sh' do
+include_recipe 'travis_build_environment::bash_profile_d'
+
+cookbook_file ::File.join(
+  node['travis_build_environment']['home'],
+  '.bash_profile.d/perlbrew.bash'
+) do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0o755
+  mode 0o644
 end

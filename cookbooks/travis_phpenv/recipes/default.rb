@@ -37,11 +37,17 @@ directory "#{phpenv_path}/versions" do
   action :create
 end
 
-template '/etc/profile.d/phpenv.sh' do
+include_recipe 'travis_build_environment::bash_profile_d'
+
+template ::File.join(
+  node['travis_build_environment']['home'],
+  '.bash_profile.d/phpenv.bash'
+) do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  source 'phpenv.sh.erb'
+  source 'phpenv.bash.erb'
   variables(phpenv_path: phpenv_path)
+  mode 0o644
 end
 
 # A couple fixes for building php 5.3.29c and 5.4.45

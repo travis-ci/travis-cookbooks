@@ -1,4 +1,3 @@
-
 virtualenv_root = "#{node['travis_build_environment']['home']}/virtualenv"
 
 include_recipe 'travis_build_environment::virtualenv'
@@ -166,8 +165,13 @@ link "#{pyenv_root}/versions" do
   group node['travis_build_environment']['group']
 end
 
-template '/etc/profile.d/pyenv.sh' do
-  source 'pyenv.sh.erb'
+include_recipe 'travis_build_environment::bash_profile_d'
+
+template ::File.join(
+  node['travis_build_environment']['home'],
+  '.bash_profile.d/pyenv.bash'
+) do
+  source 'pyenv.bash.erb'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode 0o644
