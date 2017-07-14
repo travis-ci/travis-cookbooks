@@ -20,6 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+require 'pathname'
+
+home = Pathname.new(node['travis_build_environment']['home'])
+
 user node['travis_build_environment']['user'] do
   comment node['travis_build_environment']['user_comment']
   shell '/bin/bash'
@@ -31,12 +35,12 @@ group node['travis_build_environment']['group'] do
 end
 
 [
-  { name: node['travis_build_environment']['home'] },
-  { name: "#{node['travis_build_environment']['home']}/.ssh" },
-  { name: "#{node['travis_build_environment']['home']}/builds", perms: 0o755 },
-  { name: "#{node['travis_build_environment']['home']}/.m2" },
-  { name: "#{node['travis_build_environment']['home']}/gopath" },
-  { name: "#{node['travis_build_environment']['home']}/gopath/bin" }
+  { name: home },
+  { name: home.join('.m2') },
+  { name: home.join('.ssh') },
+  { name: home.join('builds'), perms: 0o755 },
+  { name: home.join('gopath') },
+  { name: home.join('gopath/bin') }
 ].each do |entry|
   directory entry[:name] do
     owner node['travis_build_environment']['user']
@@ -44,6 +48,8 @@ end
     mode(entry[:perms] || 0o750)
   end
 end
+
+include_recipe 'travis_build_environment::bash_profile_d'
 
 [
   { src: 'dot_bashrc.sh.erb', dest: '.bashrc', mode: 0o640 },
@@ -311,11 +317,12 @@ remote_file nvm_sh do
   mode 0o750
 end
 
-template '/etc/profile.d/travis-nvm.sh' do
-  source 'ci_user/etc-profile.d-travis-nvm.sh.erb'
+template home.join('.bash_profile.d/nvm.bash') do
+  source 'ci_user/bash_profile.d-nvm.bash.erb'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['user']
-  mode 0o750
+  mode 0o644
+  variables(nvm_dir: home.join('.nvm'))
 end
 
 Array(node['travis_build_environment']['nodejs_versions']).each do |version|
