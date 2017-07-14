@@ -1,5 +1,5 @@
-# Cookbook Name:: travis_docker
-# Recipe:: default
+# Cookbook Name:: travis_build_environment
+# Recipe:: clang
 # Copyright 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,36 +21,7 @@
 # THE SOFTWARE.
 
 if node['kernel']['machine'] == 'ppc64le'
-  package %w[docker docker.io]
+  package 'clang'
 else
-  include_recipe 'travis_docker::package'
-end
-
-group 'docker' do
-  members node['travis_docker']['users']
-  action %i[create manage]
-end
-
-cookbook_file '/etc/default/docker' do
-  source 'etc/default/docker'
-  owner 'root'
-  group 'root'
-  mode 0o640
-end
-
-directory '/etc/default/grub.d' do
-  owner 'root'
-  group 'root'
-  mode 0o755
-end
-
-cookbook_file '/etc/default/grub.d/99-travis-settings.cfg' do
-  source 'etc/default/grub.d/99-travis-settings.cfg'
-  owner 'root'
-  group 'root'
-  mode 0o640
-end
-
-execute 'update-grub' do
-  only_if { node['travis_docker']['update_grub'] }
+  include_recipe 'travis_build_environment::clang_tarball'
 end
