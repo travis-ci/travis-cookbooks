@@ -27,3 +27,9 @@ default['travis_java']['oraclejdk8']['pinned_release'] = nil
 default['travis_java']['oraclejdk9']['install_jce_unlimited'] = true
 default['travis_java']['oraclejdk9']['jvm_name'] = 'java-9-oracle'
 default['travis_java']['oraclejdk9']['pinned_release'] = nil
+
+default['travis_java']['ibmjava']['platform'] = 'linux'
+default['travis_java']['ibmjava8']['jvm_name'] = "java-8-ibm-#{node['travis_java']['arch']}"
+default['travis_java']['ibmjava8']['pinned_release'] = nil
+default['travis_java']['ibmjava9']['jvm_name'] = "java-9-ibm-#{node['travis_java']['arch']}"
+default['travis_java']['ibmjava9']['pinned_release'] = nil
