@@ -28,9 +28,16 @@ apt_repository 'mongodb-3.2' do
   key 'EA312927'
   retries 2
   retry_delay 30
+  not_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
-package 'mongodb-org'
+package 'mongodb-org' do
+  not_if { node['kernel']['machine'] == 'ppc64le' }
+end
+
+package 'mongodb' do
+  only_if { node['kernel']['machine'] == 'ppc64le' }
+end
 
 service 'mongod' do
   action %i[stop disable]
