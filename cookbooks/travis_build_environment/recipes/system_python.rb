@@ -18,7 +18,7 @@ node['travis_build_environment']['system_python']['pythons'].each do |py|
   venv_fullname = "#{virtualenv_root}/#{venv_name}"
 
   bash "create virtualenv at #{venv_fullname} from #{pyname}" do
-    code "virtualenv --python=/usr/bin/#{pyname} #{venv_fullname}"
+    code "virtualenv --system-site-packages --python=/usr/bin/#{pyname} #{venv_fullname}"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
   end
