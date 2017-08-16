@@ -88,7 +88,7 @@ default['travis_build_environment']['python_aliases'] = {
 }
 
 default['travis_build_environment']['pip']['packages'] = {
-  'default' => %w[nose pytest mock wheel],
+  'default' => %w[nose pytest mercurial mock wheel],
   '2.7' => %w[numpy],
   '3.6' => %w[numpy]
 }
