@@ -25,5 +25,4 @@ ark 'mercurial' do
   make_opts ['all']
   action :install_with_make
   only_if { node['travis_build_environment']['mercurial_install_type'] == 'src' }
-
 end
