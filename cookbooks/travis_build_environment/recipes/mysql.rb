@@ -46,7 +46,7 @@ mysql_pkgs =  %w[
   mysql-server-5.6
   mysql-server-core-5.6
 ]
-if node['kernel']['machine'] == 'ppc64le' && node['lsb']['codename'] == 'xenial'
+if node['lsb']['codename'] == 'xenial'
   mysql_version = 5.7
   mysql_pkgs = %w[
     libmysqlclient-dev
