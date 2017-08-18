@@ -246,9 +246,6 @@ default['travis_build_environment']['neo4j_version'] = '3.2.1'
 default['travis_build_environment']['neo4j_checksum'] = '24fd6a704e0d80c4b4f9a3d17ce0db23f258a8cdcfa1eb28d7803b7d1811ee96'
 
 default['travis_build_environment']['mercurial_install_type'] = 'src'
-if node['kernel']['machine'] == 'ppc64le'
-  default['travis_build_environment']['mercurial_install_type'] = 'src'
-end
 default['travis_build_environment']['mercurial_version'] = '4.2.2~trusty1'
 mercurial_ppc_version = '4.2.2'
 default['travis_build_environment']['mercurial_ppc_version'] = mercurial_ppc_version
