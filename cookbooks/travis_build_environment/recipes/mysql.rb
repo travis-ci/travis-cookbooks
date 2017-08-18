@@ -74,6 +74,11 @@ file mysql_users_passwords_sql do
     > CREATE USER 'travis'@'%' IDENTIFIED BY '';
     > SET PASSWORD FOR 'root'@'localhost' = PASSWORD('');
     > SET PASSWORD FOR 'root'@'127.0.0.1' = PASSWORD('');
+    > GRANT ALL PRIVILEGES ON *.* TO 'travis'@'%';
+    > CREATE USER 'travis'@'localhost' IDENTIFIED BY '';
+    > GRANT ALL PRIVILEGES ON *.* TO 'travis'@'localhost';
+    > CREATE USER 'travis'@'127.0.0.1' IDENTIFIED BY '';
+    > GRANT ALL PRIVILEGES ON *.* TO 'travis'@'127.0.0.1';
   EOF
   not_if { mysql_version == 5.7 }
 end
