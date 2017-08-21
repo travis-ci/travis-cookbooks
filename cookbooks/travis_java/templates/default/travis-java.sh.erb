@@ -4,7 +4,9 @@ export JDK_SWITCHER_DEFAULT="<%= @jdk_switcher_default -%>"
 <% end -%>
 <% unless @jvm_name.nil? || @jvm_name.empty? -%>
 export JAVA_HOME="<%= @jvm_base_dir -%>/<%= @jvm_name -%>"
+export _JAVA_OPTIONS="-Xmx2048m -Xms512m"
 <% end -%>
 if [ -f "<%= @jdk_switcher_path -%>" ]; then
   . "<%= @jdk_switcher_path -%>"
 fi
+export MALLOC_ARENA_MAX=2
