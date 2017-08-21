@@ -67,12 +67,11 @@ file mysql_users_passwords_sql do
   EOF
 end
 
-service 'mysql' do
-  action %i[enable start]
-end
-
-bash 'setup mysql users and passwords' do
-  code "mysql -u root <#{mysql_users_passwords_sql}"
+template "/etc/mysql/conf.d/performance-schema.cnf" do
+  source 'root/performance-schema.cnf.erb'
+  owner 'root'
+  group 'root'
+  mode 0o640
 end
 
 template "#{node['travis_build_environment']['home']}/.my.cnf" do
@@ -81,6 +80,14 @@ template "#{node['travis_build_environment']['home']}/.my.cnf" do
   group node['travis_build_environment']['group']
   mode 0o640
   variables(socket: node['travis_build_environment']['mysql']['socket'])
+end
+
+service 'mysql' do
+  action %i[enable start]
+end
+
+bash 'setup mysql users and passwords' do
+  code "mysql -u root <#{mysql_users_passwords_sql}"
 end
 
 include_recipe 'travis_build_environment::bash_profile_d'
