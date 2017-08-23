@@ -141,8 +141,8 @@ default['travis_build_environment']['php_packages'] = %w[
 ]
 php_versions = %w[
   5.6.31
-  7.0.21
-  7.1.7
+  7.0.22
+  7.1.8
 ]
 default['travis_build_environment']['php_versions'] = php_versions
 default['travis_build_environment']['php_default_version'] = php_versions.max
