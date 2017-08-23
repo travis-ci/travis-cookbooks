@@ -73,17 +73,19 @@ default['travis_build_environment']['pyenv_revision'] = 'v1.1.3'
 # $PATH so items earlier in the list will take precedence over items later in
 # the list. This order means that ``python`` will be 2.7.13, ``python2`` will be
 # 2.7.13, and ``python3`` will be 3.6.2
+# For the list of supported aliases, see:
+# https://github.com/pyenv/pyenv/tree/master/plugins/python-build/share/python-build
 default['travis_build_environment']['pythons'] = %w[
   2.7.13
   3.6.2
-  pypy2-5.7.1
+  pypy2.7-5.8.0
   pypy3.5-5.8.0
 ]
 
 default['travis_build_environment']['python_aliases'] = {
   '2.7.13' => %w[2.7],
   '3.6.2' => %w[3.6],
-  'pypy2-5.7.1' => %w[pypy],
+  'pypy2.7-5.8.0' => %w[pypy],
   'pypy3.5-5.8.0' => %w[pypy3]
 }
 
