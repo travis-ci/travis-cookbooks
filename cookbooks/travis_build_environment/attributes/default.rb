@@ -67,23 +67,25 @@ default['travis_build_environment']['rvmrc_env'] = {
   'rvm_autolibs_flag' => 'read-fail'
 }
 
-default['travis_build_environment']['pyenv_revision'] = 'v1.1.2'
+default['travis_build_environment']['pyenv_revision'] = 'v1.1.3'
 
 # Order matters for this list of Pythons. It will be used to construct the
 # $PATH so items earlier in the list will take precedence over items later in
 # the list. This order means that ``python`` will be 2.7.13, ``python2`` will be
-# 2.7.13, and ``python3`` will be 3.6.1
+# 2.7.13, and ``python3`` will be 3.6.2
+# For the list of supported aliases, see:
+# https://github.com/pyenv/pyenv/tree/master/plugins/python-build/share/python-build
 default['travis_build_environment']['pythons'] = %w[
   2.7.13
-  3.6.1
-  pypy2-5.7.1
+  3.6.2
+  pypy2.7-5.8.0
   pypy3.5-5.8.0
 ]
 
 default['travis_build_environment']['python_aliases'] = {
   '2.7.13' => %w[2.7],
-  '3.6.1' => %w[3.6],
-  'pypy2-5.7.1' => %w[pypy],
+  '3.6.2' => %w[3.6],
+  'pypy2.7-5.8.0' => %w[pypy],
   'pypy3.5-5.8.0' => %w[pypy3]
 }
 
@@ -139,8 +141,8 @@ default['travis_build_environment']['php_packages'] = %w[
 ]
 php_versions = %w[
   5.6.31
-  7.0.21
-  7.1.7
+  7.0.22
+  7.1.8
 ]
 default['travis_build_environment']['php_versions'] = php_versions
 default['travis_build_environment']['php_default_version'] = php_versions.max
@@ -149,7 +151,7 @@ default['travis_build_environment']['php_aliases'] = Hash[
 ]
 
 nodejs_versions = %w[
-  8.1.4
+  8.4.0
 ]
 
 default['travis_build_environment']['nodejs_versions'] = nodejs_versions
@@ -181,7 +183,7 @@ default['travis_build_environment']['elasticsearch']['jvm_heap'] = '128m'
 
 default['travis_build_environment']['redis']['service_enabled'] = false
 
-default['travis_build_environment']['firefox_version'] = '54.0.1'
+default['travis_build_environment']['firefox_version'] = '55.0.2'
 default['travis_build_environment']['firefox_download_url'] = ::File.join(
   'https://releases.mozilla.org/pub/firefox/releases',
   node['travis_build_environment']['firefox_version'],
