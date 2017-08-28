@@ -38,4 +38,21 @@ ark 'phantomjs' do
   checksum '785913935b14dfadf759e6f54fc6858eadab3c15b87f88a720b0942058b5b573'
   has_binaries %w[phantomjs]
   owner 'root'
+  not_if { node['kernel']['machine'] == 'ppc64le' }
+end
+
+ark 'phantomjs' do
+  url 'https://github.com/ibmsoe/phantomjs/releases/download/2.1.1/phantomjs-2.1.1-linux-ppc64.tar.bz2'
+  version '2.1.1'
+  has_binaries %w[phantomjs]
+  owner 'root'
+  only_if { node['kernel']['machine'] == 'ppc64le' }
+end
+
+cookbook_file '/etc/profile.d/phantomjs.sh' do
+  source 'etc/profile.d/phantomjs.sh'
+  owner 'root'
+  group 'root'
+  mode 0o644
+  only_if { node['kernel']['machine'] == 'ppc64le' }
 end

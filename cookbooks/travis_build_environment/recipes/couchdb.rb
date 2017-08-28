@@ -7,6 +7,7 @@ apt_repository 'couchdb' do
   retries 2
   retry_delay 30
   action :add
+  not_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
 package 'couchdb'

@@ -30,4 +30,10 @@ ark 'firefox' do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   has_binaries %w[firefox firefox-bin]
+  not_if { node['kernel']['machine'] == 'ppc64le' }
+end
+
+package %w[firefox] do
+  action %i[install upgrade]
+  only_if { node['kernel']['machine'] == 'ppc64le' }
 end
