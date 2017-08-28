@@ -68,28 +68,23 @@ mysql_users_passwords_sql = ::File.join(
   'mysql_users_passwords.sql'
 )
 
-file mysql_users_passwords_sql do
-  content <<-EOF.gsub(/^\s+> /, '')
-    > SET old_passwords = 0;
-    > CREATE USER 'travis'@'%' IDENTIFIED BY '';
-    > SET PASSWORD FOR 'root'@'localhost' = PASSWORD('');
-    > SET PASSWORD FOR 'root'@'127.0.0.1' = PASSWORD('');
-    > GRANT ALL PRIVILEGES ON *.* TO 'travis'@'%';
-    > CREATE USER 'travis'@'localhost' IDENTIFIED BY '';
-    > GRANT ALL PRIVILEGES ON *.* TO 'travis'@'localhost';
-    > CREATE USER 'travis'@'127.0.0.1' IDENTIFIED BY '';
-    > GRANT ALL PRIVILEGES ON *.* TO 'travis'@'127.0.0.1';
-  EOF
-  not_if { mysql_version == 5.7 }
+mysql_user_passwords_sql_content = [
+  "SET old_passwords = 0",
+  "CREATE USER 'travis'@'%' IDENTIFIED BY ''",
+  "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('')",
+  "GRANT ALL PRIVILEGES ON *.* TO 'travis'@'%'",
+  "CREATE USER 'travis'@'localhost' IDENTIFIED BY ''",
+  "GRANT ALL PRIVILEGES ON *.* TO 'travis'@'localhost'",
+  "CREATE USER 'travis'@'127.0.0.1' IDENTIFIED BY ''",
+  "GRANT ALL PRIVILEGES ON *.* TO 'travis'@'127.0.0.1'"
+]
+
+if mysql_version < 5.7
+  mysql_user_passwords_sql_content << "SET PASSWORD FOR 'root'@'127.0.0.1' = PASSWORD('')"
 end
 
 file mysql_users_passwords_sql do
-  content <<-EOF.gsub(/^\s+> /, '')
-    > SET old_passwords = 0;
-    > CREATE USER 'travis'@'%' IDENTIFIED BY '';
-    > SET PASSWORD FOR 'root'@'localhost' = PASSWORD('');
-  EOF
-  only_if { mysql_version == 5.7 }
+  content mysql_user_passwords_sql_content.join(';')
 end
 
 template "/etc/mysql/conf.d/performance-schema.cnf" do
