@@ -92,6 +92,13 @@ file mysql_users_passwords_sql do
   only_if { mysql_version == 5.7 }
 end
 
+template "/etc/mysql/conf.d/innodb_flush_log_at_trx_commit.cnf" do
+  source 'root/innodb_flush_log_at_trx_commit.cnf.erb'
+  owner 'root'
+  group 'root'
+  mode 0o640
+end
+
 template "/etc/mysql/conf.d/performance-schema.cnf" do
   source 'root/performance-schema.cnf.erb'
   owner 'root'
