@@ -146,8 +146,13 @@ Array(node['travis_build_environment']['otp_releases']).each do |rel|
     only_if { ::File.exist?(local_archive) }
   end
 
+  kerl_build_cmd = "#{node['travis_build_environment']['kerl_path']} build #{rel} #{rel}"
+  if node['kernel']['machine'] == 'ppc64le'
+    kerl_build_cmd = "KERL_CONFIGURE_OPTIONS=--disable-hipe #{node['travis_build_environment']['kerl_path']} build #{rel} #{rel}"
+  end
+
   bash "build erlang #{rel}" do
-    code "#{node['travis_build_environment']['kerl_path']} build #{rel} #{rel}"
+    code kerl_build_cmd
 
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
@@ -202,6 +207,7 @@ Array(node['travis_build_environment']['elixir_versions']).each do |elixir|
       'HOME' => node['travis_build_environment']['home'],
       'USER' => node['travis_build_environment']['user']
     )
+    creates "#{dest}/bin/elixirc"
   end
 
   file "#{node['travis_build_environment']['home']}/.kiex/elixirs/elixir-#{elixir}.env" do

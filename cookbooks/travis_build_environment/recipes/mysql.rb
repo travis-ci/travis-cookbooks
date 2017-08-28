@@ -36,7 +36,8 @@ end
   execute "echo 'mysql-server-5.6 mysql-server/#{selection} password ' | debconf-set-selections"
 end
 
-package %w[
+mysql_version = 5.6
+mysql_pkgs =  %w[
   libmysqlclient-dev
   libmysqlclient18
   mysql-client-5.6
@@ -44,7 +45,21 @@ package %w[
   mysql-common-5.6
   mysql-server-5.6
   mysql-server-core-5.6
-] do
+]
+if node['lsb']['codename'] == 'xenial'
+  mysql_version = 5.7
+  mysql_pkgs = %w[
+    libmysqlclient-dev
+    libmysqlclient20
+    mysql-client-5.7
+    mysql-client-core-5.7
+    mysql-common
+    mysql-server-5.7
+    mysql-server-core-5.7
+  ]
+end
+
+package mysql_pkgs do
   action %i[install upgrade]
 end
 
@@ -65,6 +80,16 @@ file mysql_users_passwords_sql do
     > CREATE USER 'travis'@'127.0.0.1' IDENTIFIED BY '';
     > GRANT ALL PRIVILEGES ON *.* TO 'travis'@'127.0.0.1';
   EOF
+  not_if { mysql_version == 5.7 }
+end
+
+file mysql_users_passwords_sql do
+  content <<-EOF.gsub(/^\s+> /, '')
+    > SET old_passwords = 0;
+    > CREATE USER 'travis'@'%' IDENTIFIED BY '';
+    > SET PASSWORD FOR 'root'@'localhost' = PASSWORD('');
+  EOF
+  only_if { mysql_version == 5.7 }
 end
 
 template "/etc/mysql/conf.d/performance-schema.cnf" do
