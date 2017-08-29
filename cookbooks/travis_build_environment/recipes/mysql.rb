@@ -87,6 +87,13 @@ file mysql_users_passwords_sql do
   content mysql_user_passwords_sql_content.join(';')
 end
 
+template "/etc/mysql/conf.d/innodb_flush_log_at_trx_commit.cnf" do
+  source 'root/innodb_flush_log_at_trx_commit.cnf.erb'
+  owner 'root'
+  group 'root'
+  mode 0o640
+end
+
 template "/etc/mysql/conf.d/performance-schema.cnf" do
   source 'root/performance-schema.cnf.erb'
   owner 'root'
