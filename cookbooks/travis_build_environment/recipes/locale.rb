@@ -31,6 +31,7 @@ end
 
 execute 'dpkg-reconfigure locales' do
   action :nothing
+  :environment('DEBIAN_FRONTEND' => 'noninteractive')
 end
 
 cookbook_file '/etc/default/locale' do
@@ -38,5 +39,5 @@ cookbook_file '/etc/default/locale' do
   owner 'root'
   group 'root'
   mode 0o644
-  notifies :run, environment('DEBIAN_FRONTEND' => 'noninteractive'), 'execute[dpkg-reconfigure locales]', :immediately
+  notifies :run, 'execute[dpkg-reconfigure locales]', :immediately
 end
