@@ -31,7 +31,7 @@ end
 
 execute 'dpkg-reconfigure locales' do
   action :nothing
-  :environment('DEBIAN_FRONTEND' => 'noninteractive')
+  environment('DEBIAN_FRONTEND' => 'noninteractive')
 end
 
 cookbook_file '/etc/default/locale' do
