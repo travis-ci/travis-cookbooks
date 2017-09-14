@@ -48,11 +48,11 @@ module TravisJava
         mode '0755'
         checksum entry['sha256sum']
         action :create
-        notifies :create, "ruby_block[Verify Checksum]", :immediately
+        notifies :run, "ruby_block[Verify Checksum of #{installer} file]", :immediately
       end
 
       # Verify Checksum of the downloaded IBM Java build
-      ruby_block "Verify Checksum" do
+      ruby_block "Verify Checksum of #{installer} file" do
         block do
           checksum = Digest::SHA256.hexdigest(File.read(installer))
           if checksum != expected_checksum
@@ -63,14 +63,14 @@ module TravisJava
       end
 
       # Create installer properties for silent installation
-      file "Create installer properties" do
+      file "Create installer properties file for IBM Java#{version}" do
         path properties
         content "INSTALLER_UI=silent\nUSER_INSTALL_DIR=#{java_home}\nLICENSE_ACCEPTED=TRUE\n"
         action :create
       end
 
       # Install IBM Java build
-      execute "Install Java" do
+      execute "Install IBM Java#{version} build" do
         command "#{installer} -i silent -f #{properties}"
         action :run
       end
@@ -95,7 +95,8 @@ module TravisJava
     def delete_files(version)
       installer = File.join(Dir.tmpdir, "ibmjava" + version.to_s + "-installer")
       properties = File.join(Dir.tmpdir, "installer.properties")
-      file properties do
+      file "Delete properties file for IBM Java#{version}" do
+        path properties
         action :delete
       end
 
