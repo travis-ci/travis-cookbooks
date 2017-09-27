@@ -10,7 +10,7 @@ if node['kernel']['machine'] == 'ppc64le'
   default['travis_java']['default_version'] = 'openjdk8'
 end
 
-default['travis_java']['jdk_switcher_url'] = 'https://raw.githubusercontent.com/michaelklishin/jdk_switcher/565b95b8946abf8ce3f2b0cc87fb8260a3d5aa3c/jdk_switcher.sh'
+default['travis_java']['jdk_switcher_url'] = 'https://raw.githubusercontent.com/michaelklishin/jdk_switcher/972aa3d19a73ccecd6de9fba3c52917e69d7462a/jdk_switcher.sh'
 default['travis_java']['jdk_switcher_path'] = '/opt/jdk_switcher/jdk_switcher.sh'
 default['travis_java']['jvm_base_dir'] = '/usr/lib/jvm'
 
