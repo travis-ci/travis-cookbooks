@@ -1,5 +1,5 @@
 # Managed by Chef on <%= node.name %>! :heart_eyes_cat:
-export PATH="$PATH:<%= @pyenv_root %>/bin"
+export PATH="<%= @pyenv_root %>/bin:$PATH"
 export PYENV_ROOT="<%= @pyenv_root %>"
 <%# Configure python-build for consistent build options %>
 <% @build_environment.each do |key, value| %>
