@@ -144,7 +144,6 @@ php_versions = %w[
   7.0.22
   7.1.8
 ]
-  # TODO: pull properly built PHP
 default['travis_build_environment']['php_versions'] = php_versions
 default['travis_build_environment']['php_default_version'] = php_versions.max
 default['travis_build_environment']['php_aliases'] = Hash[
