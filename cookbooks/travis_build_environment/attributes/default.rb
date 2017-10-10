@@ -139,7 +139,7 @@ default['travis_build_environment']['php_packages'] = %w[
   libfreetype6-dev
   libreadline6-dev
 ]
-php_versions = [] %w[
+php_versions = %w[
   5.6.31
   7.0.22
   7.1.8
