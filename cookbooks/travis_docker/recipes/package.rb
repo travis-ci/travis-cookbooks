@@ -29,6 +29,14 @@ apt_repository 'docker' do
   retries 2
   retry_delay 30
   action :add
+  not_if { node['kernel']['machine'] == 'ppc64le' }
+end
+
+apt_repository 'docker' do
+  uri node['travis_docker']['ppc64le']['apt']['url']
+  trusted true
+  components %w[main]
+  only_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
 package %w[linux-generic-lts-xenial linux-image-generic-lts-xenial] do

@@ -26,4 +26,5 @@ ark 'docker' do
   checksum node['travis_docker']['binary']['checksum']
   strip_components 1
   has_binaries node['travis_docker']['binary']['binaries']
+  not_if { node['kernel']['machine'] == 'ppc64le' }
 end
