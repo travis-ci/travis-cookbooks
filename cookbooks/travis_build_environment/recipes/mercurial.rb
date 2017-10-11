@@ -22,7 +22,6 @@ execute %W[
   user 'root'
   group 'root'
   only_if { node['travis_build_environment']['mercurial_install_type'] == 'pip' }
-  not_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
 package 'python-docutils' do

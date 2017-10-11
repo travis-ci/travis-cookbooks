@@ -32,6 +32,10 @@ The script that's run on Travis is `./runtests`, which by default runs on the
 ./runtests
 ```
 
+Any change to the cookbooks should also be tested on an actual build-VM, after building a test image.
+More information on how to trigger a test image build can be found in the [packer-templates README](https://github.com/travis-ci/packer-templates#testing-cookbook-changes).
+
+
 ### Branches
 
 There are two long-lived branches:
