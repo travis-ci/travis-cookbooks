@@ -163,8 +163,8 @@ default['travis_build_environment']['nodejs_default_modules'] = %w[
   grunt-cli
 ]
 
-default['travis_build_environment']['nvm']['url'] = 'https://raw.githubusercontent.com/creationix/nvm/v0.33.4/nvm.sh'
-default['travis_build_environment']['nvm']['sha256sum'] = 'ca5ccf621a66c556e8a8fbfe9e02fcbfabbb0623a820c28c8064a3673b6f0b95'
+default['travis_build_environment']['nvm']['url'] = 'https://raw.githubusercontent.com/creationix/nvm/v0.33.5/nvm.sh'
+default['travis_build_environment']['nvm']['sha256sum'] = 'f3420760c4b17f567febb6ed71ef8da21a30d742a7989fda24bd3d2388e920be'
 
 default['travis_build_environment']['arch'] = 'i386'
 if node['kernel']['machine'] =~ /x86_64/
@@ -253,8 +253,8 @@ default['travis_build_environment']['shellcheck_version'] = '0.4.6'
 default['travis_build_environment']['shellcheck_checksum'] = 'fe0a6e94d9cf24b5a46553265846480425067f95f2630317f8fd99bc60a13719'
 default['travis_build_environment']['shellcheck_binaries'] = %w[shellcheck]
 
-default['travis_build_environment']['shfmt_url'] = 'https://github.com/mvdan/sh/releases/download/v1.3.1/shfmt_v1.3.1_linux_amd64'
-default['travis_build_environment']['shfmt_checksum'] = '4cdb7b24f5de623ad5d691f826ada61b4390a1c0c7dc1ef8414a5e9c1755f7c7'
+default['travis_build_environment']['shfmt_url'] = 'https://github.com/mvdan/sh/releases/download/v2.0.0/shfmt_v2.0.0_linux_amd64'
+default['travis_build_environment']['shfmt_checksum'] = 'f21ec3c37b9ece776a737629650adcb79f7b529026b967432a8a2c2b40dcabe0'
 
 default['travis_build_environment']['yarn_url'] = 'https://yarnpkg.com/downloads/0.27.5/yarn-v0.27.5.tar.gz'
 default['travis_build_environment']['yarn_version'] = '0.27.5'
