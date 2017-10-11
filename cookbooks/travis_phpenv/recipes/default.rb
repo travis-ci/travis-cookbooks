@@ -55,8 +55,3 @@ end
 package 'libxslt1-dev' do
   action :install
 end
-
-link '/usr/include/freetype2/freetype' do
-  to 'usr/include/freetype2'
-  action :create
-end
