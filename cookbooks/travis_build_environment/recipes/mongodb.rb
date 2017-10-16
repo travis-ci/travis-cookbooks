@@ -20,9 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-apt_repository 'mongodb-3.2' do
+apt_repository 'mongodb-3.4' do
   uri 'http://repo.mongodb.org/apt/ubuntu'
-  distribution "#{node['lsb']['codename']}/mongodb-org/3.2"
+  distribution "#{node['lsb']['codename']}/mongodb-org/3.4"
   components %w[multiverse]
   keyserver 'hkp://ha.pool.sks-keyservers.net'
   key 'EA312927'
