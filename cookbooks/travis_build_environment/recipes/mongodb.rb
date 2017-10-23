@@ -36,9 +36,17 @@ package 'mongodb-org' do
 end
 
 package 'mongodb' do
+  notifies :stop, 'service[mongodb]', :immediately
+  notifies :disable, 'service[mongodb]', :immediately
+  only_if { node['kernel']['machine'] == 'ppc64le' }
+end
+
+service 'mongodb' do
+  action :nothing
   only_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
 service 'mongod' do
   action %i[stop disable]
+  not_if { node['kernel']['machine'] == 'ppc64le' }
 end
