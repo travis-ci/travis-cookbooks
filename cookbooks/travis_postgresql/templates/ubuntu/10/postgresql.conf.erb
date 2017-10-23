@@ -64,7 +64,7 @@ external_pid_file = '/var/run/postgresql/10-main.pid'                   # write 
                                         # comma-separated list of addresses;
                                         # defaults to 'localhost'; use '*' for all
                                         # (change requires restart)
-port = <%= node['travis_postgresql']['posrt'] %>                             # (change requires restart)
+port = <%= node['travis_postgresql']['port'] %>                             # (change requires restart)
 max_connections = <%= node['travis_postgresql']['max_connections'] %>                   # (change requires restart)
 #superuser_reserved_connections = 3     # (change requires restart)
 unix_socket_directories = '/var/run/postgresql' # comma-separated list of directories
