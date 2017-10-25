@@ -46,3 +46,9 @@ end
 package 'docker-ce' do
   version node['travis_docker']['version']
 end
+
+group 'adding user to docker group' do
+  group_name 'docker'
+  members node['travis_docker']['users']
+  action %i[create manage]
+end
