@@ -20,6 +20,3 @@ default['travis_docker']['binary']['binaries'] = %w[
   docker-runc
   dockerd
 ]
-
-# For IBM power
-default['travis_docker']['ppc64le']['apt']['url'] = 'http://ftp.unicamp.br/pub/ppc64el/ubuntu/16_04/docker-17.06.1-ce-ppc64el/'
