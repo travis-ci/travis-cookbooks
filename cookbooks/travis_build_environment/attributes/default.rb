@@ -229,8 +229,8 @@ default['travis_build_environment']['lein_url'] = 'https://raw.githubusercontent
 default['travis_build_environment']['sysctl_kernel_shmmax'] = 45_794_432
 default['travis_build_environment']['sysctl_disable_ipv6'] = true
 
-default['travis_build_environment']['maven_url'] = 'https://www.apache.org/dist/maven/maven-3/3.5.0/binaries/apache-maven-3.5.0-bin.tar.gz'
-default['travis_build_environment']['maven_version'] = '3.5.0'
+default['travis_build_environment']['maven_url'] = 'https://www.apache.org/dist/maven/maven-3/3.5.0/binaries/apache-maven-3.5.2-bin.tar.gz'
+default['travis_build_environment']['maven_version'] = '3.5.2'
 default['travis_build_environment']['maven_checksum'] = 'beb91419245395bd69a4a6edad5ca3ec1a8b64e41457672dc687c173a495f034'
 default['travis_build_environment']['maven_binaries'] = %w[
   bin/m2.conf

@@ -20,23 +20,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+arch = node['kernel']['machine'] =~ /x86_64/ ? 'amd64' : 'ppc64el'
 apt_repository 'docker' do
   uri 'https://download.docker.com/linux/ubuntu'
-  arch 'amd64'
+  arch arch
   distribution node['lsb']['codename']
   components %w[stable edge]
   key 'https://download.docker.com/linux/ubuntu/gpg'
   retries 2
   retry_delay 30
   action :add
-  not_if { node['kernel']['machine'] == 'ppc64le' }
-end
-
-apt_repository 'docker' do
-  uri node['travis_docker']['ppc64le']['apt']['url']
-  trusted true
-  components %w[main]
-  only_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
 package %w[linux-generic-lts-xenial linux-image-generic-lts-xenial] do
