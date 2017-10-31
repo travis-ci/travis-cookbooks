@@ -200,6 +200,15 @@ default['travis_build_environment']['clang']['download_url'] = ::File.join(
 default['travis_build_environment']['clang']['extension'] = 'tar.xz'
 default['travis_build_environment']['clang']['checksum'] = '58c1171f326108cfb7641441c5ede7846d58823bce3206c86a84c7ef7748860d'
 
+default['travis_build_environment']['cmake']['version'] = '3.9.2'
+default['travis_build_environment']['cmake']['download_url'] = ::File.join(
+  'https://cmake.org/files',
+  "v#{node['travis_build_environment']['cmake']['version'].split('.')[0, 2].join('.')}",
+  "cmake-#{node['travis_build_environment']['cmake']['version']}-Linux-x86_64.tar.gz"
+)
+default['travis_build_environment']['cmake']['extension'] = 'tar.gz'
+default['travis_build_environment']['cmake']['checksum'] = 'f4e1e848e21c3fba134fbddd793860ba9a17c35d0aeaa3bd83149a6ec1bf9fbb'
+
 default['travis_build_environment']['gimme']['url'] = 'https://raw.githubusercontent.com/travis-ci/gimme/v1.2.0/gimme'
 default['travis_build_environment']['gimme']['sha256sum'] = '5b620d1caf12ef9d06dbaccbe6cd9ad8b4894666a0b9a182133bcec5c3500010'
 default['travis_build_environment']['gimme']['default_version'] = '1.8.3'
