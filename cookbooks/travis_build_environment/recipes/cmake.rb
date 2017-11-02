@@ -23,15 +23,13 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-apt_repository 'cmake' do
-  uri 'http://ppa.launchpad.net/george-edison55/cmake-3.x/ubuntu'
-  distribution node['lsb']['codename']
-  components %w[main]
-  key '828AB726'
-  keyserver 'hkp://ha.pool.sks-keyservers.net'
+ark 'cmake' do
+  url node['travis_build_environment']['cmake']['download_url']
+  checksum node['travis_build_environment']['cmake']['checksum']
+  version node['travis_build_environment']['cmake']['version']
+  extension node['travis_build_environment']['cmake']['extension']
   retries 2
   retry_delay 30
+  append_env_path true
   not_if { node['kernel']['machine'] == 'ppc64le' }
 end
-
-package %w[cmake]
