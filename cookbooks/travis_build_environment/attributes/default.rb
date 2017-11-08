@@ -273,9 +273,8 @@ default['travis_build_environment']['shellcheck_binaries'] = %w[shellcheck]
 default['travis_build_environment']['shfmt_url'] = 'https://github.com/mvdan/sh/releases/download/v2.0.0/shfmt_v2.0.0_linux_amd64'
 default['travis_build_environment']['shfmt_checksum'] = 'f21ec3c37b9ece776a737629650adcb79f7b529026b967432a8a2c2b40dcabe0'
 
-default['travis_build_environment']['yarn_url'] = 'https://yarnpkg.com/downloads/0.27.5/yarn-v0.27.5.tar.gz'
-default['travis_build_environment']['yarn_version'] = '0.27.5'
-default['travis_build_environment']['yarn_checksum'] = 'f0f3510246ee74eb660ea06930dcded7b684eac2593aa979a7add84b72517968'
+default['travis_build_environment']['yarn_url'] = 'https://yarnpkg.com/latest.tar.gz'
+default['travis_build_environment']['yarn_version'] = 'latest'
 default['travis_build_environment']['yarn_binaries'] = %w[
   bin/yarn
   bin/yarn.js
