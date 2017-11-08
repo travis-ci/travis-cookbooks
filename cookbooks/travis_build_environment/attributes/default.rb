@@ -151,7 +151,7 @@ default['travis_build_environment']['php_aliases'] = Hash[
 ]
 
 nodejs_versions = %w[
-  8.4.0
+  8.9.1
 ]
 
 default['travis_build_environment']['nodejs_versions'] = nodejs_versions
