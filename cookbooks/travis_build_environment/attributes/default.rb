@@ -140,9 +140,9 @@ default['travis_build_environment']['php_packages'] = %w[
   libreadline6-dev
 ]
 php_versions = %w[
-  5.6.31
-  7.0.22
-  7.1.8
+  5.6.32
+  7.0.25
+  7.1.11
 ]
 default['travis_build_environment']['php_versions'] = php_versions
 default['travis_build_environment']['php_default_version'] = php_versions.max
