@@ -183,7 +183,7 @@ default['travis_build_environment']['elasticsearch']['jvm_heap'] = '128m'
 
 default['travis_build_environment']['redis']['service_enabled'] = false
 
-default['travis_build_environment']['firefox_version'] = '55.0.2'
+default['travis_build_environment']['firefox_version'] = '56.0.2'
 default['travis_build_environment']['firefox_download_url'] = ::File.join(
   'https://releases.mozilla.org/pub/firefox/releases',
   node['travis_build_environment']['firefox_version'],
