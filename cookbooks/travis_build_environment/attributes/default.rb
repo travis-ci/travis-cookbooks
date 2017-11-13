@@ -67,24 +67,24 @@ default['travis_build_environment']['rvmrc_env'] = {
   'rvm_autolibs_flag' => 'read-fail'
 }
 
-default['travis_build_environment']['pyenv_revision'] = 'v1.1.3'
+default['travis_build_environment']['pyenv_revision'] = 'v1.1.5'
 
 # Order matters for this list of Pythons. It will be used to construct the
 # $PATH so items earlier in the list will take precedence over items later in
-# the list. This order means that ``python`` will be 2.7.13, ``python2`` will be
-# 2.7.13, and ``python3`` will be 3.6.2
+# the list. This order means that ``python`` will be 2.7.x, ``python2`` will be
+# 2.7.x, and ``python3`` will be 3.6.x
 # For the list of supported aliases, see:
 # https://github.com/pyenv/pyenv/tree/master/plugins/python-build/share/python-build
 default['travis_build_environment']['pythons'] = %w[
-  2.7.13
-  3.6.2
+  2.7.14
+  3.6.3
   pypy2.7-5.8.0
   pypy3.5-5.8.0
 ]
 
 default['travis_build_environment']['python_aliases'] = {
-  '2.7.13' => %w[2.7],
-  '3.6.2' => %w[3.6],
+  '2.7.14' => %w[2.7],
+  '3.6.3' => %w[3.6],
   'pypy2.7-5.8.0' => %w[pypy],
   'pypy3.5-5.8.0' => %w[pypy3]
 }
@@ -140,9 +140,9 @@ default['travis_build_environment']['php_packages'] = %w[
   libreadline6-dev
 ]
 php_versions = %w[
-  5.6.31
-  7.0.22
-  7.1.8
+  5.6.32
+  7.0.25
+  7.1.11
 ]
 default['travis_build_environment']['php_versions'] = php_versions
 default['travis_build_environment']['php_default_version'] = php_versions.max
@@ -151,7 +151,7 @@ default['travis_build_environment']['php_aliases'] = Hash[
 ]
 
 nodejs_versions = %w[
-  8.4.0
+  8.9.1
 ]
 
 default['travis_build_environment']['nodejs_versions'] = nodejs_versions
@@ -163,8 +163,8 @@ default['travis_build_environment']['nodejs_default_modules'] = %w[
   grunt-cli
 ]
 
-default['travis_build_environment']['nvm']['url'] = 'https://raw.githubusercontent.com/creationix/nvm/v0.33.5/nvm.sh'
-default['travis_build_environment']['nvm']['sha256sum'] = 'f3420760c4b17f567febb6ed71ef8da21a30d742a7989fda24bd3d2388e920be'
+default['travis_build_environment']['nvm']['url'] = 'https://raw.githubusercontent.com/creationix/nvm/v0.33.6/nvm.sh'
+default['travis_build_environment']['nvm']['sha256sum'] = '8b76473070da818580e2c4c7dc2148f4958d959e6ef26c37a8760b4f2099eb80'
 
 default['travis_build_environment']['arch'] = 'i386'
 if node['kernel']['machine'] =~ /x86_64/
@@ -183,7 +183,7 @@ default['travis_build_environment']['elasticsearch']['jvm_heap'] = '128m'
 
 default['travis_build_environment']['redis']['service_enabled'] = false
 
-default['travis_build_environment']['firefox_version'] = '55.0.2'
+default['travis_build_environment']['firefox_version'] = '56.0.2'
 default['travis_build_environment']['firefox_download_url'] = ::File.join(
   'https://releases.mozilla.org/pub/firefox/releases',
   node['travis_build_environment']['firefox_version'],
