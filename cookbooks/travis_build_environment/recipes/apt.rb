@@ -84,6 +84,10 @@ execute 'gencaches for travis_build_environment::apt' do
   command 'apt-cache gencaches'
 end
 
+execute 'add i386 architecture for travis_build_environment::apt' do
+  command 'dpkg --add-architecture i386'
+end
+
 execute 'apt-get update for travis_build_environment::apt' do
   command 'apt-get update'
 end
