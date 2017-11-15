@@ -252,9 +252,9 @@ default['travis_build_environment']['maven_binaries'] = %w[
 
 default['travis_build_environment']['neo4j']['service_enabled'] = false
 default['travis_build_environment']['neo4j']['jvm_heap'] = '128m'
-default['travis_build_environment']['neo4j_url'] = 'https://neo4j.com/artifact.php?name=neo4j-community-3.2.1-unix.tar.gz'
-default['travis_build_environment']['neo4j_version'] = '3.2.1'
-default['travis_build_environment']['neo4j_checksum'] = '24fd6a704e0d80c4b4f9a3d17ce0db23f258a8cdcfa1eb28d7803b7d1811ee96'
+default['travis_build_environment']['neo4j_url'] = 'https://neo4j.com/artifact.php?name=neo4j-community-3.2.7-unix.tar.gz'
+default['travis_build_environment']['neo4j_version'] = '3.2.7'
+default['travis_build_environment']['neo4j_checksum'] = '7f347196a1f2026f8daa9ee045d3fbb404d961dd81b3a8363132aaaf60cf316f'
 
 default['travis_build_environment']['mercurial_install_type'] = 'ppa'
 if node['kernel']['machine'] == 'ppc64le'
