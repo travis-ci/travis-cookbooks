@@ -3,7 +3,7 @@ if node['kernel']['machine'] == 'ppc64le'
   key = "E7D1FA0C"
 else
   hhvm_uri = 'http://dl.hhvm.com/ubuntu'
-  key = 'http://dl2.hhvm.com/conf/hhvm.gpg.key'
+  key = 'https://dl2.hhvm.com/conf/hhvm.gpg.key'
 end
 
 apt_repository 'hhvm-repository' do
