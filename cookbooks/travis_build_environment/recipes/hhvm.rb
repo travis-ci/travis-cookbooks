@@ -2,8 +2,8 @@ if node['kernel']['machine'] == 'ppc64le'
   hhvm_uri = 'http://ppa.launchpad.net/ibmpackages/hhvm/ubuntu'
   key = "E7D1FA0C"
 else
-  hhvm_uri = 'http://dl.hhvm.com/ubuntu'
-  key = 'https://dl2.hhvm.com/conf/hhvm.gpg.key'
+  hhvm_uri = 'https://dl.hhvm.com/ubuntu'
+  key = ['https://dl.hhvm.com/conf/hhvm.gpg.key', 'https://dl2.hhvm.com/conf/hhvm.gpg.key']
 end
 
 apt_repository 'hhvm-repository' do
