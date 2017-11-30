@@ -24,6 +24,7 @@ package %w[
   x11-xserver-utils
   xserver-xorg-core
   xvfb
+  dbus-x11
 ]
 
 cookbook_file '/etc/init.d/xvfb' do
