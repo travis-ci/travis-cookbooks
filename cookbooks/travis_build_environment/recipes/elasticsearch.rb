@@ -10,10 +10,9 @@ remote_file deb_download_dest do
   group node['travis_build_environment']['group']
 end
 
-package package_name do
+dpkg_package package_name do
   source deb_download_dest
-  provider Chef::Provider::Package::Dpkg
-  notifies :create, 'ruby_block[create-symbolic-links]'
+  notifies :run, 'ruby_block[create-symbolic-links]'
   action :install
   not_if 'which elasticsearch'
 end
