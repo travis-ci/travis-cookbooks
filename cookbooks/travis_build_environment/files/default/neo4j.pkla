@@ -1,0 +1,6 @@
+[neo4j service]
+Identity=unix-user:travis
+Action=org.freedesktop.systemd1.manage-units
+ResultAny=yes
+ResultInactive=yes
+ResultActive=yes

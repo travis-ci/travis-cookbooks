@@ -27,15 +27,9 @@ package %w[
 ]
 
 ark 'phantomjs' do
-  url ::File.join(
-    'https://s3.amazonaws.com/travis-phantomjs',
-    node['platform'],
-    node['platform_version'],
-    node['kernel']['machine'],
-    'phantomjs-2.0.0.tar.bz2'
-  )
-  version '2.0.0'
-  checksum '785913935b14dfadf759e6f54fc6858eadab3c15b87f88a720b0942058b5b573'
+  url 'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2'
+  version '2.1.1'
+  checksum '86dd9a4bf4aee45f1a84c9f61cf1947c1d6dce9b9e8d2a907105da7852460d2f'
   has_binaries %w[phantomjs]
   owner 'root'
   not_if { node['kernel']['machine'] == 'ppc64le' }

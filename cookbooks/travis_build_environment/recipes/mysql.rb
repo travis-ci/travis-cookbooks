@@ -81,6 +81,8 @@ mysql_user_passwords_sql_content = [
 
 if mysql_version < 5.7
   mysql_user_passwords_sql_content << "SET PASSWORD FOR 'root'@'127.0.0.1' = PASSWORD('')"
+elsif mysql_version == 5.7
+  mysql_user_passwords_sql_content << "UPDATE mysql.user SET plugin = 'mysql_native_password' WHERE User = 'root'; FLUSH PRIVILEGES;"
 end
 
 file mysql_users_passwords_sql do
@@ -91,14 +93,14 @@ template "/etc/mysql/conf.d/innodb_flush_log_at_trx_commit.cnf" do
   source 'root/innodb_flush_log_at_trx_commit.cnf.erb'
   owner 'root'
   group 'root'
-  mode 0o640
+  mode 0o644
 end
 
 template "/etc/mysql/conf.d/performance-schema.cnf" do
   source 'root/performance-schema.cnf.erb'
   owner 'root'
   group 'root'
-  mode 0o640
+  mode 0o644
 end
 
 template "#{node['travis_build_environment']['home']}/.my.cnf" do

@@ -25,7 +25,7 @@ if !node['travis_postgresql']['superusers'].to_a.empty? && !::File.exist?(create
 end
 
 service 'postgresql' do
-  action :stop
+  action %i[disable stop]
 end
 
 template '/etc/init.d/postgresql' do
@@ -33,6 +33,17 @@ template '/etc/init.d/postgresql' do
   owner 'root'
   group 'root'
   mode 0o755
+end
+
+file '/lib/systemd/system/postgresql.service' do
+  action :delete
+  notifies :run, 'execute[systemctl daemon-reload]', :immediately
+  only_if { node['lsb']['codename'] == 'xenial' }
+end
+
+execute 'systemctl daemon-reload' do
+  action :nothing
+  only_if { node['lsb']['codename'] == 'xenial' }
 end
 
 Array(
