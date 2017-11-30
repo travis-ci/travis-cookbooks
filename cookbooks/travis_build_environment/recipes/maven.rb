@@ -3,5 +3,7 @@ ark 'maven' do
   version node['travis_build_environment']['maven_version']
   checksum node['travis_build_environment']['maven_checksum']
   strip_components 1
-  has_binaries node['travis_build_environment']['maven_binaries']
+  retries 2
+  retry_delay 30
+  append_env_path true
 end
