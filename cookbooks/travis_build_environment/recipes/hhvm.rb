@@ -1,20 +1,23 @@
-if node['kernel']['machine'] == 'ppc64le'
-  hhvm_uri = 'http://ppa.launchpad.net/ibmpackages/hhvm/ubuntu'
-  key = 'E7D1FA0C'
-else
-  hhvm_uri = 'https://dl.hhvm.com/ubuntu'
-  key = '0xB4112585D386EB94'
-end
-
 apt_repository 'hhvm-repository' do
-  uri hhvm_uri
+  uri 'https://dl.hhvm.com/ubuntu'
   distribution node['lsb']['codename']
   components ['main']
   arch 'amd64'
   keyserver 'keyserver.ubuntu.com'
-  key key
+  key '0xB4112585D386EB94'
   retries 2
   retry_delay 30
+  not_if { node['kernel']['machine'] == 'ppc64le' }
+end
+
+apt_repository 'hhvm-ppc-repository' do
+  uri 'http://ppa.launchpad.net/ibmpackages/hhvm/ubuntu'
+  distribution node['lsb']['codename']
+  components ['main']
+  key 'E7D1FA0C'
+  retries 2
+  retry_delay 30
+  only_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
 package node['travis_build_environment']['hhvm_package_name'] do
