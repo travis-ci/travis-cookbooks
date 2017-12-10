@@ -123,6 +123,13 @@ default['travis_build_environment']['packer_url'] = \
 default['travis_build_environment']['packer_checksum'] = \
   '13774108d10e26b1b26cc5a0a28e26c934b4e2c66bc3e6c33ea04c2f248aad7f'
 default['travis_build_environment']['packer_version'] = '1.0.2'
+if node['kernel']['machine'] == 'ppc64le'
+  default['travis_build_environment']['packer_version'] = '1.1.3'
+  default['travis_build_environment']['packer_url'] = \
+    'https://releases.hashicorp.com/packer/1.1.3/packer_1.1.3_linux_ppc64le.zip'
+  default['travis_build_environment']['packer_checksum'] = \
+    '25ecb9b4592924c9d04ef2cb3796690827e559e24789efacefc58f795676d329'
+end
 default['travis_build_environment']['packer_binaries'] = %w[packer]
 default['travis_build_environment']['ramfs_dir'] = '/var/ramfs'
 default['travis_build_environment']['ramfs_size'] = '768m'

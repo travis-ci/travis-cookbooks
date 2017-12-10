@@ -26,5 +26,4 @@ ark 'packer' do
   checksum node['travis_build_environment']['packer_checksum']
   strip_components 0
   has_binaries node['travis_build_environment']['packer_binaries']
-  not_if { node['kernel']['machine'] == 'ppc64le' }
 end
