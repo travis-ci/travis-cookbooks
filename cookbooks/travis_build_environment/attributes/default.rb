@@ -257,9 +257,9 @@ mercurial_ppc_version = '4.2.2'
 default['travis_build_environment']['mercurial_ppc_version'] = mercurial_ppc_version
 default['travis_build_environment']['mercurial_url'] = "https://www.mercurial-scm.org/release/mercurial-#{mercurial_ppc_version}.tar.gz"
 
-default['travis_build_environment']['shellcheck_url'] = 'https://storage.googleapis.com/shellcheck/shellcheck-v0.4.6.linux.x86_64.tar.xz'
-default['travis_build_environment']['shellcheck_version'] = '0.4.6'
-default['travis_build_environment']['shellcheck_checksum'] = 'fe0a6e94d9cf24b5a46553265846480425067f95f2630317f8fd99bc60a13719'
+default['travis_build_environment']['shellcheck_url'] = 'https://storage.googleapis.com/shellcheck/shellcheck-v0.4.7.linux.x86_64.tar.xz'
+default['travis_build_environment']['shellcheck_version'] = '0.4.7'
+default['travis_build_environment']['shellcheck_checksum'] = 'deeea92a4d3a9c5b16ba15210d9c1ab84a2e12e29bf856427700afd896bbdc93'
 default['travis_build_environment']['shellcheck_binaries'] = %w[shellcheck]
 
 default['travis_build_environment']['shfmt_url'] = 'https://github.com/mvdan/sh/releases/download/v2.0.0/shfmt_v2.0.0_linux_amd64'
