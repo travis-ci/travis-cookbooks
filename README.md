@@ -40,8 +40,8 @@ More information on how to trigger a test image build can be found in the [packe
 
 There are two long-lived branches:
 
-- `master` per tradition, which is compatible with **Ubuntu 14.04**
-- `precise-stable`, which is compatible with **Ubuntu 12.04**
+- `master` per tradition, which is compatible with **Ubuntu 16.04**
+- `trusty-stable`, which is compatible with **Ubuntu 14.04**
 
 Please target your patches accordingly.
 
