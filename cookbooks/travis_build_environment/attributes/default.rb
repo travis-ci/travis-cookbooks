@@ -228,7 +228,7 @@ default['travis_build_environment']['haskell_cabal_versions'] = %w[
 default['travis_build_environment']['haskell_default_ghc'] = '7.10.3'
 default['travis_build_environment']['haskell_default_cabal'] = '1.22'
 
-gradle_version = '4.0.1'
+gradle_version = '4.5'
 default['travis_build_environment']['gradle_version'] = gradle_version
 default['travis_build_environment']['gradle_url'] = "https://services.gradle.org/distributions/gradle-#{gradle_version}-bin.zip"
 default['travis_build_environment']['gradle_checksum'] = 'd717e46200d1359893f891dab047fdab98784143ac76861b53c50dbd03b44fd4'
