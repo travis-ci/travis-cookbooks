@@ -46,11 +46,7 @@ execute 'systemctl daemon-reload' do
   only_if { node['lsb']['codename'] == 'xenial' }
 end
 
-Array(
-  [
-    node['travis_postgresql']['default_version']
-  ] + node['travis_postgresql']['alternate_versions']
-).each do |pg_version|
+TravisPostgresqlMethods.pg_versions.each do |pg_version|
   template "/etc/postgresql/#{pg_version}/main/postgresql.conf" do
     source "#{pg_version}/postgresql.conf.erb"
     owner 'postgres'
