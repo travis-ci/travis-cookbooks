@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 <% unless @jdk_switcher_default.nil? || @jdk_switcher_default.empty? -%>
 export JDK_SWITCHER_DEFAULT="<%= @jdk_switcher_default -%>"
 <% end -%>
@@ -6,7 +6,7 @@ export JDK_SWITCHER_DEFAULT="<%= @jdk_switcher_default -%>"
 export JAVA_HOME="<%= @jvm_base_dir -%>/<%= @jvm_name -%>"
 export _JAVA_OPTIONS="-Xmx2048m -Xms512m"
 <% end -%>
-if [ -f "<%= @jdk_switcher_path -%>" ]; then
-  . "<%= @jdk_switcher_path -%>"
+if [[ -f "<%= @jdk_switcher_path -%>" ]]; then
+  source "<%= @jdk_switcher_path -%>"
 fi
 export MALLOC_ARENA_MAX=2
