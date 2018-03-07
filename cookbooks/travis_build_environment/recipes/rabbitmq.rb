@@ -37,7 +37,13 @@ packagecloud_repo 'rabbitmq/rabbitmq-server' do
   type 'deb'
 end
 
-package 'rabbitmq-server'
+package 'rabbitmq-server' do
+  # Pin to the latest 3.6 release since 3.7 requires Erlang/OTP 19.3+,
+  # which is newer than the stock Ubuntu package:
+  # https://github.com/travis-ci/travis-cookbooks/issues/953
+  # TODO: Install newer OTP from an upstream APT repo and unpin here.
+  version '3.6.14-1'
+end
 
 execute 'rabbitmq-plugins enable rabbitmq_management'
 
