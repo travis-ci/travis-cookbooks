@@ -1,4 +1,4 @@
-# Managed by chef on <%= node.name %> :heart_eyes_cat:
+# Managed by Chef :heart_eyes_cat:
 # vim:filetype=aptconf
 
 APT::Get::Assume-Yes "true";

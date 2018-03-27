@@ -23,8 +23,8 @@
 include_recipe 'apt'
 include_recipe 'travis_build_environment::cloud_init'
 
-template '/etc/apt/apt.conf.d/90-travis-custom' do
-  source 'etc-apt-custom.conf.erb'
+cookbook_file '/etc/apt/apt.conf.d/90-travis-custom' do
+  source 'etc-apt-apt-conf-d-90-travis-custom'
   owner 'root'
   group 'root'
   mode 0o644
