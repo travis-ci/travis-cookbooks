@@ -1,2 +1,3 @@
 # Managed by Chef! <3 <3 <3
+APT::Periodic::Enable "0";
 APT::Periodic::Update-Package-Lists "0";
