@@ -23,38 +23,15 @@
 include_recipe 'apt'
 include_recipe 'travis_build_environment::cloud_init'
 
-template '/etc/apt/apt.conf.d/60assumeyes' do
-  source 'etc/apt/assumeyes.erb'
+template '/etc/apt/apt.conf.d/90-travis-custom' do
+  source 'etc-apt-custom.conf.erb'
   owner 'root'
   group 'root'
   mode 0o644
-end
-
-template '/etc/apt/apt.conf.d/10confold' do
-  source 'etc/apt/confold.erb'
-  owner 'root'
-  group 'root'
-  mode 0o644
-end
-
-template '/etc/apt/apt.conf.d/37timeouts' do
-  source 'etc/apt/timeouts.erb'
-  owner 'root'
-  group 'root'
-  mode 0o644
-end
-
-cookbook_file '/etc/apt/apt.conf.d/10periodic' do
-  owner 'root'
-  group 'root'
-  mode 0o644
-end
-
-template '/etc/apt/apt.conf.d/99compression-workaround' do
-  source 'etc/apt/compression.erb'
-  owner 'root'
-  group 'root'
-  mode 0o644
+  variables(
+    retries: node['travis_build_environment']['apt']['retries'],
+    timeout: node['travis_build_environment']['apt']['timeout']
+  )
 end
 
 package 'software-properties-common'
