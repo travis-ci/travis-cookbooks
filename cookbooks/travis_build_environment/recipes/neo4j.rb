@@ -17,6 +17,7 @@ cookbook_file '/etc/polkit-1/localauthority/50-local.d/neo4j.pkla' do
   group 'root'
   mode  0o644
   only_if { node['lsb']['codename'] == 'xenial' }
+  only_if { ::Dir.exist?("/etc/polkit-1/localauthority/50-local.d/") }
 end
 
 template '/etc/init.d/neo4j' do

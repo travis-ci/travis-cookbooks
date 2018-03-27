@@ -33,3 +33,8 @@ ark 'cmake' do
   append_env_path true
   not_if { node['kernel']['machine'] == 'ppc64le' }
 end
+
+package 'cmake' do
+  action %i[install upgrade]
+  only_if { node['kernel']['machine'] == 'ppc64le' }
+end
