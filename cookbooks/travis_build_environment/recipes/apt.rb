@@ -28,10 +28,6 @@ template '/etc/apt/apt.conf.d/90-travis-custom' do
   owner 'root'
   group 'root'
   mode 0o644
-  variables(
-    retries: node['travis_build_environment']['apt']['retries'],
-    timeout: node['travis_build_environment']['apt']['timeout']
-  )
 end
 
 package 'software-properties-common'
