@@ -43,6 +43,7 @@ package 'rabbitmq-server' do
   # https://github.com/travis-ci/travis-cookbooks/issues/953
   # TODO: Install newer OTP from an upstream APT repo and unpin here.
   version '3.6.14-1'
+  timeout 1800
 end
 
 execute 'rabbitmq-plugins enable rabbitmq_management'
