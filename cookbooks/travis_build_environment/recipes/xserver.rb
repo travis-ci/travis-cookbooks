@@ -21,6 +21,7 @@
 # THE SOFTWARE.
 
 package %w[
+  x11-utils
   x11-xserver-utils
   xserver-xorg-core
   xvfb
