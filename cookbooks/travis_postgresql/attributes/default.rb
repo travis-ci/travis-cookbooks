@@ -15,6 +15,6 @@ default['travis_postgresql']['contrib_modules'] = true # enabled to install addi
 
 default['travis_postgresql']['client_packages'] = %w[postgresql-client libpq-dev]
 
-default['travis_postgresql']['postgis_version'] = '2.3'
+default['travis_postgresql']['postgis_version'] = '2.4'
 
 default['travis_postgresql']['superusers'] = %w[travis rails]
