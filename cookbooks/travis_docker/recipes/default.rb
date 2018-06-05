@@ -45,6 +45,7 @@ cookbook_file '/etc/default/grub.d/99-travis-settings.cfg' do
   owner 'root'
   group 'root'
   mode 0o640
+  not_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
 execute 'update-grub' do
