@@ -168,8 +168,8 @@ default['travis_build_environment']['nodejs_default_modules'] = %w[
   grunt-cli
 ]
 
-default['travis_build_environment']['nvm']['url'] = 'https://raw.githubusercontent.com/creationix/nvm/v0.33.6/nvm.sh'
-default['travis_build_environment']['nvm']['sha256sum'] = '8b76473070da818580e2c4c7dc2148f4958d959e6ef26c37a8760b4f2099eb80'
+default['travis_build_environment']['nvm']['url'] = 'https://raw.githubusercontent.com/creationix/nvm/v0.33.11/nvm.sh'
+default['travis_build_environment']['nvm']['sha256sum'] = 'df96ccadf6252acc8b461e98a3d25ccab2cf32edc7879dffd71d966c7e8903f1'
 
 default['travis_build_environment']['arch'] = 'i386'
 if node['kernel']['machine'] =~ /x86_64/
@@ -243,9 +243,9 @@ default['travis_build_environment']['lein_url'] = 'https://raw.githubusercontent
 default['travis_build_environment']['sysctl_kernel_shmmax'] = 45_794_432
 default['travis_build_environment']['sysctl_disable_ipv6'] = true
 
-default['travis_build_environment']['maven_url'] = 'https://www.apache.org/dist/maven/maven-3/3.5.2/binaries/apache-maven-3.5.2-bin.tar.gz'
-default['travis_build_environment']['maven_version'] = '3.5.2'
-default['travis_build_environment']['maven_checksum'] = '707b1f6e390a65bde4af4cdaf2a24d45fc19a6ded00fff02e91626e3e42ceaff'
+default['travis_build_environment']['maven_url'] = 'https://www.apache.org/dist/maven/maven-3/3.5.3/binaries/apache-maven-3.5.3-bin.tar.gz'
+default['travis_build_environment']['maven_version'] = '3.5.3'
+default['travis_build_environment']['maven_checksum'] = 'b52956373fab1dd4277926507ab189fb797b3bc51a2a267a193c931fffad8408'
 
 default['travis_build_environment']['neo4j']['service_enabled'] = false
 default['travis_build_environment']['neo4j']['jvm_heap'] = '128m'
@@ -262,13 +262,13 @@ mercurial_ppc_version = '4.2.2'
 default['travis_build_environment']['mercurial_ppc_version'] = mercurial_ppc_version
 default['travis_build_environment']['mercurial_url'] = "https://www.mercurial-scm.org/release/mercurial-#{mercurial_ppc_version}.tar.gz"
 
-default['travis_build_environment']['shellcheck_url'] = 'https://storage.googleapis.com/shellcheck/shellcheck-v0.4.7.linux.x86_64.tar.xz'
-default['travis_build_environment']['shellcheck_version'] = '0.4.7'
-default['travis_build_environment']['shellcheck_checksum'] = 'deeea92a4d3a9c5b16ba15210d9c1ab84a2e12e29bf856427700afd896bbdc93'
+default['travis_build_environment']['shellcheck_url'] = 'https://storage.googleapis.com/shellcheck/shellcheck-v0.5.0.linux.x86_64.tar.xz'
+default['travis_build_environment']['shellcheck_version'] = '0.5.0'
+default['travis_build_environment']['shellcheck_checksum'] = '7d4c073a0342cf39bdb99c32b4749f1c022cf2cffdfb080c12c106aa9d341708'
 default['travis_build_environment']['shellcheck_binaries'] = %w[shellcheck]
 
-default['travis_build_environment']['shfmt_url'] = 'https://github.com/mvdan/sh/releases/download/v2.0.0/shfmt_v2.0.0_linux_amd64'
-default['travis_build_environment']['shfmt_checksum'] = 'f21ec3c37b9ece776a737629650adcb79f7b529026b967432a8a2c2b40dcabe0'
+default['travis_build_environment']['shfmt_url'] = 'https://github.com/mvdan/sh/releases/download/v2.4.0/shfmt_v2.4.0_linux_amd64'
+default['travis_build_environment']['shfmt_checksum'] = 'abc78150f5d3afa10afe0dd8fef2c431729e14fdc77fde2bab6a3d869f551599'
 
 default['travis_build_environment']['yarn_url'] = 'https://yarnpkg.com/latest.tar.gz'
 default['travis_build_environment']['yarn_version'] = 'latest'
