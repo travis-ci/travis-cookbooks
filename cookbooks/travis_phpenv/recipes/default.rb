@@ -19,11 +19,11 @@ bash 'install phpenv' do
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   cwd phpenv_clone
-  code <<-EOF
+  code <<-PHPENV_INSTALL
     . bin/phpenv-install.sh
     cp extensions/rbenv-config-add #{phpenv_path}/libexec/
     cp extensions/rbenv-config-rm #{phpenv_path}/libexec/
-  EOF
+  PHPENV_INSTALL
   environment(
     'PHPENV_ROOT' => phpenv_path
   )

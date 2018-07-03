@@ -39,6 +39,7 @@ package 'mongodb' do
   notifies :stop, 'service[mongodb]', :immediately
   notifies :disable, 'service[mongodb]', :immediately
   only_if { node['kernel']['machine'] == 'ppc64le' }
+  not_if { node['travis_build_environment']['mongodb']['service_enabled'] }
 end
 
 service 'mongodb' do
@@ -49,9 +50,11 @@ end
 service 'mongod' do
   action %i[stop disable]
   not_if { node['kernel']['machine'] == 'ppc64le' }
+  not_if { node['travis_build_environment']['mongodb']['service_enabled'] }
 end
 
 apt_repository 'mongodb-4.0' do
   action :remove
   not_if { node['kernel']['machine'] == 'ppc64le' }
+  not_if { node['travis_build_environment']['mongodb']['keep_repo'] }
 end

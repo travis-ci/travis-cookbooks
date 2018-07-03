@@ -17,10 +17,10 @@ execute 'update sysctl travis-disable-ipv6' do
 end
 
 file '/etc/sysctl.d/99-travis-disable-ipv6.conf' do
-  content <<-EOF.gsub(/^\s+> ?/, '')
+  content <<-IPV6_CONFIG.gsub(/^\s+> ?/, '')
     > net.ipv6.conf.all.disable_ipv6 = 1
     > net.ipv6.conf.default.disable_ipv6 = 1
-  EOF
+  IPV6_CONFIG
   owner 'root'
   group 'root'
   mode 0o644
