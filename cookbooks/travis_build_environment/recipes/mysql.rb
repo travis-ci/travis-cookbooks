@@ -111,10 +111,6 @@ template "#{node['travis_build_environment']['home']}/.my.cnf" do
   variables(socket: node['travis_build_environment']['mysql']['socket'])
 end
 
-service 'mysql' do
-  action %i[enable start]
-end
-
 bash 'setup mysql users and passwords' do
   code "mysql -u root <#{mysql_users_passwords_sql}"
 end
@@ -129,4 +125,8 @@ file ::File.join(
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode 0o644
+end
+
+service 'mysql' do
+  action %i[disable stop]
 end
