@@ -187,6 +187,7 @@ default['travis_build_environment']['elasticsearch']['service_enabled'] = false
 default['travis_build_environment']['elasticsearch']['jvm_heap'] = '128m'
 
 default['travis_build_environment']['redis']['service_enabled'] = false
+default['travis_build_environment']['redis']['keep_repo'] = false
 
 default['travis_build_environment']['firefox_version'] = '56.0.2'
 default['travis_build_environment']['firefox_download_url'] = ::File.join(
@@ -261,6 +262,9 @@ default['travis_build_environment']['mercurial_version'] = '4.2.2~trusty1'
 mercurial_ppc_version = '4.2.2'
 default['travis_build_environment']['mercurial_ppc_version'] = mercurial_ppc_version
 default['travis_build_environment']['mercurial_url'] = "https://www.mercurial-scm.org/release/mercurial-#{mercurial_ppc_version}.tar.gz"
+
+default['travis_build_environment']['mongodb']['service_enabled'] = false
+default['travis_build_environment']['mongodb']['keep_repo'] = false
 
 default['travis_build_environment']['shellcheck_url'] = 'https://storage.googleapis.com/shellcheck/shellcheck-v0.5.0.linux.x86_64.tar.xz'
 default['travis_build_environment']['shellcheck_version'] = '0.5.0'
