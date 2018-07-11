@@ -22,3 +22,8 @@ service 'redis-server' do
     action %i[disable start]
   end
 end
+
+apt_repository 'chris-lea-redis-server' do
+  not_if { node['travis_build_environment']['redis']['keep_repo'] }
+  action :remove
+end

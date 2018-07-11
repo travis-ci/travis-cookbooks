@@ -33,10 +33,10 @@ end
 
 def write_keys(authorized_keys_file, github_username, keys)
   ::File.open(authorized_keys_file, 'w') do |f|
-    f.puts <<-EOF.gsub(/^\s+> /, '')
+    f.puts <<-WRITE_KEYS.gsub(/^\s+> /, '')
       > # keys pulled from github for #{github_username}
       > #{keys}
-    EOF
+    WRITE_KEYS
   end
 end
 
