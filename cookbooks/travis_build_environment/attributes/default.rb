@@ -104,8 +104,9 @@ end
 
 default['travis_build_environment']['rebar_url'] = \
   'https://github.com/rebar/rebar/wiki/rebar'
-default['travis_build_environment']['rebar3_url'] = \
-  'https://s3.amazonaws.com/rebar3/rebar3'
+default['travis_build_environment']['rebar3_url'] = 'https://s3.amazonaws.com/rebar3/rebar3'
+default['travis_build_environment']['rebar3_version'] = '3.6.1'
+default['travis_build_environment']['rebar3_checksum'] = 'a196c84a860bea5d5e68d0146cb04aa0f55332c640f3895a5400a05d684915a1'
 default['travis_build_environment']['kerl_path'] = '/usr/local/bin/kerl'
 default['travis_build_environment']['kerl_base_dir'] = \
   "#{node['travis_build_environment']['home']}/.kerl"
