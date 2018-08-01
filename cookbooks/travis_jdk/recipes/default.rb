@@ -24,7 +24,6 @@
 # THE SOFTWARE.
 
 def install_jdk_args(jdk)
-  config = node['travis_jdk']
   m = jdk.match(/(?<vendor>[a-z]+)-?(?<version>.+)?/)
   if m[:vendor].start_with? 'oracle'
     license = 'BCL'
@@ -34,12 +33,12 @@ def install_jdk_args(jdk)
     puts 'Houston is calling'
   end
   puts "jdk: #{jdk}, vendor: #{m[:vendor]}, version: #{m[:version]}, license: #{license}"
-  args = "--feature #{m[:version]} --license #{license}"
+  "--feature #{m[:version]} --license #{license}"
 end
 
 config = node['travis_jdk']
 
-config['versions'] << config['default'] if ! config['versions'].include?(config['default'])
+config['versions'] << config['default'] unless config['versions'].include?(config['default'])
 
 puts "Destination path: #{node['travis_jdk']['install_jdk_path']}"
 remote_file 'install-jdk.sh' do
@@ -58,7 +57,6 @@ config['versions'].each do |jdk|
   target = "/usr/lib/jvm/#{jdk}"
 
   bash "Install #{jdk}" do
-      code "#{config['install-jdk.sh_path']} #{args} --target #{target} --workspace #{cache}"
+    code "#{config['install-jdk.sh_path']} #{args} --target #{target} --workspace #{cache}"
   end
 end
-
