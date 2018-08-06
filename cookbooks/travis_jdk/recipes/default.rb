@@ -23,6 +23,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+# install_jdk.sh does not support ppc64le
+return if node['kernel']['machine'] == 'ppc64le'
+
 def install_jdk_args(jdk)
   m = jdk.match(/(?<vendor>[a-z]+)-?(?<version>.+)?/)
   if m[:vendor].start_with? 'oracle'
@@ -32,18 +35,17 @@ def install_jdk_args(jdk)
   else
     puts 'Houston is calling'
   end
-  puts "jdk: #{jdk}, vendor: #{m[:vendor]}, version: #{m[:version]}, license: #{license}"
   "--feature #{m[:version]} --license #{license}"
 end
 
-config = node['travis_jdk']
+versions = [
+  node['travis_jdk']['default'],
+  node['travis_jdk']['versions']
+].flatten.uniq
 
-config['versions'] << config['default'] unless config['versions'].include?(config['default'])
-
-puts "Destination path: #{node['travis_jdk']['install_jdk_path']}"
 remote_file 'install-jdk.sh' do
   source 'https://raw.githubusercontent.com/sormuras/bach/master/install-jdk.sh'
-  path config['install-jdk.sh_path']
+  path node['travis_jdk']['install-jdk.sh_path']
   owner 'root'
   group 'root'
   mode '0755'
@@ -51,12 +53,32 @@ remote_file 'install-jdk.sh' do
   sensitive true
 end
 
-config['versions'].each do |jdk|
+versions.each do |jdk|
   args = install_jdk_args jdk
   cache = "#{Chef::Config[:file_cache_path]}/#{jdk}"
-  target = "/usr/lib/jvm/#{jdk}"
+  target = ::File.join(
+    node['travis_jdk']['destination_path'],
+    jdk
+  )
 
   bash "Install #{jdk}" do
-    code "#{config['install-jdk.sh_path']} #{args} --target #{target} --workspace #{cache}"
+    code "#{node['travis_jdk']['install-jdk.sh_path']}" \
+      " #{args} --target #{target} --workspace #{cache}"
   end
+end
+
+include_recipe 'travis_build_environment::bash_profile_d'
+
+template ::File.join(
+  node['travis_build_environment']['home'],
+  '.bash_profile.d/travis_jdk.bash'
+) do
+  source 'travis_jdk.bash.erb'
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode 0o644
+  variables(
+    jdk: node['travis_jdk']['default'],
+    path: node['travis_jdk']['destination_path']
+  )
 end
