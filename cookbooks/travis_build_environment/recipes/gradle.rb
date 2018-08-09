@@ -8,3 +8,11 @@ ark 'gradle' do
   owner 'root'
   group 'root'
 end
+
+file "#{node['travis_build_environment']['user']}/.gradle/gradle.properties" do
+  content 'org.gradle.daemon=false'
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode '0644'
+  action :create
+end
