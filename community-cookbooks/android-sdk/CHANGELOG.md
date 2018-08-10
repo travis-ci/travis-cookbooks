@@ -1,6 +1,14 @@
 CHANGELOG for Android-SDK cookbook
 ==================================
 
+v0.2.3 (2018-08-10)
+-------------------
+
+- Migrate to `sdkmanager` command to install/update components
+- Updated initial Android SDK download to version 26.1.1
+- Support for Android SDK 28
+- Use new emulator (added to $PATH)
+
 v0.2.2 (2017-05-28)
 -------------------
 

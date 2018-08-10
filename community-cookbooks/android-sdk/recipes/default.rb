@@ -27,7 +27,7 @@ include_recipe 'java' unless node['android-sdk']['java_from_system']
 
 setup_root       = node['android-sdk']['setup_root'].to_s.empty? ? node['ark']['prefix_home'] : node['android-sdk']['setup_root']
 android_home     = File.join(setup_root, node['android-sdk']['name'])
-android_bin      = File.join(android_home, 'tools', 'android')
+sdkmanager_bin      = File.join(android_home, 'tools', 'bin', 'sdkmanager')
 
 #
 # Install required libraries
@@ -69,7 +69,7 @@ end
 #
 # Fix non-friendly 0750 permissions in order to make android-sdk available to all system users
 #
-directory File.join(android_home, 'tools') do
+directory File.join(android_home, 'tools/bin') do
   mode 0755
   user node['android-sdk']['owner']
   group node['android-sdk']['group']
@@ -103,43 +103,33 @@ end
 package 'expect'
 
 #
-# Install, Update (a.k.a. re-install) Android components
+# Install & Update SDK components
 #
-
-# KISS: use a basic idempotent guard, waiting for https://github.com/gildegoma/chef-android-sdk/issues/12
-unless File.exist?("#{setup_root}/#{node['android-sdk']['name']}/temp")
-
-  # With "--filter node['android-sdk']['components'].join(,)" pattern,
-  # some system-images were not installed as expected.
-  # The easiest way I could find to fix this problem consists
-  # in executing a dedicated 'android sdk update' command for each component to be installed.
-  node['android-sdk']['components'].each do |sdk_component|
+node['android-sdk']['components'].each do |sdk_component|
     script "Install Android SDK component #{sdk_component}" do
-      interpreter 'expect'
-      environment 'ANDROID_HOME' => android_home
-      user node['android-sdk']['owner']
-      group node['android-sdk']['group']
-      # TODO: use --force or not?
-      code <<-EOF
-        spawn #{android_bin} update sdk --no-ui --all --filter #{sdk_component}
-        set timeout 1800
-        expect {
-          -regexp "Do you accept the license '(#{node['android-sdk']['license']['white_list'].join('|')})'.*" {
-                exp_send "y\r"
-                exp_continue
-          }
-          -regexp "Do you accept the license '(#{node['android-sdk']['license']['black_list'].join('|')})'.*" {
-                exp_send "n\r"
-                exp_continue
-          }
-          "Do you accept the license '*-license-*'*" {
-                exp_send "#{node['android-sdk']['license']['default_answer']}\r"
-                exp_continue
-          }
-          eof
+    interpreter 'expect'
+    environment 'ANDROID_HOME' => android_home
+    user node['android-sdk']['owner']
+    group node['android-sdk']['group']
+    code <<-EOF
+      spawn #{sdkmanager_bin} "#{sdk_component}"
+      set timeout 1800
+      expect {
+        -regexp "License (#{node['android-sdk']['license']['white_list'].join('|')}).*" {
+              exp_send "y\r"
+              exp_continue
         }
-      EOF
-    end
+        -regexp "License (#{node['android-sdk']['license']['black_list'].join('|')}).*" {
+              exp_send "n\r"
+              exp_continue
+        }
+	-regexp "Accept (y/N):.*" {
+              exp_send "#{node['android-sdk']['license']['default_answer']}\r"
+              exp_continue
+        }
+        eof
+      }
+    EOF
   end
 end
 
@@ -147,17 +137,9 @@ end
 # Deploy additional scripts, preferably outside Android-SDK own directories to
 # avoid unwanted removal when updating android sdk components later.
 #
-%w(android-accept-licenses android-wait-for-emulator).each do |android_helper_script|
+%w(android-wait-for-emulator).each do |android_helper_script|
   cookbook_file File.join(node['android-sdk']['scripts']['path'], android_helper_script) do
     source android_helper_script
-    owner node['android-sdk']['scripts']['owner']
-    group node['android-sdk']['scripts']['group']
-    mode 0755
-  end
-end
-%w(android-update-sdk).each do |android_helper_script|
-  template File.join(node['android-sdk']['scripts']['path'], android_helper_script) do
-    source "#{android_helper_script}.erb"
     owner node['android-sdk']['scripts']['owner']
     group node['android-sdk']['scripts']['group']
     mode 0755
