@@ -5,9 +5,12 @@ default['android-sdk']['setup_root']                = nil  # ark defaults (/usr/
 default['android-sdk']['with_symlink']              = true # use ark's :install action when true; use ark's :put action when false
 default['android-sdk']['set_environment_variables'] = true
 
-default['android-sdk']['version']                   = '25.2.3'
-default['android-sdk']['checksum']                  = '1b35bcb94e9a686dff6460c8bca903aa0281c6696001067f34ec00093145b560'
-default['android-sdk']['download_url']              = "https://dl.google.com/android/repository/tools_r#{node['android-sdk']['version']}-linux.zip"
+default['android-sdk']['version']                   = '26.1.1'
+default['android-sdk']['checksum']                  = '92ffee5a1d98d856634e8b71132e8a95d96c83a63fde1099be3d86df3106def9'
+default['android-sdk']['download_url']              = "https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip"
+
+# Use JDK 8
+default['java']['jdk_version'] = '8'
 
 #
 # List of Android SDK components to preinstall:
@@ -21,12 +24,14 @@ default['android-sdk']['download_url']              = "https://dl.google.com/and
 # Note that it will require (waste) some extra download effort.
 #
 default['android-sdk']['components']                = %w( platform-tools
-                                                          build-tools-25.0.2
-                                                          android-25
-                                                          extra-android-support
-                                                          extra-google-google_play_services
-                                                          extra-google-m2repository
-                                                          extra-android-m2repository )
+                                                          emulator
+                                                          build-tools;25.0.3
+                                                          build-tools;28.0.1
+                                                          platforms;android-28
+                                                          platforms;android-25
+                                                          extras;google;google_play_services
+                                                          extras;google;m2repository
+                                                          extras;android;m2repository )
 
 default['android-sdk']['license']['white_list']     = %w(.+)
 default['android-sdk']['license']['black_list']     = []    # e.g. ['intel-.+', 'mips-.+', 'android-wear-sdk-license-.+']
