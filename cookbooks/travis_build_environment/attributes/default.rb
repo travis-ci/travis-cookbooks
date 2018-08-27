@@ -244,9 +244,16 @@ default['travis_build_environment']['lein_url'] = 'https://raw.githubusercontent
 default['travis_build_environment']['sysctl_kernel_shmmax'] = 45_794_432
 default['travis_build_environment']['sysctl_disable_ipv6'] = true
 
-default['travis_build_environment']['maven_url'] = 'https://www.apache.org/dist/maven/maven-3/3.5.3/binaries/apache-maven-3.5.3-bin.tar.gz'
-default['travis_build_environment']['maven_version'] = '3.5.3'
-default['travis_build_environment']['maven_checksum'] = 'b52956373fab1dd4277926507ab189fb797b3bc51a2a267a193c931fffad8408'
+maven_version = '3.5.4'
+default['travis_build_environment']['maven_version'] = maven_version
+default['travis_build_environment']['maven_url'] = [
+  'https://www.apache.org/dist/maven/maven-3/',
+  maven_version,
+  '/binaries/apache-maven-',
+  maven_version,
+  '-bin.tar.gz'
+].join('')
+default['travis_build_environment']['maven_checksum'] = 'ce50b1c91364cb77efe3776f756a6d92b76d9038b0a0782f7d53acf1e997a14d'
 
 default['travis_build_environment']['neo4j']['service_enabled'] = false
 default['travis_build_environment']['neo4j']['jvm_heap'] = '128m'
