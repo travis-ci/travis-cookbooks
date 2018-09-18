@@ -54,7 +54,7 @@ remote_file 'install-jdk.sh' do
 end
 
 versions.each do |jdk|
-  next if jdk == nil
+  next if jdk.nil?
   args = install_jdk_args(jdk)
   cache = "#{Chef::Config[:file_cache_path]}/#{jdk}"
   target = ::File.join(
