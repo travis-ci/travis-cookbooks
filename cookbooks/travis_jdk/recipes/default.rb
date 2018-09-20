@@ -53,6 +53,14 @@ remote_file 'install-jdk.sh' do
   sensitive true
 end
 
+apt_update do
+  action :update
+end
+
+apt_package 'default_java' do
+  package_name ['default-jre', 'default-jdk']
+end
+
 versions.each do |jdk|
   next if jdk.nil?
   args = install_jdk_args(jdk)
