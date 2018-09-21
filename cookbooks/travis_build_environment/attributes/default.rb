@@ -197,14 +197,14 @@ default['travis_build_environment']['firefox_download_url'] = ::File.join(
   "firefox-#{node['travis_build_environment']['firefox_version']}.tar.bz2"
 )
 
-default['travis_build_environment']['clang']['version'] = '5.0.0'
+default['travis_build_environment']['clang']['version'] = '5.0.2'
 default['travis_build_environment']['clang']['download_url'] = ::File.join(
-  'http://releases.llvm.org',
+  'https://releases.llvm.org',
   node['travis_build_environment']['clang']['version'],
-  "clang+llvm-#{node['travis_build_environment']['clang']['version']}-linux-x86_64-ubuntu14.04.tar.xz"
+  "clang+llvm-#{node['travis_build_environment']['clang']['version']}-x86_64-linux-gnu-ubuntu-14.04.tar.xz"
 )
 default['travis_build_environment']['clang']['extension'] = 'tar.xz'
-default['travis_build_environment']['clang']['checksum'] = '58c1171f326108cfb7641441c5ede7846d58823bce3206c86a84c7ef7748860d'
+default['travis_build_environment']['clang']['checksum'] = '461548a2808ad8c1c8162147853e398a8e0c5438fe7d24f2b657055ae5764812'
 
 default['travis_build_environment']['cmake']['version'] = '3.9.2'
 default['travis_build_environment']['cmake']['download_url'] = ::File.join(
