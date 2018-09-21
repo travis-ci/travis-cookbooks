@@ -1,9 +1,5 @@
 apt_repository 'git-ppa' do
-  uri 'http://ppa.launchpad.net/git-core/ppa/ubuntu'
-  distribution node['lsb']['codename']
-  components %w[main]
-  key 'E1DF1F24'
-  keyserver 'hkp://ha.pool.sks-keyservers.net'
+  uri 'ppa:git-core/ppa'
   retries 2
   retry_delay 30
 end
