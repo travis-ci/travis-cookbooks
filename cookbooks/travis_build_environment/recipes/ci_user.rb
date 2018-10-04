@@ -125,7 +125,8 @@ Array(node['travis_build_environment']['otp_releases']).each do |rel|
       node['kernel']['machine'],
       ::File.basename(local_archive)
     )
-
+    retries 2
+    retry_delay 10
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
 
@@ -196,6 +197,8 @@ Array(node['travis_build_environment']['elixir_versions']).each do |elixir|
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     mode 0o644
+    retries 2
+    retry_delay 10
   end
 
   bash "unpack #{local_archive}" do
@@ -257,6 +260,8 @@ Array(node['travis_build_environment']['php_versions']).each do |php_version|
       node['kernel']['machine'],
       ::File.basename(local_archive)
     )
+    retries 2
+    retry_delay 10
     not_if { ::File.exist?(local_archive) }
   end
 
