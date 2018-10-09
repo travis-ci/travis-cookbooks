@@ -1,11 +1,5 @@
 apt_repository 'hvr-ghc' do
-  uri 'http://ppa.launchpad.net/hvr/ghc/ubuntu'
-  distribution node['lsb']['codename']
-  components ['main']
-  key 'F6F88286'
-  keyserver 'hkp://ha.pool.sks-keyservers.net'
-  retries 2
-  retry_delay 30
+  uri 'ppa:hvr/ghc'
   action :add
 end
 
