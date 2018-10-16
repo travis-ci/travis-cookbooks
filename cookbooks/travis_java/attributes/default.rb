@@ -5,7 +5,7 @@ default['travis_java']['arch'] = 'amd64' if node['kernel']['machine'] =~ /x86_64
 default['travis_java']['arch'] = 'ppc64el' if node['kernel']['machine'] =~ /ppc64le/
 
 default['travis_java']['alternate_versions'] = []
-default['travis_java']['default_version'] = 'oraclejdk8'
+default['travis_java']['default_version'] = ''
 if node['kernel']['machine'] == 'ppc64le'
   default['travis_java']['default_version'] = 'openjdk8'
 end

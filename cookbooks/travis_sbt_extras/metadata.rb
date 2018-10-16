@@ -7,5 +7,6 @@ long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version '0.3.0'
 
 depends 'travis_java'
+depends 'travis_jdk'
 
 recipe 'travis_sbt_extras::default', 'Downloads and installs sbt-extras script'

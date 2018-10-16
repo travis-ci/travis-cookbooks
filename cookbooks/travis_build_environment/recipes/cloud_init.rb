@@ -21,13 +21,7 @@
 # THE SOFTWARE.
 
 apt_repository 'pollinate' do
-  uri 'http://ppa.launchpad.net/pollinate/ppa/ubuntu'
-  distribution node['lsb']['codename']
-  components %w[main]
-  key '43732553'
-  keyserver 'hkp://ha.pool.sks-keyservers.net'
-  retries 2
-  retry_delay 30
+  uri 'ppa:pollinate/ppa'
 end
 
 package 'pollinate' do

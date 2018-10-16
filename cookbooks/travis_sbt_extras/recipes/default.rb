@@ -6,7 +6,11 @@
 # Copyright 2017 Travis CI GmbH
 #
 
-include_recipe 'travis_java'
+if node['travis_java']['default_version'] =~ /jdk/
+  include_recipe 'travis_java'
+elsif node['travis_jdk']['default_version'] =~ /jdk/
+  include_recipe 'travis_jdk'
+end
 
 script_absolute_path = File.join(
   node['travis_sbt_extras']['setup_dir'],
