@@ -7,7 +7,7 @@ default['travis_postgresql']['port'] = 5432
 default['travis_postgresql']['ssl'] = true
 default['travis_postgresql']['max_connections'] = 255
 default['travis_postgresql']['fsync'] = false # disabled for CI purpose
-default['travis_postgresql']['full_page_writes'] = false # disabled for CI purpose
+default['travis_postgresql']['full_page_writes'] = 'false' # disabled for CI purpose
 default['travis_postgresql']['client_min_messages'] = 'error' # suppress warning output from build clients
 
 default['travis_postgresql']['contrib_modules'] = true # enabled to install additional modules, like `hstore`

@@ -208,8 +208,8 @@ full_page_writes = <%= node['travis_postgresql']['full_page_writes'] %>         
 # - Checkpoints -
 
 #checkpoint_timeout = 5min              # range 30s-1d
-#max_wal_size = 1GB
-#min_wal_size = 80MB
+max_wal_size = 80MB
+min_wal_size = 80MB
 #checkpoint_completion_target = 0.5     # checkpoint target duration, 0.0 - 1.0
 #checkpoint_flush_after = 0             # 0 disables,
                                         # default is 256kB on linux, 0 otherwise
