@@ -1,6 +1,6 @@
 # Cookbook Name:: travis_build_environment
 # Recipe:: ci_user
-# Copyright 2017 Travis CI GmbH
+# Copyright 2018 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,23 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+require 'json'
+require 'net/http'
+require 'openssl'
 require 'pathname'
+
+def obtain_nvm_url
+  http = Net::HTTP.new('api.github.com', 443)
+  http.use_ssl = true
+  http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+  request = Net::HTTP::Get.new('/repos/creationix/nvm/releases/latest')
+  request['Accept'] = 'application/json'
+  token = ENV.fetch('GH_TOKEN', ENV.fetch('GITHUB_TOKEN', false))
+  request['Authorization'] = "token #{token}" if token
+  response = http.request(request)
+  tag = JSON.parse(response.body).fetch('tag_name')
+  "https://raw.githubusercontent.com/creationix/nvm/#{tag}/nvm.sh"
+end
 
 home = Pathname.new(node['travis_build_environment']['home'])
 
@@ -321,9 +337,10 @@ directory ::File.dirname(nvm_sh) do
   mode 0o750
 end
 
+nvm_url = obtain_nvm_url
+
 remote_file nvm_sh do
-  source node['travis_build_environment']['nvm']['url']
-  checksum node['travis_build_environment']['nvm']['sha256sum']
+  source nvm_url
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['user']
   mode 0o750

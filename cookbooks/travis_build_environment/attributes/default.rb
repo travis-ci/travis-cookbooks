@@ -168,9 +168,6 @@ default['travis_build_environment']['nodejs_default_modules'] = %w[
   grunt-cli
 ]
 
-default['travis_build_environment']['nvm']['url'] = 'https://raw.githubusercontent.com/creationix/nvm/v0.33.11/nvm.sh'
-default['travis_build_environment']['nvm']['sha256sum'] = 'df96ccadf6252acc8b461e98a3d25ccab2cf32edc7879dffd71d966c7e8903f1'
-
 default['travis_build_environment']['arch'] = 'i386'
 if node['kernel']['machine'] =~ /x86_64/
   default['travis_build_environment']['arch'] = 'amd64'
