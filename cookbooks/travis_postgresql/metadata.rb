@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 name 'travis_postgresql'
 maintainer 'Travis CI Team'
 maintainer_email 'contact+travis-postgresql-cookbook@travis-ci.org'

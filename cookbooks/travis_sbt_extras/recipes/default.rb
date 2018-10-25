@@ -1,4 +1,5 @@
-#
+# frozen_string_literal: true
+
 # Cookbook Name:: travis_sbt_extras
 # Recipe:: default
 #

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 remote_file "#{Chef::Config[:file_cache_path]}/get-pip.py" do
   source 'https://bootstrap.pypa.io/get-pip.py'
   mode 0o644

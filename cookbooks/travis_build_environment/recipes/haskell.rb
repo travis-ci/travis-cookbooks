@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 apt_repository 'hvr-ghc' do
   uri 'ppa:hvr/ghc'
   action :add

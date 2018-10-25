@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 action :create do
   converge_by "add keys for #{new_resource.id}" do
     add_github_keys(new_resource)

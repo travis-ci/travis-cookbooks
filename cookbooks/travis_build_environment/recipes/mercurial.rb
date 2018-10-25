@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 apt_repository 'mercurial' do
   uri 'ppa:mercurial-ppa/releases'
   distribution node['lsb']['codename']

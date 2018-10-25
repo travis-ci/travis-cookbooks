@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MixConfigHelper
   def self.render_hash(opts)
     "[#{opts.map { |k, v| "#{k}: #{render_value(v)}" }.join(', ')}]"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 directory ::File.dirname(node['travis_java']['jdk_switcher_path']) do
   owner 'root'
   group 'root'

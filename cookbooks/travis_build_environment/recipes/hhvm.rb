@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 apt_repository 'hhvm-repository' do
   uri 'https://dl.hhvm.com/ubuntu'
   distribution node['lsb']['codename']

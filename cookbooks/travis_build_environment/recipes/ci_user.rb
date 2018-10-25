@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Cookbook Name:: travis_build_environment
 # Recipe:: ci_user
 # Copyright 2018 Travis CI GmbH

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 packagecloud_repo 'basho/riak' do
   type 'deb'
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 package 'sudo' do
   action %i[install upgrade]
 end

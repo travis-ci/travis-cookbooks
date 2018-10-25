@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 name 'travis_jdk'
 maintainer 'Travis CI GmbH'
 maintainer_email 'contact+travis-cookbooks-travis-java@travis-ci.org'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 gpg_key_path = ::File.join(
   Chef::Config[:file_cache_path], 'mpapis.asc'
 )

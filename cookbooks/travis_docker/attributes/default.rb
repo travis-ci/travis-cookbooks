@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Note: The docker-ce package version strings have been known to diverge between
 # Trusty and Xenial. When updating check the version exists in both of:
 # https://download.docker.com/linux/ubuntu/dists/trusty/stable/binary-amd64/Packages

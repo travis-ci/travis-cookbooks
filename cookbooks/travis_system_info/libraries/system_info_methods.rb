@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SystemInfoMethods
   class << self
     def system_info_command(options = {})

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 erlang_deb = "erlang-solutions_1.0_all.deb"
 checksum_deb = "becd942327a3e2e9ee8a789816ffdda0e69364b03bc68656a1e0e69f3413757c"
 

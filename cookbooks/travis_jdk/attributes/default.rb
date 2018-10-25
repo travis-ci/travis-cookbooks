@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 default['travis_jdk']['versions'] = []
 default['travis_jdk']['default'] = nil
 

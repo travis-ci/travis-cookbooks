@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 sshd_config_file = "/etc/ssh/sshd_config"
 
 ruby_block "Change SSH port" do

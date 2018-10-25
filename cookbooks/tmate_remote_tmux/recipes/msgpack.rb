@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 package "build-essential"
 
 msgpack_src_dir = "/usr/src/msgpack"

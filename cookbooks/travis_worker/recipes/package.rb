@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 packagecloud_repo 'travisci/worker' do
   type 'deb'
 end

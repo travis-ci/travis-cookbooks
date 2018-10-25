@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 name 'travis_system_info'
 maintainer 'Travis CI GmbH'
 maintainer_email 'support@travis-ci.com'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 include_recipe 'travis_postgresql::all_packages'
 include_recipe 'travis_postgresql::ci_server'
 

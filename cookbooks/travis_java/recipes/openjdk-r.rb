@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 apt_repository 'openjdk-r-java-ppa' do
   uri 'http://ppa.launchpad.net/openjdk-r/ppa/ubuntu'
   distribution node['lsb']['codename']

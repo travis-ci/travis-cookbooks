@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 apt_repository 'google-chrome' do
   uri 'http://dl.google.com/linux/chrome/deb/'
   arch 'amd64'
