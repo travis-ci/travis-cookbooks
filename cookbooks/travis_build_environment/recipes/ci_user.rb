@@ -31,7 +31,7 @@ def obtain_nvm_url
   http.verify_mode = OpenSSL::SSL::VERIFY_PEER
   request = Net::HTTP::Get.new('/repos/creationix/nvm/releases/latest')
   request['Accept'] = 'application/json'
-  token = node.dig('travis_packer_build', 'github_token')
+  token = node&.[]('travis_packer_build')&.[]('github_token')
   request['Authorization'] = "token #{token}" if token
   response = http.request(request)
   tag = JSON.parse(response.body).fetch('tag_name')
