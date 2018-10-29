@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 apt_repository 'git-ppa' do
   uri 'ppa:git-core/ppa'
   retries 2

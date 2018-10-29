@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 name 'travis_perlbrew'
 # maintainer 'Magnus Holm'
 # maintainer_email 'judofyr@gmail.com'

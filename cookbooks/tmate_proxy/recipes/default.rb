@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 include_recipe "tmate_proxy::elixir"
 
 directory "#{node[:tmate_proxy][:app_path]}/running-config" do

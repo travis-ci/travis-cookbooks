@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 name 'travis_sbt_extras'
 maintainer 'Gilles Cornu'
 maintainer_email 'foss@gilles.cornu.name'

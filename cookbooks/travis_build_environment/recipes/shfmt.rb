@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 remote_file '/usr/local/bin/shfmt' do
   source node['travis_build_environment']['shfmt_url']
   checksum node['travis_build_environment']['shfmt_checksum']

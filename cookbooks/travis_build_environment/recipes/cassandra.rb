@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 apt_repository 'cassandra' do
   uri 'http://www.apache.org/dist/cassandra/debian'
   components %w[39x main]

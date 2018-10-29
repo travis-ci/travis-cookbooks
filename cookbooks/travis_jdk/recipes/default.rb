@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Cookbook:: travis_jdk
 # Recipe:: default
 #
@@ -63,6 +65,7 @@ end
 
 versions.each do |jdk|
   next if jdk.nil?
+
   args = install_jdk_args(jdk)
   cache = "#{Chef::Config[:file_cache_path]}/#{jdk}"
   target = ::File.join(

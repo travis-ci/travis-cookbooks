@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 package %w[
   libasound2
   libatk1.0-0

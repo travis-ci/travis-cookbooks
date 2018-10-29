@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Cookbook Name:: travis_duo
 # Recipe:: default
 # Copyright 2017 Travis CI GmbH

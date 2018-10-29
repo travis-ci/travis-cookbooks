@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 virtualenv_root = File.join(node['travis_build_environment']['home'], 'virtualenv')
 
 # Install Python2 and Python3

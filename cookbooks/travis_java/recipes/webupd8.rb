@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 package %w[
   curl
   debconf-utils

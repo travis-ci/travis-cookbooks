@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 
 unless node['travis_worker']['docker']['disable_install']

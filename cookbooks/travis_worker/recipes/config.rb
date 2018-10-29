@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 %w[
   /etc/default/travis-worker
   /etc/default/travis-worker-chef

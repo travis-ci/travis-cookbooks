@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 name 'travis_docker'
 maintainer 'Travis CI GmbH'
 maintainer_email 'contact+travis-cookbooks-travis-docker@travis-ci.org'

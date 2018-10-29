@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 apt_repository 'couchdb' do
   uri 'http://ppa.launchpad.net/couchdb/stable/ubuntu'
   distribution node['lsb']['codename']

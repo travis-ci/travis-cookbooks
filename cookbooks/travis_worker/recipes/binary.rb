@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 remote_file '/usr/local/bin/travis-worker' do
   source ::File.join(
     'https://travis-worker-artifacts.s3.amazonaws.com',

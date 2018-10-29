@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 default['travis_build_environment']['user'] = 'travis'
 default['travis_build_environment']['group'] = node['travis_build_environment']['user']
 default['travis_build_environment']['home'] = "/home/#{node['travis_build_environment']['user']}"
@@ -168,9 +170,6 @@ default['travis_build_environment']['nodejs_default_modules'] = %w[
   grunt-cli
 ]
 
-default['travis_build_environment']['nvm']['url'] = 'https://raw.githubusercontent.com/creationix/nvm/v0.33.11/nvm.sh'
-default['travis_build_environment']['nvm']['sha256sum'] = 'df96ccadf6252acc8b461e98a3d25ccab2cf32edc7879dffd71d966c7e8903f1'
-
 default['travis_build_environment']['arch'] = 'i386'
 if node['kernel']['machine'] =~ /x86_64/
   default['travis_build_environment']['arch'] = 'amd64'
@@ -234,10 +233,10 @@ default['travis_build_environment']['haskell_cabal_versions'] = %w[
 default['travis_build_environment']['haskell_default_ghc'] = '7.10.3'
 default['travis_build_environment']['haskell_default_cabal'] = '1.22'
 
-gradle_version = '4.0.1'
+gradle_version = '4.10.2'
 default['travis_build_environment']['gradle_version'] = gradle_version
 default['travis_build_environment']['gradle_url'] = "https://services.gradle.org/distributions/gradle-#{gradle_version}-bin.zip"
-default['travis_build_environment']['gradle_checksum'] = 'd717e46200d1359893f891dab047fdab98784143ac76861b53c50dbd03b44fd4'
+default['travis_build_environment']['gradle_checksum'] = 'b49c6da1b2cb67a0caf6c7480630b51c70a11ca2016ff2f555eaeda863143a29'
 
 default['travis_build_environment']['lein_url'] = 'https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein'
 

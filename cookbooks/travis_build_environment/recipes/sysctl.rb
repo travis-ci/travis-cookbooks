@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 execute 'update sysctl travis-shm' do
   command 'sysctl -p /etc/sysctl.d/30-travis-shm.conf'
   action :nothing

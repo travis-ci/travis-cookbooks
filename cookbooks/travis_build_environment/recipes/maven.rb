@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ark 'maven' do
   url node['travis_build_environment']['maven_url']
   version node['travis_build_environment']['maven_version']

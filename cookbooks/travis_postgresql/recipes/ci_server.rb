@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 create_superusers_script = ::File.join(
   Chef::Config[:file_cache_path],
   'postgresql_create_superusers.sql'

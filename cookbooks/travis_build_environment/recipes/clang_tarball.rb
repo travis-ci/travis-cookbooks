@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Cookbook Name:: travis_build_environment
 # Recipe:: clang_tarball
 # Copyright 2017 Travis CI GmbH

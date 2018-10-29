@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Cookbook Name:: travis_build_environment
 # Recipe:: heroku_toolbelt
 # Copyright 2017 Travis CI GmbH
@@ -20,16 +22,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-apt_repository 'heroku-toolbelt' do
-  uri 'http://toolbelt.heroku.com/ubuntu'
-  distribution ''
-  components %w[./]
-  key 'https://toolbelt.heroku.com/apt/release.key'
-  retries 2
-  retry_delay 30
+remote_file 'obtain heroku installer' do
+  source 'https://cli-assets.heroku.com/install.sh'
+  action :create
+  sensitive true
+  path "#{Chef::Config['file_cache_path']}/heroku_installer.sh"
+  retries 3
 end
 
-package 'heroku-toolbelt'
+execute 'install heroku' do
+  command "sh #{Chef::Config['file_cache_path']}/heroku_installer.sh"
+end
 
 execute 'heroku version' do
   user node['travis_build_environment']['user']

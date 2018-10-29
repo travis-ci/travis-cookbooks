@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 apt_repository 'chris-lea-redis-server' do
   uri 'http://ppa.launchpad.net/chris-lea/redis-server/ubuntu'
   distribution node['lsb']['codename']
