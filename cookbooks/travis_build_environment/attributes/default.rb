@@ -288,3 +288,8 @@ default['travis_build_environment']['yarn_binaries'] = %w[
 
 default['tz'] = 'UTC'
 default['travis_java']['default_version'] = ''
+
+default['travis_build_environment']['disable_ntp'] = true
+if File.exist?('/.dockerenv')
+  default['travis_build_environment']['disable_ntp'] = false
+end
