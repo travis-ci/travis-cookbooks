@@ -19,9 +19,15 @@
 
 directory node['memcached']['logfilepath']
 
-service 'memcached' do
-  action :enable
-  supports :status => true, :start => true, :stop => true, :restart => true, :enable => true
+if node['memcached']['service_enabled']
+  service 'memcached' do
+    action :enable
+    supports :status => true, :start => true, :stop => true, :restart => true, :enable => true
+  end
+else
+  service 'memcached' do
+    action [ :stop, :disable ]
+  end
 end
 
 case node['platform_family']
