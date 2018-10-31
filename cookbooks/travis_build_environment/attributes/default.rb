@@ -214,8 +214,6 @@ default['travis_build_environment']['cmake']['download_url'] = ::File.join(
 default['travis_build_environment']['cmake']['extension'] = 'tar.gz'
 default['travis_build_environment']['cmake']['checksum'] = 'f4e1e848e21c3fba134fbddd793860ba9a17c35d0aeaa3bd83149a6ec1bf9fbb'
 
-default['travis_build_environment']['gimme']['url'] = 'https://raw.githubusercontent.com/travis-ci/gimme/v1.5.3/gimme'
-default['travis_build_environment']['gimme']['sha256sum'] = 'ada6150e3fabdc80b18f12530e0690af79ee1c34d94ce8e372575f6ab0fea50a'
 default['travis_build_environment']['gimme']['default_version'] = '1.11.1'
 default['travis_build_environment']['gimme']['versions'] = %w[1.11.1]
 default['travis_build_environment']['gimme']['install_user'] = 'travis'
