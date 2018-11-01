@@ -47,3 +47,8 @@ group 'adding user to docker group' do
   members node['travis_docker']['users']
   action %i[create manage]
 end
+
+apt_repository 'docker' do
+  action :remove
+  not_if { node['travis_build_environment']['docker']['keep_repo'] }
+end
