@@ -24,5 +24,5 @@
 
 service 'ntp' do
   action %i[disable stop]
-  only_if node['travis_build_environment']['disable_ntp'] == true
+  only_if { node['travis_build_environment']['disable_ntp'] == true }
 end
