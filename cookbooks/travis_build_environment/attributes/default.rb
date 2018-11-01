@@ -214,10 +214,8 @@ default['travis_build_environment']['cmake']['download_url'] = ::File.join(
 default['travis_build_environment']['cmake']['extension'] = 'tar.gz'
 default['travis_build_environment']['cmake']['checksum'] = 'f4e1e848e21c3fba134fbddd793860ba9a17c35d0aeaa3bd83149a6ec1bf9fbb'
 
-default['travis_build_environment']['gimme']['url'] = 'https://raw.githubusercontent.com/travis-ci/gimme/v1.2.0/gimme'
-default['travis_build_environment']['gimme']['sha256sum'] = '5b620d1caf12ef9d06dbaccbe6cd9ad8b4894666a0b9a182133bcec5c3500010'
-default['travis_build_environment']['gimme']['default_version'] = '1.8.3'
-default['travis_build_environment']['gimme']['versions'] = %w[1.8.3]
+default['travis_build_environment']['gimme']['default_version'] = '1.11.1'
+default['travis_build_environment']['gimme']['versions'] = %w[1.11.1]
 default['travis_build_environment']['gimme']['install_user'] = 'travis'
 default['travis_build_environment']['gimme']['install_user_home'] = '/home/travis'
 default['travis_build_environment']['gimme']['debug'] = false
@@ -290,3 +288,8 @@ default['travis_build_environment']['yarn_binaries'] = %w[
 
 default['tz'] = 'UTC'
 default['travis_java']['default_version'] = ''
+
+default['travis_build_environment']['disable_ntp'] = true
+if File.exist?('/.dockerenv')
+  default['travis_build_environment']['disable_ntp'] = false
+end
