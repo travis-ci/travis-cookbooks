@@ -72,13 +72,13 @@ else
 end
 
 service 'memcached' do
-  only_if node['memcached']['service_enabled']
+  only_if { node['memcached']['service_enabled'] }
   action [:enable :start]
   supports :status => true, :start => true, :stop => true, :restart => true, :enable => true
 end
 
 service 'memcached' do
-  not_if node['memcached']['service_enabled']
+  not_if { node['memcached']['service_enabled'] }
   action [ :stop, :disable ]
   supports :status => true, :start => true, :stop => true, :restart => true, :enable => true
 end
