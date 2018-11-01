@@ -110,13 +110,13 @@ default['travis_build_environment']['kerl_path'] = '/usr/local/bin/kerl'
 default['travis_build_environment']['kerl_base_dir'] = \
   "#{node['travis_build_environment']['home']}/.kerl"
 default['travis_build_environment']['otp_releases'] = %w[
-  19.3
+  21.1
 ]
 default['travis_build_environment']['elixir_versions'] = %w[
-  1.4.5
+  1.7.4
 ]
-default['travis_build_environment']['required_otp_release_for']['1.4.5'] = '19.3'
-default['travis_build_environment']['default_elixir_version'] = '1.4.5'
+default['travis_build_environment']['required_otp_release_for']['1.7.4'] = '21.1'
+default['travis_build_environment']['default_elixir_version'] = '1.7.4'
 default['travis_build_environment']['mysql']['socket'] = '/var/run/mysqld/mysqld.sock'
 default['travis_build_environment']['packer_url'] = \
   'https://releases.hashicorp.com/packer/1.0.2/packer_1.0.2_linux_amd64.zip'
