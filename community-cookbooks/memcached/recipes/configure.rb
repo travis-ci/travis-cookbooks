@@ -73,7 +73,7 @@ end
 
 service 'memcached' do
   only_if { node['memcached']['service_enabled'] }
-  action [:enable :start]
+  action [:enable, :start]
   supports :status => true, :start => true, :stop => true, :restart => true, :enable => true
 end
 
