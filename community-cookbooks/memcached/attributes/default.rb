@@ -26,6 +26,7 @@ default['memcached']['maxconn'] = 1024
 default['memcached']['max_object_size'] = '1m'
 default['memcached']['logfilepath'] = '/var/log/'
 default['memcached']['logfilename'] = 'memcached.log'
+default['memcached']['service_enabled'] = false
 
 case node['platform_family']
 when 'suse', 'fedora', 'rhel'
