@@ -11,3 +11,8 @@ apt_repository 'google-chrome' do
 end
 
 package 'google-chrome-stable'
+
+apt_repository 'google-chrome' do
+  action :remove
+  not_if { node['travis_build_environment']['google_chrome']['keep_repo'] }
+end

@@ -45,3 +45,8 @@ template '/etc/cloud/cloud.cfg' do
   group 'root'
   mode 0o644
 end
+
+apt_repository 'pollinate' do
+  action :remove
+  not_if { node['travis_build_environment']['pollinate']['keep_repo'] }
+end
