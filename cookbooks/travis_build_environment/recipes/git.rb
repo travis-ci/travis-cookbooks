@@ -19,3 +19,14 @@ package 'git-lfs' do
   action %i[install upgrade]
   not_if { node['kernel']['machine'] == 'ppc64le' }
 end
+
+apt_repository 'git-ppa' do
+  action :remove
+  not_if { node['travis_build_environment']['git-ppa']['keep_repo'] }
+end
+
+execute 'remove git-lfs repo' do
+  command 'rm -f /etc/apt/sources.list.d/github_git_lfs.list'
+  not_if { node['kernel']['machine'] == 'ppc64le' }
+  not_if { node['travis_build_environment']['git-lfs']['keep_repo'] }
+end
