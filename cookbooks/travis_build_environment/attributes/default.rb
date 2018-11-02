@@ -110,19 +110,19 @@ default['travis_build_environment']['kerl_path'] = '/usr/local/bin/kerl'
 default['travis_build_environment']['kerl_base_dir'] = \
   "#{node['travis_build_environment']['home']}/.kerl"
 default['travis_build_environment']['otp_releases'] = %w[
-  19.3
+  21.1
 ]
 default['travis_build_environment']['elixir_versions'] = %w[
-  1.4.5
+  1.7.4
 ]
-default['travis_build_environment']['required_otp_release_for']['1.4.5'] = '19.3'
-default['travis_build_environment']['default_elixir_version'] = '1.4.5'
+default['travis_build_environment']['required_otp_release_for']['1.7.4'] = '21.1'
+default['travis_build_environment']['default_elixir_version'] = '1.7.4'
 default['travis_build_environment']['mysql']['socket'] = '/var/run/mysqld/mysqld.sock'
 default['travis_build_environment']['packer_url'] = \
-  'https://releases.hashicorp.com/packer/1.0.2/packer_1.0.2_linux_amd64.zip'
+  'https://releases.hashicorp.com/packer/1.3.2/packer_1.3.2_linux_amd64.zip'
 default['travis_build_environment']['packer_checksum'] = \
-  '13774108d10e26b1b26cc5a0a28e26c934b4e2c66bc3e6c33ea04c2f248aad7f'
-default['travis_build_environment']['packer_version'] = '1.0.2'
+  '5e51808299135fee7a2e664b09f401b5712b5ef18bd4bad5bc50f4dcd8b149a1'
+default['travis_build_environment']['packer_version'] = '1.3.2'
 if node['kernel']['machine'] == 'ppc64le'
   default['travis_build_environment']['packer_version'] = '1.1.3'
   default['travis_build_environment']['packer_url'] = \

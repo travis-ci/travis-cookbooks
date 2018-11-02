@@ -211,7 +211,7 @@ Array(node['travis_build_environment']['elixir_versions']).each do |elixir|
   dest = "#{node['travis_build_environment']['home']}/.kiex/elixirs/elixir-#{elixir}"
 
   remote_file local_archive do
-    source "http://s3.hex.pm/builds/elixir/v#{elixir}.zip"
+    source "https://s3.hex.pm/builds/elixir/v#{elixir}.zip"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     mode 0o644
