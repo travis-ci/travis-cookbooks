@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-arch = node['kernel']['machine'] =~ /x86_64/ ? 'amd64' : 'ppc64el'
+arch = node['kernel']['machine'] =~ /x86_64/ ? 'amd64' : 'ppc64le'
 apt_repository 'docker' do
   uri 'https://download.docker.com/linux/ubuntu'
   arch arch
