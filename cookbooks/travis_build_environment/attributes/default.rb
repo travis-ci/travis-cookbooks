@@ -220,16 +220,14 @@ default['travis_build_environment']['gimme']['install_user'] = 'travis'
 default['travis_build_environment']['gimme']['install_user_home'] = '/home/travis'
 default['travis_build_environment']['gimme']['debug'] = false
 
-default['travis_build_environment']['haskell_ghc_versions'] = %w[
-  7.10.3
-  8.0.2
+default['travis_build_environment']['haskell']['ghc_versions'] = %w[
+  8.6.1
 ]
-default['travis_build_environment']['haskell_cabal_versions'] = %w[
-  1.22
-  1.24
+default['travis_build_environment']['haskell']['cabal_versions'] = %w[
+  2.2
+  2.4
 ]
-default['travis_build_environment']['haskell_default_ghc'] = '7.10.3'
-default['travis_build_environment']['haskell_default_cabal'] = '1.22'
+default['travis_build_environment']['haskell']['keep_repo'] = false
 
 gradle_version = '4.10.2'
 default['travis_build_environment']['gradle_version'] = gradle_version
