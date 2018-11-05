@@ -188,7 +188,7 @@ default['travis_build_environment']['elasticsearch']['jvm_heap'] = '128m'
 default['travis_build_environment']['redis']['service_enabled'] = false
 default['travis_build_environment']['redis']['keep_repo'] = false
 
-default['travis_build_environment']['firefox_version'] = '56.0.2'
+default['travis_build_environment']['firefox_version'] = '63.0.1'
 default['travis_build_environment']['firefox_download_url'] = ::File.join(
   'https://releases.mozilla.org/pub/firefox/releases',
   node['travis_build_environment']['firefox_version'],
@@ -196,23 +196,23 @@ default['travis_build_environment']['firefox_download_url'] = ::File.join(
   "firefox-#{node['travis_build_environment']['firefox_version']}.tar.bz2"
 )
 
-default['travis_build_environment']['clang']['version'] = '5.0.0'
+default['travis_build_environment']['clang']['version'] = '7.0.0'
 default['travis_build_environment']['clang']['download_url'] = ::File.join(
   'http://releases.llvm.org',
   node['travis_build_environment']['clang']['version'],
-  "clang+llvm-#{node['travis_build_environment']['clang']['version']}-linux-x86_64-ubuntu14.04.tar.xz"
+  "clang+llvm-#{node['travis_build_environment']['clang']['version']}-x86_64-linux-gnu-ubuntu-16.04.tar.xz"
 )
 default['travis_build_environment']['clang']['extension'] = 'tar.xz'
-default['travis_build_environment']['clang']['checksum'] = '58c1171f326108cfb7641441c5ede7846d58823bce3206c86a84c7ef7748860d'
+default['travis_build_environment']['clang']['checksum'] = '69b85c833cd28ea04ce34002464f10a6ad9656dd2bba0f7133536a9927c660d2'
 
-default['travis_build_environment']['cmake']['version'] = '3.9.2'
+default['travis_build_environment']['cmake']['version'] = '3.12.4'
 default['travis_build_environment']['cmake']['download_url'] = ::File.join(
   'https://cmake.org/files',
   "v#{node['travis_build_environment']['cmake']['version'].split('.')[0, 2].join('.')}",
   "cmake-#{node['travis_build_environment']['cmake']['version']}-Linux-x86_64.tar.gz"
 )
 default['travis_build_environment']['cmake']['extension'] = 'tar.gz'
-default['travis_build_environment']['cmake']['checksum'] = 'f4e1e848e21c3fba134fbddd793860ba9a17c35d0aeaa3bd83149a6ec1bf9fbb'
+default['travis_build_environment']['cmake']['checksum'] = '486edd6710b5250946b4b199406ccbf8f567ef0e23cfe38f7938b8c78a2ffa5f'
 
 default['travis_build_environment']['gimme']['default_version'] = '1.11.1'
 default['travis_build_environment']['gimme']['versions'] = %w[1.11.1]
@@ -220,16 +220,14 @@ default['travis_build_environment']['gimme']['install_user'] = 'travis'
 default['travis_build_environment']['gimme']['install_user_home'] = '/home/travis'
 default['travis_build_environment']['gimme']['debug'] = false
 
-default['travis_build_environment']['haskell_ghc_versions'] = %w[
-  7.10.3
-  8.0.2
+default['travis_build_environment']['haskell']['ghc_versions'] = %w[
+  8.6.1
 ]
-default['travis_build_environment']['haskell_cabal_versions'] = %w[
-  1.22
-  1.24
+default['travis_build_environment']['haskell']['cabal_versions'] = %w[
+  2.2
+  2.4
 ]
-default['travis_build_environment']['haskell_default_ghc'] = '7.10.3'
-default['travis_build_environment']['haskell_default_cabal'] = '1.22'
+default['travis_build_environment']['haskell']['keep_repo'] = false
 
 gradle_version = '4.10.2'
 default['travis_build_environment']['gradle_version'] = gradle_version
