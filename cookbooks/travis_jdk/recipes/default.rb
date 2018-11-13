@@ -91,6 +91,7 @@ template ::File.join(
   mode 0o644
   variables(
     jdk: node['travis_jdk']['default'],
-    path: node['travis_jdk']['destination_path']
+    path: node['travis_jdk']['destination_path'],
+    docker: node['virtualization']['system'] == 'docker'
   )
 end
