@@ -136,7 +136,7 @@ default['travis_build_environment']['ramfs_size'] = '768m'
 default['travis_build_environment']['bats_git_repository'] = \
   'https://github.com/sstephenson/bats.git'
 
-default['travis_build_environment']['hhvm_enabled'] = true
+default['travis_build_environment']['hhvm_enabled'] = false
 default['travis_build_environment']['hhvm_package_name'] = 'hhvm'
 default['travis_build_environment']['php_packages'] = %w[
   autoconf
