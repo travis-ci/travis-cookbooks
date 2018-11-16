@@ -2,7 +2,7 @@
 
 # Cookbook Name:: travis_build_environment
 # Recipe:: xserver
-# Copyright 2017 Travis CI GmbH
+# Copyright 2018 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -30,10 +30,10 @@ package %w[
   dbus-x11
 ]
 
-cookbook_file '/etc/init.d/xvfb' do
+cookbook_file '/etc/systemd/system/xvfb.service' do
   owner 'root'
   group 'root'
   mode 0o644
 
-  source 'etc-init.d-xvfb.sh'
+  source 'etc-systemd-system-xvfb.service'
 end
