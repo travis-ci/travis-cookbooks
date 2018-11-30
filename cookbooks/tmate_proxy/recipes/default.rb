@@ -35,10 +35,10 @@ end
 
 bash "compile tmate_proxy" do
   cwd node[:tmate_proxy][:src_path]
-  environment "LC_ALL"   => "en_US.UTF-8",
-              "LANG"     => "en_US.UTF-8",
+  environment "LC_ALL" => "en_US.UTF-8",
+              "LANG" => "en_US.UTF-8",
               "LANGUAGE" => "en_US.UTF-8",
-              "MIX_ENV"  => "prod"
+              "MIX_ENV" => "prod"
   code "mix local.hex --force && mix local.rebar --force && mix deps.get && mix release"
   action :nothing
   notifies :run, "bash[install tmate_proxy]", :immediately
