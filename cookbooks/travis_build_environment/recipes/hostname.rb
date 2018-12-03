@@ -53,6 +53,7 @@ template '/etc/hosts' do
   mode 0o644
   variables(hostname: hostname)
   only_if { node['travis_build_environment']['update_hosts'] }
+  not_if { File.exist?('/.dockerenv') }
 end
 
 %w[
@@ -85,8 +86,10 @@ template '/etc/hostname' do
   mode 0o644
   variables(hostname: hostname)
   only_if { node['travis_build_environment']['update_hosts'] }
+  not_if { File.exist?('/.dockerenv') }
 end
 
 execute "hostname #{hostname}" do
   only_if { node['travis_build_environment']['update_hostname'] }
+  not_if { File.exist?('/.dockerenv') }
 end

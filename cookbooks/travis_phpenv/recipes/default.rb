@@ -54,6 +54,7 @@ end
 
 # A couple fixes for building php 5.3.29c and 5.4.45
 
-package 'libxslt1-dev' do
+package 'Install system dependencies' do
+  package_name %w[libxslt1-dev libc-client2007e libmcrypt4]
   action :install
 end
