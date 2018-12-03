@@ -268,9 +268,9 @@ default['travis_build_environment']['mercurial_url'] = "https://www.mercurial-sc
 default['travis_build_environment']['mongodb']['service_enabled'] = false
 default['travis_build_environment']['mongodb']['keep_repo'] = false
 
-default['travis_build_environment']['shellcheck_url'] = 'https://storage.googleapis.com/shellcheck/shellcheck-v0.5.0.linux.x86_64.tar.xz'
-default['travis_build_environment']['shellcheck_version'] = '0.5.0'
-default['travis_build_environment']['shellcheck_checksum'] = '7d4c073a0342cf39bdb99c32b4749f1c022cf2cffdfb080c12c106aa9d341708'
+default['travis_build_environment']['shellcheck_url'] = 'https://storage.googleapis.com/shellcheck/shellcheck-v0.6.0.linux.x86_64.tar.xz'
+default['travis_build_environment']['shellcheck_version'] = '0.6.0'
+default['travis_build_environment']['shellcheck_checksum'] = '95c7d6e8320d285a9f026b5241f48f1c02d225a1b08908660e8b84e58e9c7dce'
 default['travis_build_environment']['shellcheck_binaries'] = %w[shellcheck]
 
 default['travis_build_environment']['shfmt_url'] = 'https://github.com/mvdan/sh/releases/download/v2.6.0/shfmt_v2.6.0_linux_amd64'
