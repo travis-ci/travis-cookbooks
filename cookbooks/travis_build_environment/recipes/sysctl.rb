@@ -36,7 +36,6 @@ execute 'update sysctl travis-enable-ipv4-forwarding' do
 end
 
 file '/etc/sysctl.d/99-travis-enable-ipv4-forwarding.conf' do
-  content "net.ipv4.ip_forward = 1"
   content <<-IPV4_CONFIG.gsub(/^\s+> ?/, '')
     > net.ipv4.ip_forward = 1
   IPV4_CONFIG
