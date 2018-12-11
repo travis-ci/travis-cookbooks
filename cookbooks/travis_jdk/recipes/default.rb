@@ -72,10 +72,12 @@ versions.each do |jdk|
     node['travis_jdk']['destination_path'],
     jdk
   )
+  # Get system ca-certs symlinked
+  cacerts = '--cacerts' if args =~ /GPL/
 
   bash "Install #{jdk}" do
     code "#{node['travis_jdk']['install-jdk.sh_path']}" \
-      " #{args} --target #{target} --workspace #{cache}"
+      " #{args} --target #{target} --workspace #{cache} #{cacerts}"
   end
 end
 
