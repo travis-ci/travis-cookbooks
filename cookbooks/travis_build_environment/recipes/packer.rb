@@ -22,15 +22,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-packer_version = node['travis_build_environment']['packer_version']
-arch = 'amd64'
-arch = 'ppc64le' if node['kernel']['machine'] == 'ppc64le'
-packer_url = "https://releases.hashicorp.com/packer/#{packer_version}/packer_#{packer_version}_linux_#{arch}.zip"
-
 ark 'packer' do
-  version packer_version
-  checksum node['travis_build_environment']['packer_checksum']
-  url packer_url
+  arch = node['kernel']['machine'].gsub(/x86_64/, 'amd64')
+  version node['travis_build_environment']['packer'][arch]['version']
+  checksum node['travis_build_environment']['packer'][arch]['checksum']
+  url "https://releases.hashicorp.com/packer/#{version}/packer_#{version}_linux_#{arch}.zip"
   strip_components 0
   has_binaries node['travis_build_environment']['packer_binaries']
 end
