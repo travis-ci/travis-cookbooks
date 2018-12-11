@@ -32,7 +32,7 @@ ark 'phantomjs' do
   url 'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2'
   version '2.1.1'
   checksum '86dd9a4bf4aee45f1a84c9f61cf1947c1d6dce9b9e8d2a907105da7852460d2f'
-  has_binaries %w[phantomjs]
+  has_binaries %w[bin/phantomjs]
   owner 'root'
   not_if { node['kernel']['machine'] == 'ppc64le' }
 end
