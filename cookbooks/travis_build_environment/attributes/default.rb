@@ -232,6 +232,7 @@ default['travis_build_environment']['lein_url'] = 'https://raw.githubusercontent
 
 default['travis_build_environment']['sysctl_kernel_shmmax'] = 45_794_432
 default['travis_build_environment']['sysctl_disable_ipv6'] = true
+default['travis_build_environment']['sysctl_enable_ipv4_forwarding'] = true
 
 maven_version = '3.5.4'
 default['travis_build_environment']['maven_version'] = maven_version
