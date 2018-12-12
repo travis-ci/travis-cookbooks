@@ -120,7 +120,7 @@ default['travis_build_environment']['default_elixir_version'] = '1.7.4'
 default['travis_build_environment']['mysql']['socket'] = '/var/run/mysqld/mysqld.sock'
 default['travis_build_environment']['packer']['amd64']['version'] = '1.3.3'
 default['travis_build_environment']['packer']['amd64']['checksum'] = \
-  'efa311336db17c0709d5069509c34c35f0d59c63dfb05f61d4572c5a26b563ea'
+  '2e3ea8f366d676d6572ead7e0c773158dfea0aed9c6a740c669d447bcb48d65f'
 default['travis_build_environment']['packer']['ppc64le']['version'] = '1.3.3'
 default['travis_build_environment']['packer']['ppc64le']['checksum'] = \
   '4b8bc93a2bf406fb035968815c680f171830ff7246de9594c08a15ac0c9a18d8'
