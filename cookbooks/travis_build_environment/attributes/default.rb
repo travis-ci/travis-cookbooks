@@ -118,18 +118,12 @@ default['travis_build_environment']['elixir_versions'] = %w[
 default['travis_build_environment']['required_otp_release_for']['1.7.4'] = '21.1'
 default['travis_build_environment']['default_elixir_version'] = '1.7.4'
 default['travis_build_environment']['mysql']['socket'] = '/var/run/mysqld/mysqld.sock'
-default['travis_build_environment']['packer_url'] = \
-  'https://releases.hashicorp.com/packer/1.3.2/packer_1.3.2_linux_amd64.zip'
-default['travis_build_environment']['packer_checksum'] = \
-  '5e51808299135fee7a2e664b09f401b5712b5ef18bd4bad5bc50f4dcd8b149a1'
-default['travis_build_environment']['packer_version'] = '1.3.2'
-if node['kernel']['machine'] == 'ppc64le'
-  default['travis_build_environment']['packer_version'] = '1.3.2'
-  default['travis_build_environment']['packer_url'] = \
-    'https://releases.hashicorp.com/packer/1.3.2/packer_1.3.2_linux_ppc64le.zip'
-  default['travis_build_environment']['packer_checksum'] = \
-    'f3a2aec3a0a54d5d9cc6047f52acb73202b30efea770d4627459ca5608e58ac1'
-end
+default['travis_build_environment']['packer']['amd64']['version'] = '1.3.3'
+default['travis_build_environment']['packer']['amd64']['checksum'] = \
+  'efa311336db17c0709d5069509c34c35f0d59c63dfb05f61d4572c5a26b563ea'
+default['travis_build_environment']['packer']['ppc64le']['version'] = '1.3.3'
+default['travis_build_environment']['packer']['ppc64le']['checksum'] = \
+  '4b8bc93a2bf406fb035968815c680f171830ff7246de9594c08a15ac0c9a18d8'
 default['travis_build_environment']['packer_binaries'] = %w[packer]
 default['travis_build_environment']['ramfs_dir'] = '/var/ramfs'
 default['travis_build_environment']['ramfs_size'] = '768m'
