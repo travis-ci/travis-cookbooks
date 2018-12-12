@@ -121,9 +121,9 @@ default['travis_build_environment']['mysql']['socket'] = '/var/run/mysqld/mysqld
 default['travis_build_environment']['packer']['amd64']['version'] = '1.3.3'
 default['travis_build_environment']['packer']['amd64']['checksum'] = \
   'efa311336db17c0709d5069509c34c35f0d59c63dfb05f61d4572c5a26b563ea'
-default['travis_build_environment']['packer']['ppc64le']['version'] = '1.3.2'
+default['travis_build_environment']['packer']['ppc64le']['version'] = '1.3.3'
 default['travis_build_environment']['packer']['ppc64le']['checksum'] = \
-  'f3a2aec3a0a54d5d9cc6047f52acb73202b30efea770d4627459ca5608e58ac1'
+  '4b8bc93a2bf406fb035968815c680f171830ff7246de9594c08a15ac0c9a18d8'
 default['travis_build_environment']['packer_binaries'] = %w[packer]
 default['travis_build_environment']['ramfs_dir'] = '/var/ramfs'
 default['travis_build_environment']['ramfs_size'] = '768m'
