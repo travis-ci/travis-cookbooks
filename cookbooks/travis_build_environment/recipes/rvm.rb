@@ -1,8 +1,16 @@
 # frozen_string_literal: true
 
-gpg_key_path = ::File.join(
-  Chef::Config[:file_cache_path], 'mpapis.asc'
-)
+gpg_keys = {
+  mpapis: '08f64631c598cbe4398c5850725c8e6ab60dc5d86b6214e069d7ced1d546043b',
+  pkuczynski: 'd33ce5907fe28e6938feab7f63a9ef8a26a565878b1ad5bce063a86019aeaf77'
+}
+
+def gpg_key_path(name)
+  ::File.join(
+    Chef::Config[:file_cache_path], "#{name}.asc"
+  )
+end
+
 rvm_installer_path = ::File.join(
   Chef::Config[:file_cache_path], 'rvm-installer'
 )
@@ -20,6 +28,7 @@ global_gems = Array(
 ).map { |g| g[:name] }.join(' ')
 
 package %w[
+  automake
   bash
   bison
   bzip2
@@ -46,25 +55,30 @@ package %w[
   zlib1g
   zlib1g-dev
 ] do
-  action %i[install upgrade]
+  action :install
+  options '--no-install-recommends --no-upgrade'
 end
 
-remote_file gpg_key_path do
-  source 'https://rvm.io/mpapis.asc'
-  checksum '08f64631c598cbe4398c5850725c8e6ab60dc5d86b6214e069d7ced1d546043b'
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  mode 0o644
-  retries 2
-  retry_delay 30
-end
+gpg_keys.each do |name, checksum|
+  key_path = gpg_key_path(name)
 
-bash 'import mpapis.asc' do
-  code "gpg2 --import #{gpg_key_path}"
-  user node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  environment('HOME' => node['travis_build_environment']['home'])
-  only_if { ::File.exist?(gpg_key_path) }
+  remote_file key_path do
+    source "https://rvm.io/#{name}.asc"
+    checksum checksum
+    owner node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    mode 0o644
+    retries 2
+    retry_delay 30
+  end
+
+  bash "import #{name}.asc" do
+    code "gpg2 --import #{key_path}"
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    environment('HOME' => node['travis_build_environment']['home'])
+    only_if { ::File.exist?(key_path) }
+  end
 end
 
 remote_file rvm_installer_path do
