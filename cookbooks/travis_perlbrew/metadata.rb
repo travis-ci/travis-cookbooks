@@ -8,6 +8,7 @@ maintainer_email 'contact+travis-cookbooks-travis-perlbrew@travis-ci.org'
 license 'MIT'
 description 'Installs and configures Perlbrew, optionally keeping it updated.'
 issues_url 'https://github.com/travis-ci/travis-cookbooks/issues'
+source_url 'https://github.com/travis-ci/travis-cookbooks/master/cookbooks/travis_perlbrew'
 version '1.0'
 
 depends 'apt'

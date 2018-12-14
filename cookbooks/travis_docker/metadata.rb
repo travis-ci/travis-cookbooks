@@ -8,6 +8,7 @@ version '2.0.0'
 description 'Install ye a docker'
 long_description 'No really, install docker!'
 issues_url 'https://github.com/travis-ci/travis-cookbooks/issues'
+source_url 'https://github.com/travis-ci/travis-cookbooks/master/cookbooks/travis_docker'
 
 depends 'apt'
 depends 'ark'

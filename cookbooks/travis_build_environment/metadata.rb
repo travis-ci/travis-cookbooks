@@ -8,6 +8,7 @@ version '1.1.0'
 description 'Travis build environment'
 long_description 'Travis build environment'
 issues_url 'https://github.com/travis-ci/travis-cookbooks/issues'
+source_url 'https://github.com/travis-ci/travis-cookbooks/master/cookbooks/travis_build_environment'
 
 depends 'apt'
 depends 'ark'
