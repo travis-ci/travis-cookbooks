@@ -8,4 +8,4 @@ description 'Installs/Configures sudo, groups, users, :boom:'
 issues_url 'https://github.com/travis-ci/travis-cookbooks/issues'
 source_url 'https://github.com/travis-ci/travis-cookbooks/master/cookbooks/travis_sudo'
 version '0.2.0'
-chef_version '>= 13.8' if respond_to?(:chef_version)
+chef_version '~> 13' if respond_to?(:chef_version)
