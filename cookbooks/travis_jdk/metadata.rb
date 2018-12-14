@@ -3,7 +3,7 @@
 name 'travis_jdk'
 maintainer 'Travis CI GmbH'
 maintainer_email 'contact+travis-cookbooks-travis-java@travis-ci.org'
-license 'All Rights Reserved'
+license 'MIT'
 description 'Installs/Configures travis_jdk'
 long_description 'Installs/Configures travis_jdk'
 version '0.1.0'
