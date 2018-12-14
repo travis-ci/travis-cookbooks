@@ -7,6 +7,7 @@ license 'MIT'
 version '2.0.0'
 description 'Install ye a docker'
 long_description 'No really, install docker!'
+issues_url 'https://github.com/travis-ci/travis-cookbooks/issues'
 
 depends 'apt'
 depends 'ark'
