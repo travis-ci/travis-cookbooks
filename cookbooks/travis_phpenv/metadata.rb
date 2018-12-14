@@ -8,3 +8,4 @@ description 'Installs phpenv for multiple PHP versions switching. phpenv is base
 version '1.0.0'
 
 depends 'git'
+depends 'travis_build_environment'
