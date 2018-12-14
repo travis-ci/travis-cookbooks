@@ -3,7 +3,7 @@
 name 'travis_sbt_extras'
 maintainer 'Gilles Cornu'
 maintainer_email 'foss@gilles.cornu.name'
-license 'Apache 2.0'
+license 'Apache-2.0'
 description 'Installs sbt-extras to ease the building of scala projects'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 issues_url 'https://github.com/travis-ci/travis-cookbooks/issues'
