@@ -2,6 +2,7 @@
 
 name 'travis_build_environment'
 maintainer 'Travis CI Development Team'
+maintainer_email 'contact+travis-cookbooks-travis-build-environment@travis-ci.org'
 license 'Apache v2.0'
 version '1.1.0'
 description 'Travis build environment'
