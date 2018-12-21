@@ -25,6 +25,6 @@ ruby_block 'job_board adjustments google-chrome ppc64le' do
   only_if { node['kernel']['machine'] == 'ppc64le' }
   block do
     features = node['travis_packer_templates']['job_board']['features'] - ['google-chrome']
-    override['travis_packer_templates']['job_board']['features'] = features
+    node.override['travis_packer_templates']['job_board']['features'] = features
   end
 end
