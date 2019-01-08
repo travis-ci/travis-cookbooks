@@ -48,6 +48,16 @@ end
 
 Valid options for `type` include `deb`, `rpm`, and `gem`.
 
+This cookbook performs checks to determine if a package exists before attempting
+to install it. To enable proxy support *for these checks* (not to be confused
+with proxy support for your package manager of choice), add the following
+attributes to your cookbook:
+
+```
+default['packagecloud']['proxy_host'] = 'myproxy.organization.com'
+default['packagecloud']['proxy_port'] = '80'
+```
+
 ## Interactions with other cookbooks
 
 On CentOS 5, the official chef yum cookbook overwrites the file
@@ -75,17 +85,7 @@ resource is set so that the GPG keys end up in the right place.
 
 ## Changelog
 
-packagecloud cookbook versions 0.0.19 used an attribute called
-`default['packagecloud']['hostname']` for caching the local machine's hostname
-to avoid regenerating read tokens.
-
-This attribute has been removed as it is confusing and in some edge cases,
-buggy.
-
-Beginning in 0.1.0, you can use
-`default['packagecloud']['hostname_override']` to specify a hostname if ohai
-is unable to determine the hostname of the node on its own.
-
+See CHANGELOG.md for more recent changes.
 
 ## Credits
 Computology, LLC.
