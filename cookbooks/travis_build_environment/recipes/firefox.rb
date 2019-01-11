@@ -39,3 +39,12 @@ package %w[firefox] do
   action %i[install upgrade]
   only_if { node['kernel']['machine'] == 'ppc64le' }
 end
+
+ruby_block 'job_board adjustments firefox ppc64le' do
+  only_if { node['kernel']['machine'] == 'ppc64le' }
+  block do
+    features = node['travis_packer_templates']['job_board']['features'] - ['firefox']
+    node.override['travis_packer_templates']['job_board']['features'] = features
+  end
+end
+
