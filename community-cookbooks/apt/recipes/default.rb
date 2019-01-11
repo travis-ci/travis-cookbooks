@@ -31,10 +31,15 @@ end
 
 # If compile_time_update run apt-get update at compile time
 if node['apt']['compile_time_update'] && apt_installed?
-  apt_update('compile time').run_action(:periodic)
+  apt_update('compile time') do
+    frequency node['apt']['periodic_update_min_delay']
+    ignore_failure true
+  end.run_action(:periodic)
 end
 
-apt_update 'periodic'
+apt_update 'periodic' do
+  frequency node['apt']['periodic_update_min_delay']
+end
 
 # For other recipes to call to force an update
 execute 'apt-get update' do
@@ -88,6 +93,6 @@ template '/etc/apt/apt.conf.d/10recommends' do
   only_if { apt_installed? }
 end
 
-package 'apt-transport-https' do
+package %w(apt-transport-https gnupg dirmngr) do
   only_if { apt_installed? }
 end

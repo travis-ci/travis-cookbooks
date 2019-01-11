@@ -25,7 +25,7 @@ execute 'Remove proxy from /etc/apt/apt.conf' do
 end
 
 if node['apt']['cacher_client']['cacher_server'].empty?
-  Chef::Log.warn("No cache server defined in node['apt']['cacher_servers']. Not setting up caching")
+  Chef::Log.warn("No cache server defined in node['apt']['cacher_client']['cacher_server']. Not setting up caching")
   f = file '/etc/apt/apt.conf.d/01proxy' do
     action(node['apt']['compiletime'] ? :nothing : :delete)
   end
