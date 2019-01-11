@@ -47,4 +47,3 @@ ruby_block 'job_board adjustments firefox ppc64le' do
     node.override['travis_packer_templates']['job_board']['features'] = features
   end
 end
-
