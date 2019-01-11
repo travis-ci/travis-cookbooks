@@ -147,6 +147,7 @@ bash 'install global gems' do
   environment('HOME' => node['travis_build_environment']['home'])
   retries 2
   retry_delay 30
+  not_if { node['travis_build_environment']['default_ruby'].to_s.empty? }
 end
 
 Array(node['travis_build_environment']['rubies']).each do |ruby_def|
