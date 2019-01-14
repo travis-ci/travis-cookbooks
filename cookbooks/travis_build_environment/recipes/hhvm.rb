@@ -10,6 +10,7 @@ apt_repository 'hhvm-repository' do
   retries 2
   retry_delay 30
   not_if { node['kernel']['machine'] == 'ppc64le' }
+  only_if { node['travis_build_environment']['hhvm']['enabled'] }
 end
 
 apt_repository 'hhvm-ppc-repository' do
@@ -20,11 +21,13 @@ apt_repository 'hhvm-ppc-repository' do
   retries 2
   retry_delay 30
   only_if { node['kernel']['machine'] == 'ppc64le' }
+  only_if { node['travis_build_environment']['hhvm']['enabled'] }
 end
 
-package node['travis_build_environment']['hhvm_package_name'] do
+package node['travis_build_environment']['hhvm']['package_name'] do
   options '--force-yes'
   action :install
+  only_if { node['travis_build_environment']['hhvm']['enabled'] }
 end
 
 include_recipe 'travis_phpenv'
@@ -79,4 +82,12 @@ template "#{phpenv_path}/rbenv.d/exec/hhvm-switcher.bash" do
   variables(
     phpenv_path: phpenv_path
   )
+end
+
+%w[hhvm-repository hhvm-ppc-repository].each do |repo|
+  apt_repository repo do
+    action :remove
+    only_if { node['travis_build_environment']['hhvm']['enabled'] }
+    not_if { node['travis_build_environment']['hhvm']['keep_repo'] }
+  end
 end

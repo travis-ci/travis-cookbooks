@@ -307,8 +307,7 @@ node['travis_build_environment']['php_aliases'].each do |short_version, target_v
   end
 end
 
-include_recipe 'travis_build_environment::hhvm' if \
-  node['travis_build_environment']['hhvm_enabled']
+include_recipe 'travis_build_environment::hhvm'
 
 bash 'set global default php' do
   # NOTE: It is important that this happens *after* the conditional inclusion of
