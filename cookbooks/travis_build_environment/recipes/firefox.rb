@@ -41,11 +41,11 @@ apt_repository "ubuntu-toolchain-r" do
   components ["main"]
   keyserver "keyserver.ubuntu.com"
   key "BA9EF27F"
-  notifies :update, apt_update[update_ubuntu-toolchain-r], :immediately
+  notifies :update, apt_update[update ubuntu-toolchain-r], :immediately
   only_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
-apt_update "update_ubuntu-toolchain-r" do
+apt_update "update ubuntu-toolchain-r" do
   action :update
   only_if { node['kernel']['machine'] == 'ppc64le' }
 end
@@ -54,4 +54,3 @@ package %w[libstdc++6 firefox] do
   action %i[install upgrade]
   only_if { node['kernel']['machine'] == 'ppc64le' }
 end
-
