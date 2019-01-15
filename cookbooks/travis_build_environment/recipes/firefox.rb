@@ -44,11 +44,6 @@ apt_repository "ubuntu-toolchain-r" do
   only_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
-apt_update "update" do
-  action :update
-  only_if { node['kernel']['machine'] == 'ppc64le' }
-end
-
 package %w[libstdc++6 firefox] do
   action %i[install upgrade]
   only_if { node['kernel']['machine'] == 'ppc64le' }
