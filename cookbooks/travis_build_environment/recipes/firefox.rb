@@ -41,11 +41,11 @@ apt_repository "ubuntu-toolchain-r" do
   components ["main"]
   keyserver "keyserver.ubuntu.com"
   key "BA9EF27F"
-  notifies :update, apt_update[update ubuntu-toolchain-r], :immediately
+  notifies :update, apt_update[update], :immediately
   only_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
-apt_update "update ubuntu-toolchain-r" do
+apt_update "update" do
   action :update
   only_if { node['kernel']['machine'] == 'ppc64le' }
 end
