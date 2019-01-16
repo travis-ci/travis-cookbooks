@@ -35,7 +35,16 @@ ark 'firefox' do
   not_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
-package %w[firefox] do
+apt_repository "ubuntu-toolchain-r" do
+  uri "http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu"
+  distribution node['lsb']['codename']
+  components ["main"]
+  keyserver "keyserver.ubuntu.com"
+  key "BA9EF27F"
+  only_if { node['kernel']['machine'] == 'ppc64le' }
+end
+
+package %w[libstdc++6 firefox] do
   action %i[install upgrade]
   only_if { node['kernel']['machine'] == 'ppc64le' }
 end
