@@ -60,3 +60,11 @@ apt_repository 'mongodb-4.0' do
   not_if { node['kernel']['machine'] == 'ppc64le' }
   not_if { node['travis_build_environment']['mongodb']['keep_repo'] }
 end
+
+ruby_block 'job_board adjustments mongodb ppc64le' do
+  only_if { node['kernel']['machine'] == 'ppc64le' }
+  block do
+    features = node['travis_packer_templates']['job_board']['features'] - ['mongodb']
+    node.override['travis_packer_templates']['job_board']['features'] = features
+  end
+end
