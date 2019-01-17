@@ -2,6 +2,35 @@
 
 This file is used to list changes made in each version of the ohai cookbook.
 
+## 5.2.5 (2018-09-04)
+
+- Add note that ohai_hint will be removed April 2019 when Chef 13 goes EOL as this resource now ships in Chef 14+
+
+## 5.2.4 (2018-08-28)
+
+- Avoid deprecation warnings in Chef 14.3+ by not loading resources already in Chef
+
+## 5.2.3 (2018-06-08)
+
+- Make sure we properly compare a provided plugin path to the path on disk by stripping trailing slashes from the provided directory
+- Don't reload ohai when the plugin exists in a subdirectory of the config's set plugin path
+
+## 5.2.2 (2018-02-15)
+
+- Remove ChefSpec matchers we no longer need since they're auto generated
+
+## 5.2.1 (2018-01-25)
+
+- Switch from a .foodcritic file to an inline comments which resolve Supermarket warnings
+- Remove unused helper method
+
+## 5.2.0 (2017-08-17)
+
+- Resolve multiple issues with Windows paths that caused the cookbook to converge on every run or fail
+- Move maintainer information to the readme
+- Add testing on Chef 12.7 in Travis
+- Move helpers to their own modules and add testing framework
+
 ## 5.1.0 (2017-05-06)
 
 - Workaround action_class bug by requiring Chef 12.7+

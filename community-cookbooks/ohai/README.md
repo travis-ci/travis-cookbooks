@@ -4,6 +4,8 @@
 
 Contains custom resources for adding Ohai hints and installing custom Ohai plugins. Handles path creation as well as the reloading of Ohai so that new data will be available during the same run.
 
+NOTE: The ohai_hint resource shipped in Chef 14.0 (April 2018). When Chef 15.0 is released (April 2019) and Chef 13 goes EOL the ohai_hint resource will be removed from this cookbook.
+
 ## Requirements
 
 ### Platforms
@@ -113,9 +115,11 @@ You can check for the creation or deletion of ohai plugins with chefspec using t
 - create_ohai_plugin
 - delete_ohai_plugin
 
-## License & Authors
+## Maintainers
 
-**Author:** Cookbook Engineering Team ([cookbooks@chef.io](mailto:cookbooks@chef.io))
+This cookbook is maintained by Chef's Community Cookbook Engineering team. Our goal is to improve cookbook quality and to aid the community in contributing to cookbooks. To learn more about our team, process, and design goals see our [team documentation](https://github.com/chef-cookbooks/community_cookbook_documentation/blob/master/COOKBOOK_TEAM.MD). To learn more about contributing to cookbooks like this see our [contributing documentation](https://github.com/chef-cookbooks/community_cookbook_documentation/blob/master/CONTRIBUTING.MD), or if you have general questions about this cookbook come chat with us in #cookbok-engineering on the [Chef Community Slack](http://community-slack.chef.io/)
+
+## License
 
 **Copyright:** 2011-2016, Chef Software, Inc.
 
