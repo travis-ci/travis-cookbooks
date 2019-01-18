@@ -34,6 +34,8 @@ apt_repository 'mongodb-4.0' do
 end
 
 package 'mongodb-org' do
+  action :install
+  version '4.0.3'
   not_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
