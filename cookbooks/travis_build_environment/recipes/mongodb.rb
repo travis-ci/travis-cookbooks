@@ -37,18 +37,6 @@ package 'mongodb-org' do
   not_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
-package 'mongodb' do
-  notifies :stop, 'service[mongodb]', :immediately
-  notifies :disable, 'service[mongodb]', :immediately
-  only_if { node['kernel']['machine'] == 'ppc64le' }
-  not_if { node['travis_build_environment']['mongodb']['service_enabled'] }
-end
-
-service 'mongodb' do
-  action :nothing
-  only_if { node['kernel']['machine'] == 'ppc64le' }
-end
-
 service 'mongod' do
   action %i[stop disable]
   not_if { node['kernel']['machine'] == 'ppc64le' }

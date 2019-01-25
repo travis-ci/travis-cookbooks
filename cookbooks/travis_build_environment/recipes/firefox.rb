@@ -35,11 +35,6 @@ ark 'firefox' do
   not_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
-package %w[firefox] do
-  action %i[install upgrade]
-  only_if { node['kernel']['machine'] == 'ppc64le' }
-end
-
 ruby_block 'job_board adjustments firefox ppc64le' do
   only_if { node['kernel']['machine'] == 'ppc64le' }
   block do
