@@ -256,8 +256,8 @@ default['travis_build_environment']['mercurial_install_type'] = 'ppa'
 if node['kernel']['machine'] == 'ppc64le'
   default['travis_build_environment']['mercurial_install_type'] = 'src'
 end
-default['travis_build_environment']['mercurial_version'] = '4.2.2~trusty1'
-mercurial_ppc_version = '4.2.2'
+default['travis_build_environment']['mercurial_version'] = '4.4.1~trusty1'
+mercurial_ppc_version = '4.4.1'
 default['travis_build_environment']['mercurial_ppc_version'] = mercurial_ppc_version
 default['travis_build_environment']['mercurial_url'] = "https://www.mercurial-scm.org/release/mercurial-#{mercurial_ppc_version}.tar.gz"
 
