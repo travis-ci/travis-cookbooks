@@ -224,10 +224,10 @@ default['travis_build_environment']['haskell']['cabal_versions'] = %w[
 ]
 default['travis_build_environment']['haskell']['keep_repo'] = false
 
-gradle_version = '4.10.2'
+gradle_version = '5.1.1'
 default['travis_build_environment']['gradle_version'] = gradle_version
 default['travis_build_environment']['gradle_url'] = "https://services.gradle.org/distributions/gradle-#{gradle_version}-bin.zip"
-default['travis_build_environment']['gradle_checksum'] = 'b49c6da1b2cb67a0caf6c7480630b51c70a11ca2016ff2f555eaeda863143a29'
+default['travis_build_environment']['gradle_checksum'] = '4953323605c5d7b89e97d0dc7779e275bccedefcdac090aec123375eae0cc798'
 
 default['travis_build_environment']['lein_url'] = 'https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein'
 
