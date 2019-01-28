@@ -1,6 +1,5 @@
 language: generic
 dist: trusty
-sudo: false
 
 env:
   global:
