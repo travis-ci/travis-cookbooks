@@ -140,7 +140,7 @@ bash "create default alias for #{node['travis_build_environment']['default_ruby'
   not_if { node['travis_build_environment']['default_ruby'].to_s.empty? }
 end
 
-bash 'install global gems' do
+bash "install global gems for #{node['travis_build_environment']['default_ruby']}" do
   code "#{rvm_script_path} @global do gem install #{global_gems}"
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
