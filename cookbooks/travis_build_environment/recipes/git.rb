@@ -6,7 +6,7 @@ apt_repository 'git-ppa' do
   retry_delay 30
 end
 
-package %w[git git-core] do
+package 'git' do
   action %i[install upgrade]
 end
 
