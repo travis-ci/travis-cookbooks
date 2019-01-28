@@ -34,7 +34,7 @@ apt_repository 'docker' do
   action :add
 end
 
-package %w[linux-generic-lts-xenial linux-image-generic-lts-xenial] do
+package %w[linux-generic linux-image-generic] do
   action %i[install upgrade]
 end
 
