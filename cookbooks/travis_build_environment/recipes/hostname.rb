@@ -33,18 +33,7 @@ bits = case node['kernel']['machine']
          32
        end
 
-hostname = case [node['platform'], node['platform_version']]
-           when ['ubuntu', '11.04'] then
-             "natty#{bits}"
-           when ['ubuntu', '11.10'] then
-             "oneiric#{bits}"
-           when ['ubuntu', '12.04'] then
-             "precise#{bits}"
-           when ['ubuntu', '14.04'] then
-             "trusty#{bits}"
-           when ['ubuntu', '16.04'] then
-             "xenial#{bits}"
-           end
+hostname = "#{node['lsb']['codename']}#{bits}" if node['platform'] == 'ubuntu'
 
 template '/etc/hosts' do
   source 'etc/hosts.erb'
