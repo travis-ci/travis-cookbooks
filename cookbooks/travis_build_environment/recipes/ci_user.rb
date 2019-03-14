@@ -301,8 +301,7 @@ node['travis_build_environment']['php_aliases'].each do |short_version, target_v
   link "#{phpenv_path}/versions/#{short_version}" do
     to "#{phpenv_path}/versions/#{target_version}"
     not_if do
-      Array(node['travis_build_environment']['php_versions']).empty? ||
-        ::File.exist?("#{phpenv_path}/versions/#{target_version}")
+      Array(node['travis_build_environment']['php_versions']).empty?
     end
   end
 end
