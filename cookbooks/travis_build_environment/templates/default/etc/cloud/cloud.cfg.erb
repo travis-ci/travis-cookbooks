@@ -3,7 +3,13 @@
 ##     file:: templates/default/etc/cloud/cloud.cfg.erb
 
 users:
-- travis
+- default
+- name: ubuntu
+  lock_passwd: True
+  gecos: Ubuntu
+  groups: [adm, audio, cdrom, dialout, dip, floppy, netdev, plugdev, sudo, video]
+  sudo: ['ALL=(ALL) NOPASSWD:ALL']
+  shell: /bin/bash
 
 disable_root: true
 
@@ -63,9 +69,9 @@ cloud_final_modules:
 system_info:
   distro: ubuntu
   default_user:
-    name: ubuntu
+    name: travis
     lock_passwd: True
-    gecos: Ubuntu
+    gecos: Travis
     groups: [adm, audio, cdrom, dialout, dip, floppy, netdev, plugdev, sudo, video]
     sudo: ['ALL=(ALL) NOPASSWD:ALL']
     shell: /bin/bash
