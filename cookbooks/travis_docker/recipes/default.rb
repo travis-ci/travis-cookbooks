@@ -50,6 +50,14 @@ cookbook_file '/etc/default/grub.d/99-travis-settings.cfg' do
   not_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
+cookbook_file '/etc/default/grub.d/99-travis-settings-ppc64le.cfg' do
+  source 'etc/default/grub.d/99-travis-settings-ppc64le.cfg'
+  owner 'root'
+  group 'root'
+  mode 0o640
+  only_if { node['kernel']['machine'] == 'ppc64le' }
+end
+
 execute 'update-grub' do
   only_if { node['travis_docker']['update_grub'] }
 end
