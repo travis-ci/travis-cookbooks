@@ -29,6 +29,13 @@ group 'docker' do
   action %i[create manage]
 end
 
+cookbook_file '/etc/docker/daemon.json' do
+  source 'etc/docker/daemon.json'
+  owner 'root'
+  group 'root'
+  mode 0o640
+end
+
 cookbook_file '/etc/default/docker' do
   source 'etc/default/docker'
   owner 'root'
