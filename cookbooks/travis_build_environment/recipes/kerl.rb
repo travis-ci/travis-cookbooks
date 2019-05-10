@@ -39,7 +39,7 @@ directory installation_root do
 end
 
 remote_file node['travis_build_environment']['kerl_path'] do
-  source 'https://raw.githubusercontent.com/spawngrid/kerl/master/kerl'
+  source 'https://raw.githubusercontent.com/kerl/kerl/1.8.5/kerl'
   mode 0o755
 end
 
