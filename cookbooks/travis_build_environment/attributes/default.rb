@@ -225,10 +225,10 @@ default['travis_build_environment']['haskell']['cabal_versions'] = %w[
 ]
 default['travis_build_environment']['haskell']['keep_repo'] = false
 
-gradle_version = '4.10.2'
+gradle_version = '5.1.1'
 default['travis_build_environment']['gradle_version'] = gradle_version
 default['travis_build_environment']['gradle_url'] = "https://services.gradle.org/distributions/gradle-#{gradle_version}-bin.zip"
-default['travis_build_environment']['gradle_checksum'] = 'b49c6da1b2cb67a0caf6c7480630b51c70a11ca2016ff2f555eaeda863143a29'
+default['travis_build_environment']['gradle_checksum'] = '4953323605c5d7b89e97d0dc7779e275bccedefcdac090aec123375eae0cc798'
 
 default['travis_build_environment']['lein_url'] = 'https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein'
 
@@ -236,7 +236,7 @@ default['travis_build_environment']['sysctl_kernel_shmmax'] = 45_794_432
 default['travis_build_environment']['sysctl_disable_ipv6'] = true
 default['travis_build_environment']['sysctl_enable_ipv4_forwarding'] = true
 
-maven_version = '3.5.4'
+maven_version = '3.6.0'
 default['travis_build_environment']['maven_version'] = maven_version
 default['travis_build_environment']['maven_url'] = [
   'https://www.apache.org/dist/maven/maven-3/',
@@ -245,13 +245,13 @@ default['travis_build_environment']['maven_url'] = [
   maven_version,
   '-bin.tar.gz'
 ].join('')
-default['travis_build_environment']['maven_checksum'] = 'ce50b1c91364cb77efe3776f756a6d92b76d9038b0a0782f7d53acf1e997a14d'
+default['travis_build_environment']['maven_checksum'] = '6a1b346af36a1f1a491c1c1a141667c5de69b42e6611d3687df26868bc0f4637'
 
 default['travis_build_environment']['neo4j']['service_enabled'] = false
 default['travis_build_environment']['neo4j']['jvm_heap'] = '128m'
-default['travis_build_environment']['neo4j_url'] = 'https://neo4j.com/artifact.php?name=neo4j-community-3.4.7-unix.tar.gz'
-default['travis_build_environment']['neo4j_version'] = '3.4.7'
-default['travis_build_environment']['neo4j_checksum'] = 'f2a2eda7a4313216a99a9400001fef6de1a3aa399602dd1a57f552a5f73cf349'
+default['travis_build_environment']['neo4j_url'] = 'https://neo4j.com/artifact.php?name=neo4j-community-3.5.2-unix.tar.gz'
+default['travis_build_environment']['neo4j_version'] = '3.5.2'
+default['travis_build_environment']['neo4j_checksum'] = 'c1dec66aaf4d97b2e538ec0068de172ef454de101cce37196c8b8865f4db6644'
 
 default['travis_build_environment']['mercurial_install_type'] = 'ppa'
 if node['kernel']['machine'] == 'ppc64le'
@@ -270,8 +270,8 @@ default['travis_build_environment']['shellcheck_version'] = '0.6.0'
 default['travis_build_environment']['shellcheck_checksum'] = '95c7d6e8320d285a9f026b5241f48f1c02d225a1b08908660e8b84e58e9c7dce'
 default['travis_build_environment']['shellcheck_binaries'] = %w[shellcheck]
 
-default['travis_build_environment']['shfmt_url'] = 'https://github.com/mvdan/sh/releases/download/v2.6.2/shfmt_v2.6.2_linux_amd64'
-default['travis_build_environment']['shfmt_checksum'] = 'bdf8e832a903a80806b93a9ad80d8f95a70966fbec3258a565ed5edc2ae5bcdc'
+default['travis_build_environment']['shfmt_url'] = 'https://github.com/mvdan/sh/releases/download/v2.6.3/shfmt_v2.6.3_linux_amd64'
+default['travis_build_environment']['shfmt_checksum'] = 'adb6022679f230270c87fd447de0eca08e694189a18bcc9490cd3971917fbcb4'
 
 default['travis_build_environment']['yarn_url'] = 'https://yarnpkg.com/latest.tar.gz'
 default['travis_build_environment']['yarn_version'] = 'latest'

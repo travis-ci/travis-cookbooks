@@ -31,13 +31,13 @@ def obtain_nvm_url
   http = Net::HTTP.new('api.github.com', 443)
   http.use_ssl = true
   http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-  request = Net::HTTP::Get.new('/repos/creationix/nvm/releases/latest')
+  request = Net::HTTP::Get.new('/repos/nvm-sh/nvm/releases/latest')
   request['Accept'] = 'application/json'
   token = node&.[]('travis_packer_build')&.[]('github_token')
   request['Authorization'] = "token #{token}" if token
   response = http.request(request)
   tag = JSON.parse(response.body).fetch('tag_name')
-  "https://raw.githubusercontent.com/creationix/nvm/#{tag}/nvm.sh"
+  "https://raw.githubusercontent.com/nvm-sh/nvm/#{tag}/nvm.sh"
 end
 
 home = Pathname.new(node['travis_build_environment']['home'])
@@ -301,8 +301,7 @@ node['travis_build_environment']['php_aliases'].each do |short_version, target_v
   link "#{phpenv_path}/versions/#{short_version}" do
     to "#{phpenv_path}/versions/#{target_version}"
     not_if do
-      Array(node['travis_build_environment']['php_versions']).empty? ||
-        ::File.exist?("#{phpenv_path}/versions/#{target_version}")
+      Array(node['travis_build_environment']['php_versions']).empty?
     end
   end
 end
