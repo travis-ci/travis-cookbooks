@@ -4,7 +4,7 @@ include_attribute 'travis_build_environment'
 
 default['travis_sbt_extras']['user_home_basedir'] = '/home'
 
-default['travis_sbt_extras']['download_url'] = 'https://raw.githubusercontent.com/paulp/sbt-extras/6ae480fa7989a0f58ce284bc769a7deeb1f27a21/sbt'
+default['travis_sbt_extras']['download_url'] = 'https://raw.githubusercontent.com/paulp/sbt-extras/d559cf7c483dc775c28f3f760246cb0b476dbf02/sbt'
 
 default['travis_sbt_extras']['setup_dir'] = '/usr/local/bin'
 default['travis_sbt_extras']['script_name'] = 'sbt'
