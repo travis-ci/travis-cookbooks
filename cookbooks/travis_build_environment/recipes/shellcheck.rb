@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 package 'shellcheck' do
   action %i[install upgrade]
   only_if { node['kernel']['machine'] == 'ppc64le' }

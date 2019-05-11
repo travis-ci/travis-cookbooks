@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Cookbook Name:: travis_build_environment
 # Recipe:: security
 # Copyright 2017 Travis CI GmbH
@@ -20,12 +22,31 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+%w[user system].each do |target|
+  dir = "/etc/systemd/#{target}.conf.d"
+
+  directory dir do
+    owner 'root'
+    group 'root'
+    mode 0o755
+  end
+
+  template "#{dir}/limits.conf" do
+    source 'etc-systemd-conf-d-limits.conf.erb'
+    owner 'root'
+    group 'root'
+    mode 0o644
+  end
+end
+
 template '/etc/security/limits.conf' do
   source 'etc/security/limits.conf.erb'
   owner 'root'
   group 'root'
   mode 0o644
 end
+
+execute 'systemctl daemon-reexec'
 
 cookbook_file '/etc/sudoers.d/env_keep' do
   source 'etc/sudoers/env_keep'

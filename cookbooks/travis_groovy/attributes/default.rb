@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 groovy_version = '2.4.5'
 
 default['travis_groovy']['version'] = groovy_version

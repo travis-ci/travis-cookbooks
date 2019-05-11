@@ -1,12 +1,7 @@
+# frozen_string_literal: true
+
 apt_repository 'couchdb' do
-  uri 'http://ppa.launchpad.net/couchdb/stable/ubuntu'
-  distribution node['lsb']['codename']
-  components %w[main]
-  key 'C17EAB57'
-  keyserver 'hkp://ha.pool.sks-keyservers.net'
-  retries 2
-  retry_delay 30
-  action :add
+  uri 'ppa:couchdb/stable'
   not_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
@@ -28,4 +23,9 @@ cookbook_file '/etc/couchdb/local.d/erlang_query_server.ini' do
   owner 'root'
   group 'root'
   mode 0o644
+end
+
+apt_repository 'couchdb' do
+  action :remove
+  not_if { node['travis_build_environment']['couchdb']['keep_repo'] }
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 name 'travis_build_environment'
 maintainer 'Travis CI Development Team'
 license 'Apache v2.0'

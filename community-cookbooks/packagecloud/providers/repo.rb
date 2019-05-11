@@ -17,19 +17,34 @@ action :add do
   end
 end
 
+def gpg_url(base_url, repo, format, master_token)
+  base_install_url = ::File.join(base_url, node['packagecloud']['base_repo_path'])
+  ext = (format == :deb) ? 'list' : 'repo'
+  gpg_key_url_endpoint = construct_uri_with_options({base_url: base_install_url, repo: repo, endpoint: "gpg_key_url.#{ext}"})
+  if !master_token.nil?
+    gpg_key_url_endpoint.user = master_token
+    gpg_key_url_endpoint.password = ''
+  end
+
+  URI(get(gpg_key_url_endpoint, install_endpoint_params).body.chomp)
+end
+
 def install_deb
   base_url = new_resource.base_url
   repo_url = construct_uri_with_options({base_url: base_url, repo: new_resource.repository, endpoint: node['platform']})
 
   Chef::Log.debug("#{new_resource.name} deb repo url = #{repo_url}")
 
+  package 'wget'
   package 'apt-transport-https'
+
+  repo_url = read_token(repo_url)
 
   template "/etc/apt/sources.list.d/#{filename}.list" do
     source 'apt.erb'
     cookbook 'packagecloud'
     mode '0644'
-    variables :base_url     => read_token(repo_url).to_s,
+    variables :base_url     => repo_url.to_s,
               :distribution => node['lsb']['codename'],
               :component    => 'main'
 
@@ -37,10 +52,10 @@ def install_deb
     notifies :run, "execute[apt-get-update-#{filename}]", :immediately
   end
 
-  gpg_key_url = ::File.join(base_url, node['packagecloud']['gpg_key_path'])
+  gpg_url = gpg_url(new_resource.base_url, new_resource.repository, :deb, new_resource.master_token)
 
   execute "apt-key-add-#{filename}" do
-    command "wget -qO - #{gpg_key_url} | apt-key add -"
+    command "wget --auth-no-challenge -qO - #{gpg_url.to_s} | apt-key add -"
     action :nothing
   end
 
@@ -54,12 +69,8 @@ end
 
 def install_rpm
   given_base_url = new_resource.base_url
-
   base_repo_url = ::File.join(given_base_url, node['packagecloud']['base_repo_path'])
-
   base_url_endpoint = construct_uri_with_options({base_url: base_repo_url, repo: new_resource.repository, endpoint: 'rpm_base_url'})
-
-  gpg_filename = URI.parse(base_repo_url).host.gsub!('.', '_')
 
   if new_resource.master_token
     base_url_endpoint.user     = new_resource.master_token
@@ -91,18 +102,15 @@ def install_rpm
     not_if 'rpm -qa | grep -qw pygpgme'
   end
 
-  remote_file "/etc/pki/rpm-gpg/RPM-GPG-KEY-#{gpg_filename}" do
-    source ::File.join(given_base_url, node['packagecloud']['gpg_key_path'])
-    mode '0644'
-  end
+  gpg_url = gpg_url(new_resource.base_url, new_resource.repository, :rpm, new_resource.master_token)
 
   template "/etc/yum.repos.d/#{filename}.repo" do
     source 'yum.erb'
     cookbook 'packagecloud'
     mode '0644'
-    variables :base_url        => read_token(base_url).to_s,
-              :gpg_filename    => gpg_filename,
+    variables :base_url        => base_url.to_s,
               :name            => filename,
+              :gpg_url         => gpg_url.to_s,
               :repo_gpgcheck   => 1,
               :description     => filename,
               :priority        => new_resource.priority,

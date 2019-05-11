@@ -1,21 +1,31 @@
+# frozen_string_literal: true
+
 apt_repository 'hvr-ghc' do
-  uri 'http://ppa.launchpad.net/hvr/ghc/ubuntu'
-  distribution node['lsb']['codename']
-  components ['main']
-  key 'F6F88286'
-  keyserver 'hkp://ha.pool.sks-keyservers.net'
-  retries 2
-  retry_delay 30
+  uri 'ppa:hvr/ghc'
   action :add
 end
 
+haskell = node['travis_build_environment']['haskell']
+
 package Array(
-  node['travis_build_environment']['haskell_ghc_versions']
+  haskell['ghc_versions']
 ).map { |v| "ghc-#{v}" }
 
 package Array(
-  node['travis_build_environment']['haskell_cabal_versions']
+  haskell['cabal_versions']
 ).map { |v| "cabal-install-#{v}" }
+
+if haskell.key?('default_cabal')
+  default_cabal = haskell['default_cabal']
+else
+  default_cabal = haskell['cabal_versions'].max
+end
+
+if haskell.key?('default_ghc')
+  default_ghc = haskell['default_ghc']
+else
+  default_ghc = haskell['ghc_versions'].max
+end
 
 template '/etc/profile.d/travis-haskell.sh' do
   source 'travis-haskell.sh.erb'
@@ -24,8 +34,13 @@ template '/etc/profile.d/travis-haskell.sh' do
   mode 0o755
   variables(
     cabal_root: '/opt/cabal',
-    default_cabal: node['travis_build_environment']['haskell_default_cabal'],
-    default_ghc: node['travis_build_environment']['haskell_default_ghc'],
+    default_cabal: default_cabal,
+    default_ghc: default_ghc,
     ghc_root: '/opt/ghc'
   )
+end
+
+apt_repository 'hvr-ghc' do
+  action :remove
+  not_if { haskell['keep_repo'] }
 end

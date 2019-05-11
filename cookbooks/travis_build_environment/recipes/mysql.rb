@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Cookbook Name:: travis_build_environment
 # Recipe:: mysql
 # Copyright 2017 Travis CI GmbH
@@ -111,12 +113,17 @@ template "#{node['travis_build_environment']['home']}/.my.cnf" do
   variables(socket: node['travis_build_environment']['mysql']['socket'])
 end
 
-service 'mysql' do
-  action %i[enable start]
-end
+start_cmd = node['init_package'] == 'systemd' ? 'systemctl start mysql' : 'service mysql start'
 
 bash 'setup mysql users and passwords' do
-  code "mysql -u root <#{mysql_users_passwords_sql}"
+  code <<-EOCODE
+    #{start_cmd}
+    sleep 1
+    if ! mysql -u root <#{mysql_users_passwords_sql}; then
+      tail -n 1000 /var/log/mysql/*
+      false
+    fi
+  EOCODE
 end
 
 include_recipe 'travis_build_environment::bash_profile_d'
@@ -129,4 +136,8 @@ file ::File.join(
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode 0o644
+end
+
+service 'mysql' do
+  action %i[disable stop]
 end

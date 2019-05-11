@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 default['travis_postgresql']['default_version'] = '9.2'
 default['travis_postgresql']['alternate_versions'] = %w[9.3 9.4 9.5 9.6]
 

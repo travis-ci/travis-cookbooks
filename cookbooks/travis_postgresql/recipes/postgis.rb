@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ppv = node['travis_postgresql']['postgis_version']
 
 package(

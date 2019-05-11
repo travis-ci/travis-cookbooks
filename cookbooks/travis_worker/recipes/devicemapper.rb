@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 package %w[
   lvm2
   xfsprogs

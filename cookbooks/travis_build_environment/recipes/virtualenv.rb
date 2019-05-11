@@ -1,4 +1,4 @@
-
+# frozen_string_literal: true
 
 include_recipe 'travis_build_environment::pip'
 

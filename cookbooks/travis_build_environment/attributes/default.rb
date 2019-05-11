@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 default['travis_build_environment']['user'] = 'travis'
 default['travis_build_environment']['group'] = node['travis_build_environment']['user']
 default['travis_build_environment']['home'] = "/home/#{node['travis_build_environment']['user']}"
@@ -51,7 +53,7 @@ default['travis_build_environment']['rvmrc_env'] = {
   'rvm_autoupdate_flag' => '0',
   'rvm_binary_flag' => '1',
   'rvm_fuzzy_flag' => '1',
-  'rvm_gem_options' => '--no-ri --no-rdoc',
+  'rvm_gem_options' => '--no-document',
   'rvm_max_time_flag' => '5',
   'rvm_path' => "#{node['travis_build_environment']['home']}/.rvm",
   'rvm_project_rvmrc' => '0',
@@ -108,34 +110,29 @@ default['travis_build_environment']['kerl_path'] = '/usr/local/bin/kerl'
 default['travis_build_environment']['kerl_base_dir'] = \
   "#{node['travis_build_environment']['home']}/.kerl"
 default['travis_build_environment']['otp_releases'] = %w[
-  19.3
+  21.1
 ]
 default['travis_build_environment']['elixir_versions'] = %w[
-  1.4.5
+  1.7.4
 ]
-default['travis_build_environment']['required_otp_release_for']['1.4.5'] = '19.3'
-default['travis_build_environment']['default_elixir_version'] = '1.4.5'
+default['travis_build_environment']['required_otp_release_for']['1.7.4'] = '21.1'
+default['travis_build_environment']['default_elixir_version'] = '1.7.4'
 default['travis_build_environment']['mysql']['socket'] = '/var/run/mysqld/mysqld.sock'
-default['travis_build_environment']['packer_url'] = \
-  'https://releases.hashicorp.com/packer/1.0.2/packer_1.0.2_linux_amd64.zip'
-default['travis_build_environment']['packer_checksum'] = \
-  '13774108d10e26b1b26cc5a0a28e26c934b4e2c66bc3e6c33ea04c2f248aad7f'
-default['travis_build_environment']['packer_version'] = '1.0.2'
-if node['kernel']['machine'] == 'ppc64le'
-  default['travis_build_environment']['packer_version'] = '1.1.3'
-  default['travis_build_environment']['packer_url'] = \
-    'https://releases.hashicorp.com/packer/1.1.3/packer_1.1.3_linux_ppc64le.zip'
-  default['travis_build_environment']['packer_checksum'] = \
-    '25ecb9b4592924c9d04ef2cb3796690827e559e24789efacefc58f795676d329'
-end
+default['travis_build_environment']['packer']['amd64']['version'] = '1.3.3'
+default['travis_build_environment']['packer']['amd64']['checksum'] = \
+  '2e3ea8f366d676d6572ead7e0c773158dfea0aed9c6a740c669d447bcb48d65f'
+default['travis_build_environment']['packer']['ppc64le']['version'] = '1.3.3'
+default['travis_build_environment']['packer']['ppc64le']['checksum'] = \
+  '4b8bc93a2bf406fb035968815c680f171830ff7246de9594c08a15ac0c9a18d8'
 default['travis_build_environment']['packer_binaries'] = %w[packer]
 default['travis_build_environment']['ramfs_dir'] = '/var/ramfs'
 default['travis_build_environment']['ramfs_size'] = '768m'
 default['travis_build_environment']['bats_git_repository'] = \
   'https://github.com/sstephenson/bats.git'
 
-default['travis_build_environment']['hhvm_enabled'] = true
-default['travis_build_environment']['hhvm_package_name'] = 'hhvm'
+default['travis_build_environment']['hhvm']['enabled'] = false
+default['travis_build_environment']['hhvm']['package_name'] = 'hhvm'
+default['travis_build_environment']['hhvm']['keep_repo'] = false
 default['travis_build_environment']['php_packages'] = %w[
   autoconf
   bison
@@ -168,9 +165,6 @@ default['travis_build_environment']['nodejs_default_modules'] = %w[
   grunt-cli
 ]
 
-default['travis_build_environment']['nvm']['url'] = 'https://raw.githubusercontent.com/creationix/nvm/v0.33.11/nvm.sh'
-default['travis_build_environment']['nvm']['sha256sum'] = 'df96ccadf6252acc8b461e98a3d25ccab2cf32edc7879dffd71d966c7e8903f1'
-
 default['travis_build_environment']['arch'] = 'i386'
 if node['kernel']['machine'] =~ /x86_64/
   default['travis_build_environment']['arch'] = 'amd64'
@@ -187,8 +181,9 @@ default['travis_build_environment']['elasticsearch']['service_enabled'] = false
 default['travis_build_environment']['elasticsearch']['jvm_heap'] = '128m'
 
 default['travis_build_environment']['redis']['service_enabled'] = false
+default['travis_build_environment']['redis']['keep_repo'] = false
 
-default['travis_build_environment']['firefox_version'] = '56.0.2'
+default['travis_build_environment']['firefox_version'] = '63.0.1'
 default['travis_build_environment']['firefox_download_url'] = ::File.join(
   'https://releases.mozilla.org/pub/firefox/releases',
   node['travis_build_environment']['firefox_version'],
@@ -196,62 +191,66 @@ default['travis_build_environment']['firefox_download_url'] = ::File.join(
   "firefox-#{node['travis_build_environment']['firefox_version']}.tar.bz2"
 )
 
-default['travis_build_environment']['clang']['version'] = '5.0.0'
+default['travis_build_environment']['clang']['version'] = '7.0.0'
 default['travis_build_environment']['clang']['download_url'] = ::File.join(
   'http://releases.llvm.org',
   node['travis_build_environment']['clang']['version'],
-  "clang+llvm-#{node['travis_build_environment']['clang']['version']}-linux-x86_64-ubuntu14.04.tar.xz"
+  "clang+llvm-#{node['travis_build_environment']['clang']['version']}-x86_64-linux-gnu-ubuntu-16.04.tar.xz"
 )
 default['travis_build_environment']['clang']['extension'] = 'tar.xz'
-default['travis_build_environment']['clang']['checksum'] = '58c1171f326108cfb7641441c5ede7846d58823bce3206c86a84c7ef7748860d'
+default['travis_build_environment']['clang']['checksum'] = '69b85c833cd28ea04ce34002464f10a6ad9656dd2bba0f7133536a9927c660d2'
 
-default['travis_build_environment']['cmake']['version'] = '3.9.2'
+default['travis_build_environment']['cmake']['version'] = '3.12.4'
 default['travis_build_environment']['cmake']['download_url'] = ::File.join(
   'https://cmake.org/files',
   "v#{node['travis_build_environment']['cmake']['version'].split('.')[0, 2].join('.')}",
   "cmake-#{node['travis_build_environment']['cmake']['version']}-Linux-x86_64.tar.gz"
 )
 default['travis_build_environment']['cmake']['extension'] = 'tar.gz'
-default['travis_build_environment']['cmake']['checksum'] = 'f4e1e848e21c3fba134fbddd793860ba9a17c35d0aeaa3bd83149a6ec1bf9fbb'
+default['travis_build_environment']['cmake']['checksum'] = '486edd6710b5250946b4b199406ccbf8f567ef0e23cfe38f7938b8c78a2ffa5f'
 
-default['travis_build_environment']['gimme']['url'] = 'https://raw.githubusercontent.com/travis-ci/gimme/v1.2.0/gimme'
-default['travis_build_environment']['gimme']['sha256sum'] = '5b620d1caf12ef9d06dbaccbe6cd9ad8b4894666a0b9a182133bcec5c3500010'
-default['travis_build_environment']['gimme']['default_version'] = '1.8.3'
-default['travis_build_environment']['gimme']['versions'] = %w[1.8.3]
+default['travis_build_environment']['gimme']['default_version'] = '1.11.1'
+default['travis_build_environment']['gimme']['versions'] = %w[1.11.1]
 default['travis_build_environment']['gimme']['install_user'] = 'travis'
 default['travis_build_environment']['gimme']['install_user_home'] = '/home/travis'
 default['travis_build_environment']['gimme']['debug'] = false
 
-default['travis_build_environment']['haskell_ghc_versions'] = %w[
-  7.10.3
-  8.0.2
+default['travis_build_environment']['haskell']['ghc_versions'] = %w[
+  8.6.1
 ]
-default['travis_build_environment']['haskell_cabal_versions'] = %w[
-  1.22
-  1.24
+default['travis_build_environment']['haskell']['cabal_versions'] = %w[
+  2.2
+  2.4
 ]
-default['travis_build_environment']['haskell_default_ghc'] = '7.10.3'
-default['travis_build_environment']['haskell_default_cabal'] = '1.22'
+default['travis_build_environment']['haskell']['keep_repo'] = false
 
-gradle_version = '4.0.1'
+gradle_version = '5.1.1'
 default['travis_build_environment']['gradle_version'] = gradle_version
 default['travis_build_environment']['gradle_url'] = "https://services.gradle.org/distributions/gradle-#{gradle_version}-bin.zip"
-default['travis_build_environment']['gradle_checksum'] = 'd717e46200d1359893f891dab047fdab98784143ac76861b53c50dbd03b44fd4'
+default['travis_build_environment']['gradle_checksum'] = '4953323605c5d7b89e97d0dc7779e275bccedefcdac090aec123375eae0cc798'
 
 default['travis_build_environment']['lein_url'] = 'https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein'
 
 default['travis_build_environment']['sysctl_kernel_shmmax'] = 45_794_432
 default['travis_build_environment']['sysctl_disable_ipv6'] = true
+default['travis_build_environment']['sysctl_enable_ipv4_forwarding'] = true
 
-default['travis_build_environment']['maven_url'] = 'https://www.apache.org/dist/maven/maven-3/3.5.3/binaries/apache-maven-3.5.3-bin.tar.gz'
-default['travis_build_environment']['maven_version'] = '3.5.3'
-default['travis_build_environment']['maven_checksum'] = 'b52956373fab1dd4277926507ab189fb797b3bc51a2a267a193c931fffad8408'
+maven_version = '3.6.0'
+default['travis_build_environment']['maven_version'] = maven_version
+default['travis_build_environment']['maven_url'] = [
+  'https://www.apache.org/dist/maven/maven-3/',
+  maven_version,
+  '/binaries/apache-maven-',
+  maven_version,
+  '-bin.tar.gz'
+].join('')
+default['travis_build_environment']['maven_checksum'] = '6a1b346af36a1f1a491c1c1a141667c5de69b42e6611d3687df26868bc0f4637'
 
 default['travis_build_environment']['neo4j']['service_enabled'] = false
 default['travis_build_environment']['neo4j']['jvm_heap'] = '128m'
-default['travis_build_environment']['neo4j_url'] = 'https://neo4j.com/artifact.php?name=neo4j-community-3.2.7-unix.tar.gz'
-default['travis_build_environment']['neo4j_version'] = '3.2.7'
-default['travis_build_environment']['neo4j_checksum'] = '7f347196a1f2026f8daa9ee045d3fbb404d961dd81b3a8363132aaaf60cf316f'
+default['travis_build_environment']['neo4j_url'] = 'https://neo4j.com/artifact.php?name=neo4j-community-3.5.2-unix.tar.gz'
+default['travis_build_environment']['neo4j_version'] = '3.5.2'
+default['travis_build_environment']['neo4j_checksum'] = 'c1dec66aaf4d97b2e538ec0068de172ef454de101cce37196c8b8865f4db6644'
 
 default['travis_build_environment']['mercurial_install_type'] = 'ppa'
 if node['kernel']['machine'] == 'ppc64le'
@@ -262,13 +261,16 @@ mercurial_ppc_version = '4.2.2'
 default['travis_build_environment']['mercurial_ppc_version'] = mercurial_ppc_version
 default['travis_build_environment']['mercurial_url'] = "https://www.mercurial-scm.org/release/mercurial-#{mercurial_ppc_version}.tar.gz"
 
-default['travis_build_environment']['shellcheck_url'] = 'https://storage.googleapis.com/shellcheck/shellcheck-v0.5.0.linux.x86_64.tar.xz'
-default['travis_build_environment']['shellcheck_version'] = '0.5.0'
-default['travis_build_environment']['shellcheck_checksum'] = '7d4c073a0342cf39bdb99c32b4749f1c022cf2cffdfb080c12c106aa9d341708'
+default['travis_build_environment']['mongodb']['service_enabled'] = false
+default['travis_build_environment']['mongodb']['keep_repo'] = false
+
+default['travis_build_environment']['shellcheck_url'] = 'https://storage.googleapis.com/shellcheck/shellcheck-v0.6.0.linux.x86_64.tar.xz'
+default['travis_build_environment']['shellcheck_version'] = '0.6.0'
+default['travis_build_environment']['shellcheck_checksum'] = '95c7d6e8320d285a9f026b5241f48f1c02d225a1b08908660e8b84e58e9c7dce'
 default['travis_build_environment']['shellcheck_binaries'] = %w[shellcheck]
 
-default['travis_build_environment']['shfmt_url'] = 'https://github.com/mvdan/sh/releases/download/v2.4.0/shfmt_v2.4.0_linux_amd64'
-default['travis_build_environment']['shfmt_checksum'] = 'abc78150f5d3afa10afe0dd8fef2c431729e14fdc77fde2bab6a3d869f551599'
+default['travis_build_environment']['shfmt_url'] = 'https://github.com/mvdan/sh/releases/download/v2.6.3/shfmt_v2.6.3_linux_amd64'
+default['travis_build_environment']['shfmt_checksum'] = 'adb6022679f230270c87fd447de0eca08e694189a18bcc9490cd3971917fbcb4'
 
 default['travis_build_environment']['yarn_url'] = 'https://yarnpkg.com/latest.tar.gz'
 default['travis_build_environment']['yarn_version'] = 'latest'
@@ -280,3 +282,15 @@ default['travis_build_environment']['yarn_binaries'] = %w[
 
 default['tz'] = 'UTC'
 default['travis_java']['default_version'] = ''
+
+default['travis_build_environment']['couchdb']['keep_repo'] = false
+default['travis_build_environment']['docker']['keep_repo'] = false
+default['travis_build_environment']['git-lfs']['keep_repo'] = false
+default['travis_build_environment']['git-ppa']['keep_repo'] = false
+default['travis_build_environment']['google_chrome']['keep_repo'] = false
+default['travis_build_environment']['pollinate']['keep_repo'] = false
+
+default['travis_build_environment']['disable_ntp'] = true
+if File.exist?('/.dockerenv')
+  default['travis_build_environment']['disable_ntp'] = false
+end

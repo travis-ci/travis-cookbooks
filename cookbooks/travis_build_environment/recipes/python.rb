@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 virtualenv_root = "#{node['travis_build_environment']['home']}/virtualenv"
 
 include_recipe 'travis_build_environment::virtualenv'

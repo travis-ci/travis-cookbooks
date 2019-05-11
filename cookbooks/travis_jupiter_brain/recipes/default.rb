@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 setup_blue_green = false
 
 remote_file '/usr/local/bin/jb-server' do

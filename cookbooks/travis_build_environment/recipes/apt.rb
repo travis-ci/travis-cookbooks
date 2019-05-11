@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Cookbook Name:: travis_build_environment
 # Recipe:: apt
 # Copyright 2017 Travis CI GmbH
@@ -55,6 +57,17 @@ end
 
 execute 'gencaches for travis_build_environment::apt' do
   command 'apt-cache gencaches'
+end
+
+%w[
+  apt-daily-upgrade.service
+  apt-daily-upgrade.timer
+  apt-daily.service
+  apt-daily.timer
+].each do |unit|
+  service unit do
+    action %i[disable stop]
+  end
 end
 
 execute 'apt-get update for travis_build_environment::apt' do

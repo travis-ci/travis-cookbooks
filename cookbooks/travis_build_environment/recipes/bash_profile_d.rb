@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 directory ::File.join(
   node['travis_build_environment']['home'], '.bash_profile.d'
 ) do

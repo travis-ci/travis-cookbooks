@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 name 'travis_sudo'
 maintainer 'Travis CI GmbH'
 license 'MIT'

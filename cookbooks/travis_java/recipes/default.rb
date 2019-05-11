@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 default_jvm = nil
 default_java_version = node['travis_java']['default_version']
 

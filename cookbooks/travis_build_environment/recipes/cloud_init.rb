@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Cookbook Name:: travis_build_environment
 # Recipe:: cloud_init
 # Copyright 2017 Travis CI GmbH
@@ -21,13 +23,7 @@
 # THE SOFTWARE.
 
 apt_repository 'pollinate' do
-  uri 'http://ppa.launchpad.net/pollinate/ppa/ubuntu'
-  distribution node['lsb']['codename']
-  components %w[main]
-  key '43732553'
-  keyserver 'hkp://ha.pool.sks-keyservers.net'
-  retries 2
-  retry_delay 30
+  uri 'ppa:pollinate/ppa'
 end
 
 package 'pollinate' do
@@ -48,4 +44,9 @@ template '/etc/cloud/cloud.cfg' do
   owner 'root'
   group 'root'
   mode 0o644
+end
+
+apt_repository 'pollinate' do
+  action :remove
+  not_if { node['travis_build_environment']['pollinate']['keep_repo'] }
 end

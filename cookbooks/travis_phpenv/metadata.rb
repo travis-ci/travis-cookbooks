@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 name 'travis_phpenv'
 maintainer 'Loïc Frering'
 maintainer_email 'loic.frering@gmail.com'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Cookbook Name:: travis_docker
 # Recipe:: package
 # Copyright 2017 Travis CI GmbH
@@ -44,4 +46,9 @@ group 'adding user to docker group' do
   group_name 'docker'
   members node['travis_docker']['users']
   action %i[create manage]
+end
+
+apt_repository 'docker' do
+  action :remove
+  not_if { node['travis_build_environment']['docker']['keep_repo'] }
 end

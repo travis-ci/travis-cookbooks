@@ -19,11 +19,6 @@
 
 directory node['memcached']['logfilepath']
 
-service 'memcached' do
-  action :enable
-  supports :status => true, :start => true, :stop => true, :restart => true, :enable => true
-end
-
 case node['platform_family']
 when 'rhel', 'fedora', 'suse'
   family = node['platform_family'] == 'suse' ? 'suse' : 'redhat'
@@ -74,4 +69,16 @@ else
     )
     notifies :restart, 'service[memcached]'
   end
+end
+
+service 'memcached' do
+  only_if { node['memcached']['service_enabled'] }
+  action [:enable, :start]
+  supports :status => true, :start => true, :stop => true, :restart => true, :enable => true
+end
+
+service 'memcached' do
+  not_if { node['memcached']['service_enabled'] }
+  action [ :stop, :disable ]
+  supports :status => true, :start => true, :stop => true, :restart => true, :enable => true
 end

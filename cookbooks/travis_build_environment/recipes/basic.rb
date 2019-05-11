@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Cookbook Name:: travis_build_environment
 # Recipe:: basic
 # Copyright 2017 Travis CI GmbH
@@ -63,6 +65,7 @@ include_recipe 'travis_build_environment::bats'
 include_recipe 'travis_build_environment::jq'
 include_recipe 'travis_build_environment::cmake'
 include_recipe 'travis_build_environment::clang'
+include_recipe 'travis_build_environment::ntp'
 include_recipe 'travis_build_environment::packer'
 include_recipe 'travis_build_environment::virtualenv'
 include_recipe 'travis_build_environment::system_python'

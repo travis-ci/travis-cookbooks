@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 remote_file "#{Chef::Config[:file_cache_path]}/get-pip.py" do
   source 'https://bootstrap.pypa.io/get-pip.py'
@@ -7,9 +8,9 @@ end
 
 bash 'install-pip' do
   cwd Chef::Config[:file_cache_path]
-  code <<-EOF
+  code <<-INSTALL_PIP
     python get-pip.py
     pip install --upgrade pip setuptools wheel
-  EOF
+  INSTALL_PIP
   not_if 'which pip'
 end

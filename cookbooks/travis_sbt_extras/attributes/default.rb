@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 include_attribute 'travis_build_environment'
 
 default['travis_sbt_extras']['user_home_basedir'] = '/home'

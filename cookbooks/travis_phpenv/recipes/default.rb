@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 unless Array(node['travis_phpenv']['prerequisite_recipes']).empty?
   Array(node['travis_phpenv']['prerequisite_recipes']).each do |recipe_name|
     include_recipe recipe_name
@@ -19,11 +21,11 @@ bash 'install phpenv' do
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   cwd phpenv_clone
-  code <<-EOF
+  code <<-PHPENV_INSTALL
     . bin/phpenv-install.sh
     cp extensions/rbenv-config-add #{phpenv_path}/libexec/
     cp extensions/rbenv-config-rm #{phpenv_path}/libexec/
-  EOF
+  PHPENV_INSTALL
   environment(
     'PHPENV_ROOT' => phpenv_path
   )
@@ -52,6 +54,7 @@ end
 
 # A couple fixes for building php 5.3.29c and 5.4.45
 
-package 'libxslt1-dev' do
+package 'Install system dependencies' do
+  package_name %w[libxslt1-dev libc-client2007e libmcrypt4]
   action :install
 end

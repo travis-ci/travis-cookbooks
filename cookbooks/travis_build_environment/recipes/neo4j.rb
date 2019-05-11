@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ark 'neo4j' do
   url node['travis_build_environment']['neo4j_url']
   version node['travis_build_environment']['neo4j_version']

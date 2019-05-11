@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Cookbook Name:: travis_build_environment
 # Recipe:: mongodb
 # Copyright 2017 Travis CI GmbH
@@ -20,12 +22,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-apt_repository 'mongodb-3.4' do
+apt_repository 'mongodb-4.0' do
   uri 'http://repo.mongodb.org/apt/ubuntu'
-  distribution "#{node['lsb']['codename']}/mongodb-org/3.4"
+  distribution "#{node['lsb']['codename']}/mongodb-org/4.0"
   components %w[multiverse]
   keyserver 'hkp://keyserver.ubuntu.com'
-  key '0C49F3730359A14518585931BC711F9BA15703C6'
+  key '9DA31620334BD75D9DCB49F368818C72E52529D4'
   retries 2
   retry_delay 30
   not_if { node['kernel']['machine'] == 'ppc64le' }
@@ -35,18 +37,22 @@ package 'mongodb-org' do
   not_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
-package 'mongodb' do
-  notifies :stop, 'service[mongodb]', :immediately
-  notifies :disable, 'service[mongodb]', :immediately
-  only_if { node['kernel']['machine'] == 'ppc64le' }
-end
-
-service 'mongodb' do
-  action :nothing
-  only_if { node['kernel']['machine'] == 'ppc64le' }
-end
-
 service 'mongod' do
   action %i[stop disable]
   not_if { node['kernel']['machine'] == 'ppc64le' }
+  not_if { node['travis_build_environment']['mongodb']['service_enabled'] }
+end
+
+apt_repository 'mongodb-4.0' do
+  action :remove
+  not_if { node['kernel']['machine'] == 'ppc64le' }
+  not_if { node['travis_build_environment']['mongodb']['keep_repo'] }
+end
+
+ruby_block 'job_board adjustments mongodb ppc64le' do
+  only_if { node['kernel']['machine'] == 'ppc64le' }
+  block do
+    features = node['travis_packer_templates']['job_board']['features'] - ['mongodb']
+    node.override['travis_packer_templates']['job_board']['features'] = features
+  end
 end

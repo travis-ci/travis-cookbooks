@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 apt_repository 'pgdg' do
   uri 'http://apt.postgresql.org/pub/repos/apt/'
   distribution "#{node['lsb']['codename']}-pgdg"

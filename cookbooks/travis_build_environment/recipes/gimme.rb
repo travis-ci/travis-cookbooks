@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Cookbook Name:: travis_build_environment
 # Recipe:: gimme
 #
@@ -22,9 +24,23 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+def obtain_gimme_url
+  http = Net::HTTP.new('api.github.com', 443)
+  http.use_ssl = true
+  http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+  request = Net::HTTP::Get.new('/repos/travis-ci/gimme/releases/latest')
+  request['Accept'] = 'application/json'
+  token = node&.[]('travis_packer_build')&.[]('github_token')
+  request['Authorization'] = "token #{token}" if token
+  response = http.request(request)
+  tag = JSON.parse(response.body).fetch('tag_name')
+  "https://raw.githubusercontent.com/travis-ci/gimme/#{tag}/gimme"
+end
+
+gimme_url = obtain_gimme_url
+
 remote_file '/usr/local/bin/gimme' do
-  source node['travis_build_environment']['gimme']['url']
-  checksum node['travis_build_environment']['gimme']['sha256sum']
+  source gimme_url
   owner 'root'
   group 'root'
   mode 0o755
