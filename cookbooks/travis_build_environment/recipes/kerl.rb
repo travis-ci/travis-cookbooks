@@ -48,7 +48,8 @@ env = {
   'USER' => node['travis_build_environment']['user'],
   'KERL_DISABLE_AGNER' => 'yes',
   'KERL_BASE_DIR' => node['travis_build_environment']['kerl_base_dir'],
-  'CPPFLAGS' => "#{ENV['CPPFLAGS']} -DEPMD6"
+  'CPPFLAGS' => "#{ENV['CPPFLAGS']} -DEPMD6",
+  'KERL_BUILD_BACKEND' => 'git'
 }
 
 execute "#{node['travis_build_environment']['kerl_path']} update releases" do
