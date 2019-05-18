@@ -31,7 +31,7 @@ def obtain_nvm_url
   http = Net::HTTP.new('api.github.com', 443)
   http.use_ssl = true
   http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-  request = Net::HTTP::Get.new('/repos/creationix/nvm/releases/latest')
+  request = Net::HTTP::Get.new('/repositories/612230/releases/latest')
   request['Accept'] = 'application/json'
   token = node&.[]('travis_packer_build')&.[]('github_token')
   request['Authorization'] = "token #{token}" if token
