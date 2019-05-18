@@ -6,8 +6,15 @@ apt_repository 'git-ppa' do
   retry_delay 30
 end
 
-package %w[git git-core] do
-  action %i[install upgrade]
+if node['lsb']['codename'] == 'trusty'
+  package %w[git git-core] do
+    action %i[install upgrade]
+elsif node['lsb']['codename'] == 'xenial'
+  package %w[git git-core] do
+    action %i[install upgrade]
+else
+  package %w[git] do
+    action %i[install upgrade]
 end
 
 packagecloud_repo 'github/git-lfs' do
