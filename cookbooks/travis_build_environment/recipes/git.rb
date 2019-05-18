@@ -6,16 +6,6 @@ apt_repository 'git-ppa' do
   retry_delay 30
 end
 
-package %w[git git-core] do
-  action %i[install upgrade]
-  only_if { node['lsb']['codename'] == 'xenial' || 'trusty' }
-end
-
-package %w[git] do
-  action %i[install upgrade]
-  only_if { node['lsb']['codename'] == 'binoic' }
-end
-
 case node['lsb']['codename']
 when 'trusty'
   pkgs = %w[git git-core]
