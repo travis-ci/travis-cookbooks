@@ -6,15 +6,27 @@ apt_repository 'git-ppa' do
   retry_delay 30
 end
 
-if node['lsb']['codename'] == 'trusty'
-  package %w[git git-core] do
-    action %i[install upgrade]
-elsif node['lsb']['codename'] == 'xenial'
-  package %w[git git-core] do
-    action %i[install upgrade]
-else
-  package %w[git] do
-    action %i[install upgrade]
+package %w[git git-core] do
+  action %i[install upgrade]
+  only_if { node['lsb']['codename'] == 'xenial' || 'trusty' }
+end
+
+package %w[git] do
+  action %i[install upgrade]
+  only_if { node['lsb']['codename'] == 'binoic' }
+end
+
+case node['lsb']['codename']
+when 'trusty'
+  pkgs = %w[git git-core]
+when 'xenial'
+  pkgs = %w[git git-core]
+when 'bionic'
+  pkgs = %w[git]
+end
+
+package pkgs do
+  action %i[install upgrade]
 end
 
 packagecloud_repo 'github/git-lfs' do
