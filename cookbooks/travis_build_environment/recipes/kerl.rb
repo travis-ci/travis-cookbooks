@@ -39,7 +39,7 @@ directory installation_root do
 end
 
 remote_file node['travis_build_environment']['kerl_path'] do
-  source 'https://raw.githubusercontent.com/spawngrid/kerl/master/kerl'
+  source 'https://raw.githubusercontent.com/kerl/kerl/1.8.5/kerl'
   mode 0o755
 end
 
@@ -48,7 +48,8 @@ env = {
   'USER' => node['travis_build_environment']['user'],
   'KERL_DISABLE_AGNER' => 'yes',
   'KERL_BASE_DIR' => node['travis_build_environment']['kerl_base_dir'],
-  'CPPFLAGS' => "#{ENV['CPPFLAGS']} -DEPMD6"
+  'CPPFLAGS' => "#{ENV['CPPFLAGS']} -DEPMD6",
+  'KERL_BUILD_BACKEND' => 'git'
 }
 
 execute "#{node['travis_build_environment']['kerl_path']} update releases" do
