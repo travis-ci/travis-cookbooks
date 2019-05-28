@@ -6,7 +6,16 @@ apt_repository 'git-ppa' do
   retry_delay 30
 end
 
-package %w[git git-core] do
+case node['lsb']['codename']
+when 'trusty'
+  pkgs = %w[git git-core]
+when 'xenial'
+  pkgs = %w[git git-core]
+when 'bionic'
+  pkgs = %w[git]
+end
+
+package pkgs do
   action %i[install upgrade]
 end
 
