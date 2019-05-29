@@ -111,9 +111,6 @@ bash 'run rvm installer' do
 end
 
 install_flag = "--autolibs=enable --fuzzy"
-if node['kernel']['machine'] == "ppc64le"
-  install_flag = "--autolibs=enable --fuzzy"
-end
 
 bash "install default ruby #{node['travis_build_environment']['default_ruby']}" do
   code %W[
