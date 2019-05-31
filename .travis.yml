@@ -11,7 +11,8 @@ env:
 addons:
   apt:
     sources:
-    - chef-stable-trusty
+    - sourceline: "deb https://packages.chef.io/repos/apt/current trusty main"
+      key_url:  "https://%{app_host}/files/gpg/chef-current-trusty.asc"
     packages:
     - chefdk
 
