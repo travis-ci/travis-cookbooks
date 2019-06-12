@@ -1,8 +1,18 @@
 # frozen_string_literal: true
 
-apt_repository 'couchdb' do
-  uri 'ppa:couchdb/stable'
-  not_if { node['kernel']['machine'] == 'ppc64le' }
+case node['lsb']['codename']
+when 'trusty' , 'xenial'
+    apt_repository 'couchdb' do
+        uri 'ppa:couchdb/stable'
+        not_if { node['kernel']['machine'] == 'ppc64le' }
+    end
+when 'bionic'
+    apt_repository 'couchdb' do
+        uri 'https://apache.bintray.com/couchdb-deb'
+        distribution 'bionic'
+        components ['main']
+        key 'https://couchdb.apache.org/repo/bintray-pubkey.asc'
+    end
 end
 
 package 'couchdb'
