@@ -36,7 +36,7 @@ when 'trusty' , 'xenia'
         mode 0o644
     end
 when 'bionic'
-    cookbook_file '/opt/etc/couchdb/local.d/erlang_query_server.ini' do
+    cookbook_file '/opt/couchdb/etc/local.d/erlang_query_server.ini' do
         source 'erlang_query_server.ini'
         owner 'root'
         group 'root'
