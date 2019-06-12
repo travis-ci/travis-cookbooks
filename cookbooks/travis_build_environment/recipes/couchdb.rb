@@ -27,12 +27,21 @@ file '/etc/init/couchdb.override' do
   group 'root'
   mode 0o644
 end
-
-cookbook_file '/etc/couchdb/local.d/erlang_query_server.ini' do
-  source 'erlang_query_server.ini'
-  owner 'root'
-  group 'root'
-  mode 0o644
+case node['lsb']['codename']
+when 'trusty' , 'xenia'
+    cookbook_file '/etc/couchdb/local.d/erlang_query_server.ini' do
+        source 'erlang_query_server.ini'
+        owner 'root'
+        group 'root'
+        mode 0o644
+    end
+when 'bionic'
+    cookbook_file '/opt/etc/couchdb/local.d/erlang_query_server.ini' do
+        source 'erlang_query_server.ini'
+        owner 'root'
+        group 'root'
+        mode 0o644
+    end
 end
 
 apt_repository 'couchdb' do
