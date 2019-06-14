@@ -26,8 +26,7 @@ apt_repository 'mongodb-4.0' do
   uri 'http://repo.mongodb.org/apt/ubuntu'
   distribution "#{node['lsb']['codename']}/mongodb-org/4.0"
   components %w[multiverse]
-  keyserver 'hkp://keyserver.ubuntu.com'
-  key '9DA31620334BD75D9DCB49F368818C72E52529D4'
+  key 'https://www.mongodb.org/static/pgp/server-4.0.asc'
   retries 2
   retry_delay 30
   not_if { node['kernel']['machine'] == 'ppc64le' }
