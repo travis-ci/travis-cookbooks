@@ -12,7 +12,6 @@ if !node['travis_postgresql']['superusers'].to_a.empty? && !::File.exist?(create
 
   template create_superusers_script do
     source 'create_superusers.sql.erb'
-    locale 'en_US.utf8'
     owner 'postgres'
   end
 
