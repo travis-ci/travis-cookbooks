@@ -12,6 +12,7 @@ if !node['travis_postgresql']['superusers'].to_a.empty? && !::File.exist?(create
 
   template create_superusers_script do
     source 'create_superusers.sql.erb'
+    locale 'en_US.utf8'
     owner 'postgres'
   end
 
@@ -40,12 +41,12 @@ end
 file '/lib/systemd/system/postgresql.service' do
   action :delete
   notifies :run, 'execute[systemctl daemon-reload]', :immediately
-  only_if { node['lsb']['codename'] == 'xenial' }
+  only_if { node['lsb']['codename'] == 'xenial' || node['lsb']['codename'] == 'bionic' }
 end
 
 execute 'systemctl daemon-reload' do
   action :nothing
-  only_if { node['lsb']['codename'] == 'xenial' }
+  only_if { node['lsb']['codename'] == 'xenial' || node['lsb']['codename'] == 'bionic' }
 end
 
 TravisPostgresqlMethods.pg_versions(node).each do |pg_version|

@@ -9,3 +9,5 @@ apt_repository 'pgdg' do
   retry_delay 30
   action :add
 end
+
+apt_update 'update'
