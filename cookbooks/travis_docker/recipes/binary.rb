@@ -22,11 +22,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-ark 'docker' do
-  url node['travis_docker']['binary']['url']
-  version node['travis_docker']['binary']['version']
-  checksum node['travis_docker']['binary']['checksum']
-  strip_components 1
-  has_binaries node['travis_docker']['binary']['binaries']
-  not_if { node['kernel']['machine'] == 'ppc64le' }
-end
+#ark 'docker' do
+#  url node['travis_docker']['binary']['url']
+#  version node['travis_docker']['binary']['version']
+#  checksum node['travis_docker']['binary']['checksum']
+#  strip_components 1
+#  has_binaries node['travis_docker']['binary']['binaries']
+#  not_if { node['kernel']['machine'] == 'ppc64le' }
+#end

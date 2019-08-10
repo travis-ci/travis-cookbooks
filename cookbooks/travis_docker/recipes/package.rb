@@ -45,9 +45,13 @@ package pkgs do
   action %i[install upgrade]
 end
 
-package 'docker-ce' do
-  version node['travis_docker']['version']
-end
+#package 'docker-ce' do
+#  version node['travis_docker']['version']
+#end
+
+package ['docker-ce', 'docker-ce-cli', 'containerd.io'] do 
+    action: install 
+end 
 
 group 'adding user to docker group' do
   group_name 'docker'

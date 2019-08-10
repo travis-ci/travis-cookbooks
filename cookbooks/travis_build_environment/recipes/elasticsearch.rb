@@ -1,24 +1,35 @@
 # frozen_string_literal: true
 
-package_name = "elasticsearch-#{node['travis_build_environment']['elasticsearch']['version']}.deb"
-deb_download_dest = File.join(
-  Chef::Config[:file_cache_path],
-  package_name
-)
+#package_name = "elasticsearch-#{node['travis_build_environment']['elasticsearch']['version']}-#{ 'amd64' if node['kernel']['machine'] == 'x86_64' }.deb"
+#deb_download_dest = File.join(
+#  Chef::Config[:file_cache_path],
+#  package_name
+#)
+#
+#remote_file deb_download_dest do
+#  source "https://artifacts.elastic.co/downloads/elasticsearch/#{package_name}"
+#  owner node['travis_build_environment']['user']
+#  group node['travis_build_environment']['group']
+#end
+#
+#dpkg_package package_name do
+#  source deb_download_dest
+#  notifies :run, 'ruby_block[create-symbolic-links]'
+#  action :install
+#  not_if 'which elasticsearch'
+#end
 
-remote_file deb_download_dest do
-  source "https://artifacts.elastic.co/downloads/elasticsearch/#{package_name}"
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
+apt_repository 'elasticsearch' do
+    uri 'https://artifacts.elastic.co/packages/7.x/apt'
+    distribution 'stable'
+    components ['main']
+    key 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
+    action: add
 end
 
-dpkg_package package_name do
-  source deb_download_dest
-  notifies :run, 'ruby_block[create-symbolic-links]'
-  action :install
-  not_if 'which elasticsearch'
+apt_package 'elasticsearch' do
+      action :install
 end
-
 ruby_block 'create-symbolic-links' do
   block do
     Dir.foreach('/usr/share/elasticsearch/bin') do |file|
@@ -51,4 +62,8 @@ service 'elasticsearch' do
   end
   retries 4
   retry_delay 30
+end
+
+apt_repository 'elasticsearch' do
+    action: remove 
 end
