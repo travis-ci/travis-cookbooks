@@ -24,7 +24,7 @@ apt_repository 'elasticsearch' do
     distribution 'stable'
     components ['main']
     key 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
-    action: add
+    action :add
 end
 
 apt_package 'elasticsearch' do
@@ -65,5 +65,5 @@ service 'elasticsearch' do
 end
 
 apt_repository 'elasticsearch' do
-    action: remove 
+    action :remove 
 end
