@@ -50,7 +50,7 @@ end
 #end
 
 package ['docker-ce', 'docker-ce-cli', 'containerd.io'] do 
-    action: install 
+    action :install 
 end 
 
 group 'adding user to docker group' do
