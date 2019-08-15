@@ -14,7 +14,7 @@ bash 'install-pip3' do
   INSTALL_PIP3
   not_if 'which pip3'
 end
- 
+
 bash 'install-pip' do
   cwd Chef::Config[:file_cache_path]
   code <<-INSTALL_PIP
