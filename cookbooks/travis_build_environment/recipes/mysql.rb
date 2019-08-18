@@ -48,7 +48,7 @@ mysql_pkgs =  %w[
   mysql-server-5.6
   mysql-server-core-5.6
 ]
-if node['lsb']['codename'] == 'xenial'
+if node['lsb']['codename'] == 'xenial' || node['lsb']['codename'] == 'bionic'
   mysql_version = 5.7
   mysql_pkgs = %w[
     libmysqlclient-dev
