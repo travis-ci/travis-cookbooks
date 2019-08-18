@@ -45,7 +45,7 @@ versions = [
   node['travis_jdk']['versions']
 ].flatten.uniq
 
-#remote_file 'install-jdk.sh' do
+# remote_file 'install-jdk.sh' do
 #  source 'https://raw.githubusercontent.com/sormuras/bach/master/install-jdk.sh'
 #  path node['travis_jdk']['install-jdk.sh_path']
 #  owner 'root'
@@ -53,7 +53,7 @@ versions = [
 #  mode '0755'
 #  action :create
 #  sensitive true
-#end
+# end
 
 cookbook_file '/usr/local/bin/install-jdk.sh' do
   source 'install-jdk.sh'
