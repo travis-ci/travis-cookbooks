@@ -96,12 +96,15 @@ default['travis_build_environment']['pip']['packages'] = {
 }
 
 default['travis_build_environment']['system_python']['pythons'] = %w[2.7 3.2]
-if node['lsb']['codename'] == 'trusty'
-  default['travis_build_environment']['system_python']['pythons'] = %w[2.7 3.4]
-elsif node['lsb']['codename'] == 'xenial'
-  default['travis_build_environment']['system_python']['pythons'] = %w[2.7 3.5]
-elsif node['lsb']['codename'] == 'bionic'
-  default['travis_build_environment']['system_python']['pythons'] = %w[2.7 3.6]
+case node['platform']
+when 'ubuntu'
+  if node['lsb']['codename'] == 'trusty'
+    default['travis_build_environment']['system_python']['pythons'] = %w[2.7 3.4]
+  elsif node['lsb']['codename'] == 'xenial'
+    default['travis_build_environment']['system_python']['pythons'] = %w[2.7 3.5]
+  elsif node['lsb']['codename'] == 'bionic'
+    default['travis_build_environment']['system_python']['pythons'] = %w[2.7 3.6]
+  end
 end
 
 default['travis_build_environment']['rebar_url'] = \
