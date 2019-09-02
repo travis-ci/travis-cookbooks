@@ -27,36 +27,50 @@ global_gems = Array(
   node['travis_build_environment']['global_gems']
 ).map { |g| g[:name] }.join(' ')
 
-package %w[
-  automake
-  bash
-  bison
-  bzip2
-  curl
-  g++
-  gawk
-  gcc
-  gnupg2
-  libc6-dev
-  libffi-dev
-  libgdbm-dev
-  libgmp-dev
-  libncurses5-dev
-  libreadline6-dev
-  libsqlite3-dev
-  libssl-dev
-  libtool
-  libyaml-dev
-  make
-  openssl
-  patch
-  pkg-config
-  sqlite3
-  zlib1g
-  zlib1g-dev
-] do
-  action :install
-  options '--no-install-recommends --no-upgrade'
+packages = value_for_platform_family(
+  'ubuntu' => %w[
+    automake
+    bash
+    bison
+    bzip2
+    curl
+    g++
+    gawk
+    gcc
+    gnupg2
+    libc6-dev
+    libffi-dev
+    libgdbm-dev
+    libgmp-dev
+    libncurses5-dev
+    libreadline6-dev
+    libsqlite3-dev
+    libssl-dev
+    libtool
+    libyaml-dev
+    make
+    openssl
+    patch
+    pkg-config
+    sqlite3
+    zlib1g
+    zlib1g-dev
+  ],
+  'freebsd' => %w[
+    curl
+    bash
+    gnupg
+  ]
+)
+
+packages.each do |p|
+  package p do
+    action :install
+    case node[:platform]
+    when 'ubuntu'
+      options '--no-install-recommends --no-upgrade'
+    end
+  end
 end
 
 gpg_keys.each do |name, checksum|
