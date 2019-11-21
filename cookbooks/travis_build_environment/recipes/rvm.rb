@@ -60,7 +60,7 @@ packages = value_for_platform_family(
     curl
     bash
     gnupg
-    pkg-config
+    pkgconf
     libxslt
     libxml2
   ]
