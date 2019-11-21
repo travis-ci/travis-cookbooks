@@ -60,6 +60,8 @@ packages = value_for_platform_family(
     curl
     bash
     gnupg
+    libxslt
+    libxml2
   ]
 )
 
