@@ -300,3 +300,6 @@ default['travis_build_environment']['disable_ntp'] = true
 if File.exist?('/.dockerenv')
   default['travis_build_environment']['disable_ntp'] = false
 end
+
+default['travis_build_environment']['root_user'] = 'root'
+default['travis_build_environment']['root_group'] = 'root'

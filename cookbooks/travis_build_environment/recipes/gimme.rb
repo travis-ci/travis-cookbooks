@@ -41,8 +41,8 @@ gimme_url = obtain_gimme_url
 
 remote_file '/usr/local/bin/gimme' do
   source gimme_url
-  owner 'root'
-  group 'root'
+  owner node['travis_build_environment']['root_user']
+  group node['travis_build_environment']['root_group']
   mode 0o755
 end
 
@@ -65,8 +65,8 @@ template '/etc/profile.d/Z90-gimme.sh' do
   variables(
     default_version: node['travis_build_environment']['gimme']['default_version']
   )
-  owner 'root'
-  group 'root'
+  owner node['travis_build_environment']['root_user']
+  group node['travis_build_environment']['root_group']
   mode 0o755
 end
 
