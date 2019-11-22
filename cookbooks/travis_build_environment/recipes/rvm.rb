@@ -55,7 +55,7 @@ packages = value_for_platform(
     sqlite3
     zlib1g
     zlib1g-dev
-  ]},
+  ] },
   'freebsd' => { 'default' => %w[
     curl
     bash
@@ -63,7 +63,7 @@ packages = value_for_platform(
     pkgconf
     libxslt
     libxml2
-  ]}
+  ] }
 )
 
 packages.each do |p|
