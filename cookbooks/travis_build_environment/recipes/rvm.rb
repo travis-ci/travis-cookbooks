@@ -28,7 +28,7 @@ global_gems = Array(
 ).map { |g| g[:name] }.join(' ')
 
 packages = value_for_platform(
-  'ubuntu' => %w[
+  'ubuntu' => { 'default' => %w[
     automake
     bash
     bison
@@ -55,15 +55,15 @@ packages = value_for_platform(
     sqlite3
     zlib1g
     zlib1g-dev
-  ],
-  'freebsd' => %w[
+  ]},
+  'freebsd' => { 'default' => %w[
     curl
     bash
     gnupg
     pkgconf
     libxslt
     libxml2
-  ]
+  ]}
 )
 
 packages.each do |p|
