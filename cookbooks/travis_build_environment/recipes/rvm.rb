@@ -60,6 +60,9 @@ packages = value_for_platform_family(
     curl
     bash
     gnupg
+    pkgconf
+    libxslt
+    libxml2
   ]
 )
 
@@ -151,8 +154,14 @@ bash "create default alias for #{node['travis_build_environment']['default_ruby'
   not_if { node['travis_build_environment']['default_ruby'].to_s.empty? }
 end
 
+if node[:platform_family].include?("freebsd")
+  install_flag = " -- --use-system-libraries"
+else
+  install_flag = ""
+end
+
 bash 'install global gems' do
-  code "#{rvm_script_path} @global do gem install #{global_gems} --force"
+  code "#{rvm_script_path} @global do gem install #{global_gems} --force#{install_flag}"
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   environment('HOME' => node['travis_build_environment']['home'])
