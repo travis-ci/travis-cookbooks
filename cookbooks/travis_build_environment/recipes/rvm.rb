@@ -27,7 +27,7 @@ global_gems = Array(
   node['travis_build_environment']['global_gems']
 ).map { |g| g[:name] }.join(' ')
 
-packages = value_for_platform_family(
+packages = value_for_platform(
   'ubuntu' => %w[
     automake
     bash
