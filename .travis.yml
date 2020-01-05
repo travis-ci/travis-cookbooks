@@ -1,5 +1,5 @@
 language: generic
-dist: trusty
+dist: xenial
 
 env:
   global:
@@ -11,7 +11,7 @@ env:
 addons:
   apt:
     sources:
-    - sourceline: "deb https://packages.chef.io/repos/apt/current trusty main"
+    - sourceline: "deb https://packages.chef.io/repos/apt/current xenial main"
       key_url:  "https://%{app_host}/files/gpg/chef-current-trusty.asc"
     packages:
     - chefdk
