@@ -34,15 +34,15 @@ bits = case node['kernel']['machine']
        end
 
 hostname = case [node['platform'], node['platform_version']]
-           when ['ubuntu', '11.04'] then
+           when ['ubuntu', '11.04']
              "natty#{bits}"
-           when ['ubuntu', '11.10'] then
+           when ['ubuntu', '11.10']
              "oneiric#{bits}"
-           when ['ubuntu', '12.04'] then
+           when ['ubuntu', '12.04']
              "precise#{bits}"
-           when ['ubuntu', '14.04'] then
+           when ['ubuntu', '14.04']
              "trusty#{bits}"
-           when ['ubuntu', '16.04'] then
+           when ['ubuntu', '16.04']
              "xenial#{bits}"
            end
 
