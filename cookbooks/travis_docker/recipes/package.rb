@@ -39,6 +39,8 @@ when 'xenial'
   pkgs = %w[linux-generic-lts-xenial linux-image-generic-lts-xenial]
 when 'bionic'
   pkgs = %w[linux-generic linux-image-generic]
+else
+  pkgs = %w[linux-generic linux-image-generic]
 end
 
 package pkgs do

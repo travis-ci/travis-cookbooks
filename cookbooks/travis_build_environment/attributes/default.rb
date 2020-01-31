@@ -104,6 +104,8 @@ when 'ubuntu'
     default['travis_build_environment']['system_python']['pythons'] = %w[2.7 3.5]
   elsif node['lsb']['codename'] == 'bionic'
     default['travis_build_environment']['system_python']['pythons'] = %w[2.7 3.6]
+  else
+    default['travis_build_environment']['system_python']['pythons'] = %w[3.7]
   end
 end
 

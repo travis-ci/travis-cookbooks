@@ -13,6 +13,8 @@ when 'xenial'
   pkgs = %w[git git-core]
 when 'bionic'
   pkgs = %w[git]
+else
+  pkgs = %w[git]
 end
 
 package pkgs do
