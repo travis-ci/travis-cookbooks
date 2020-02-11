@@ -31,7 +31,7 @@ end
 packagecloud_repo 'github/git-lfs' do
   type 'deb'
   not_if { node['kernel']['machine'] == 'ppc64le' }
-  if { packagecloud_repo_enable }
+  only_if { packagecloud_repo_enable }
 end
 
 package 'git-lfs' do
@@ -48,5 +48,5 @@ execute 'remove git-lfs repo' do
   command 'rm -f /etc/apt/sources.list.d/github_git-lfs.list'
   not_if { node['kernel']['machine'] == 'ppc64le' }
   not_if { node['travis_build_environment']['git-lfs']['keep_repo'] }
-  if { packagecloud_repo_enable }
+  only_if { packagecloud_repo_enable }
 end
