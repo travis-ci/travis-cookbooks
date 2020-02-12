@@ -47,8 +47,13 @@ package pkgs do
   action %i[install upgrade]
 end
 
-package 'docker-ce' do
-  version node['travis_docker']['version']
+case node['lsb']['codename']
+when 'trusty','xenial', 'bionic'
+  package 'docker-ce' do
+    version node['travis_docker']['version']
+  end
+else
+  package 'docker.io'
 end
 
 group 'adding user to docker group' do
