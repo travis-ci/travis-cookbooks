@@ -180,7 +180,7 @@ function perform_sanity_checks() {
     if [[ ${feature} == '?' ]] || [[ ${feature} == 'ea' ]]; then
         feature=${latest_jdk}
     fi
-    if [[ ${feature} -lt 9 ]] || [[ ${feature} -gt ${latest_jdk} ]]; then
+    if [[ ${feature} -lt 8 ]] || [[ ${feature} -gt ${latest_jdk} ]]; then
         script_exit "Expected feature release number in range of 9 to ${latest_jdk}, but got: ${feature}" 3
     fi
     if [[ -d "$target" ]]; then
@@ -194,6 +194,7 @@ function determine_url() {
 
     # An official GA build or an archived feature? Use predefined URL
     case "${feature}" in
+        8) url="https://storage.googleapis.com/travis-archive/openjdk/OpenJDK8U-jdk_x64_linux_latest.tar.gz"; return;; 
         9) url="${DOWNLOAD}/GA/jdk9/9.0.4/binaries/openjdk-9.0.4_${os}_bin.tar.gz"; return;;
        10) url="${DOWNLOAD}/GA/jdk10/10.0.2/19aef61b38124481863b1413dce1855f/13/openjdk-10.0.2_${os}_bin.tar.gz"; return;;
        11) url="${DOWNLOAD}/GA/jdk11/9/GPL/openjdk-11.0.2_${os}_bin.tar.gz"; return;;
