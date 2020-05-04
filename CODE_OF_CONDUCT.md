@@ -71,4 +71,4 @@ This Code of Conduct is adapted from the [Contributor Covenant][homepage], versi
 available at [https://www.contributor-covenant.org/version/2/0/code_of_conduct/][version]
 
 [homepage]: http://contributor-covenant.org
-[version]: http://contributor-covenant.org/version/1/4/
+[version]: http://contributor-covenant.org/version/2/0/
