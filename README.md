@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/travis-ci/travis-cookbooks.svg?branch=master)](https://travis-ci.com/travis-ci/travis-cookbooks)
+
 # Travis cookbooks!
 
 Travis cookbooks are collections of Chef cookbooks used with
