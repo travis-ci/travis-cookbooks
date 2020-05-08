@@ -11,7 +11,7 @@ file '/etc/sysctl.d/30-travis-shm.conf' do
   group 'root'
   mode 0o644
   notifies :run, 'execute[update sysctl travis-shm]'
-end
+end unless `ls -l /proc/sys/kernel/shmmax`.include?("nobody")
 
 execute 'update sysctl travis-disable-ipv6' do
   command 'sysctl -p /etc/sysctl.d/99-travis-disable-ipv6.conf'
