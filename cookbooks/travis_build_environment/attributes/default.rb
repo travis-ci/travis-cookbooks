@@ -307,3 +307,5 @@ end
 
 default['travis_build_environment']['root_user'] = 'root'
 default['travis_build_environment']['root_group'] = 'root'
+
+default['travis_build_environment']['virtualenv']['version'] = '15.1.0'
