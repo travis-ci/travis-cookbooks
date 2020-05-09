@@ -5,7 +5,7 @@ execute 'update sysctl travis-shm' do
   action :nothing
 end
 
-unless `ls -l /proc/sys/kernel/shmmax`.include?("nobody")
+unless shell_out("ls -l /proc/sys/kernel/shmmax").stdout.include?("nobody")
   file '/etc/sysctl.d/30-travis-shm.conf' do
     content "kernel.shmmax=#{node['travis_build_environment']['sysctl_kernel_shmmax']}\n"
     owner 'root'
