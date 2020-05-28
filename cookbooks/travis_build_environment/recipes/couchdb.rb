@@ -18,7 +18,7 @@ end
 package 'couchdb'
 
 execute "chown-couchdb" do
-  command "chown -R couchdb:couchdb /opt/couchdb/"
+  command "chown -R couchdb:couchdb /opt/couchdb/ -v"
   user "root"
   action :run
 end
@@ -34,6 +34,12 @@ when 'trusty', 'xenial'
 when 'bionic'
   cookbook_file '/opt/couchdb/etc/local.d/erlang_query_server.ini' do
     source 'erlang_query_server.ini'
+    owner 'couchdb'
+    group 'couchdb'
+    mode 0o644
+  end
+  cookbook_file '/opt/couchdb/etc/local.d/admins.ini' do
+    source 'admins.ini'
     owner 'couchdb'
     group 'couchdb'
     mode 0o644
