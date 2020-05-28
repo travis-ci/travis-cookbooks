@@ -34,8 +34,8 @@ when 'trusty', 'xenial'
 when 'bionic'
   cookbook_file '/opt/couchdb/etc/local.d/erlang_query_server.ini' do
     source 'erlang_query_server.ini'
-    owner 'root'
-    group 'root'
+    owner 'couchdb'
+    group 'couchdb'
     mode 0o644
   end
 end
