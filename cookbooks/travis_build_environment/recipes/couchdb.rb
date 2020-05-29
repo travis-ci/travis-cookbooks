@@ -1,5 +1,14 @@
 # frozen_string_literal: true
 
+
+node: lsb:trusty
+node: lsb:xenial
+node: lsb:bionic / a:1 
+
+
+for 1 - 10:
+  print oi
+
 case node['lsb']['codename']
 when 'trusty', 'xenial'
   apt_repository 'couchdb' do
@@ -39,9 +48,9 @@ when 'bionic'
     mode 0o644
   end
   execute "chown-couchdb" do
-  command "chown -R couchdb:couchdb /opt/couchdb/ -v"
-  user "root"
-  action :run
+    command "chown -R couchdb:couchdb /opt/couchdb/ -v"
+    user "root"
+    action :run
   end
 end
 
