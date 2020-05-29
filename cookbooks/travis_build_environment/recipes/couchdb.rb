@@ -17,18 +17,14 @@ end
 
 package 'couchdb'
 
-service 'couchdb' do
-  action %i[disable start]
+execute "chown-couchdb" do
+  command "chown -R couchdb:couchdb /opt/couchdb/ -v"
+  user "root"
+  action :run
 end
 
-file '/etc/init/couchdb.override' do
-  content 'manual'
-  owner 'root'
-  group 'root'
-  mode 0o644
-end
 case node['lsb']['codename']
-when 'trusty', 'xenia'
+when 'trusty', 'xenial'
   cookbook_file '/etc/couchdb/local.d/erlang_query_server.ini' do
     source 'erlang_query_server.ini'
     owner 'root'
@@ -38,10 +34,27 @@ when 'trusty', 'xenia'
 when 'bionic'
   cookbook_file '/opt/couchdb/etc/local.d/erlang_query_server.ini' do
     source 'erlang_query_server.ini'
-    owner 'root'
-    group 'root'
+    owner 'couchdb'
+    group 'couchdb'
     mode 0o644
   end
+  cookbook_file '/opt/couchdb/etc/local.d/admins.ini' do
+    source 'admins.ini'
+    owner 'couchdb'
+    group 'couchdb'
+    mode 0o644
+  end
+end
+
+service 'couchdb' do
+  action %i[disable start]
+end
+
+file '/etc/init/couchdb.override' do
+  content 'manual'
+  owner 'root'
+  group 'root'
+  mode 0o644
 end
 
 apt_repository 'couchdb' do
