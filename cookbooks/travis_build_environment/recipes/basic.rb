@@ -69,9 +69,7 @@ include_recipe 'travis_build_environment::ntp'
 include_recipe 'travis_build_environment::packer'
 include_recipe 'travis_build_environment::virtualenv'
 include_recipe 'travis_build_environment::system_python'
-if node['kernel']['machine'] != 'aarch64'
- include_recipe 'travis_build_environment::python'
-end
+include_recipe 'travis_build_environment::python'
 if node['kernel']['machine'] != 'ppc64le' && node['kernel']['machine'] != 'aarch64'
   include_recipe 'travis_build_environment::heroku_toolbelt'
 end
