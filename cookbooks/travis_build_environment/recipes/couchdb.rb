@@ -25,6 +25,12 @@ end
 
 package 'couchdb'
 
+when 'focal'
+  execute 'edit_local_ini' do
+    command 'echo "travis = travis" >> /opt/couchdb/etc/local.ini'
+  end
+end
+
 service 'couchdb' do
   action %i[disable start]
 end
@@ -43,7 +49,7 @@ when 'trusty', 'xenia'
     group 'root'
     mode 0o644
   end
-when 'bionic'
+when 'bionic', 'focal'
   cookbook_file '/opt/couchdb/etc/local.d/erlang_query_server.ini' do
     source 'erlang_query_server.ini'
     owner 'root'
