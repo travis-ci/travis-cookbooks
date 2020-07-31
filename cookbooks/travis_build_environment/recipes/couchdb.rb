@@ -13,7 +13,6 @@ when 'bionic'
     components ['main']
     key 'https://couchdb.apache.org/repo/bintray-pubkey.asc'
   end
-end
 when 'focal'
   apt_repository 'couchdb' do
     uri 'https://apache.bintray.com/couchdb-deb'
@@ -25,6 +24,7 @@ end
 
 package 'couchdb'
 
+case node['lsb']['codename']
 when 'focal'
   execute 'edit_local_ini' do
     command 'echo "travis = travis" >> /opt/couchdb/etc/local.ini'
