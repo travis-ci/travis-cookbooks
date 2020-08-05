@@ -8,6 +8,8 @@ create_superusers_script = ::File.join(
 if !node['travis_postgresql']['superusers'].to_a.empty? && !::File.exist?(create_superusers_script)
   service 'postgresql' do
     action :start
+    ignore_failure true
+    timeout 30
   end
 
   template create_superusers_script do
