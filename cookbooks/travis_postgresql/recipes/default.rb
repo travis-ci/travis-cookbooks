@@ -9,4 +9,6 @@ service 'postgresql' do
   else
     action %i[disable restart]
   end
+  ignore_failure true
+  timeout 30
 end
