@@ -13,9 +13,34 @@ when 'bionic'
     components ['main']
     key 'https://couchdb.apache.org/repo/bintray-pubkey.asc'
   end
+when 'focal'
+  apt_repository 'couchdb' do
+    uri 'https://apache.bintray.com/couchdb-deb'
+    distribution 'focal'
+    components ['main']
+    key 'https://couchdb.apache.org/repo/bintray-pubkey.asc'
+  end
 end
 
 package 'couchdb'
+
+case node['lsb']['codename']
+when 'focal'
+  execute 'edit_local_ini' do
+    command 'echo "travis = travis" >> /opt/couchdb/etc/local.ini'
+  end
+end
+
+service 'couchdb' do
+  action %i[disable start]
+end
+
+file '/etc/init/couchdb.override' do
+  content 'manual'
+  owner 'root'
+  group 'root'
+  mode 0o644
+end
 
 case node['lsb']['codename']
 when 'trusty', 'xenial'
@@ -25,7 +50,7 @@ when 'trusty', 'xenial'
     group 'root'
     mode 0o644
   end
-when 'bionic'
+when 'bionic', 'focal'
   cookbook_file '/opt/couchdb/etc/local.d/erlang_query_server.ini' do
     source 'erlang_query_server.ini'
     owner 'couchdb'

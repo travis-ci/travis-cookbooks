@@ -32,11 +32,11 @@ ark 'firefox' do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   has_binaries %w[firefox firefox-bin]
-  not_if { node['kernel']['machine'] == 'ppc64le' }
+  not_if { node['kernel']['machine'] == 'ppc64le' || node['kernel']['machine'] == 'aarch64' }
 end
 
-ruby_block 'job_board adjustments firefox ppc64le' do
-  only_if { node['kernel']['machine'] == 'ppc64le' }
+ruby_block 'job_board adjustments firefox ppc64le/aarch64' do
+  only_if { node['kernel']['machine'] == 'ppc64le' || node['kernel']['machine'] == 'aarch64' }
   block do
     features = node['travis_packer_templates']['job_board']['features'] - ['firefox']
     node.override['travis_packer_templates']['job_board']['features'] = features
