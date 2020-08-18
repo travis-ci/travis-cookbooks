@@ -25,17 +25,30 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-ark 'cmake' do
-  url node['travis_build_environment']['cmake']['download_url']
-  checksum node['travis_build_environment']['cmake']['checksum']
-  version node['travis_build_environment']['cmake']['version']
-  extension node['travis_build_environment']['cmake']['extension']
-  retries 2
-  retry_delay 30
-  append_env_path true
-  not_if { node['kernel']['machine'] == 'ppc64le' }
+case node['lsb']['codename']
+when 'focal'
+  ark 'cmake' do
+    url node['travis_build_environment']['cmake']['download_url']
+    checksum node['travis_build_environment']['cmake']['6b5c856158c16307692ae54ba761cfe30df7b2a131d602e83fda42a572973063']
+    version node['travis_build_environment']['cmake']['3.16.8']
+    extension node['travis_build_environment']['cmake']['extension']
+    retries 2
+    retry_delay 30
+    append_env_path true
+    not_if { node['kernel']['machine'] == 'ppc64le' }
+  end
+else
+  ark 'cmake' do
+    url node['travis_build_environment']['cmake']['download_url']
+    checksum node['travis_build_environment']['cmake']['checksum']
+    version node['travis_build_environment']['cmake']['version']
+    extension node['travis_build_environment']['cmake']['extension']
+    retries 2
+    retry_delay 30
+    append_env_path true
+    not_if { node['kernel']['machine'] == 'ppc64le' }
+  end
 end
-
 package 'cmake' do
   action %i[install upgrade]
   only_if { node['kernel']['machine'] == 'ppc64le' }
