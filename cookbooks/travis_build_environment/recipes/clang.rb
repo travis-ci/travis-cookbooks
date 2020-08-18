@@ -22,7 +22,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-if { node['kernel']['machine'] == 'ppc64le' || node['kernel']['machine'] == 'aarch64' }
+if node['kernel']['machine'] == 'ppc64le'
+  package 'clang'
+elsif node['kernel']['machine'] == 'aarch64'
   package 'clang'
 else
   include_recipe 'travis_build_environment::clang_tarball'
