@@ -23,7 +23,7 @@
 # THE SOFTWARE.
 
 apt_repository 'mongodb-4.0' do
-  uri 'http://repo.mongodb.org/apt/ubuntu'
+  uri 'http://repo.mongodb.org/apt/ubuntu/dists'
   distribution "#{node['lsb']['codename']}/mongodb-org/4.0"
   components %w[multiverse]
   key 'https://www.mongodb.org/static/pgp/server-4.0.asc'
