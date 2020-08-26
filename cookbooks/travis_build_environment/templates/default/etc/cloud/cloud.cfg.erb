@@ -3,7 +3,7 @@
 ##     file:: templates/default/etc/cloud/cloud.cfg.erb
 
 users:
-- travis
+- default
 
 disable_root: true
 
@@ -64,7 +64,7 @@ cloud_final_modules:
 system_info:
   distro: ubuntu
   default_user:
-    name: ubuntu
+    name: travis
     lock_passwd: True
     gecos: Ubuntu
     groups: [adm, audio, cdrom, dialout, dip, floppy, netdev, plugdev, sudo, video]
