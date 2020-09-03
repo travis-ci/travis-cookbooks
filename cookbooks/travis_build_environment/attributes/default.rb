@@ -104,6 +104,8 @@ when 'ubuntu'
     default['travis_build_environment']['system_python']['pythons'] = %w[2.7 3.5]
   elsif node['lsb']['codename'] == 'bionic'
     default['travis_build_environment']['system_python']['pythons'] = %w[2.7 3.6]
+  else
+    default['travis_build_environment']['system_python']['pythons'] = %w[3.7]
   end
 end
 
@@ -182,7 +184,9 @@ default['travis_build_environment']['sphinxsearch']['ppas'] = %w[
   ppa:builds/sphinxsearch-rel22
 ]
 
-default['travis_build_environment']['elasticsearch']['version'] = '5.5.0'
+version = '5.5.0'
+default['travis_build_environment']['elasticsearch']['version'] = version
+default['travis_build_environment']['elasticsearch']['package_name'] = "elasticsearch-#{version}.deb"
 default['travis_build_environment']['elasticsearch']['service_enabled'] = false
 default['travis_build_environment']['elasticsearch']['jvm_heap'] = '128m'
 
@@ -270,7 +274,7 @@ default['travis_build_environment']['mercurial_url'] = "https://www.mercurial-sc
 default['travis_build_environment']['mongodb']['service_enabled'] = false
 default['travis_build_environment']['mongodb']['keep_repo'] = false
 
-default['travis_build_environment']['shellcheck_url'] = 'https://storage.googleapis.com/shellcheck/shellcheck-v0.7.0.linux.x86_64.tar.xz'
+default['travis_build_environment']['shellcheck_url'] = 'https://github.com/koalaman/shellcheck/releases/download/v0.7.0/shellcheck-v0.7.0.linux.x86_64.tar.xz'
 default['travis_build_environment']['shellcheck_version'] = '0.7.0'
 default['travis_build_environment']['shellcheck_checksum'] = '39c501aaca6aae3f3c7fc125b3c3af779ddbe4e67e4ebdc44c2ae5cba76c847f'
 default['travis_build_environment']['shellcheck_binaries'] = %w[shellcheck]
@@ -303,3 +307,5 @@ end
 
 default['travis_build_environment']['root_user'] = 'root'
 default['travis_build_environment']['root_group'] = 'root'
+
+default['travis_build_environment']['virtualenv']['version'] = '15.1.0'

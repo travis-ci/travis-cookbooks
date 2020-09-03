@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-package_name = "elasticsearch-#{node['travis_build_environment']['elasticsearch']['version']}.deb"
+package_name = node['travis_build_environment']['elasticsearch']['package_name']
 deb_download_dest = File.join(
   Chef::Config[:file_cache_path],
   package_name

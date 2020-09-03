@@ -3,7 +3,12 @@
 virtualenv_root = File.join(node['travis_build_environment']['home'], 'virtualenv')
 
 # Install Python2 and Python3
-package %w[python-dev python3-dev]
+case node['lsb']['codename']
+when 'trusty', 'xenial', 'bionic'
+  package %w[python-dev python3-dev]
+else
+  package %w[python3-dev]
+end
 
 # Create a directory to store our virtualenvs in
 directory virtualenv_root do
@@ -27,7 +32,7 @@ node['travis_build_environment']['system_python']['pythons'].each do |py|
 
   packages = []
 
-  node['travis_build_environment']['python_aliases'].fetch(py, []).concat(['default', py]).each do |name|
+  node['travis_build_environment']['python_aliases'].to_hash.fetch(py, []).concat(['default', py]).each do |name|
     packages.concat node['travis_build_environment']['pip']['packages'].fetch(name, [])
   end
 
