@@ -2,8 +2,8 @@
 ## cookbook:: travis_build_environment
 ##     file:: templates/default/etc/cloud/templates/hosts.tmpl.erb
 
-127.0.0.1 localhost nettuno travis vagrant
-127.0.1.1 $hostname $fqdn ip4-loopback <%= @hostname %>
+127.0.0.1 localhost nettuno travis vagrant 
+127.0.1.1 $hostname $fqdn ip4-loopback <%= @hostname %> ubuntu
 
 <% unless node['travis_build_environment']['sysctl_disable_ipv6'] %>
 <% if node['ip6address'] %>
