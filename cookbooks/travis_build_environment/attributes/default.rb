@@ -309,3 +309,13 @@ default['travis_build_environment']['root_user'] = 'root'
 default['travis_build_environment']['root_group'] = 'root'
 
 default['travis_build_environment']['virtualenv']['version'] = '15.1.0'
+
+default['travis_build_environment']['ibm_advanced_tool_chain_version'] = '14.0'
+default['travis_build_environment']['ibm_advanced_tool_chain_bionic_url'] = ::File.join(
+  'https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists',
+  "/bionic/at#{node['travis_build_environment']['ibm_advanced_tool_chain_version']}/binary-amd64"
+)
+default['travis_build_environment']['ibm_advanced_tool_chain_focal_url'] = ::File.join(
+  'https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists',
+  "/focal/at#{node['travis_build_environment']['ibm_advanced_tool_chain_version']}/binary-amd64"
+)
