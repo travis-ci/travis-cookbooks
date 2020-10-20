@@ -311,33 +311,18 @@ default['travis_build_environment']['root_group'] = 'root'
 default['travis_build_environment']['virtualenv']['version'] = '15.1.0'
 
 default['travis_build_environment']['ibm_advanced_tool_chain_version'] = '14.0'
-default['travis_build_environment']['ibm_advanced_tool_chain_bionic_url'] = ::File.join(
+default['travis_build_environment']['ibm_advanced_tool_chain_apt_key_url'] = ::File.join(
   'https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists',
-  "/bionic/at#{node['travis_build_environment']['ibm_advanced_tool_chain_version']}/binary-amd64"
+  "#{node['lsb']['codename']}/6976a827.gpg.key"
 )
-default['travis_build_environment']['ibm_advanced_tool_chain_focal_url'] = ::File.join(
-  'https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists',
-  "/focal/at#{node['travis_build_environment']['ibm_advanced_tool_chain_version']}/binary-amd64"
-)
+default['travis_build_environment']['ibm_advanced_tool_chain_apt_deb_url'] =
+  'https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu'
 
-default['travis_build_environment']['ibm_tool_chain_cross_common_bionic_checksum'] =
-  '5b0a6f1b5540c3c229d08b4d7d094b5c1fd042b8a2f77f373489a2e90ad653c0'
-default['travis_build_environment']['ibm_tool_chain_cross_libnxz_bionic_checksum'] =
-  'efe9c03f6ca4641ceb108c245d958d71479ee90abf4639cc83ca6f43c69ba556'
-default['travis_build_environment']['ibm_tool_chain_cross_mcore_bionic_checksum'] =
-  'af24123584256b45ad8e8b5d177dd395ceeed06d652960dda0f157ef9a04f46c'
-default['travis_build_environment']['ibm_tool_chain_cross_extras_bionic_checksum'] =
-  '9426b6a820e832db3d60e0c3d837050785dd3311300ee48709cbed9a5d7a782e'
-default['travis_build_environment']['ibm_tool_chain_cross_bionic_checksum'] =
-  '22e997022fbb5a18fb5a91b0f8be106c46adae0912ae6c7d231ef27b75421f1e'
-
-default['travis_build_environment']['ibm_tool_chain_cross_common_focal_checksum'] =
-  '9b094b977d6df1c64f9e0bc4fb5c87dc8be71c56ffc1f336caffd93b198bfb36'
-default['travis_build_environment']['ibm_tool_chain_cross_libnxz_focal_checksum'] =
-  'ea5b22e13913e1e0cd611977aec90ab3405cc5be845a9a2e4e9a569aba163c76'
-default['travis_build_environment']['ibm_tool_chain_cross_mcore_focal_checksum'] =
-  'bd0a712baec80324629e8dbde6024f7a09f5f7077edd7afba5ee0eef5d4cbbef'
-default['travis_build_environment']['ibm_tool_chain_cross_extras_focal_checksum'] =
-  '821dec34d4e48064ccaa3bbab59d0397fe0dd7de49c94f381cbd140d3bbc05a5'
-default['travis_build_environment']['ibm_tool_chain_cross_focal_checksum'] =
-  'c4a1ebebe687888f99e4c84ad96cb85594ebefda03d90557f9dae2e730c93189'
+case node['platform']
+when 'ubuntu'
+  if node['lsb']['codename'] == 'bionic' || node['lsb']['codename'] == 'focal'
+    default['travis_build_environment']['ibm_advanced_tool_chain_version'] = 14.0
+  elsif node['lsb']['codename'] == 'xenial'
+    default['travis_build_environment']['ibm_advanced_tool_chain_version'] = 14.0
+  end
+end
