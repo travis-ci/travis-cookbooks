@@ -17,5 +17,5 @@ apt_package 'install_ibm_advanced_toolchain' do
                   advance-toolchain-cross-ppc64le-libnxz
                   advance-toolchain-cross-ppc64le-mcore-libs
                   advance-toolchain-cross-ppc64le-runtime-extras]
-  only_if { node['kernel']['machine'] == 'amd64' }                
+  only_if { node['kernel']['machine'] == 'amd64' }
 end
