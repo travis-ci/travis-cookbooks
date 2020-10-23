@@ -8,7 +8,7 @@ apt_repository 'ibm_advanced_tool_chain' do
   key node['travis_build_environment']['ibm_advanced_tool_chain_apt_key_url']
   retries 2
   retry_delay 30
-  only_if { node['kernel']['machine'] == 'amd64' }
+  only_if { node['kernel']['machine'] =~ /x86_64/ }
 end
 
 apt_package 'install_ibm_advanced_toolchain' do
@@ -25,5 +25,5 @@ apt_package 'install_ibm_advanced_toolchain' do
                     advance-toolchain-cross-ppc64le-mcore-libs
                     advance-toolchain-cross-ppc64le-runtime-extras]
   end
-  only_if { node['kernel']['machine'] == 'amd64' }
+  only_if { node['kernel']['machine'] =~ /x86_64/ }
 end
