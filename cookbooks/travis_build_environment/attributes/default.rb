@@ -309,3 +309,10 @@ default['travis_build_environment']['root_user'] = 'root'
 default['travis_build_environment']['root_group'] = 'root'
 
 default['travis_build_environment']['virtualenv']['version'] = '15.1.0'
+
+default['travis_build_environment']['ibm_advanced_tool_chain_apt_key_url'] = ::File.join(
+  'https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists',
+  "#{node['lsb']['codename']}/6976a827.gpg.key"
+)
+default['travis_build_environment']['ibm_advanced_tool_chain_apt_deb_url'] =
+  'https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu'
