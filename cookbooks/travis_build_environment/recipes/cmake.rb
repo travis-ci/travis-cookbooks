@@ -33,10 +33,10 @@ ark 'cmake' do
   retries 2
   retry_delay 30
   append_env_path true
-  not_if { node['kernel']['machine'] == 'ppc64le' }
+  only_if { node['kernel']['machine'] == 'amd64' }
 end
 
 package 'cmake' do
   action %i[install upgrade]
-  only_if { node['kernel']['machine'] == 'ppc64le' }
+  not_if { node['kernel']['machine'] == 'amd64' }
 end
