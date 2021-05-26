@@ -118,7 +118,7 @@ default['travis_build_environment']['kerl_path'] = '/usr/local/bin/kerl'
 default['travis_build_environment']['kerl_base_dir'] = \
   "#{node['travis_build_environment']['home']}/.kerl"
 default['travis_build_environment']['otp_releases'] = %w[
-  21.1
+  23.3.1
 ]
 default['travis_build_environment']['elixir_versions'] = %w[
   1.7.4
