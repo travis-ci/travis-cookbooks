@@ -1,4 +1,4 @@
-đ# frozen_string_literal: true
+# frozen_string_literal: true
 
 default['travis_build_environment']['user'] = 'travis'
 default['travis_build_environment']['group'] = node['travis_build_environment']['user']
