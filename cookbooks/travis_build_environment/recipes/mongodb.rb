@@ -32,8 +32,17 @@ apt_repository 'mongodb-4.0' do
   not_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
-package 'mongodb-org' do
-  not_if { node['kernel']['machine'] == 'ppc64le' }
+%w[
+  mongodb-org-mongos
+  mongodb-org-server
+  mongodb-org-shell
+  mongodb-org-tools
+].each do |p|
+  package p do
+    action :install
+    version '4.0.3'
+    not_if { node['kernel']['machine'] == 'ppc64le' }
+  end
 end
 
 service 'mongod' do
