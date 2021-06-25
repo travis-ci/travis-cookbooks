@@ -22,10 +22,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+# don't list dependency packages or they'll cause conflicts when installing alternative servers
+
 package %w[
-  mysql-client-5.5
-  mysql-client-core-5.5
-  mysql-common
   mysql-server-5.5
 ] do
   action %i[remove purge]
@@ -41,23 +40,13 @@ end
 mysql_version = 5.6
 mysql_pkgs =  %w[
   libmysqlclient-dev
-  libmysqlclient18
-  mysql-client-5.6
-  mysql-client-core-5.6
-  mysql-common-5.6
   mysql-server-5.6
-  mysql-server-core-5.6
 ]
 if node['lsb']['codename'] == 'xenial' || node['lsb']['codename'] == 'bionic'
   mysql_version = 5.7
   mysql_pkgs = %w[
     libmysqlclient-dev
-    libmysqlclient20
-    mysql-client-5.7
-    mysql-client-core-5.7
-    mysql-common
     mysql-server-5.7
-    mysql-server-core-5.7
   ]
 end
 
