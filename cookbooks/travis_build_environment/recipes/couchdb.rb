@@ -11,14 +11,14 @@ when 'bionic'
     uri 'https://apache.jfrog.io/ui/native/couchdb-deb/'
     distribution 'bionic'
     components ['main']
-    key 'https://couchdb.apache.org/repo/keys.asc'
+    key 'https://couchdb.apache.org/repo/bintray-pubkey.asc'
   end
 when 'focal'
   apt_repository 'couchdb' do
     uri 'https://apache.jfrog.io/ui/native/couchdb-deb/'
     distribution 'focal'
     components ['main']
-    key 'https://couchdb.apache.org/repo/keys.asc'
+    key 'https://couchdb.apache.org/repo/bintray-pubkey.asc'
   end
 end
 
