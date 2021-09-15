@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Cookbook Name:: travis_build_environment
+# Cookbook:: travis_build_environment
 # Recipe:: basic
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package %w[
+package %w(
   bsdmainutils
   bzip2
   bzr
@@ -50,8 +50,8 @@ package %w[
   wamerican
   wget
   zip
-] do
-  action %i[install upgrade]
+) do
+  action %i(install upgrade)
 end
 
 execute 'rm -rf /etc/update-motd.d/*'

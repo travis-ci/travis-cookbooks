@@ -42,10 +42,9 @@ if platform_requires_license_acceptance?
   end
 end
 
-if node['platform'] == 'ubuntu'
+if platform?('ubuntu')
   apt_repository 'openjdk-r-ppa' do
     uri 'ppa:openjdk-r'
-    distribution node['lsb']['codename']
   end
 end
 

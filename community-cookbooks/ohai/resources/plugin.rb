@@ -60,11 +60,7 @@ action_class do
   # return the path property if specified or
   # CHEF_CONFIG_PATH/ohai/plugins if a path isn't specified
   def desired_plugin_path
-    if new_resource.path
-      new_resource.path
-    else
-      ::File.join(chef_config_path, 'ohai', 'plugins')
-    end
+    new_resource.path || ::File.join(chef_config_path, 'ohai', 'plugins')
   end
 
   # return the chef config files dir or fail hard
@@ -72,7 +68,7 @@ action_class do
     if Chef::Config['config_file']
       ::File.dirname(Chef::Config['config_file'])
     else
-      Chef::Application.fatal!("No chef config file defined. Are you running \
+      raise("No chef config file defined. Are you running \
 chef-solo? If so you will need to define a path for the ohai_plugin as the \
 path cannot be determined")
     end
@@ -83,8 +79,7 @@ path cannot be determined")
     # get the directory where we plan to stick the plugin (not the actual file path)
     desired_dir = ::File.directory?(path) ? path : ::File.dirname(path)
 
-    case node['platform']
-    when 'windows'
+    if platform?('windows')
       ::Ohai::Config.ohai['plugin_path'].map(&:downcase).include?(desired_dir.downcase)
     else
       ::Ohai::Config.ohai['plugin_path'].include?(desired_dir)

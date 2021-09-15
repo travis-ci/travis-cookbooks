@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: openssl
+# Cookbook:: openssl
 # Recipe:: upgrade
 #
-# Copyright 2015, Chef Software, Inc. <legal@chef.io>
+# Copyright:: 2015, Chef Software, Inc. <legal@chef.io>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,16 +20,15 @@ include_recipe 'chef-sugar'
 
 # Attributes are set here and not in attributes/default.rb because of the
 # chef-sugar dependency for the methods evaluated in the case statement.
-case
-when debian_before_or_at_squeeze?, ubuntu_before_or_at_lucid?
-  node.default['openssl']['packages'] = %w(libssl0.9.8 openssl)
-when debian_after_or_at_wheezy?, ubuntu_after_or_at_precise?
-  node.default['openssl']['packages'] = %w(libssl1.0.0 openssl)
-when rhel?
-  node.default['openssl']['packages'] = %w(openssl)
-else
-  node.default['openssl']['packages'] = []
-end
+node.default['openssl']['packages'] = if debian_before_or_at_squeeze? || ubuntu_before_or_at_lucid?
+                                        %w(libssl0.9.8 openssl)
+                                      elsif debian_after_or_at_wheezy? || ubuntu_after_or_at_precise?
+                                        %w(libssl1.0.0 openssl)
+                                      elsif rhel?
+                                        %w(openssl)
+                                      else
+                                        []
+                                      end
 
 node['openssl']['packages'].each do |ssl_pkg|
   package ssl_pkg do

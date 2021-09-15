@@ -1,7 +1,6 @@
 default['yum']['epel-testing']['repositoryid'] = 'epel-testing'
 default['yum']['epel-testing']['description'] = "Extra Packages for #{node['platform_version'].to_i} - $basearch - Testing "
-case node['platform']
-when 'amazon'
+if platform?('amazon')
   default['yum']['epel-testing']['mirrorlist'] = 'http://mirrors.fedoraproject.org/mirrorlist?repo=testing-epel6&arch=$basearch'
   default['yum']['epel-testing']['gpgkey'] = 'http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6'
 else

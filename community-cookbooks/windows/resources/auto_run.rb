@@ -20,7 +20,7 @@
 #
 
 property :program, String
-property :name, String, name_property: true
+
 property :args, String
 
 action :create do

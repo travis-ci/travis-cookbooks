@@ -35,14 +35,14 @@ module OpenSSLCookbook
 
     # Generators
     def gen_dhparam(key_length, generator)
-      fail ArgumentError, 'Key length must be a power of 2 greater than or equal to 1024' unless key_length_valid?(key_length)
-      fail TypeError, 'Generator must be an integer' unless generator.is_a?(Integer)
+      raise ArgumentError, 'Key length must be a power of 2 greater than or equal to 1024' unless key_length_valid?(key_length)
+      raise TypeError, 'Generator must be an integer' unless generator.is_a?(Integer)
 
       OpenSSL::PKey::DH.new(key_length, generator)
     end
 
     def gen_rsa_key(key_length)
-      fail ArgumentError, 'Key length must be a power of 2 greater than or equal to 1024' unless key_length_valid?(key_length)
+      raise ArgumentError, 'Key length must be a power of 2 greater than or equal to 1024' unless key_length_valid?(key_length)
 
       OpenSSL::PKey::RSA.new(key_length)
     end
@@ -50,10 +50,10 @@ module OpenSSLCookbook
     # Key manipulation helpers
     # Returns a pem string
     def encrypt_rsa_key(rsa_key, key_password)
-      fail TypeError, 'rsa_key must be a Ruby OpenSSL::PKey::RSA object' unless rsa_key.is_a?(OpenSSL::PKey::RSA)
-      fail TypeError, 'RSA key password must be a string' unless key_password.is_a?(String)
+      raise TypeError, 'rsa_key must be a Ruby OpenSSL::PKey::RSA object' unless rsa_key.is_a?(OpenSSL::PKey::RSA)
+      raise TypeError, 'RSA key password must be a string' unless key_password.is_a?(String)
 
-      cipher = OpenSSL::Cipher::Cipher.new('des3')
+      cipher = OpenSSL::Cipher.new('cip-her-des3')
       rsa_key.to_pem(cipher, key_password)
     end
   end

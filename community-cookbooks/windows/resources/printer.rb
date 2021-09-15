@@ -30,7 +30,7 @@ property :location, String
 property :shared, [true, false], default: false
 property :share_name, String
 property :ipv4_address, String, regex: Resolv::IPv4::Regex
-property :exists, [true, false], desired_state: true
+property :exists, [true, false]
 
 PRINTERS_REG_KEY = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Print\Printers\\'.freeze unless defined?(PRINTERS_REG_KEY)
 
@@ -66,7 +66,7 @@ action :delete do
   end
 end
 
-action_class.class_eval do
+action_class do
   def create_printer
     # Create the printer port first
     windows_printer_port new_resource.ipv4_address do

@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: android-sdk
+# Cookbook:: android-sdk
 # Recipe:: default
 #
-# Copyright 2011-2013, Travis CI Development Team <contact@travis-ci.org>
+# Copyright:: 2011-2013, Travis CI Development Team <contact@travis-ci.org>
 # Authors: Gilles Cornu
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,7 +32,7 @@ android_bin      = File.join(android_home, 'tools', 'android')
 #
 # Install required libraries
 #
-if node['platform'] == 'ubuntu'
+if platform?('ubuntu')
   package 'libgl1-mesa-dev'
 
   #
@@ -70,7 +70,7 @@ end
 # Fix non-friendly 0750 permissions in order to make android-sdk available to all system users
 #
 directory File.join(android_home, 'tools') do
-  mode 0755
+  mode '755'
   user node['android-sdk']['owner']
   group node['android-sdk']['group']
 end
@@ -91,7 +91,7 @@ end
 #
 template "/etc/profile.d/#{node['android-sdk']['name']}.sh" do
   source 'android-sdk.sh.erb'
-  mode 0644
+  mode '644'
   owner node['android-sdk']['owner']
   group node['android-sdk']['group']
   variables(
@@ -152,7 +152,7 @@ end
     source android_helper_script
     owner node['android-sdk']['scripts']['owner']
     group node['android-sdk']['scripts']['group']
-    mode 0755
+    mode '755'
   end
 end
 %w(android-update-sdk).each do |android_helper_script|
@@ -160,11 +160,11 @@ end
     source "#{android_helper_script}.erb"
     owner node['android-sdk']['scripts']['owner']
     group node['android-sdk']['scripts']['group']
-    mode 0755
+    mode '755'
   end
 end
 
 #
 # Install Maven Android SDK Deployer toolkit to populate local Maven repository
 #
-include_recipe('android-sdk::maven_rescue') if node['android-sdk']['maven_rescue']
+include_recipe 'android-sdk::maven_rescue' if node['android-sdk']['maven_rescue']

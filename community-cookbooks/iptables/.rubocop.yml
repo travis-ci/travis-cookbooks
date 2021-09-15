@@ -1,8 +1,11 @@
-Encoding:
+Style/Encoding:
   Enabled: false
 
-LineLength:
+Layout/LineLength:
   Max: 200
 
-HashSyntax:
+Style/HashSyntax:
   EnforcedStyle: hash_rockets
+
+# Chef/Deprecations/ResourceWithoutUnifiedTrue:
+#   Enabled: false

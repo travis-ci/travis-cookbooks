@@ -1,0 +1,7 @@
+inherit_from: .rubocop_todo.yml
+
+# Chef/Deprecations/ResourceWithoutUnifiedTrue:
+#    Enabled: false
+
+Chef/Modernize/SetOrReturnInResources:
+  Enabled: false

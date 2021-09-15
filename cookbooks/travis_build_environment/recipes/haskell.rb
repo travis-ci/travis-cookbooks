@@ -31,7 +31,7 @@ template '/etc/profile.d/travis-haskell.sh' do
   source 'travis-haskell.sh.erb'
   owner 'root'
   group 'root'
-  mode 0o755
+  mode '755'
   variables(
     cabal_root: '/opt/cabal',
     default_cabal: default_cabal,

@@ -1,9 +1,9 @@
 #
-# Cookbook Name:: yum
+# Cookbook:: yum
 # Provider:: repository
 #
 # Author:: Sean OMeara <someara@chef.io>
-# Copyright 2013, Chef
+# Copyright:: 2013, Chef
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,11 +19,6 @@
 #
 
 # Allow for Chef 10 support
-use_inline_resources if defined?(use_inline_resources)
-
-def whyrun_supported?
-  true
-end
 
 action :create do
   template new_resource.path do

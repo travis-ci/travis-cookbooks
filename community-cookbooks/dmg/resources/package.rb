@@ -48,8 +48,8 @@ end
 action :install do
   unless current_resource.installed
 
-    volumes_dir = new_resource.volumes_dir ? new_resource.volumes_dir : new_resource.app
-    dmg_name = new_resource.dmg_name ? new_resource.dmg_name : new_resource.app
+    volumes_dir = new_resource.volumes_dir || new_resource.app
+    dmg_name = new_resource.dmg_name || new_resource.app
 
     dmg_file = if new_resource.file.nil?
                  "#{Chef::Config[:file_cache_path]}/#{dmg_name}.dmg"

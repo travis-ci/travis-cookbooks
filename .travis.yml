@@ -3,7 +3,7 @@ dist: xenial
 
 env:
   global:
-  - PATH="/opt/chefdk/bin:/opt/chef/bin:/opt/chef/embedded/bin:/opt/chefdk/embedded/bin:$PATH"
+  - PATH="/opt/chef-workstation/bin:/opt/chef/bin:/opt/chef/embedded/bin:/opt/chef-workstation/embedded/bin:$PATH"
   matrix:
   - COOKBOOK_PATH="cookbooks"
   - COOKBOOK_PATH="community-cookbooks"
@@ -14,6 +14,7 @@ addons:
     - sourceline: "deb https://packages.chef.io/repos/apt/current xenial main"
       key_url:  "https://%{app_host}/files/gpg/chef-current-trusty.asc"
     packages:
-    - chefdk
+    - chef-workstation
 
-script: ./runtests
+script:
+  - ./runtests

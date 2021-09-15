@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: runit
-# Attribute File:: sv_bin
+# Cookbook:: runit
+# Attribute:: sv_bin
 #
-# Copyright 2008-2009, Chef Software, Inc.
+# Copyright:: 2008-2009, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the 'License');
 # you may not use this file except in compliance with the License.
@@ -26,11 +26,11 @@ when 'debian'
   default['runit']['lsb_init_dir'] = '/etc/init.d'
   default['runit']['executable'] = '/sbin/runit'
 
-  if node['platform'] == 'debian'
+  if platform?('debian')
     default['runit']['start'] = 'runsvdir-start'
     default['runit']['stop'] = ''
     default['runit']['reload'] = ''
-  elsif node['platform'] == 'ubuntu'
+  elsif platform?('ubuntu')
     default['runit']['start'] = 'start runsvdir'
     default['runit']['stop'] = 'stop runsvdir'
     default['runit']['reload'] = 'reload runsvdir'

@@ -1,9 +1,9 @@
 #
-# Cookbook Name:: openssl
+# Cookbook:: openssl
 # Library:: random_password
 # Author:: Seth Vargo <sethvargo@gmail.com>
 #
-# Copyright 2015, Seth Vargo
+# Copyright:: 2015, Seth Vargo
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# rubocop:disable UnusedMethodArgument, Style/RaiseArgs
+# rubocop:disable Lint/UnusedMethodArgument, Style/RaiseArgs
 
 module OpenSSLCookbook
   module RandomPassword
@@ -73,7 +73,7 @@ EOH
                when :random_bytes
                  length
                else
-                 fail InvalidPasswordMode.new(mode)
+                 raise InvalidPasswordMode.new(mode)
                end
 
       SecureRandom.send(mode, length).force_encoding(encoding)

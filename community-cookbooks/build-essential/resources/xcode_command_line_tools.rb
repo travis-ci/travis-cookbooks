@@ -18,6 +18,8 @@
 #
 
 resource_name :xcode_command_line_tools
+unified_mode true
+provides :xcode_command_line_tools
 
 action :install do
   if installed?

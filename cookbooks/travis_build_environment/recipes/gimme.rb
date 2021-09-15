@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-# Cookbook Name:: travis_build_environment
+# Cookbook:: travis_build_environment
 # Recipe:: gimme
 #
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -43,20 +43,20 @@ remote_file '/usr/local/bin/gimme' do
   source gimme_url
   owner node['travis_build_environment']['root_user']
   group node['travis_build_environment']['root_group']
-  mode 0o755
+  mode '755'
 end
 
 directory "#{node['travis_build_environment']['home']}/.gimme" do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0o750
+  mode '750'
 end
 
 file "#{node['travis_build_environment']['home']}/.gimme/version" do
   content node['travis_build_environment']['gimme']['default_version']
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0o640
+  mode '640'
   not_if { node['travis_build_environment']['gimme']['default_version'].empty? }
 end
 
@@ -67,7 +67,7 @@ template '/etc/profile.d/Z90-gimme.sh' do
   )
   owner node['travis_build_environment']['root_user']
   group node['travis_build_environment']['root_group']
-  mode 0o755
+  mode '755'
 end
 
 gimme_default_version = node['travis_build_environment']['gimme']['default_version'].to_s
@@ -76,7 +76,7 @@ gimme_versions += [gimme_default_version] unless gimme_default_version.empty?
 
 default_env = {
   'GOPATH' => "#{node['travis_build_environment']['home']}/gopath",
-  'HOME' => node['travis_build_environment']['home']
+  'HOME' => node['travis_build_environment']['home'],
 }
 
 install_env = default_env.merge(

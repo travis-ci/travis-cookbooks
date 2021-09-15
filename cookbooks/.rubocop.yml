@@ -1,7 +1,11 @@
 inherit_from: .rubocop_todo.yml
 
 AllCops:
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.7.4
+  NewCops: enable
+  Exclude:
+    - 'community-cookbooks/**/*'
+    - 'run-cookstyle'
 
 Style/Documentation:
   Enabled: false
@@ -9,8 +13,44 @@ Style/Documentation:
 Style/ConditionalAssignment:
   Enabled: false
 
-Performance/Casecmp:
+Style/StringLiterals:
   Enabled: false
 
-StringLiterals:
+Style/StringConcatenation:
+  Enabled: false
+
+Style/HashEachMethods:
+  Enabled: false
+
+Style/CaseLikeIf:
+  Enabled: false
+
+Style/HashConversion:
+  Enabled: false
+
+Style/RedundantArgument:
+  Enabled: false
+
+Lint/FloatComparison:
+  Enabled: false
+
+Lint/DuplicateBranch:
+  Enabled: false
+
+Style/SoleNestedConditional:
+  Enabled: false
+
+#Layout/LineEndStringConcatenationIndentation:
+  #Enabled: false
+
+Chef/Modernize/ExecuteAptUpdate:
+  Enabled: false
+
+Chef/Modernize/IncludingAptDefaultRecipe:
+  Enabled: false
+
+Chef/Deprecations/LogResourceNotifications:
+  Enabled: false
+
+Chef/Modernize/ExecuteSysctl:
   Enabled: false

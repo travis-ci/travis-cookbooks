@@ -1,6 +1,6 @@
 #
 # Author:: Shawn Neal (<sneal@sneal.net>)
-# Cookbook Name:: seven_zip
+# Cookbook:: seven_zip
 # Provider:: archive
 #
 # Copyright:: 2013, Daptiv Solutions LLC
@@ -24,12 +24,6 @@ require 'chef/mixin/shell_out'
 include Chef::Mixin::ShellOut
 include Windows::Helper
 
-def whyrun_supported?
-  true
-end
-
-use_inline_resources
-
 action :extract do
   converge_by("Extract #{@new_resource.source} => #{@new_resource.path} (overwrite=#{@new_resource.overwrite})") do
     FileUtils.mkdir_p(@new_resource.path) unless Dir.exist?(@new_resource.path)
@@ -44,11 +38,7 @@ action :extract do
 end
 
 def seven_zip_exe
-  path = if node['seven_zip']['home']
-           node['seven_zip']['home']
-         else
-           seven_zip_exe_from_registry
-         end
+  path = node['seven_zip']['home'] || seven_zip_exe_from_registry
   Chef::Log.debug("Using 7-zip home: #{path}")
   win_friendly_path(::File.join(path, '7z.exe'))
 end
