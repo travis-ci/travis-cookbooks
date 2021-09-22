@@ -126,12 +126,12 @@ default['travis_build_environment']['elixir_versions'] = %w(
 default['travis_build_environment']['required_otp_release_for']['1.7.4'] = '21.1'
 default['travis_build_environment']['default_elixir_version'] = '1.7.4'
 default['travis_build_environment']['mysql']['socket'] = '/var/run/mysqld/mysqld.sock'
-default['travis_build_environment']['packer']['amd64']['version'] = '1.3.3'
+default['travis_build_environment']['packer']['amd64']['version'] = '1.7.5'
 default['travis_build_environment']['packer']['amd64']['checksum'] = \
-  '2e3ea8f366d676d6572ead7e0c773158dfea0aed9c6a740c669d447bcb48d65f'
-default['travis_build_environment']['packer']['ppc64le']['version'] = '1.3.3'
+  'a574d20719e86d9d38854050184b78d158e62619b2a4b33b79d03b94c782dbc5'
+default['travis_build_environment']['packer']['ppc64le']['version'] = '1.7.5'
 default['travis_build_environment']['packer']['ppc64le']['checksum'] = \
-  '4b8bc93a2bf406fb035968815c680f171830ff7246de9594c08a15ac0c9a18d8'
+  '32871bc5a610e2454177081d407cadcdce384c0dc1eb578f01435e667f922c9a'
 default['travis_build_environment']['packer_binaries'] = %w(packer)
 default['travis_build_environment']['ramfs_dir'] = '/var/ramfs'
 default['travis_build_environment']['ramfs_size'] = '768m'
