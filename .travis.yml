@@ -9,6 +9,6 @@ env:
   - COOKBOOK_PATH="community-cookbooks"
 
 before_script:
-- curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P chef -v 16.16.13
+- curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P chefdk -v 16.16.13
 
 script: ./runtests
