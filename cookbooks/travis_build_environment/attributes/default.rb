@@ -118,7 +118,7 @@ default['travis_build_environment']['kerl_path'] = '/usr/local/bin/kerl'
 default['travis_build_environment']['kerl_base_dir'] = \
   "#{node['travis_build_environment']['home']}/.kerl"
 default['travis_build_environment']['otp_releases'] = %w[
-  21.1
+  23.3.1
 ]
 default['travis_build_environment']['elixir_versions'] = %w[
   1.7.4
@@ -274,9 +274,9 @@ default['travis_build_environment']['mercurial_url'] = "https://www.mercurial-sc
 default['travis_build_environment']['mongodb']['service_enabled'] = false
 default['travis_build_environment']['mongodb']['keep_repo'] = false
 
-default['travis_build_environment']['shellcheck_url'] = 'https://github.com/koalaman/shellcheck/releases/download/v0.7.0/shellcheck-v0.7.0.linux.x86_64.tar.xz'
-default['travis_build_environment']['shellcheck_version'] = '0.7.0'
-default['travis_build_environment']['shellcheck_checksum'] = '39c501aaca6aae3f3c7fc125b3c3af779ddbe4e67e4ebdc44c2ae5cba76c847f'
+default['travis_build_environment']['shellcheck_url'] = 'https://github.com/koalaman/shellcheck/releases/download/v0.7.2/shellcheck-v0.7.2.linux.x86_64.tar.xz'
+default['travis_build_environment']['shellcheck_version'] = '0.7.2'
+default['travis_build_environment']['shellcheck_checksum'] = '70423609f27b504d6c0c47e340f33652aea975e45f312324f2dbf91c95a3b188'
 default['travis_build_environment']['shellcheck_binaries'] = %w[shellcheck]
 
 default['travis_build_environment']['shfmt_url'] = 'https://github.com/mvdan/sh/releases/download/v3.2.1/shfmt_v3.2.1_linux_amd64'
