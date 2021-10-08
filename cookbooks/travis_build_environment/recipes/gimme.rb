@@ -94,7 +94,6 @@ gimme_versions.each do |version|
   end
 
   execute "gimme install #{version}" do
-    command 'gimme'
     environment(install_env.merge('GIMME_GO_VERSION' => version))
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
