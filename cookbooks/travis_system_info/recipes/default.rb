@@ -40,9 +40,4 @@ ruby_block 'generate system-info report' do
     exec.run_action(:run)
   end
 
-  action :nothing
-end
-
-log 'system-info is coming for you' do
-  notifies :run, 'ruby_block[generate system-info report]', :delayed
 end
