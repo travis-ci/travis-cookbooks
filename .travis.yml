@@ -8,12 +8,8 @@ env:
   - COOKBOOK_PATH="cookbooks"
   - COOKBOOK_PATH="community-cookbooks"
 
-addons:
-  apt:
-    sources:
-    - sourceline: "deb https://packages.chef.io/repos/apt/current xenial main"
-      key_url:  "https://%{app_host}/files/gpg/chef-current-trusty.asc"
-    packages:
-    - chefdk
+before_script:
+- curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P chef-workstation -v 21.10.640
+- gem install rubocop
 
 script: ./runtests

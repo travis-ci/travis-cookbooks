@@ -27,7 +27,7 @@
 arch = node['kernel']['machine'] =~ /x86_64/ ? '64' : '32'
 
 remote_file node['travis_build_environment']['jq_install_dest'] do
-  source "https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux#{arch}"
+  source "https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux#{arch}"
   action :create_if_missing
   mode 0o755
   owner node['travis_build_environment']['owner']
