@@ -1,10 +1,10 @@
 #
-# Cookbook Name:: runit
+# Cookbook:: runit
 # Provider:: service
 #
 # Author:: Joshua Timberman <jtimberman@chef.io>
 # Author:: Sean OMeara <sean@chef.io>
-# Copyright 2011-2015, Chef Software, Inc.
+# Copyright:: 2011-2015, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,12 +37,6 @@ class Chef
           1 => :usr1,
           2 => :usr2
         )
-      end
-
-      use_inline_resources if defined?(use_inline_resources)
-
-      def whyrun_supported?
-        true
       end
 
       # Mix in helpers from libraries/helpers.rb
@@ -145,7 +139,7 @@ class Chef
               owner new_resource.owner
               group new_resource.group
               content value
-              mode 00640
+              mode '640'
               action :create
             end
           end
@@ -238,7 +232,7 @@ class Chef
           end
 
           file down_file do
-            mode 00644
+            mode '644'
             backup false
             content '# File created and managed by chef!'
             action df_action
@@ -282,9 +276,6 @@ class Chef
             Chef::Log.debug "#{new_resource} not running - nothing to do"
           end
         end
-      end
-
-      action :nothing do
       end
 
       action :restart do

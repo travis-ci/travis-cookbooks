@@ -20,14 +20,9 @@
 
 # Passwords can't be loaded for existing tasks, making :modify both confusing
 # and not very useful
-
-require 'chef/mixin/shell_out'
 require 'rexml/document'
 
-include Chef::Mixin::ShellOut
-include Chef::Mixin::PowershellOut
-
-property :task_name, String, name_property: true, regex: [/\A[^\/\:\*\?\<\>\|]+\z/]
+property :task_name, String, name_property: true, regex: [%r{\A[^/\:\*\?\<\>\|]+\z}]
 property :command, String
 property :cwd, String
 property :user, String, default: 'SYSTEM'
@@ -50,9 +45,9 @@ property :start_time, String
 property :day, [String, Integer]
 property :months, String
 property :idle_time, Integer
-property :exists, [true, false], desired_state: true
-property :status, Symbol, desired_state: true
-property :enabled, [true, false], desired_state: true
+property :exists, [true, false]
+property :status, Symbol
+property :enabled, [true, false]
 
 def load_task_hash(task_name)
   Chef::Log.debug 'Looking for existing tasks'
@@ -87,7 +82,7 @@ load_current_value do |desired|
   if task_hash.respond_to?(:[]) && task_hash[:TaskName] == pathed_task_name
     exists true
     status :running if task_hash[:Status] == 'Running'
-    enabled task_hash[:ScheduledTaskState] == 'Enabled' ? true : false
+    enabled task_hash[:ScheduledTaskState] == 'Enabled'
     cwd task_hash[:StartIn] unless task_hash[:StartIn] == 'N/A'
     command task_hash[:TaskToRun]
     user task_hash[:RunAsUser]
@@ -221,7 +216,7 @@ action :disable do
   end
 end
 
-action_class.class_eval do
+action_class do
   # rubocop:disable Style/StringLiteralsInInterpolation
   def run_schtasks(task_action, options = {})
     cmd = "schtasks /#{task_action} /TN \"#{new_resource.task_name}\" "

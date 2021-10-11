@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Cookbook Name:: travis_phantomjs
+# Cookbook:: travis_phantomjs
 # Recipe:: 2
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,17 +22,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package %w[
+package %w(
   libicu-dev
   libjpeg-dev
   libpng-dev
-]
+)
 
 ark 'phantomjs' do
   url 'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2'
   version '2.1.1'
   checksum '86dd9a4bf4aee45f1a84c9f61cf1947c1d6dce9b9e8d2a907105da7852460d2f'
-  has_binaries %w[bin/phantomjs]
+  has_binaries %w(bin/phantomjs)
   owner 'root'
   not_if { node['kernel']['machine'] == 'ppc64le' }
 end
@@ -40,7 +40,7 @@ end
 ark 'phantomjs' do
   url 'https://github.com/ibmsoe/phantomjs/releases/download/2.1.1/phantomjs-2.1.1-linux-ppc64.tar.bz2'
   version '2.1.1'
-  has_binaries %w[phantomjs]
+  has_binaries %w(phantomjs)
   owner 'root'
   only_if { node['kernel']['machine'] == 'ppc64le' }
 end
@@ -49,6 +49,6 @@ cookbook_file '/etc/profile.d/phantomjs.sh' do
   source 'etc/profile.d/phantomjs.sh'
   owner 'root'
   group 'root'
-  mode 0o644
+  mode '644'
   only_if { node['kernel']['machine'] == 'ppc64le' }
 end

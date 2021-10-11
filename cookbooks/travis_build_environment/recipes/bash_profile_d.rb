@@ -5,5 +5,5 @@ directory ::File.join(
 ) do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0o755
+  mode '755'
 end

@@ -28,7 +28,7 @@ slave_cmds = case node['java']['oracle_rpm']['type']
                %w(ControlPanel java_vm javaws jcontrol keytool orbd pack200 policytool rmid rmiregistry servertool tnameserv unpack200)
 
              else
-               Chef::Application.fatal!("Unsupported oracle RPM type (#{node['java']['oracle_rpm']['type']})")
+               raise("Unsupported oracle RPM type (#{node['java']['oracle_rpm']['type']})")
              end
 
 bash 'update-java-alternatives' do

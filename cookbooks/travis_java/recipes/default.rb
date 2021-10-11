@@ -24,7 +24,7 @@ template ::File.join(
   source 'travis-java.bash.erb'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0o755
+  mode '755'
   variables(
     jdk_switcher_default: default_java_version,
     jdk_switcher_path: node['travis_java']['jdk_switcher_path'],
@@ -47,12 +47,12 @@ end
 # older than /usr/lib/jvm/java-8-oracle, which is *very confusing*, so let's get
 # rid of them OK?
 execute 'clean up busted jvm symlinks' do
-  command %w[
+  command %w(
     rm -f
     /usr/lib/jvm/default-java
     /usr/lib/jvm/java-8-oracle-amd64
     /usr/lib/jvm/.java-8-oracle-amd64.jinfo
-  ].join(' ')
+  ).join(' ')
   action :nothing
 end
 

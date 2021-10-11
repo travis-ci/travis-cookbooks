@@ -1,20 +1,20 @@
 # frozen_string_literal: true
 
 package 'sudo' do
-  action %i[install upgrade]
+  action %i(install upgrade)
 end
 
 template '/etc/sudoers' do
   source 'sudoers.erb'
   owner 'root'
   group 'root'
-  mode 0o440
+  mode '440'
 end
 
 directory '/etc/sudoers.d' do
   owner 'root'
   group 'root'
-  mode 0o750
+  mode '750'
 end
 
 Array(node['travis_sudo']['groups']).each do |group|
@@ -26,6 +26,6 @@ Array(node['travis_sudo']['groups']).each do |group|
     EOF
     owner 'root'
     group 'root'
-    mode 0o440
+    mode '440'
   end
 end

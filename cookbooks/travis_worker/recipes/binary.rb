@@ -9,7 +9,7 @@ remote_file '/usr/local/bin/travis-worker' do
   )
   owner 'root'
   group 'root'
-  mode 0o755
+  mode '755'
 
   not_if { node['travis_worker']['branch'].to_s.empty? }
 end

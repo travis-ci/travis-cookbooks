@@ -6,12 +6,6 @@
 
 include OpenSSLCookbook::Helpers
 
-use_inline_resources
-
-def whyrun_supported?
-  true
-end
-
 action :create do
   converge_by("Create a dhparam file #{@new_resource}") do
     unless dhparam_pem_valid?(new_resource.name)

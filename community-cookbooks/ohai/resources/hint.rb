@@ -34,15 +34,15 @@ action_class do
 
   def build_content
     # passing nil to file produces deprecation warnings so pass an empty string
-    return nil if new_resource.content.nil? || new_resource.content.empty?
+    return if new_resource.content.nil? || new_resource.content.empty?
     JSON.pretty_generate(new_resource.content)
   end
 
   def file_content(path)
-    return JSON.parse(::File.read(path))
+    JSON.parse(::File.read(path))
   rescue JSON::ParserError
     Chef::Log.debug("Could not parse JSON in ohai hint at #{ohai_hint_path}. It's probably an empty hint file")
-    return nil
+    nil
   end
 end
 

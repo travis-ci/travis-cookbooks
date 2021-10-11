@@ -7,10 +7,10 @@ include_recipe 'travis_postgresql::client'
 
 package(
   TravisPostgresqlMethods.pg_versions(node).map do |v|
-    %W[
+    %W(
       postgresql-#{v}
       #{node['travis_postgresql']['contrib_modules'] ? "postgresql-contrib-#{v}" : ''}
-    ]
+    )
   end.flatten
 )
 

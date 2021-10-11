@@ -2,7 +2,7 @@
 
 gpg_keys = {
   mpapis: '08f64631c598cbe4398c5850725c8e6ab60dc5d86b6214e069d7ced1d546043b',
-  pkuczynski: 'd33ce5907fe28e6938feab7f63a9ef8a26a565878b1ad5bce063a86019aeaf77'
+  pkuczynski: 'd33ce5907fe28e6938feab7f63a9ef8a26a565878b1ad5bce063a86019aeaf77',
 }
 
 def gpg_key_path(name)
@@ -28,7 +28,7 @@ global_gems = Array(
 ).map { |g| g[:name] }.join(' ')
 
 packages = value_for_platform(
-  'ubuntu' => { 'default' => %w[
+  'ubuntu' => { 'default' => %w(
     automake
     bash
     bison
@@ -55,24 +55,21 @@ packages = value_for_platform(
     sqlite3
     zlib1g
     zlib1g-dev
-  ] },
-  'freebsd' => { 'default' => %w[
+  ) },
+  'freebsd' => { 'default' => %w(
     curl
     bash
     gnupg
     pkgconf
     libxslt
     libxml2
-  ] }
+  ) }
 )
 
 packages.each do |p|
   package p do
     action :install
-    case node[:platform]
-    when 'ubuntu'
-      options '--no-install-recommends --no-upgrade'
-    end
+    options '--no-install-recommends --no-upgrade' if platform?('ubuntu')
   end
 end
 
@@ -84,7 +81,7 @@ gpg_keys.each do |name, checksum|
     checksum checksum
     owner node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    mode 0o644
+    mode '644'
     retries 2
     retry_delay 30
   end
@@ -102,7 +99,7 @@ remote_file rvm_installer_path do
   source 'https://get.rvm.io'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0o755
+  mode '755'
   retries 2
   retry_delay 30
 end
@@ -111,7 +108,7 @@ file rvmrc_path do
   content rvmrc_content
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0o644
+  mode '644'
 end
 
 bash 'run rvm installer' do
@@ -130,11 +127,11 @@ end
 install_flag = "--autolibs=enable --fuzzy"
 
 bash "install default ruby #{node['travis_build_environment']['default_ruby']}" do
-  code %W[
+  code %W(
     #{rvm_script_path} install
     #{node['travis_build_environment']['default_ruby']}
     #{install_flag}
-  ].join(' ')
+  ).join(' ')
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   environment('HOME' => node['travis_build_environment']['home'])
@@ -144,17 +141,17 @@ bash "install default ruby #{node['travis_build_environment']['default_ruby']}" 
 end
 
 bash "create default alias for #{node['travis_build_environment']['default_ruby']}" do
-  code %W[
+  code %W(
     #{rvm_script_path} alias create
     default #{node['travis_build_environment']['default_ruby']}
-  ].join(' ')
+  ).join(' ')
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   environment('HOME' => node['travis_build_environment']['home'])
   not_if { node['travis_build_environment']['default_ruby'].to_s.empty? }
 end
 
-if node[:platform_family].include?("freebsd")
+if node["platform_family"].include?("freebsd")
   install_flag = " -- --use-system-libraries"
 else
   install_flag = ""
@@ -173,10 +170,10 @@ Array(node['travis_build_environment']['rubies']).each do |ruby_def|
   next if ruby_def == node['travis_build_environment']['default_ruby']
 
   bash "install ruby #{ruby_def}" do
-    code %W[
+    code %W(
       #{rvm_script_path} install
       #{ruby_def} #{install_flag}
-    ].join(' ')
+    ).join(' ')
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment('HOME' => node['travis_build_environment']['home'])

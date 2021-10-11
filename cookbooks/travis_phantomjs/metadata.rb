@@ -2,7 +2,7 @@
 
 name 'travis_phantomjs'
 maintainer 'Travis CI Development Team'
-license 'Apache v2.0'
+license 'Apache-2.0'
 description 'Installs/Configures phantomjs'
 
 depends 'ark'

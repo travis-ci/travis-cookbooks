@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
-package %w[
+package %w(
   curl
   debconf-utils
-]
+)
 
 apt_repository 'webupd8team-java-ppa' do
-  uri 'http://ppa.launchpad.net/webupd8team/java/ubuntu'
-  distribution node['lsb']['codename']
-  components %w[main]
+  uri 'ppa:webupd8team/java'
+  components %w(main)
   key 'EEA14886'
   keyserver 'hkp://ha.pool.sks-keyservers.net'
   retries 2
