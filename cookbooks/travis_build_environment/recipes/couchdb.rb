@@ -35,13 +35,6 @@ service 'couchdb' do
   action %i[disable start]
 end
 
-file '/etc/init/couchdb.override' do
-  content 'manual'
-  owner 'root'
-  group 'root'
-  mode 0o644
-end
-
 case node['lsb']['codename']
 when 'trusty', 'xenial'
   cookbook_file '/etc/couchdb/local.d/erlang_query_server.ini' do
@@ -72,13 +65,6 @@ end
 
 service 'couchdb' do
   action %i[disable start]
-end
-
-file '/etc/init/couchdb.override' do
-  content 'manual'
-  owner 'root'
-  group 'root'
-  mode 0o644
 end
 
 apt_repository 'couchdb' do
