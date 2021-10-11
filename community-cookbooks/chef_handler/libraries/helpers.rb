@@ -15,10 +15,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 module ChefHandler
   module Helpers
-
     # Registers a handler in Chef::Config.
     #
     # @param handler_type [Symbol] such as :report or :exception.
@@ -49,9 +47,9 @@ module ChefHandler
       # We need to search the ancestors only for the first/uppermost namespace of the class, so we
       # need to enable the #const_get inherit paramenter only when we are searching in Kernel scope
       # (see COOK-4117).
-      parent = ancestors.inject(Kernel) { |scope, const_name| scope.const_get(const_name, scope === Kernel) }
+      parent = ancestors.inject(Kernel) { |acc, elem| acc.const_get(elem, acc === Kernel) }
       child = parent.const_get(class_name, parent === Kernel)
-      return parent, child
+      [parent, child]
     end
   end
 end

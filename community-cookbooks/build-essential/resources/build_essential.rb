@@ -18,6 +18,7 @@
 #
 
 provides :build_essential
+unified_mode true
 resource_name :build_essential
 
 property :compile_time, [true, false], default: false

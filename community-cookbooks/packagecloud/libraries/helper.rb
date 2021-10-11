@@ -30,7 +30,7 @@ module PackageCloud
       http = Net::HTTP.new(uri.hostname, uri.port, node['packagecloud']['proxy_host'], node['packagecloud']['proxy_port'])
       http.use_ssl = true
 
-      resp = http.start { |h|  h.request(req) }
+      resp = http.start { |h| h.request(req) }
 
       case resp
       when Net::HTTPSuccess

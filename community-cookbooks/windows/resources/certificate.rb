@@ -37,7 +37,6 @@ action :create do
 
   converge_by("adding certificate #{new_resource.source} into #{new_resource.store_name} to #{cert_location}\\#{new_resource.store_name}") do
     powershell_script new_resource.name do
-      guard_interpreter :powershell_script
       convert_boolean_return true
       code code_script
       not_if guard_script
@@ -62,7 +61,6 @@ action :acl_add do
 
   converge_by("setting the acls on #{new_resource.source} in #{cert_location}\\#{new_resource.store_name}") do
     powershell_script new_resource.name do
-      guard_interpreter :powershell_script
       convert_boolean_return true
       code code_script
       only_if guard_script
@@ -92,7 +90,6 @@ EOH
   guard_script = "@(#{cert_command}).Count -gt 0\n"
   converge_by("Removing certificate #{new_resource.source} from #{cert_location}\\#{new_resource.store_name}") do
     powershell_script new_resource.name do
-      guard_interpreter :powershell_script
       convert_boolean_return true
       code code_script
       only_if guard_script
@@ -100,7 +97,7 @@ EOH
   end
 end
 
-action_class.class_eval do
+action_class do
   def cert_location
     @location ||= new_resource.user_store ? 'CurrentUser' : 'LocalMachine'
   end

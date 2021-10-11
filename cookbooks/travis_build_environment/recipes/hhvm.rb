@@ -2,7 +2,6 @@
 
 apt_repository 'hhvm-repository' do
   uri 'https://dl.hhvm.com/ubuntu'
-  distribution node['lsb']['codename']
   components ['main']
   arch 'amd64'
   keyserver 'keyserver.ubuntu.com'
@@ -14,8 +13,7 @@ apt_repository 'hhvm-repository' do
 end
 
 apt_repository 'hhvm-ppc-repository' do
-  uri 'http://ppa.launchpad.net/ibmpackages/hhvm/ubuntu'
-  distribution node['lsb']['codename']
+  uri 'ppa:ibmpackages/hhvm'
   components ['main']
   key 'E7D1FA0C'
   retries 2
@@ -59,14 +57,14 @@ remote_file "#{hhvm_path}/bin/composer" do
   source 'http://getcomposer.org/composer.phar'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0o755
+  mode '755'
 end
 
 remote_file "#{hhvm_path}/bin/phpunit" do
   source 'https://phar.phpunit.de/phpunit.phar'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0o755
+  mode '755'
 end
 
 directory "#{phpenv_path}/rbenv.d/exec" do
@@ -84,7 +82,7 @@ template "#{phpenv_path}/rbenv.d/exec/hhvm-switcher.bash" do
   )
 end
 
-%w[hhvm-repository hhvm-ppc-repository].each do |repo|
+%w(hhvm-repository hhvm-ppc-repository).each do |repo|
   apt_repository repo do
     action :remove
     only_if { node['travis_build_environment']['hhvm']['enabled'] }

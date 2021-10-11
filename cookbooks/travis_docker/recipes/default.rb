@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Cookbook Name:: travis_docker
+# Cookbook:: travis_docker
 # Recipe:: default
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -26,34 +26,34 @@ include_recipe 'travis_docker::package'
 
 group 'docker' do
   members node['travis_docker']['users']
-  action %i[create manage]
+  action %i(create manage)
 end
 
 cookbook_file '/etc/docker/daemon.json' do
   source 'etc/docker/daemon.json'
   owner 'root'
   group 'root'
-  mode 0o640
+  mode '640'
 end
 
 cookbook_file '/etc/default/docker' do
   source 'etc/default/docker'
   owner 'root'
   group 'root'
-  mode 0o640
+  mode '640'
 end
 
 directory '/etc/default/grub.d' do
   owner 'root'
   group 'root'
-  mode 0o755
+  mode '755'
 end
 
 cookbook_file '/etc/default/grub.d/99-travis-settings.cfg' do
   source 'etc/default/grub.d/99-travis-settings.cfg'
   owner 'root'
   group 'root'
-  mode 0o640
+  mode '640'
   not_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
@@ -61,7 +61,7 @@ cookbook_file '/etc/default/grub.d/99-travis-settings-ppc64le.cfg' do
   source 'etc/default/grub.d/99-travis-settings-ppc64le.cfg'
   owner 'root'
   group 'root'
-  mode 0o640
+  mode '640'
   only_if { node['kernel']['machine'] == 'ppc64le' }
 end
 

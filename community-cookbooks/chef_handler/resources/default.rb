@@ -1,6 +1,6 @@
 #
 # Author:: Seth Chisamore <schisamo@chef.io>
-# Cookbook Name:: chef_handler
+# Cookbook:: chef_handler
 # Resource:: default
 #
 # Copyright:: 2011-2013, Chef Software, Inc <legal@chef.io>
@@ -20,15 +20,16 @@
 
 actions :enable, :disable
 
-attribute :class_name, :kind_of => String, :name_attribute => true
-attribute :source, :default => nil, :kind_of => String
-attribute :arguments, :default => []
-attribute :supports, :kind_of => Hash, :default => { :report => true, :exception => true }
+attribute :class_name, kind_of: String, name_attribute: true
+attribute :source, default: nil, kind_of: String
+attribute :arguments, default: []
+attribute :supports, kind_of: Hash, default: { report: true, exception: true }
 
-# we have to set default for the supports attribute 
+# we have to set default for the supports attribute
 # in initializer since it is a 'reserved' attribute name
+default_action :enable
+
 def initialize(*args)
   super
-  @action = :enable
-  @supports = { :report => true, :exception => true }
+  @supports = { report: true, exception: true }
 end

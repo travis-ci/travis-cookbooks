@@ -1,6 +1,6 @@
 #
 # Author:: Seth Chisamore (<schisamo@chef.io>)
-# Cookbook Name:: seven_zip
+# Cookbook:: seven_zip
 # Attribute:: default
 #
 # Copyright:: Copyright (c) 2011-2016 Chef Software, Inc.

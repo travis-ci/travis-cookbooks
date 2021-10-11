@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Cookbook Name:: travis_duo
+# Cookbook:: travis_duo
 # Recipe:: default
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,12 +22,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package %w[libssl-dev libpam-dev]
+package %w(libssl-dev libpam-dev)
 
 apt_repository 'duosecurity' do
   uri 'http://pkg.duosecurity.com/Ubuntu'
-  distribution node['lsb']['codename']
-  components %w[main]
+  components %w(main)
   key 'https://duo.com/APT-GPG-KEY-DUO'
   retries 2
   retry_delay 30
@@ -35,22 +34,22 @@ end
 
 package 'duo-unix'
 
-%w[
+%w(
   /etc/duo/login_duo.conf
   /etc/duo/pam_duo.conf
-].each do |conf_path|
+).each do |conf_path|
   template conf_path do
     source 'duo.conf.erb'
     owner node['travis_duo']['user']
     group node['travis_duo']['group'] || node['travis_duo']['user']
-    mode 0o600
+    mode '600'
   end
 end
 
 directory '/lib/security' do
   owner 'root'
   group 'root'
-  mode 0o755
+  mode '755'
 end
 
 link '/lib/security/pam_duo.so' do
@@ -65,12 +64,12 @@ template '/etc/pam.d/sshd' do
   source 'pam.d-sshd.conf.erb'
   owner node['travis_duo']['user']
   group node['travis_duo']['group'] || node['travis_duo']['user']
-  mode 0o600
+  mode '600'
 end
 
 template '/etc/pam.d/common-auth' do
   source 'pam.d-common-auth.conf.erb'
   owner node['travis_duo']['user']
   group node['travis_duo']['group'] || node['travis_duo']['user']
-  mode 0o600
+  mode '600'
 end

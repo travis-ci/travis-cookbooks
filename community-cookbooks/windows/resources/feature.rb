@@ -37,7 +37,7 @@ action :delete do
   run_default_provider :delete
 end
 
-action_class.class_eval do
+action_class do
   def locate_default_provider
     if new_resource.install_method
       new_resource.install_method

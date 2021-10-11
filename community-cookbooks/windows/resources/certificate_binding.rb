@@ -17,9 +17,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-include Chef::Mixin::ShellOut
-include Chef::Mixin::PowershellOut
 include Windows::Helper
 
 property :cert_name, String, name_property: true, required: true
@@ -28,7 +25,7 @@ property :address, String, default: '0.0.0.0'
 property :port, Integer, default: 443
 property :app_id, String, default: '{4dc3e181-e14b-4a21-b022-59fc669b0914}'
 property :store_name, String, default: 'MY', regex: /^(?:MY|CA|ROOT)$/
-property :exists, [true, false], desired_state: true
+property :exists, [true, false]
 
 load_current_value do |desired|
   cmd = shell_out("#{locate_sysnative_cmd('netsh.exe')} http show sslcert ipport=#{desired.address}:#{desired.port}")
@@ -81,7 +78,7 @@ action :delete do
   end
 end
 
-action_class.class_eval do
+action_class do
   def netsh_command
     locate_sysnative_cmd('netsh.exe')
   end

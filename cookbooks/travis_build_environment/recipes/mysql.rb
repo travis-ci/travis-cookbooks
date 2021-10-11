@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Cookbook Name:: travis_build_environment
+# Cookbook:: travis_build_environment
 # Recipe:: mysql
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,24 +22,24 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package %w[
+package %w(
   mysql-client-5.5
   mysql-client-core-5.5
   mysql-common
   mysql-server-5.5
-] do
-  action %i[remove purge]
+) do
+  action %i(remove purge)
 end
 
-%w[
+%w(
   root_password
   root_password_again
-].each do |selection|
+).each do |selection|
   execute "echo 'mysql-server-5.6 mysql-server/#{selection} password ' | debconf-set-selections"
 end
 
 mysql_version = 5.6
-mysql_pkgs =  %w[
+mysql_pkgs =  %w(
   libmysqlclient-dev
   libmysqlclient18
   mysql-client-5.6
@@ -47,10 +47,10 @@ mysql_pkgs =  %w[
   mysql-common-5.6
   mysql-server-5.6
   mysql-server-core-5.6
-]
+)
 if node['lsb']['codename'] == 'xenial' || node['lsb']['codename'] == 'bionic'
   mysql_version = 5.7
-  mysql_pkgs = %w[
+  mysql_pkgs = %w(
     libmysqlclient-dev
     libmysqlclient20
     mysql-client-5.7
@@ -58,11 +58,11 @@ if node['lsb']['codename'] == 'xenial' || node['lsb']['codename'] == 'bionic'
     mysql-common
     mysql-server-5.7
     mysql-server-core-5.7
-  ]
+  )
 end
 
 package mysql_pkgs do
-  action %i[install upgrade]
+  action %i(install upgrade)
 end
 
 mysql_users_passwords_sql = ::File.join(
@@ -78,7 +78,7 @@ mysql_user_passwords_sql_content = [
   "CREATE USER 'travis'@'localhost' IDENTIFIED BY ''",
   "GRANT ALL PRIVILEGES ON *.* TO 'travis'@'localhost'",
   "CREATE USER 'travis'@'127.0.0.1' IDENTIFIED BY ''",
-  "GRANT ALL PRIVILEGES ON *.* TO 'travis'@'127.0.0.1'"
+  "GRANT ALL PRIVILEGES ON *.* TO 'travis'@'127.0.0.1'",
 ]
 
 if mysql_version < 5.7
@@ -95,25 +95,25 @@ template "/etc/mysql/conf.d/innodb_flush_log_at_trx_commit.cnf" do
   source 'root/innodb_flush_log_at_trx_commit.cnf.erb'
   owner 'root'
   group 'root'
-  mode 0o644
+  mode '644'
 end
 
 template "/etc/mysql/conf.d/performance-schema.cnf" do
   source 'root/performance-schema.cnf.erb'
   owner 'root'
   group 'root'
-  mode 0o644
+  mode '644'
 end
 
 template "#{node['travis_build_environment']['home']}/.my.cnf" do
   source 'ci_user/dot_my.cnf.erb'
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0o640
+  mode '640'
   variables(socket: node['travis_build_environment']['mysql']['socket'])
 end
 
-start_cmd = node['init_package'] == 'systemd' ? 'systemctl start mysql' : 'service mysql start'
+start_cmd = systemd? ? 'systemctl start mysql' : 'service mysql start'
 
 bash 'setup mysql users and passwords' do
   code <<-EOCODE
@@ -135,9 +135,9 @@ file ::File.join(
   content "export MYSQL_UNIX_PORT=#{node['travis_build_environment']['mysql']['socket']}\n"
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0o644
+  mode '644'
 end
 
 service 'mysql' do
-  action %i[disable stop]
+  action %i(disable stop)
 end

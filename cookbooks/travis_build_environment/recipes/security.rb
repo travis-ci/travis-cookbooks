@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Cookbook Name:: travis_build_environment
+# Cookbook:: travis_build_environment
 # Recipe:: security
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,20 +22,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-%w[user system].each do |target|
+%w(user system).each do |target|
   dir = "/etc/systemd/#{target}.conf.d"
 
   directory dir do
     owner 'root'
     group 'root'
-    mode 0o755
+    mode '755'
   end
 
   template "#{dir}/limits.conf" do
     source 'etc-systemd-conf-d-limits.conf.erb'
     owner 'root'
     group 'root'
-    mode 0o644
+    mode '644'
   end
 end
 
@@ -43,7 +43,7 @@ template '/etc/security/limits.conf' do
   source 'etc/security/limits.conf.erb'
   owner 'root'
   group 'root'
-  mode 0o644
+  mode '644'
 end
 
 execute 'systemctl daemon-reexec'
@@ -52,7 +52,7 @@ cookbook_file '/etc/sudoers.d/env_keep' do
   source 'etc/sudoers/env_keep'
   owner 'root'
   group 'root'
-  mode 0o440
+  mode '440'
 end
 
 ruby_block 'require pam_limits.so for su' do
@@ -75,7 +75,7 @@ template '/etc/init.d/disable-apparmor' do
   source 'etc/init.d/disable-apparmor.sh.erb'
   owner 'root'
   group 'root'
-  mode 0o750
+  mode '750'
   notifies :run, 'execute[update-rc.d disable-apparmor defaults]'
   only_if { node['travis_build_environment']['disable_apparmor'] }
 end
