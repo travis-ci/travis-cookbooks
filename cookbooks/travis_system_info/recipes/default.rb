@@ -39,8 +39,4 @@ ruby_block 'generate system-info report' do
     exec.environment('HOME' => node['travis_build_environment']['home'])
     exec.run_action(:run)
   end
-<<<<<<< HEAD
-
-=======
->>>>>>> cookbooks-update
 end

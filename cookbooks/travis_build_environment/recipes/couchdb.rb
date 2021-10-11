@@ -8,22 +8,14 @@ when 'trusty', 'xenial'
   end
 when 'bionic'
   apt_repository 'couchdb' do
-<<<<<<< HEAD
-    uri 'https://apache.jfrog.io/artifactory/couchdb-deb/'
-=======
     uri 'https://apache.jfrog.io/artifactory/couchdb-deb'
->>>>>>> cookbooks-update
     distribution 'bionic'
     components ['main']
     key 'https://couchdb.apache.org/repo/keys.asc'
   end
 when 'focal'
   apt_repository 'couchdb' do
-<<<<<<< HEAD
-    uri 'https://apache.jfrog.io/artifactory/couchdb-deb/'
-=======
     uri 'https://apache.jfrog.io/artifactory/couchdb-deb'
->>>>>>> cookbooks-update
     distribution 'focal'
     components ['main']
     key 'https://couchdb.apache.org/repo/keys.asc'
