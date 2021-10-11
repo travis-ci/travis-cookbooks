@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Cookbook Name:: travis_docker
+# Cookbook:: travis_docker
 # Recipe:: compose
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
 # THE SOFTWARE.
 
 package 'docker-compose' do
-  action %i[install upgrade]
+  action %i(install upgrade)
   only_if { node['kernel']['machine'] == 'ppc64le' }
   only_if { node['lsb']['codename'] == 'xenial' }
 end
@@ -32,7 +32,7 @@ link '/usr/local/bin/docker-compose' do
   to '/usr/bin/docker-compose'
   owner 'root'
   group 'root'
-  mode 0o755
+  mode '755'
   only_if { node['kernel']['machine'] == 'ppc64le' }
   only_if { node['lsb']['codename'] == 'xenial' }
 end
@@ -42,6 +42,6 @@ remote_file '/usr/local/bin/docker-compose' do
   checksum node['travis_docker']['compose']['sha256sum']
   owner 'root'
   group 'root'
-  mode 0o755
+  mode '755'
   not_if { node['kernel']['machine'] == 'ppc64le' }
 end

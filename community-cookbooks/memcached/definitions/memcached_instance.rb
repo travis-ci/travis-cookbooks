@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: memcached
+# Cookbook:: memcached
 # Definition:: memcached_instance
 #
-# Copyright 2009-2013, Chef Software, Inc.
+# Copyright:: 2009-2013, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ define :memcached_instance do
   include_recipe 'runit'
   include_recipe 'memcached::package'
 
-  instance_name = params[:name] == 'memcached' || params[:name] == nil ? 'memcached' : "memcached-#{params[:name]}"
+  instance_name = params[:name] == 'memcached' || params[:name].nil? ? 'memcached' : "memcached-#{params[:name]}"
 
   opts = params
 
@@ -30,16 +30,16 @@ define :memcached_instance do
     default_logger    true
     cookbook          'memcached'
     options({
-      :memory               => node['memcached']['memory'],
-      :port                 => node['memcached']['port'],
-      :udp_port             => node['memcached']['udp_port'],
-      :listen               => node['memcached']['listen'],
-      :maxconn              => node['memcached']['maxconn'],
-      :user                 => node['memcached']['user'],
-      :threads              => node['memcached']['threads'],
-      :max_object_size      => node['memcached']['max_object_size'],
-      :experimental_options => Array(node['memcached']['experimental_options']),
-      :ulimit               => node['memcached']['ulimit']
+      memory: node['memcached']['memory'],
+      port: node['memcached']['port'],
+      udp_port: node['memcached']['udp_port'],
+      listen: node['memcached']['listen'],
+      maxconn: node['memcached']['maxconn'],
+      user: node['memcached']['user'],
+      threads: node['memcached']['threads'],
+      max_object_size: node['memcached']['max_object_size'],
+      experimental_options: Array(node['memcached']['experimental_options']),
+      ulimit: node['memcached']['ulimit'],
     }.merge(opts))
   end
- end
+end

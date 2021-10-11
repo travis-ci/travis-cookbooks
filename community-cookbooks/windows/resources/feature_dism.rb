@@ -21,8 +21,6 @@
 property :feature_name, [Array, String], name_property: true
 property :source, String
 property :all, [true, false], default: false
-
-include Chef::Mixin::ShellOut
 include Windows::Helper
 
 action :install do
@@ -59,7 +57,7 @@ action :delete do
   end
 end
 
-action_class.class_eval do
+action_class do
   def installed?
     @installed ||= begin
       install_ohai_plugin unless node['dism_features']

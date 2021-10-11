@@ -8,9 +8,9 @@ package(
     when '11'
       ppv = '2.5'
     end
-    %W[
+    %W(
       postgresql-#{v}-postgis-#{ppv}
       postgresql-#{v}-postgis-#{ppv}-scripts
-    ]
+    )
   end.flatten
 )

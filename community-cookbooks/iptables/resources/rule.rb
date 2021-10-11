@@ -1,9 +1,9 @@
 #
 # Author:: Tim Smith <tsmith84@gmail.com>
-# Cookbook Name:: iptables
+# Cookbook:: iptables
 # Resource:: rule
 #
-# Copyright 2015, Tim Smith
+# Copyright:: 2015, Tim Smith
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ actions :enable, :disable
 
 default_action :enable
 
-attribute :name, :kind_of => String, :name_attribute => true
 attribute :source, :kind_of => String, :default => nil
 attribute :cookbook, :kind_of => String, :default => nil
 attribute :variables, :kind_of => Hash, :default => {}

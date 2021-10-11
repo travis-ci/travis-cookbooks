@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Cookbook Name:: travis_build_environment
+# Cookbook:: travis_build_environment
 # Recipe:: ntp
-# Copyright 2018 Travis CI GmbH
+# Copyright:: 2018 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,6 @@
 # THE SOFTWARE.
 
 service 'ntp' do
-  action %i[disable stop]
+  action %i(disable stop)
   only_if { node['travis_build_environment']['disable_ntp'] }
 end

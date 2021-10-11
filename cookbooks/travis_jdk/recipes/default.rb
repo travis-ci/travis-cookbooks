@@ -42,7 +42,7 @@ end
 
 versions = [
   node['travis_jdk']['default'],
-  node['travis_jdk']['versions']
+  node['travis_jdk']['versions'],
 ].flatten.uniq
 
 # remote_file 'install-jdk.sh' do
@@ -69,7 +69,7 @@ apt_update do
 end
 
 apt_package 'default_java' do
-  package_name %w[default-jre default-jdk]
+  package_name %w(default-jre default-jdk)
 end
 
 versions.each do |jdk|
@@ -99,7 +99,7 @@ template ::File.join(
   source 'travis_jdk.bash.erb'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0o644
+  mode '644'
   variables(
     jdk: node['travis_jdk']['default'],
     path: node['travis_jdk']['destination_path'],

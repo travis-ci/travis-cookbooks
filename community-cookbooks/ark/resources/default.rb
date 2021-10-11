@@ -84,7 +84,7 @@ action :install do
   end
 
   # usually on windows there is no central directory with executables where the applications are linked
-  unless node['platform_family'] == 'windows'
+  unless platform_family?('windows')
     # symlink binaries
     new_resource.has_binaries.each do |bin|
       link ::File.join(new_resource.prefix_bin, ::File.basename(bin)) do

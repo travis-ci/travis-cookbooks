@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-# Cookbook Name:: travis_system_info
+# Cookbook:: travis_system_info
 # Recipe:: default
 #
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # MIT License
 #
@@ -39,10 +39,4 @@ ruby_block 'generate system-info report' do
     exec.environment('HOME' => node['travis_build_environment']['home'])
     exec.run_action(:run)
   end
-
-  action :nothing
-end
-
-log 'system-info is coming for you' do
-  notifies :run, 'ruby_block[generate system-info report]', :delayed
 end

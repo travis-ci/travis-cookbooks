@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Cookbook Name:: travis_build_environment
+# Cookbook:: travis_build_environment
 # Recipe:: locale
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -42,6 +42,6 @@ cookbook_file '/etc/default/locale' do
   source 'etc/default/locale.sh'
   owner 'root'
   group 'root'
-  mode 0o644
+  mode '644'
   notifies :run, 'execute[dpkg-reconfigure locales]', :immediately
 end

@@ -1,7 +1,7 @@
-# Cookbook Name:: rsyslog
+# Cookbook:: rsyslog
 # Resource:: file_input
 #
-# Copyright 2012-2015, Joseph Holsten
+# Copyright:: 2012-2015, Joseph Holsten
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,9 +16,7 @@
 # limitations under the License.
 #
 
-actions :create
-
-property :name, String, name_attribute: true, required: true
+property :name, String, name_property: true, required: true
 property :file, String, required: true
 property :priority, Integer, default: 99
 property :severity, String

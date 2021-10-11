@@ -7,18 +7,16 @@ apt_repository 'git-ppa' do
 end
 
 case node['lsb']['codename']
-when 'trusty'
-  pkgs = %w[git git-core]
-when 'xenial'
-  pkgs = %w[git git-core]
+when 'trusty' || 'xenial'
+  pkgs = %w(git git-core)
 when 'bionic'
-  pkgs = %w[git]
+  pkgs = %w(git)
 else
-  pkgs = %w[git]
+  pkgs = %w(git)
 end
 
 package pkgs do
-  action %i[install upgrade]
+  action %i(install upgrade)
 end
 
 case node['lsb']['codename']
@@ -35,7 +33,7 @@ packagecloud_repo 'github/git-lfs' do
 end
 
 package 'git-lfs' do
-  action %i[install upgrade]
+  action %i(install upgrade)
   not_if { node['kernel']['machine'] == 'ppc64le' }
 end
 

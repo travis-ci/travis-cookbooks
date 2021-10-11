@@ -8,21 +8,35 @@ AllCops:
   Exclude:
     - vendor/**
 
-ClassLength:
+Metrics/ClassLength:
   Enabled: false
-Documentation:
+
+Style/Documentation:
   Enabled: false
-Encoding:
+
+Style/Encoding:
   Enabled: false
-HashSyntax:
+
+Style/HashSyntax:
   Enabled: false
-LineLength:
+
+Layout/LineLength:
   Enabled: false
-MethodLength:
+
+Metrics/MethodLength:
   Enabled: false
-SignalException:
+
+Style/SignalException:
   Enabled: false
-TrailingComma:
+
+Style/WordArray:
   Enabled: false
-WordArray:
+
+Chef/Deprecations/ResourceWithoutUnifiedTrue:
+  Enabled: false
+
+Style/IdenticalConditionalBranches:
+  Enabled: false
+
+Style/MutableConstant:
   Enabled: false

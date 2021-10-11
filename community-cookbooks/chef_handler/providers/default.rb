@@ -1,6 +1,6 @@
 #
 # Author:: Seth Chisamore <schisamo@chef.io>
-# Cookbook Name:: chef_handler
+# Cookbook:: chef_handler
 # Provider:: default
 #
 # Copyright:: 2011-2013, Chef Software, Inc <legal@chef.io>
@@ -20,22 +20,17 @@
 
 include ::ChefHandler::Helpers
 
-def whyrun_supported?
-  true
-end
-
 # This action needs to find an rb file that presumably contains the indicated class in it and the
 # load that file.  It then instantiates that class by name and registers it as a handler.
 action :enable do
   class_name = new_resource.class_name
   new_resource.supports.each do |type, enable|
-    if enable
-      converge_by("disable #{class_name} as a #{type} handler") do
-        unregister_handler(type, class_name)
-      end
+    next unless enable
+    converge_by("disable #{class_name} as a #{type} handler") do
+      unregister_handler(type, class_name)
     end
   end
-  
+
   handler = nil
   converge_by("load #{class_name} from #{new_resource.source}") do
     require new_resource.source
@@ -44,10 +39,9 @@ action :enable do
   end
 
   new_resource.supports.each do |type, enable|
-    if enable
-      converge_by("enable #{new_resource} as a #{type} handler") do
-        register_handler(type, handler)
-      end
+    next unless enable
+    converge_by("enable #{new_resource} as a #{type} handler") do
+      register_handler(type, handler)
     end
   end
 end
@@ -76,4 +70,3 @@ def collect_args(resource_args = [])
     [resource_args]
   end
 end
-

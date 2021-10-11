@@ -15,8 +15,8 @@ default['travis_jupiter_brain']['checksum'] = '32514ce40b0dd9c939ea44214314cac5b
 default['travis_jupiter_brain']['instances'] = [
   {
     'service_name' => 'jupiter-brain',
-    'blue_green' => false
-  }
+    'blue_green' => false,
+  },
   # {
   #   'service_name' => 'jb-bg-example',
   #   'blue_green' => true,
