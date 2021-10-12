@@ -3,7 +3,7 @@ dist: xenial
 
 env:
   global:
-  - PATH="/opt/chefdk/bin:/opt/chef/bin:/opt/chef/embedded/bin:/opt/chefdk/embedded/bin:$PATH"
+  - PATH="/opt/chef-workstation/bin:/opt/chef/bin:/opt/chef/embedded/bin:/opt/chef-workstation/embedded/bin:$PATH"
   matrix:
   - COOKBOOK_PATH="cookbooks"
   - COOKBOOK_PATH="community-cookbooks"
@@ -11,4 +11,5 @@ env:
 before_script:
 - curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P chef-workstation -v 21.10.640
 
-script: ./runtests
+script:
+  - ./runtests

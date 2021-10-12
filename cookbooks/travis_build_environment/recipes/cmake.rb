@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-# Cookbook Name:: travis_build_environment
+# Cookbook:: travis_build_environment
 # Recipe:: cmake
 #
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -37,6 +37,6 @@ ark 'cmake' do
 end
 
 package 'cmake' do
-  action %i[install upgrade]
+  action %i(install upgrade)
   only_if { node['kernel']['machine'] == 'ppc64le' }
 end

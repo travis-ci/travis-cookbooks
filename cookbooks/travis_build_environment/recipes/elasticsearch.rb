@@ -37,7 +37,7 @@ template '/etc/elasticsearch/jvm.options' do
   source 'etc-elasticsearch-jvm.options.erb'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0o644
+  mode '644'
   variables(
     jvm_heap: node['travis_build_environment']['elasticsearch']['jvm_heap']
   )
@@ -45,9 +45,9 @@ end
 
 service 'elasticsearch' do
   if node['travis_build_environment']['elasticsearch']['service_enabled']
-    action %i[enable start]
+    action %i(enable start)
   else
-    action %i[disable start]
+    action %i(disable start)
   end
   retries 4
   retry_delay 30

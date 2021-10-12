@@ -18,7 +18,6 @@
 # limitations under the License.
 #
 
-property :name, String
 property :target, String
 property :arguments, String
 property :description, String

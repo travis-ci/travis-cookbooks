@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Cookbook Name:: travis_build_environment
+# Cookbook:: travis_build_environment
 # Recipe:: cloud_init
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +27,15 @@ apt_repository 'pollinate' do
 end
 
 package 'pollinate' do
-  action %i[install upgrade]
+  action %i(install upgrade)
 end
 
-%w[
+%w(
   /etc/cloud
   /etc/cloud/templates
-].each do |dirname|
+).each do |dirname|
   directory dirname do
-    mode 0o755
+    mode '755'
   end
 end
 
@@ -43,7 +43,7 @@ template '/etc/cloud/cloud.cfg' do
   source 'etc/cloud/cloud.cfg.erb'
   owner 'root'
   group 'root'
-  mode 0o644
+  mode '644'
 end
 
 apt_repository 'pollinate' do

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Cookbook Name:: travis_build_environment
+# Cookbook:: travis_build_environment
 # Recipe:: kerl
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,25 +22,25 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package %w[
+package %w(
   curl
   libncurses-dev
   libreadline-dev
   libssl-dev
   unixodbc-dev
-]
+)
 
 installation_root = "/home/#{node['travis_build_environment']['user']}/otp"
 
 directory installation_root do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0o755
+  mode '755'
 end
 
 remote_file node['travis_build_environment']['kerl_path'] do
   source 'https://raw.githubusercontent.com/kerl/kerl/1.8.5/kerl'
-  mode 0o755
+  mode '755'
 end
 
 env = {
@@ -49,7 +49,7 @@ env = {
   'KERL_DISABLE_AGNER' => 'yes',
   'KERL_BASE_DIR' => node['travis_build_environment']['kerl_base_dir'],
   'CPPFLAGS' => "#{ENV['CPPFLAGS']} -DEPMD6",
-  'KERL_BUILD_BACKEND' => 'git'
+  'KERL_BUILD_BACKEND' => 'git',
 }
 
 execute "#{node['travis_build_environment']['kerl_path']} update releases" do
@@ -60,7 +60,7 @@ end
 
 cookbook_file "#{node['travis_build_environment']['home']}/.erlang.cookie" do
   source 'erlang.cookie'
-  mode 0o600
+  mode '600'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
 end
@@ -69,5 +69,5 @@ cookbook_file "#{node['travis_build_environment']['home']}/.build_plt" do
   source 'build_plt'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0o700
+  mode '700'
 end

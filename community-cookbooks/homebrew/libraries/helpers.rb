@@ -24,7 +24,7 @@ class Chef12HomebrewUser
 end
 
 module Homebrew
-  extend self # rubocop:disable ModuleFunction
+  extend self # rubocop:disable Style/ModuleFunction
 
   def exist?
     Chef::Log.debug('Checking to see if the homebrew binary exists')
@@ -35,8 +35,8 @@ module Homebrew
     @owner ||= begin
       require 'etc'
       ::Etc.getpwuid(Chef12HomebrewUser.new.find_homebrew_uid).name
-    rescue Chef::Exceptions::CannotDetermineHomebrewOwner
-      calculate_owner
+               rescue Chef::Exceptions::CannotDetermineHomebrewOwner
+                 calculate_owner
     end.tap do |owner|
       Chef::Log.debug("Homebrew owner is #{owner}")
     end

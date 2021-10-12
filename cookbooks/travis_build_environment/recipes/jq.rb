@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-# Cookbook Name:: travis_build_environment
+# Cookbook:: travis_build_environment
 # Recipe:: default
 #
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -29,14 +29,14 @@ arch = node['kernel']['machine'] =~ /x86_64/ ? '64' : '32'
 remote_file node['travis_build_environment']['jq_install_dest'] do
   source "https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux#{arch}"
   action :create_if_missing
-  mode 0o755
+  mode '755'
   owner node['travis_build_environment']['owner']
   group node['travis_build_environment']['group']
   not_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
 package 'jq' do
-  action %i[install upgrade]
+  action %i(install upgrade)
   only_if { node['kernel']['machine'] == 'ppc64le' }
 end
 

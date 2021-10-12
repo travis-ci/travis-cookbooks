@@ -2,7 +2,7 @@
 
 remote_file "#{Chef::Config[:file_cache_path]}/get-pip.py" do
   source 'https://bootstrap.pypa.io/pip/2.7/get-pip.py'
-  mode 0o644
+  mode '644'
   not_if 'which pip'
 end
 

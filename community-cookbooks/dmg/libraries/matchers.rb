@@ -16,9 +16,3 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-if defined?(ChefSpec)
-  def install_dmg_package(app)
-    ChefSpec::Matchers::ResourceMatcher.new(:dmg_package, :install, app)
-  end
-end

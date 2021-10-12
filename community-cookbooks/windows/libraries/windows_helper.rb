@@ -26,7 +26,6 @@ module Windows
     AUTO_RUN_KEY = 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run'.freeze unless defined?(AUTO_RUN_KEY)
     ENV_KEY = 'HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment'.freeze unless defined?(ENV_KEY)
     ExpandEnvironmentStrings = Win32API.new('kernel32', 'ExpandEnvironmentStrings', %w(P P L), 'L') if Chef::Platform.windows? && !defined?(ExpandEnvironmentStrings)
-
     # returns windows friendly version of the provided path,
     # ensures backslashes are used everywhere
     def win_friendly_path(path)
@@ -171,4 +170,4 @@ module Windows
   end
 end
 
-Chef::Recipe.send(:include, Windows::Helper)
+Chef::DSL::Recipe.send(:include, Windows::Helper)

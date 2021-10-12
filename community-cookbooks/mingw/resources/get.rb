@@ -22,8 +22,7 @@
 
 property :package, kind_of: String, name_property: true
 property :root, kind_of: String, required: true
-
-resource_name :mingw_get
+unified_mode true
 
 action_class do
   def mingw_do_action(action_cmd)

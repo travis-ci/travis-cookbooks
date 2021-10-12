@@ -1,9 +1,9 @@
 #
-# Cookbook Name:: openssh
+# Cookbook:: openssh
 # Attributes:: default
 #
 # Author:: Ernie Brodeur <ebrodeur@ujami.net>
-# Copyright 2008-2016, Chef Software, Inc.
+# Copyright:: 2008-2016, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,15 +32,13 @@ default['openssh']['package_name'] = case node['platform_family']
                                        %w(openssh-client openssh-server)
                                      end
 
-default['openssh']['service_name'] = case node['platform_family']
-                                     when 'rhel', 'fedora', 'suse', 'freebsd', 'gentoo', 'arch'
+default['openssh']['service_name'] = if platform_family?('rhel', 'fedora', 'suse', 'freebsd', 'gentoo', 'arch')
                                        'sshd'
                                      else
                                        'ssh'
                                      end
 
-default['openssh']['config_mode'] = case node['platform_family']
-                                    when 'rhel', 'fedora'
+default['openssh']['config_mode'] = if platform_family?('rhel', 'fedora')
                                       '0600'
                                     else
                                       '0644'
@@ -51,7 +49,7 @@ default['openssh']['client']['host'] = '*'
 
 # Workaround for CVE-2016-0777 and CVE-2016-0778.
 # Older versions of RHEL should not receive this directive
-default['openssh']['client']['use_roaming'] = 'no' unless node['platform_family'] == 'rhel' && node['platform_version'].to_i < 7
+default['openssh']['client']['use_roaming'] = 'no' unless platform_family?('rhel') && node['platform_version'].to_i < 7
 # default['openssh']['client']['forward_agent'] = 'no'
 # default['openssh']['client']['forward_x11'] = 'no'
 # default['openssh']['client']['rhosts_rsa_authentication'] = 'no'

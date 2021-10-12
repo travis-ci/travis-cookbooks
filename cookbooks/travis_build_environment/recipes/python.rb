@@ -4,7 +4,7 @@ virtualenv_root = "#{node['travis_build_environment']['home']}/virtualenv"
 
 include_recipe 'travis_build_environment::virtualenv'
 
-package %w[
+package %w(
   build-essential
   curl
   libbz2-dev
@@ -18,7 +18,7 @@ package %w[
   tk-dev
   wget
   zlib1g-dev
-]
+)
 
 pyenv_root = '/opt/pyenv'
 
@@ -33,31 +33,31 @@ execute "#{pyenv_root}/plugins/python-build/install.sh"
 directory '/opt/python' do
   owner 'root'
   group 'root'
-  mode 0o755
+  mode '755'
 end
 
 directory virtualenv_root do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0o755
+  mode '755'
 end
 
 build_environment = {
-  'PYTHON_CONFIGURE_OPTS' => %w[
+  'PYTHON_CONFIGURE_OPTS' => %w(
     --enable-unicode=ucs4
     --with-wide-unicode
     --enable-shared
     --enable-ipv6
     --enable-loadable-sqlite-extensions
     --with-computed-gotos
-  ].join(' '),
-  'PYTHON_CFLAGS' => %w[
+  ).join(' '),
+  'PYTHON_CFLAGS' => %w(
     -g
     -fstack-protector
     --param=ssp-buffer-size=4
     -Wformat
     -Werror=format-security
-  ].join(' ')
+  ).join(' '),
 }
 
 node['travis_build_environment']['pythons'].each do |py|
@@ -85,7 +85,7 @@ node['travis_build_environment']['pythons'].each do |py|
     )
     owner 'root'
     group 'root'
-    mode 0o644
+    mode '644'
     ignore_failure true
   end
 
@@ -93,14 +93,14 @@ node['travis_build_environment']['pythons'].each do |py|
     code "tar -xjf #{downloaded_tarball} --directory /"
     creates "/opt/python/#{py}"
     environment build_environment
-    only_if { File.exist?(downloaded_tarball) }
+    only_if { ::File.exist?(downloaded_tarball) }
   end
 
   bash "build #{py}" do
     code "python-build #{py} /opt/python/#{py}"
     creates "/opt/python/#{py}"
     environment build_environment
-    not_if { File.exist?("/opt/python/#{py}") }
+    not_if { ::File.exist?("/opt/python/#{py}") }
   end
 
   link "/opt/python/#{py}/bin/#{pyname}" do
@@ -176,7 +176,7 @@ template ::File.join(
   source 'pyenv.bash.erb'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0o644
+  mode '644'
   variables(
     pyenv_root: pyenv_root,
     build_environment: build_environment

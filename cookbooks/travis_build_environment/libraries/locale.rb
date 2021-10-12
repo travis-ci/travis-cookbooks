@@ -11,7 +11,7 @@ module Travis
 
           locales += load_supported(codes, loc_file) if ::File.exist?(loc_file)
 
-          locales = %w[en_US.UTF-8] if locales.empty?
+          locales = %w(en_US.UTF-8) if locales.empty?
 
           locales.each_slice(10) { |batch| run_locale_gen(batch) }
         end
