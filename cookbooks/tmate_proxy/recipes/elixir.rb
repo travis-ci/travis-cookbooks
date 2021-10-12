@@ -14,9 +14,7 @@ dpkg_package "esl-erlang" do
   action :install
 end
 
-execute "apt-get-update" do
-  command "apt-get update"
-end
+apt_update 'update'
 
 package "esl-erlang"
 package "elixir"

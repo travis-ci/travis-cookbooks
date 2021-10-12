@@ -22,7 +22,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe 'apt'
 include_recipe 'travis_build_environment::cloud_init'
 
 cookbook_file '/etc/apt/apt.conf.d/90-travis-custom' do
@@ -70,6 +69,4 @@ end
   end
 end
 
-execute 'apt-get update for travis_build_environment::apt' do
-  command 'apt-get update'
-end
+apt_update 'apt-get update for travis_build_environment::apt'

@@ -56,12 +56,12 @@ execute 'clean up busted jvm symlinks' do
   action :nothing
 end
 
-log 'trigger jvm symlink cleanup' do
+notify_group 'trigger jvm symlink cleanup' do
   level :info
   notifies :run, 'execute[clean up busted jvm symlinks]'
 end
 
-log 'trigger setting default java' do
+notify_group 'trigger setting default java' do
   level :info
   notifies :run, "execute[set #{default_jvm} as default alternative]"
   not_if { default_jvm.nil? }

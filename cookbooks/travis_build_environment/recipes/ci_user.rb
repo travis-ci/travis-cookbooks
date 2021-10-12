@@ -325,7 +325,7 @@ bash 'remove ~travis/.pearrc' do
   action :nothing
 end
 
-log 'trigger ~travis/.pearrc removal' do
+notify_group 'trigger ~travis/.pearrc removal' do
   notifies :run, 'bash[remove ~travis/.pearrc]'
 end
 

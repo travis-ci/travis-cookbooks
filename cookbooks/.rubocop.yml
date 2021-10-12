@@ -43,15 +43,6 @@ Style/SoleNestedConditional:
 #Layout/LineEndStringConcatenationIndentation:
   #Enabled: false
 
-Chef/Modernize/ExecuteAptUpdate:
-  Enabled: false
-
-Chef/Modernize/IncludingAptDefaultRecipe:
-  Enabled: false
-
-Chef/Deprecations/LogResourceNotifications:
-  Enabled: false
-
 Chef/Modernize/ExecuteSysctl:
   Enabled: false
 
