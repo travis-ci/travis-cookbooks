@@ -9,23 +9,21 @@ def main(argv = ARGV)
   failed = []
 
   cookbook_path = argv.first
-  fc_args = %W(#{ENV['FC_ARGS']})
-  fc_tags = ENV['FC_TAGS'] || File.join(cookbook_path, '.foodcritic-tags')
+  cs_args = %W(#{ENV['CS_ARGS']})
+  cs_tags = ENV['CS_TAGS'] || File.join(cookbook_path, '.cookstyle-tags')
   quiet = ENV['QUIET'].nil? ? false : true
-  foodcritic_exe = ENV['FOODCRITIC_EXE'] || 'foodcritic'
+  cookstyle_exe = ENV['COOKSTYLE_EXE'] || 'cookstyle'
 
-  if File.exist?(fc_tags)
-    fc_args += File.read(fc_tags).split.map { |t| "--tags #{t.strip}" }
-  end
+  cs_args += File.read(cs_tags).split.map { |t| "--tags #{t.strip}" } if File.exist?(cs_tags)
 
   Dir.glob("#{cookbook_path}/*") do |cookbook|
     next unless File.exist?(File.join(cookbook, 'metadata.rb'))
 
-    failed << run_foodcritic_for_cookbook(
+    failed << run_cookstyle_for_cookbook(
       cookbook: cookbook,
       quiet: quiet,
-      fc_args: fc_args,
-      foodcritic_exe: foodcritic_exe
+      cs_args: cs_args,
+      cookstyle_exe: cookstyle_exe
     )
   end
 
@@ -39,24 +37,24 @@ def main(argv = ARGV)
   0
 end
 
-def run_foodcritic_for_cookbook(cookbook: '', quiet: false, fc_args: '',
-                                foodcritic_exe: 'foodcritic')
+def run_cookstyle_for_cookbook(cookbook: '', quiet: false, cs_args: '',
+                               cookstyle_exe: 'cookstyle')
 
-  return nil if cookbook.empty?
-  return nil unless File.directory?(cookbook)
+  return if cookbook.empty?
+  return unless File.directory?(cookbook)
+
   cookbook_name = File.basename(cookbook)
-  return nil if cookbook_name == 'cookbooks'
+  return if cookbook_name == 'cookbooks'
 
-  foodcritic_command = %W(
-    #{foodcritic_exe}
-    --epic-fail any
-    #{fc_args.join(' ')}
+  cookstyle_command = %W(
+    #{cookstyle_exe}
+    #{cs_args.join(' ')}
     #{cookbook}
   ).join(' ')
 
-  puts "---> #{cookbook_name}: #{foodcritic_command}" unless quiet
+  puts "---> #{cookbook_name}: #{cookstyle_command}" unless quiet
 
-  output = `#{foodcritic_command} 2>&1`.chomp
+  output = `#{cookstyle_command} 2>&1`.chomp
   output = output.split(/[\r\n]/).map(&:strip).reject(&:empty?).join("\n")
   puts output unless output.empty?
 
