@@ -110,7 +110,7 @@ action :zip do
   end
 end
 
-action_class.class_eval do
+action_class do
   def ensure_rubyzip_gem_installed
     require 'zip'
   rescue LoadError

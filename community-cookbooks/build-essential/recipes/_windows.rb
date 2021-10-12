@@ -30,7 +30,7 @@ end
 [
   'base-devel', # Brings down msys based bash/make/awk/patch/stuff..
   'mingw-w64-x86_64-toolchain', # Puts 64-bit SEH mingw toolchain in msys2\mingw64
-  'mingw-w64-i686-toolchain' # Puts 32-bit DW2 mingw toolchain in msys2\ming32
+  'mingw-w64-i686-toolchain', # Puts 32-bit DW2 mingw toolchain in msys2\ming32
 ].each do |package|
   msys2_package package do
     root tool_path

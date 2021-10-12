@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: memcached
+# Cookbook:: memcached
 # Recipe:: default
 #
-# Copyright 2009-2013, Chef Software, Inc.
+# Copyright:: 2009-2013, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,24 +21,24 @@ directory node['memcached']['logfilepath']
 
 case node['platform_family']
 when 'rhel', 'fedora', 'suse'
-  family = node['platform_family'] == 'suse' ? 'suse' : 'redhat'
+  family = platform_family?('suse') ? 'suse' : 'redhat'
   template '/etc/sysconfig/memcached' do
     source "memcached.sysconfig.#{family}.erb"
     owner 'root'
     group 'root'
     mode  '0644'
     variables(
-      :listen          => node['memcached']['listen'],
-      :user            => node['memcached']['user'],
-      :group           => node['memcached']['group'],
-      :port            => node['memcached']['port'],
-      :udp_port        => node['memcached']['udp_port'],
-      :maxconn         => node['memcached']['maxconn'],
-      :memory          => node['memcached']['memory'],
-      :logfilepath     => node['memcached']['logfilepath'],
-      :logfilename     => node['memcached']['logfilename'],
-      :threads         => node['memcached']['threads'],
-      :max_object_size => node['memcached']['max_object_size']
+      listen: node['memcached']['listen'],
+      user: node['memcached']['user'],
+      group: node['memcached']['group'],
+      port: node['memcached']['port'],
+      udp_port: node['memcached']['udp_port'],
+      maxconn: node['memcached']['maxconn'],
+      memory: node['memcached']['memory'],
+      logfilepath: node['memcached']['logfilepath'],
+      logfilename: node['memcached']['logfilename'],
+      threads: node['memcached']['threads'],
+      max_object_size: node['memcached']['max_object_size']
     )
     notifies :restart, 'service[memcached]'
   end
@@ -55,17 +55,17 @@ else
     group  'root'
     mode   '0644'
     variables(
-      :listen          => node['memcached']['listen'],
-      :user            => node['memcached']['user'],
-      :port            => node['memcached']['port'],
-      :udp_port        => node['memcached']['udp_port'],
-      :maxconn         => node['memcached']['maxconn'],
-      :memory          => node['memcached']['memory'],
-      :logfilepath     => node['memcached']['logfilepath'],
-      :logfilename     => node['memcached']['logfilename'],
-      :threads         => node['memcached']['threads'],
-      :max_object_size => node['memcached']['max_object_size'],
-      :experimental_options => Array(node['memcached']['experimental_options'])
+      listen: node['memcached']['listen'],
+      user: node['memcached']['user'],
+      port: node['memcached']['port'],
+      udp_port: node['memcached']['udp_port'],
+      maxconn: node['memcached']['maxconn'],
+      memory: node['memcached']['memory'],
+      logfilepath: node['memcached']['logfilepath'],
+      logfilename: node['memcached']['logfilename'],
+      threads: node['memcached']['threads'],
+      max_object_size: node['memcached']['max_object_size'],
+      experimental_options: Array(node['memcached']['experimental_options'])
     )
     notifies :restart, 'service[memcached]'
   end
@@ -74,11 +74,11 @@ end
 service 'memcached' do
   only_if { node['memcached']['service_enabled'] }
   action [:enable, :start]
-  supports :status => true, :start => true, :stop => true, :restart => true, :enable => true
+  supports status: true, start: true, stop: true, restart: true, enable: true
 end
 
 service 'memcached' do
   not_if { node['memcached']['service_enabled'] }
   action [ :stop, :disable ]
-  supports :status => true, :start => true, :stop => true, :restart => true, :enable => true
+  supports status: true, start: true, stop: true, restart: true, enable: true
 end

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Author:: Sölvi Páll Ásgeirsson (<solvip@gmail.com>), Richard Lavey (richard.lavey@calastone.com)
 # Cookbook:: windows
@@ -27,7 +26,6 @@ property :change_users, Array, default: []
 property :read_users, Array, default: []
 
 include Windows::Helper
-include Chef::Mixin::PowershellOut
 
 require 'win32ole' if RUBY_PLATFORM =~ /mswin|mingw32|windows/
 
@@ -128,7 +126,7 @@ def share_permissions(name)
   }
 end
 
-action_class.class_eval do
+action_class do
   def description_exists?(resource)
     !resource.description.nil?
   end

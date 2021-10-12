@@ -19,7 +19,7 @@ action :uninstall do
   end
 end
 
-action_class.class_eval do
+action_class do
   alias_method :action_cask, :action_install
   alias_method :action_uncask, :action_uninstall
 

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Cookbook Name:: travis_build_environment
+# Cookbook:: travis_build_environment
 # Recipe:: xserver
-# Copyright 2018 Travis CI GmbH
+# Copyright:: 2018 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,18 +22,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package %w[
+package %w(
   x11-utils
   x11-xserver-utils
   xserver-xorg-core
   xvfb
   dbus-x11
-]
+)
 
 cookbook_file '/etc/systemd/system/xvfb.service' do
   owner 'root'
   group 'root'
-  mode 0o644
+  mode '644'
 
   source 'etc-systemd-system-xvfb.service'
 end

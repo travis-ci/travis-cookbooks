@@ -29,14 +29,14 @@ if !node['travis_postgresql']['superusers'].to_a.empty? && !::File.exist?(create
 end
 
 service 'postgresql' do
-  action %i[disable stop]
+  action %i(disable stop)
 end
 
 template '/etc/init.d/postgresql' do
   source 'initd_postgresql.erb'
   owner 'root'
   group 'root'
-  mode 0o755
+  mode '755'
 end
 
 file '/lib/systemd/system/postgresql.service' do
@@ -55,13 +55,13 @@ TravisPostgresqlMethods.pg_versions(node).each do |pg_version|
     source "#{pg_version}/postgresql.conf.erb"
     owner 'postgres'
     group 'postgres'
-    mode 0o644 # apply same permissions as in 'pdpg' packages
+    mode '644' # apply same permissions as in 'pdpg' packages
   end
 
   template "/etc/postgresql/#{pg_version}/main/pg_hba.conf" do
     source 'pg_hba.conf.erb'
     owner 'postgres'
     group 'postgres'
-    mode 0o640 # apply same permissions as in 'pdpg' packages
+    mode '640' # apply same permissions as in 'pdpg' packages
   end
 end

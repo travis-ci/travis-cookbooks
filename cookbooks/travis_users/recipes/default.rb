@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-# Cookbook Name:: travis_users
+# Cookbook:: travis_users
 # Recipe:: default
 #
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -26,7 +26,7 @@
 #
 
 package 'zsh' do
-  action %i[install upgrade]
+  action %i(install upgrade)
   only_if { node['travis_users'].any? { |u| u['shell'] =~ /zsh/ } }
 end
 
@@ -37,14 +37,14 @@ Array(node['travis_users']).each do |user|
   end
 
   directory "/home/#{user['id']}" do
-    mode 0o750
+    mode '750'
     owner user['id']
     group user['id']
   end
 
   file "/home/#{user['id']}/.zshrc" do
     content "# this space intentionally left blank\n"
-    mode 0o640
+    mode '640'
     owner user['id']
     group user['id']
     only_if { user['shell'] =~ /zsh/ }
@@ -58,21 +58,21 @@ Array(node['travis_users']).each do |user|
     end
   end
 
-  %W[
+  %W(
     /home/#{user['id']}
     /home/#{user['id']}/.ssh
-  ].each do |dirname|
+  ).each do |dirname|
     directory dirname do
       owner user['id']
       group user['id']
-      mode 0o700
+      mode '700'
     end
   end
 
   template "/home/#{user['id']}/.ssh/authorized_keys" do
     owner user['id']
     group user['id']
-    mode 0o644
+    mode '644'
     source 'authorized_keys.erb'
     variables(keys: user['ssh_keys'])
     not_if { Array(user['ssh_keys']).empty? }

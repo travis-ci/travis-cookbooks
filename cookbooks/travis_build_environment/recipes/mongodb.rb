@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Cookbook Name:: travis_build_environment
+# Cookbook:: travis_build_environment
 # Recipe:: mongodb
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,7 @@
 apt_repository 'mongodb-4.0' do
   uri 'http://repo.mongodb.org/apt/ubuntu'
   distribution "#{node['lsb']['codename']}/mongodb-org/4.0"
-  components %w[multiverse]
+  components %w(multiverse)
   key 'https://www.mongodb.org/static/pgp/server-4.0.asc'
   retries 2
   retry_delay 30
@@ -37,7 +37,7 @@ package 'mongodb-org' do
 end
 
 service 'mongod' do
-  action %i[stop disable]
+  action %i(stop disable)
   not_if { node['kernel']['machine'] == 'ppc64le' }
   not_if { node['travis_build_environment']['mongodb']['service_enabled'] }
 end

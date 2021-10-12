@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Cookbook Name:: travis_build_environment
+# Cookbook:: travis_build_environment
 # Recipe:: environment
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -26,23 +26,23 @@ template '/etc/environment' do
   source 'etc/environment.sh.erb'
   owner 'root'
   group 'root'
-  mode 0o644
+  mode '644'
 end
 
 include_recipe 'travis_build_environment::bash_profile_d'
 
-%w[
+%w(
   travis_environment
   travis_environment_ruby
   travis_environment_php
   xdg_path
-].each do |profile_file|
+).each do |profile_file|
   cookbook_file ::File.join(
     node['travis_build_environment']['home'],
     ".bash_profile.d/#{profile_file}.bash"
   ) do
     owner node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    mode 0o644
+    mode '644'
   end
 end

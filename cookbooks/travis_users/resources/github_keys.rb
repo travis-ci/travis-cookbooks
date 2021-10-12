@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+unified_mode true
+
 actions :create
 default_action :create
 

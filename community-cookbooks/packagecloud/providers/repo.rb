@@ -2,8 +2,6 @@ include ::PackageCloud::Helper
 
 require 'uri'
 
-use_inline_resources if defined?(use_inline_resources)
-
 action :add do
   case new_resource.type
   when 'deb'
@@ -20,8 +18,8 @@ end
 def gpg_url(base_url, repo, format, master_token)
   base_install_url = ::File.join(base_url, node['packagecloud']['base_repo_path'])
   ext = (format == :deb) ? 'list' : 'repo'
-  gpg_key_url_endpoint = construct_uri_with_options({base_url: base_install_url, repo: repo, endpoint: "gpg_key_url.#{ext}"})
-  if !master_token.nil?
+  gpg_key_url_endpoint = construct_uri_with_options({ base_url: base_install_url, repo: repo, endpoint: "gpg_key_url.#{ext}" })
+  unless master_token.nil?
     gpg_key_url_endpoint.user = master_token
     gpg_key_url_endpoint.password = ''
   end
@@ -31,7 +29,7 @@ end
 
 def install_deb
   base_url = new_resource.base_url
-  repo_url = construct_uri_with_options({base_url: base_url, repo: new_resource.repository, endpoint: node['platform']})
+  repo_url = construct_uri_with_options({ base_url: base_url, repo: new_resource.repository, endpoint: node['platform'] })
 
   Chef::Log.debug("#{new_resource.name} deb repo url = #{repo_url}")
 
@@ -61,8 +59,8 @@ def install_deb
 
   execute "apt-get-update-#{filename}" do
     command "apt-get update -o Dir::Etc::sourcelist=\"sources.list.d/#{filename}.list\"" \
-            " -o Dir::Etc::sourceparts=\"-\"" \
-            " -o APT::Get::List-Cleanup=\"0\""
+            ' -o Dir::Etc::sourceparts="-"' \
+            ' -o APT::Get::List-Cleanup="0"'
     action :nothing
   end
 end
@@ -70,7 +68,7 @@ end
 def install_rpm
   given_base_url = new_resource.base_url
   base_repo_url = ::File.join(given_base_url, node['packagecloud']['base_repo_path'])
-  base_url_endpoint = construct_uri_with_options({base_url: base_repo_url, repo: new_resource.repository, endpoint: 'rpm_base_url'})
+  base_url_endpoint = construct_uri_with_options({ base_url: base_repo_url, repo: new_resource.repository, endpoint: 'rpm_base_url' })
 
   if new_resource.master_token
     base_url_endpoint.user     = new_resource.master_token
@@ -136,9 +134,8 @@ end
 def install_gem
   base_url = new_resource.base_url
 
-  repo_url = construct_uri_with_options({base_url: base_url, repo: new_resource.repository})
+  repo_url = construct_uri_with_options({ base_url: base_url, repo: new_resource.repository })
   repo_url = read_token(repo_url, true).to_s
-
 
   execute "install packagecloud #{new_resource.name} repo as gem source" do
     command "gem source --add #{repo_url}"
@@ -146,15 +143,14 @@ def install_gem
   end
 end
 
-
-def read_token(repo_url, gems=false)
+def read_token(repo_url, gems = false)
   return repo_url unless new_resource.master_token
 
   base_url = new_resource.base_url
 
   base_repo_url = ::File.join(base_url, node['packagecloud']['base_repo_path'])
 
-  uri = construct_uri_with_options({base_url: base_repo_url, repo: new_resource.repository, endpoint: 'tokens.text'})
+  uri = construct_uri_with_options({ base_url: base_repo_url, repo: new_resource.repository, endpoint: 'tokens.text' })
   uri.user     = new_resource.master_token
   uri.password = ''
 
@@ -174,16 +170,16 @@ end
 def install_endpoint_params
   dist = new_resource.force_dist || value_for_platform_family(
     'debian' => node['lsb']['codename'],
-    ['rhel', 'fedora'] => node['platform_version'],
+    ['rhel', 'fedora'] => node['platform_version']
   )
 
   hostname = node['packagecloud']['hostname_override'] ||
              node['fqdn'] ||
              node['hostname']
 
-  if !hostname
+  unless hostname
     raise("Can't determine hostname!  Set node['packagecloud']['hostname_override'] " \
-          "if it cannot be automatically determined by Ohai.")
+          'if it cannot be automatically determined by Ohai.')
   end
 
   { :os   => os_platform,
@@ -207,7 +203,7 @@ def construct_uri_with_options(options)
   required_options = [:base_url, :repo]
 
   required_options.each do |opt|
-    if !options[opt]
+    unless options[opt]
       raise ArgumentError,
             "A required option :#{opt} was not specified"
     end
@@ -216,9 +212,9 @@ def construct_uri_with_options(options)
   options[:base_url] = append_trailing_slash(options[:base_url])
   options[:repo]     = append_trailing_slash(options[:repo])
 
-  URI.join(options.delete(:base_url), options.inject([]) {|mem, opt| mem << opt[1]}.join)
+  URI.join(options.delete(:base_url), options.inject([]) { |acc, elem| acc << elem[1] }.join)
 end
 
 def append_trailing_slash(str)
-  str.end_with?("/") ? str : str + "/"
+  str.end_with?('/') ? str : str + '/'
 end

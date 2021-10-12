@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Cookbook Name:: travis_build_environment
+# Cookbook:: travis_build_environment
 # Recipe:: kiex
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@ kiex_install_path = "#{Chef::Config[:file_cache_path]}/kiex-install"
 
 remote_file kiex_install_path do
   source 'https://raw.githubusercontent.com/taylor/kiex/master/install'
-  mode 0o755
+  mode '755'
 end
 
 execute kiex_install_path do
@@ -43,5 +43,5 @@ cookbook_file 'kiex.bash' do
   path ::File.join(
     node['travis_build_environment']['home'], '.bash_profile.d/kiex.bash'
   )
-  mode 0o644
+  mode '644'
 end

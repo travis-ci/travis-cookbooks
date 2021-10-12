@@ -8,14 +8,14 @@ when 'trusty', 'xenial'
   end
 when 'bionic'
   apt_repository 'couchdb' do
-    uri 'https://apache.jfrog.io/artifactory/couchdb-deb/'
+    uri 'https://apache.jfrog.io/artifactory/couchdb-deb'
     distribution 'bionic'
     components ['main']
     key 'https://couchdb.apache.org/repo/keys.asc'
   end
 when 'focal'
   apt_repository 'couchdb' do
-    uri 'https://apache.jfrog.io/artifactory/couchdb-deb/'
+    uri 'https://apache.jfrog.io/artifactory/couchdb-deb'
     distribution 'focal'
     components ['main']
     key 'https://couchdb.apache.org/repo/keys.asc'
@@ -32,7 +32,7 @@ when 'focal'
 end
 
 service 'couchdb' do
-  action %i[disable start]
+  action %i(disable start)
 end
 
 case node['lsb']['codename']
@@ -41,20 +41,20 @@ when 'trusty', 'xenial'
     source 'erlang_query_server.ini'
     owner 'root'
     group 'root'
-    mode 0o644
+    mode '644'
   end
 when 'bionic', 'focal'
   cookbook_file '/opt/couchdb/etc/local.d/erlang_query_server.ini' do
     source 'erlang_query_server.ini'
     owner 'couchdb'
     group 'couchdb'
-    mode 0o644
+    mode '644'
   end
   cookbook_file '/opt/couchdb/etc/local.d/admins.ini' do
     source 'admins.ini'
     owner 'couchdb'
     group 'couchdb'
-    mode 0o644
+    mode '644'
   end
   execute "chown-couchdb" do
     command "chown -R couchdb:couchdb /opt/couchdb/ -v"
@@ -64,7 +64,7 @@ when 'bionic', 'focal'
 end
 
 service 'couchdb' do
-  action %i[disable start]
+  action %i(disable start)
 end
 
 apt_repository 'couchdb' do

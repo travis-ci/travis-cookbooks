@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Cookbook Name:: travis_build_environment
+# Cookbook:: travis_build_environment
 # Recipe:: ramfs
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -25,17 +25,17 @@
 directory node['travis_build_environment']['ramfs_dir'] do
   owner 'root'
   group 'root'
-  mode 0o755
+  mode '755'
   action :create
 end
 
 mount node['travis_build_environment']['ramfs_dir'] do
   fstype 'tmpfs'
   device 'none'
-  options %W[
+  options %W(
     defaults
     size=#{node['travis_build_environment']['ramfs_size']}
     noatime
-  ]
-  action %i[mount enable]
+  )
+  action %i(mount enable)
 end

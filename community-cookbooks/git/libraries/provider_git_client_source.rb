@@ -7,7 +7,7 @@ class Chef
         action :install do
           return "#{node['platform']} is not supported by the #{cookbook_name}::#{recipe_name} recipe" unless platform_family?('rhel', 'suse', 'fedora', 'debian')
 
-          include_recipe 'build-essential'
+          build_essential 'install compilation tools'
           include_recipe 'yum-epel' if node['platform_family'] == 'rhel' && node['platform_version'].to_i == 5
 
           # move this to attributes.
