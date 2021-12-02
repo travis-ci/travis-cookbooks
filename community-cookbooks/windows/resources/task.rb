@@ -20,6 +20,8 @@
 
 # Passwords can't be loaded for existing tasks, making :modify both confusing
 # and not very useful
+unified_mode true
+
 require 'rexml/document'
 
 property :task_name, String, name_property: true, regex: [%r{\A[^/\:\*\?\<\>\|]+\z}]

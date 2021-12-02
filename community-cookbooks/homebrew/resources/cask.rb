@@ -1,3 +1,5 @@
+unified_mode true
+
 property :name, String, regex: /^[\w-]+$/, name_property: true
 property :options, String
 

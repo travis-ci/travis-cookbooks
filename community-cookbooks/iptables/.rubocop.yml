@@ -6,6 +6,3 @@ Layout/LineLength:
 
 Style/HashSyntax:
   EnforcedStyle: hash_rockets
-
-Chef/Deprecations/ResourceWithoutUnifiedTrue:
-  Enabled: false
