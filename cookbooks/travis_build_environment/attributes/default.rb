@@ -294,7 +294,7 @@ default['travis_build_environment']['yarn_binaries'] = %w(
 default['tz'] = 'UTC'
 default['travis_java']['default_version'] = ''
 
-default['travis_build_environment']['couchdb']['keep_repo'] = false
+#default['travis_build_environment']['couchdb']['keep_repo'] = false
 default['travis_build_environment']['docker']['keep_repo'] = false
 default['travis_build_environment']['git-lfs']['keep_repo'] = false
 default['travis_build_environment']['git-ppa']['keep_repo'] = false
