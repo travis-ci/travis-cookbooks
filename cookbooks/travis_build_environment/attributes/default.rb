@@ -68,7 +68,7 @@ default['travis_build_environment']['rvmrc_env'] = {
   'rvm_autolibs_flag' => 'read-fail',
 }
 
-default['travis_build_environment']['pyenv_revision'] = 'v1.1.5'
+default['travis_build_environment']['pyenv_revision'] = 'v2.2.2'
 
 # Order matters for this list of Pythons. It will be used to construct the
 # $PATH so items earlier in the list will take precedence over items later in

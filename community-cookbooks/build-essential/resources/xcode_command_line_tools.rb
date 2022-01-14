@@ -40,7 +40,7 @@ action :install do
           # Remove the placeholder to prevent perpetual appearance in the update utility
           rm -f /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
         EOH
-        # rubocop:enable Metrics/LineLength
+        # rubocop:enable Layout/LineLength
       end
     end
   end

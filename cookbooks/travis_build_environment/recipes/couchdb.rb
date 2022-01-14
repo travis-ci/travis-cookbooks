@@ -35,12 +35,12 @@ service 'couchdb' do
   action %i(disable start)
 end
 
-file '/etc/init/couchdb.override' do
-  content 'manual'
-  owner 'root'
-  group 'root'
-  mode '644'
-end
+# file '/etc/init/couchdb.override' do
+#   content 'manual'
+#   owner 'root'
+#   group 'root'
+#   mode '644'
+# end
 
 case node['lsb']['codename']
 when 'trusty', 'xenial'
@@ -74,12 +74,12 @@ service 'couchdb' do
   action %i(disable start)
 end
 
-file '/etc/init/couchdb.override' do
-  content 'manual'
-  owner 'root'
-  group 'root'
-  mode '644'
-end
+# file '/etc/init/couchdb.override' do
+#   content 'manual'
+#   owner 'root'
+#   group 'root'
+#   mode '644'
+# end
 
 apt_repository 'couchdb' do
   action :remove

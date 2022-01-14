@@ -1,3 +1,5 @@
+unified_mode true
+
 property :plugin_name, String, name_property: true
 property :path, String
 property :source_file, String

@@ -57,3 +57,6 @@ Chef/Modernize/ExecuteSysctl:
 
 Chef/Style/UnnecessaryPlatformCaseStatement:
   Enabled: false
+
+Chef/Correctness/MetadataMissingVersion:
+  Enabled: false
