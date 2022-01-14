@@ -17,6 +17,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+unified_mode true
 
 property :feature_name, [Array, String], name_property: true
 property :source, String

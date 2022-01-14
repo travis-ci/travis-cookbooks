@@ -17,6 +17,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+unified_mode true
+
 include Windows::Helper
 
 property :cert_name, String, name_property: true, required: true

@@ -1,3 +1,5 @@
+unified_mode true
+
 property :key, String, name_property: true
 property :value, String
 property :scope, equal_to: %w(local global system), default: 'global', desired_state: false

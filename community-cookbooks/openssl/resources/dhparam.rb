@@ -1,3 +1,4 @@
+unified_mode true
 
 actions [:create]
 default_action :create

@@ -102,7 +102,7 @@ module Windows
       buf.strip
     end
 
-    def is_package_installed?(package_name) # rubocop:disable Style/PredicateName
+    def is_package_installed?(package_name) # rubocop:disable Naming/PredicateName
       installed_packages.include?(package_name)
     end
 

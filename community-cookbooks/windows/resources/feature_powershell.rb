@@ -3,6 +3,7 @@
 # Cookbook:: windows
 # Provider:: feature_powershell
 #
+unified_mode true
 
 property :feature_name, [Array, String], name_property: true
 property :source, String

@@ -18,6 +18,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+unified_mode true
 
 property :system_managed, [true, false]
 property :automatic_managed, [true, false], default: false
@@ -124,7 +125,7 @@ action_class do
     end
   end
 
-  def set_system_managed(pagefile) # rubocop: disable Style/AccessorMethodName
+  def set_system_managed(pagefile) # rubocop: disable Naming/AccessorMethodName
     converge_by("set #{pagefile} to System Managed") do
       cmd = shell_out("#{wmic} pagefileset where SettingID=\"#{get_setting_id(pagefile)}\" set InitialSize=0,MaximumSize=0", returns: [0])
       check_for_errors(cmd.stderr)

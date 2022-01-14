@@ -1,3 +1,5 @@
+unified_mode true
+
 actions :add
 default_action :add
 
