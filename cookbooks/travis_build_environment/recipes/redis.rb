@@ -4,7 +4,7 @@ apt_repository 'ppa:redis-server' do
   uri 'ppa:chris-lea/redis-server'
 end
 
-package %w[redis-server redis-tools] do
+package %w(redis-server redis-tools) do
   action :install
 end
 
@@ -14,9 +14,9 @@ end
 
 service 'redis-server' do
   if node['travis_build_environment']['redis']['service_enabled']
-    action %i[enable restart]
+    action %i(enable restart)
   else
-    action %i[disable restart]
+    action %i(disable restart)
   end
 end
 

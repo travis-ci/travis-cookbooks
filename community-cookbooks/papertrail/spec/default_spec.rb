@@ -9,9 +9,9 @@ describe 'papertrail-cookbook::default' do
     chef_run = runner('test', {
       papertrail: {
         watch_files: {
-          'test/file/name.jpg' => 'test_file'
-        }
-      }
+          'test/file/name.jpg' => 'test_file',
+        },
+      },
     }).converge('papertrail-cookbook::default')
 
     expect(chef_run).to create_file_with_content '/etc/rsyslog.d/60-watch-files.conf', '$InputFileName test/file/name.jpg'

@@ -10,7 +10,7 @@ remote_file '/usr/local/bin/jb-server' do
   checksum node['travis_jupiter_brain']['checksum']
   owner 'root'
   group 'root'
-  mode 0o755
+  mode '755'
 end
 
 Array(node['travis_jupiter_brain']['instances']).each do |instance|
@@ -20,7 +20,7 @@ Array(node['travis_jupiter_brain']['instances']).each do |instance|
     source 'upstart.conf.erb'
     owner 'root'
     group 'root'
-    mode 0o644
+    mode '644'
     variables instance
   end
 
@@ -28,16 +28,16 @@ Array(node['travis_jupiter_brain']['instances']).each do |instance|
     source 'etc-default.erb'
     owner 'root'
     group 'root'
-    mode 0o644
+    mode '644'
     variables instance
   end
 
-  %w[blue green].each do |color|
+  %w(blue green).each do |color|
     file "/etc/default/#{instance['service_name']}-#{color}" do
       content "# Managed by Chef\nexport JUPITER_BRAIN_ADDR='#{instance["#{color}_addr"]}'\n"
       owner 'root'
       group 'root'
-      mode 0o644
+      mode '644'
       only_if { instance['blue_green'] && instance["#{color}_addr"] }
     end
   end
@@ -53,7 +53,7 @@ Array(node['travis_jupiter_brain']['instances']).each do |instance|
     only_if { instance['blue_green'] && instance['frontend_bind'] }
   end
 
-  backend_servers = %w[blue green].map do |color|
+  backend_servers = %w(blue green).map do |color|
     addr = instance["#{color}_addr"]
     addr = "127.0.0.1#{addr}" if addr =~ /^:/
     "#{color} #{addr} weight 1 maxconn 100 check"

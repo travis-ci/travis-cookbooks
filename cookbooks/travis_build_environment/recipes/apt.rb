@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Cookbook Name:: travis_build_environment
+# Cookbook:: travis_build_environment
 # Recipe:: apt
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -29,29 +29,29 @@ cookbook_file '/etc/apt/apt.conf.d/90-travis-custom' do
   source 'etc-apt-apt-conf-d-90-travis-custom'
   owner 'root'
   group 'root'
-  mode 0o644
+  mode '644'
 end
 
 package 'software-properties-common'
 
-%w[
+%w(
   /etc/cloud/templates/sources.list.debian.tmpl
   /etc/cloud/templates/sources.list.tmpl
   /etc/cloud/templates/sources.list.ubuntu.tmpl
-].each do |filename|
+).each do |filename|
   template filename do
     source 'etc-cloud-templates-sources.list.tmpl.erb'
     owner 'root'
     group 'root'
-    mode 0o644
+    mode '644'
   end
 end
 
-%w[
+%w(
   multiverse
   restricted
   universe
-].each do |source_alias|
+).each do |source_alias|
   execute "apt-add-repository -y #{source_alias}"
 end
 
@@ -59,17 +59,21 @@ execute 'gencaches for travis_build_environment::apt' do
   command 'apt-cache gencaches'
 end
 
-%w[
+%w(
   apt-daily-upgrade.service
   apt-daily-upgrade.timer
   apt-daily.service
   apt-daily.timer
-].each do |unit|
+).each do |unit|
   service unit do
-    action %i[disable stop]
+    action %i(disable stop)
   end
 end
 
 execute 'apt-get update for travis_build_environment::apt' do
   command 'apt-get update'
+end
+
+execute 'apt-get upgrade for travis_build_environment::apt' do
+  command 'apt-get upgrade'
 end

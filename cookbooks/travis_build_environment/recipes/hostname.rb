@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Cookbook Name:: travis_build_environment
+# Cookbook:: travis_build_environment
 # Recipe:: hostname
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -50,31 +50,31 @@ template '/etc/hosts' do
   source 'etc/hosts.erb'
   owner 'root'
   group 'root'
-  mode 0o644
+  mode '644'
   variables(hostname: hostname)
   only_if { node['travis_build_environment']['update_hosts'] }
-  not_if { File.exist?('/.dockerenv') }
+  not_if { ::File.exist?('/.dockerenv') }
 end
 
-%w[
+%w(
   /etc/cloud
   /etc/cloud/templates
-].each do |dirname|
+).each do |dirname|
   directory dirname do
-    mode 0o755
+    mode '755'
   end
 end
 
-%w[
+%w(
   /etc/cloud/templates/hosts.debian.tmpl
   /etc/cloud/templates/hosts.tmpl
   /etc/cloud/templates/hosts.ubuntu.tmpl
-].each do |filename|
+).each do |filename|
   template filename do
     source 'etc-cloud-templates-hosts.tmpl.erb'
     owner 'root'
     group 'root'
-    mode 0o644
+    mode '644'
     variables(hostname: hostname)
   end
 end
@@ -83,13 +83,13 @@ template '/etc/hostname' do
   source 'etc/hostname.erb'
   owner 'root'
   group 'root'
-  mode 0o644
+  mode '644'
   variables(hostname: hostname)
   only_if { node['travis_build_environment']['update_hosts'] }
-  not_if { File.exist?('/.dockerenv') }
+  not_if { ::File.exist?('/.dockerenv') }
 end
 
 execute "hostname #{hostname}" do
   only_if { node['travis_build_environment']['update_hostname'] }
-  not_if { File.exist?('/.dockerenv') }
+  not_if { ::File.exist?('/.dockerenv') }
 end

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Cookbook Name:: travis_build_environment
+# Cookbook:: travis_build_environment
 # Recipe:: sshd
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -28,5 +28,5 @@ template '/etc/ssh/sshd_config' do
   source 'sshd_config.erb'
   owner 'root'
   group 'root'
-  mode 0o644
+  mode '644'
 end

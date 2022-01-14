@@ -1,6 +1,6 @@
 #!/usr/bin/env rake
 
-# Style tests. Rubocop and Foodcritic
+# Style tests. Rubocop and Cookstyle
 namespace :style do
   begin
     require 'rubocop/rake_task'
@@ -11,17 +11,17 @@ namespace :style do
   end
 
   begin
-    require 'foodcritic'
+    require 'cookstyle'
 
     desc 'Run Chef style checks'
-    FoodCritic::Rake::LintTask.new(:chef) do |t|
+    Cookstyle:Rake::LintTask.new(:chef) do |t|
       t.options = {
         fail_tags: ['any'],
-        tags: ['~FC003']
+        tags: ['~FC003'],
       }
     end
   rescue LoadError
-    puts '>>>>> foodcritic gem not loaded, omitting tasks' unless ENV['CI']
+    puts '>>>>> cookstyle gem not loaded, omitting tasks' unless ENV['CI']
   end
 end
 

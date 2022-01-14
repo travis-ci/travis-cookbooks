@@ -19,6 +19,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+unified_mode true
 
 property :path, String, name_property: true
 property :source, String
@@ -110,7 +111,7 @@ action :zip do
   end
 end
 
-action_class.class_eval do
+action_class do
   def ensure_rubyzip_gem_installed
     require 'zip'
   rescue LoadError

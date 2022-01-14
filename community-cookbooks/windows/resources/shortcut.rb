@@ -17,8 +17,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+unified_mode true
 
-property :name, String
 property :target, String
 property :arguments, String
 property :description, String

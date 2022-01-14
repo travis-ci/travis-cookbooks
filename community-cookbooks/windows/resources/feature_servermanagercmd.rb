@@ -17,12 +17,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+unified_mode true
 
-property :feature_name, [Array, String], name_attribute: true
+property :feature_name, [Array, String], name_property: true
 property :source, String
 property :all, [true, false], default: false
-
-include Chef::Mixin::ShellOut
 include Windows::Helper
 
 action :install do
@@ -47,7 +46,7 @@ end
 
 # Exit codes are listed at http://technet.microsoft.com/en-us/library/cc749128(v=ws.10).aspx
 
-action_class.class_eval do
+action_class do
   def check_reboot(result, feature)
     if result.exitstatus == 3010 # successful, but needs reboot
       node.run_state['reboot_requested'] = true

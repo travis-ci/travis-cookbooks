@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: memcached
+# Cookbook:: memcached
 # Attributes:: default
 #
-# Copyright 2009-2013, Chef Software, Inc.
+# Copyright:: 2009-2013, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ case node['platform_family']
 when 'suse', 'fedora', 'rhel'
   default['memcached']['user'] = 'memcached'
   default['memcached']['group'] = 'memcached'
-when 'ubuntu'
+when 'debian'
   default['memcached']['user'] = 'memcache'
   default['memcached']['group'] = 'memcache'
 when 'debian'

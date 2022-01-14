@@ -29,6 +29,8 @@ property :package, kind_of: String, name_property: true
 property :root, kind_of: String, required: true
 
 resource_name :msys2_package
+unified_mode true
+provides :msys2_package
 
 action_class do
   #
