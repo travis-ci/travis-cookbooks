@@ -185,9 +185,9 @@ default['travis_build_environment']['sphinxsearch']['ppas'] = %w(
   ppa:builds/sphinxsearch-rel22
 )
 
-version = '5.5.0'
+version = '7.16.3'
 default['travis_build_environment']['elasticsearch']['version'] = version
-default['travis_build_environment']['elasticsearch']['package_name'] = "elasticsearch-#{version}.deb"
+default['travis_build_environment']['elasticsearch']['package_name'] = "elasticsearch-#{version}-#{default['travis_build_environment']['arch']}.deb"
 default['travis_build_environment']['elasticsearch']['service_enabled'] = false
 default['travis_build_environment']['elasticsearch']['jvm_heap'] = '128m'
 
