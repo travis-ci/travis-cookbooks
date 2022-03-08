@@ -12,7 +12,7 @@
 #   JAVA_HOME is set to the extracted JDK directory
 #   PATH is prepended with ${JAVA_HOME}/bin
 #
-# (C) 2019 Christian Stein
+# (C) 2020 Christian Stein
 #
 # https://github.com/sormuras/bach/blob/master/install-jdk.sh
 #
@@ -23,12 +23,13 @@ set -o errexit
 
 function initialize() {
     readonly script_name="$(basename "${BASH_SOURCE[0]}")"
-    readonly script_version='2019-07-17'
+    readonly script_version='2020-06-02'
 
     dry=false
     silent=false
     verbose=false
     emit_java_home=false
+    emit_url=false
 
     feature='ea'
     license='GPL' # Force GPLv2+CE
@@ -50,9 +51,10 @@ Options:
   -d|--dry-run              Activates dry-run mode
   -s|--silent               Displays no output
   -e|--emit-java-home       Print value of "JAVA_HOME" to stdout (ignores silent mode)
+     --emit-url             Print value of "url" to stdout (ignores silent mode)
   -v|--verbose              Displays verbose output
 
-  -f|--feature 11|12|...|ea JDK feature release number, defaults to "ea"
+  -f|--feature ea|16|...|9  JDK feature release number, defaults to "ea"
   -o|--os linux-x64|osx-x64 Operating system identifier
   -u|--url "https://..."    Use custom JDK archive (provided as .tar.gz file)
   -w|--workspace PATH       Working directory defaults to \${HOME} [${HOME}]
@@ -110,7 +112,11 @@ function parse_options() {
                 ;;
             -e|-E|--emit-java-home)
                 emit_java_home=true
-                verbose "Emitting JAVA_HOME"
+                verbose "Emit JAVA_HOME"
+                ;;
+            --emit-url)
+                emit_url=true
+                verbose "Emit download URL"
                 ;;
             -f|-F|--feature)
                 feature="$1"
@@ -159,7 +165,7 @@ function determine_latest_jdk() {
     local curl_result
     local url
 
-    number=14
+    number=15
     verbose "Determine latest JDK feature release number, starting with ${number}"
     while [[ ${number} != 99 ]]
     do
@@ -180,7 +186,7 @@ function perform_sanity_checks() {
     if [[ ${feature} == '?' ]] || [[ ${feature} == 'ea' ]]; then
         feature=${latest_jdk}
     fi
-    if [[ ${feature} -lt 8 ]] || [[ ${feature} -gt ${latest_jdk} ]]; then
+    if [[ ${feature} -lt 9 ]] || [[ ${feature} -gt ${latest_jdk} ]]; then
         script_exit "Expected feature release number in range of 9 to ${latest_jdk}, but got: ${feature}" 3
     fi
     if [[ -d "$target" ]]; then
@@ -189,21 +195,8 @@ function perform_sanity_checks() {
 }
 
 function determine_url() {
-    local JAVA_NET="https://jdk.java.net/${feature}"
-    local DOWNLOAD='https://download.java.net/java'
-
-    # An official GA build or an archived feature? Use predefined URL
-    case "${feature}" in
-        8) url="https://storage.googleapis.com/travis-archive/openjdk/OpenJDK8U-jdk_x64_linux_latest.tar.gz"; return;; 
-        9) url="${DOWNLOAD}/GA/jdk9/9.0.4/binaries/openjdk-9.0.4_${os}_bin.tar.gz"; return;;
-       10) url="${DOWNLOAD}/GA/jdk10/10.0.2/19aef61b38124481863b1413dce1855f/13/openjdk-10.0.2_${os}_bin.tar.gz"; return;;
-       11) url="${DOWNLOAD}/GA/jdk11/9/GPL/openjdk-11.0.2_${os}_bin.tar.gz"; return;;
-       12) url="${DOWNLOAD}/GA/jdk12.0.2/e482c34c86bd4bf8b56c0b35558996b9/10/GPL/openjdk-12.0.2_${os}_bin.tar.gz"; return;;
-    esac
-
-    # EA or RC build? Grab URL from HTML source of jdk.java.net/${feature}
-    local candidates=$(wget --quiet --output-document - ${JAVA_NET} | grep -Eo 'href[[:space:]]*=[[:space:]]*"[^\"]+"' | grep -Eo '(http|https)://[^"]+')
-    url=$(echo "${candidates}" | grep -Eo "${DOWNLOAD}/.+/jdk${feature}/.*${license}/.*jdk-${feature}.+${os}_bin(.tar.gz|.zip)$" || true)
+    local properties='https://github.com/sormuras/bach/raw/releases/11/install-jdk.properties'
+    url=$(wget --quiet --output-document - ${properties} | grep -i "${feature}-${os}=" | awk -F "=" '{print $2}')
 
     if [[ -z ${url} ]]; then
         script_exit "Couldn't determine a download url for ${feature}-${license} on ${os}" 1
@@ -220,7 +213,7 @@ function prepare_variables() {
     fi
     if [[ ${url} == '?' ]]; then
         determine_latest_jdk
-        #perform_sanity_checks
+        perform_sanity_checks
         determine_url
     else
         feature='<overridden by custom url>'
@@ -243,13 +236,10 @@ EOF
 function download_and_extract_and_set_target() {
     local quiet='--quiet'; if [[ ${verbose} == true ]]; then quiet=''; fi
     local local="--directory-prefix ${workspace} --output-document=jdk.tar.gz"
-    local remote='--retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 --continue'
+    local remote='--timestamping --continue'
     local wget_options="${quiet} ${local} ${remote}"
     local tar_options="--file jdk.tar.gz"
 
-    say "Check if temp output file is exising, if so, delete it"
-    verbose "Checking temp output"
-    if [ -f jdk.tar.gz ]; then rm -f jdk.tar.gz; fi
     say "Downloading JDK from ${url}..."
     verbose "Using wget options: ${wget_options}"
     wget ${wget_options} ${url}
@@ -307,6 +297,7 @@ function main() {
     prepare_variables
 
     if [[ ${silent} == false ]]; then print_variables; fi
+    if [[ ${emit_url} == true ]]; then echo "${url}"; fi
     if [[ ${dry} == true ]]; then exit 0; fi
 
     download_and_extract_and_set_target
