@@ -73,3 +73,7 @@ end
 execute 'apt-get update for travis_build_environment::apt' do
   command 'apt-get update'
 end
+
+execute 'apt-get upgrade for travis_build_environment::apt' do
+  command 'DEBIAN_FRONTEND=noninteractive apt-get upgrade -y'
+end
