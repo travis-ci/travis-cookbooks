@@ -10,7 +10,6 @@ remote_file deb_download_dest do
   source "https://artifacts.elastic.co/downloads/elasticsearch/#{package_name}"
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  not_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
 dpkg_package package_name do
@@ -18,7 +17,6 @@ dpkg_package package_name do
   notifies :run, 'ruby_block[create-symbolic-links]'
   action :install
   not_if 'which elasticsearch'
-  not_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
 ruby_block 'create-symbolic-links' do
@@ -33,7 +31,6 @@ ruby_block 'create-symbolic-links' do
     end
   end
   action :nothing
-  not_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
 template '/etc/elasticsearch/jvm.options' do
@@ -44,7 +41,6 @@ template '/etc/elasticsearch/jvm.options' do
   variables(
     jvm_heap: node['travis_build_environment']['elasticsearch']['jvm_heap']
   )
-  not_if { node['kernel']['machine'] == 'ppc64le' }
 end
 
 service 'elasticsearch' do
@@ -55,13 +51,4 @@ service 'elasticsearch' do
   end
   retries 4
   retry_delay 30
-  not_if { node['kernel']['machine'] == 'ppc64le' }
-end
-
-ruby_block 'job_board adjustments elasticsearch ppc64le' do
-  only_if { node['kernel']['machine'] == 'ppc64le' }
-  block do
-    features = node['travis_packer_templates']['job_board']['features'] - ['elasticsearch']
-    node.override['travis_packer_templates']['job_board']['features'] = features
-  end
 end
