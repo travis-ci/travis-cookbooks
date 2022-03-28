@@ -191,7 +191,8 @@ default['travis_build_environment']['elasticsearch']['package_name'] = "elastics
 # Latest versions of elasticsearch provide arch specific deb files which are not available for ppc64le
 # Use noarch elasticsearch deb file for ppc64le
 if node['kernel']['machine'] == 'ppc64le'
-  default['travis_build_environment']['elasticsearch']['version'] = '6.8.23'
+  version = '6.8.23'
+  default['travis_build_environment']['elasticsearch']['version'] = version
   default['travis_build_environment']['elasticsearch']['package_name'] = "elasticsearch-#{version}.deb"
 end
 default['travis_build_environment']['elasticsearch']['service_enabled'] = false
