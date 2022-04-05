@@ -10,7 +10,7 @@ GIT
       rspec (~> 2.0)
 
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     archive-tar-minitar (0.5.2)
     builder (3.2.0)
@@ -89,7 +89,7 @@ GEM
     rspec-mocks (2.13.1)
     systemu (2.5.2)
     thor (0.18.1)
-    yajl-ruby (1.1.0)
+    yajl-ruby (1.4.2)
 
 PLATFORMS
   ruby
