@@ -6,6 +6,15 @@ remote_file "#{Chef::Config[:file_cache_path]}/get-pip.py" do
   not_if 'which pip'
 end
 
+bash 'install-pip3' do
+  cwd Chef::Config[:file_cache_path]
+  code <<-INSTALL_PIP3
+    python3 get-pip.py
+    pip3 install --upgrade pip setuptools wheel
+  INSTALL_PIP3
+  not_if 'which pip3'
+end
+
 bash 'install-pip' do
   cwd Chef::Config[:file_cache_path]
   code <<-INSTALL_PIP
