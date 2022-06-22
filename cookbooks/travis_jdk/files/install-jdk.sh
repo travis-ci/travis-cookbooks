@@ -195,10 +195,11 @@ function determine_url() {
     # An official GA build or an archived feature? Use predefined URL
     case "${feature}" in
         8) url="https://storage.googleapis.com/travis-archive/openjdk/OpenJDK8U-jdk_x64_linux_latest.tar.gz"; return;; 
-        9) url="${DOWNLOAD}/GA/jdk9/9.0.4/binaries/openjdk-9.0.4_${os}_bin.tar.gz"; return;;
-       10) url="${DOWNLOAD}/GA/jdk10/10.0.2/19aef61b38124481863b1413dce1855f/13/openjdk-10.0.2_${os}_bin.tar.gz"; return;;
-       11) url="${DOWNLOAD}/GA/jdk11/9/GPL/openjdk-11.0.2_${os}_bin.tar.gz"; return;;
-       12) url="${DOWNLOAD}/GA/jdk12.0.2/e482c34c86bd4bf8b56c0b35558996b9/10/GPL/openjdk-12.0.2_${os}_bin.tar.gz"; return;;
+        9) url="${DOWNLOAD}/GA/jdk9/9.0.4/binaries/openjdk-9.0.4_${os}-x64_bin.tar.gz"; return;;
+       10) url="${DOWNLOAD}/GA/jdk10/10.0.2/19aef61b38124481863b1413dce1855f/13/openjdk-10.0.2_${os}-x64_bin.tar.gz"; return;;
+       11) url="https://download.bell-sw.com/java/11.0.15.1+2/bellsoft-jdk11.0.15.1+2-${os}-amd64.tar.gz"; return;;
+       12) url="${DOWNLOAD}/GA/jdk12.0.2/e482c34c86bd4bf8b56c0b35558996b9/10/GPL/openjdk-12.0.2_${os}-x64_bin.tar.gz"; return;;
+       17) url="${DOWNLOAD}/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_${os}-x64_bin.tar.gz"; return;;
     esac
 
     # EA or RC build? Grab URL from HTML source of jdk.java.net/${feature}
@@ -213,9 +214,9 @@ function determine_url() {
 function prepare_variables() {
     if [[ ${os} == '?' ]]; then
         if [[ "$OSTYPE" == "darwin"* ]]; then
-          os='osx-x64'
+          os='osx'
         else
-          os='linux-x64'
+          os='linux'
         fi
     fi
     if [[ ${url} == '?' ]]; then
