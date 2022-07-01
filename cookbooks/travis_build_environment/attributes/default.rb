@@ -162,7 +162,7 @@ default['travis_build_environment']['php_aliases'] = Hash[
 ]
 
 nodejs_versions = %w(
-  8.9.1
+  16.15.1
 )
 
 default['travis_build_environment']['nodejs_versions'] = nodejs_versions
@@ -242,10 +242,10 @@ default['travis_build_environment']['haskell']['cabal_versions'] = %w(
 )
 default['travis_build_environment']['haskell']['keep_repo'] = false
 
-gradle_version = '5.1.1'
+gradle_version = '7.4.2' # Update to the latest when possible - https://github.com/gradle/gradle/issues/20468
 default['travis_build_environment']['gradle_version'] = gradle_version
 default['travis_build_environment']['gradle_url'] = "https://services.gradle.org/distributions/gradle-#{gradle_version}-bin.zip"
-default['travis_build_environment']['gradle_checksum'] = '4953323605c5d7b89e97d0dc7779e275bccedefcdac090aec123375eae0cc798'
+default['travis_build_environment']['gradle_checksum'] = '29e49b10984e585d8118b7d0bc452f944e386458df27371b49b4ac1dec4b7fda'
 
 default['travis_build_environment']['lein_url'] = 'https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein'
 
@@ -253,7 +253,7 @@ default['travis_build_environment']['sysctl_kernel_shmmax'] = 45_794_432
 default['travis_build_environment']['sysctl_disable_ipv6'] = true
 default['travis_build_environment']['sysctl_enable_ipv4_forwarding'] = true
 
-maven_version = '3.6.3'
+maven_version = '3.8.6'
 default['travis_build_environment']['maven_version'] = maven_version
 default['travis_build_environment']['maven_url'] = [
   'https://www.apache.org/dist/maven/maven-3/',
@@ -262,7 +262,7 @@ default['travis_build_environment']['maven_url'] = [
   maven_version,
   '-bin.tar.gz',
 ].join('')
-default['travis_build_environment']['maven_checksum'] = '26ad91d751b3a9a53087aefa743f4e16a17741d3915b219cf74112bf87a438c5'
+default['travis_build_environment']['maven_checksum'] = 'c7047a48deb626abf26f71ab3643d296db9b1e67f1faa7d988637deac876b5a9'
 
 default['travis_build_environment']['neo4j']['service_enabled'] = false
 default['travis_build_environment']['neo4j']['jvm_heap'] = '128m'
