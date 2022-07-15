@@ -1,9 +1,18 @@
 # frozen_string_literal: true
 
-remote_file "#{Chef::Config[:file_cache_path]}/get-pip.py" do
-  source 'https://bootstrap.pypa.io/pip/get-pip.py'
-  mode '644'
-  not_if 'which pip'
+case node['lsb']['codename']
+when 'xenial', 'bionic'
+  remote_file "#{Chef::Config[:file_cache_path]}/get-pip.py" do
+    source 'https://bootstrap.pypa.io/pip/2.7/get-pip.py'
+    mode '644'
+    not_if 'which pip'
+  end
+when 'focal', 'jammy'
+  remote_file "#{Chef::Config[:file_cache_path]}/get-pip.py" do
+    source 'https://bootstrap.pypa.io/get-pip.py'
+    mode '644'
+    not_if 'which pip'
+  end
 end
 
 bash 'install-pip' do
