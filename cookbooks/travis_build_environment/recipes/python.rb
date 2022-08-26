@@ -113,9 +113,8 @@ node['travis_build_environment']['pythons'].each do |py|
     code "virtualenv --python=/opt/python/#{py}/bin/python #{venv_fullname}"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    not_if { ::File.exist?("/home/travis/virtualenv/python3.8.13/bin/python") }
+    not_if { ::File.exist?("/home/travis/virtualenv/python#{py}/bin/python") }
   end
-
 
   node['travis_build_environment']['python_aliases'].fetch(py, []).each do |pyalias|
     if /^\d+\.\d+(?:\.\d+)?(?:-dev)?$/ =~ py
