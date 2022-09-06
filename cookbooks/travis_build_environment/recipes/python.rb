@@ -184,3 +184,5 @@ template ::File.join(
   )
   backup false
 end
+
+execute "source /home/travis/.bash_profile.d/pyenv.bash && pyenv global 3.7.13"
