@@ -168,6 +168,8 @@ link "#{pyenv_root}/versions" do
   group node['travis_build_environment']['group']
 end
 
+execute "#{pyenv_root}/bin/pyenv global 3.7.13"
+
 include_recipe 'travis_build_environment::bash_profile_d'
 
 template ::File.join(
