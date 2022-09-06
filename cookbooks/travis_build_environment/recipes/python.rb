@@ -184,6 +184,3 @@ template ::File.join(
   )
   backup false
 end
-
-execute "#{pyenv_root}/bin/pyenv versions"
-execute "#{pyenv_root}/bin/pyenv global 3.7.13"

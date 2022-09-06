@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 case node['lsb']['codename']
-when 'xenial', 'bionic'
+when 'bionic'
   remote_file "#{Chef::Config[:file_cache_path]}/get-pip.py" do
     source 'https://bootstrap.pypa.io/pip/2.7/get-pip.py'
     mode '644'
@@ -15,7 +15,7 @@ when 'xenial', 'bionic'
     INSTALL_PIP
     not_if 'which pip'
   end
-when 'focal', 'jammy'
+when 'xenial', 'focal', 'jammy'
   remote_file "#{Chef::Config[:file_cache_path]}/get-pip.py" do
     source 'https://bootstrap.pypa.io/get-pip.py'
     mode '644'

@@ -17,7 +17,7 @@ package 'mercurial' do
 end
 
 execute %W(
-  pip3 install
+  pip install
   "mercurial==#{node['travis_build_environment']['mercurial_version'].sub(/~.*/, '')}"
 ).join(' ') do
   user 'root'
