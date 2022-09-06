@@ -4,7 +4,7 @@ virtualenv_root = File.join(node['travis_build_environment']['home'], 'virtualen
 
 # Install Python2 and Python3
 case node['lsb']['codename']
-when 'trusty', 'xenial', 'bionic'
+when 'trusty', 'bionic'
   package %w(python-dev python3-dev)
 else
   package %w(python3-dev)
