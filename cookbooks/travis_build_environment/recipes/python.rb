@@ -185,11 +185,9 @@ template ::File.join(
   backup false
 end
 
-execute "Set default python" do 
-  command "source /home/travis/.bash_profile.d/pyenv.bash && pyenv global 3.7.13"
+bash "Set default python" do
+  code "source /home/travis/.bash_profile.d/pyenv.bash && pyenv global 3.7.13"
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  environment(
-    'HOME' => node['travis_build_environment']['home']
-  )  
+  environment build_environment
 end
