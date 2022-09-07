@@ -186,8 +186,8 @@ template ::File.join(
 end
 
 bash "Set default python" do
-  code "source /home/travis/.bash_profile.d/pyenv.bash && pyenv global 3.7.13"  
-  owner 'root'
+  code "source /home/travis/.bash_profile.d/pyenv.bash && pyenv global 3.7.13"
+  user 'root'
   group 'root'
   # user node['travis_build_environment']['user']
   # group node['travis_build_environment']['group']
