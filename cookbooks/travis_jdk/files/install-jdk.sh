@@ -194,7 +194,7 @@ function determine_url() {
 
     # An official GA build or an archived feature? Use predefined URL
     case "${feature}" in
-        8) url="https://storage.googleapis.com/travis-archive/openjdk/OpenJDK8U-jdk_x64_linux_latest.tar.gz"; return;; 
+        8) url="https://javadl.oracle.com/webapps/download/GetFile/1.8.0_331-b09/165374ff4ea84ef0bbd821706e29b123/linux-i586/jdk-8u331-linux-x64.tar.gz"; return;; 
         9) url="${DOWNLOAD}/GA/jdk9/9.0.4/binaries/openjdk-9.0.4_${os}-x64_bin.tar.gz"; return;;
        10) url="${DOWNLOAD}/GA/jdk10/10.0.2/19aef61b38124481863b1413dce1855f/13/openjdk-10.0.2_${os}-x64_bin.tar.gz"; return;;
        11) url="https://download.bell-sw.com/java/11.0.15.1+2/bellsoft-jdk11.0.15.1+2-${os}-amd64.tar.gz"; return;;
