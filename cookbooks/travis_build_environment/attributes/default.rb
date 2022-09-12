@@ -242,7 +242,7 @@ default['travis_build_environment']['haskell']['cabal_versions'] = %w(
 )
 default['travis_build_environment']['haskell']['keep_repo'] = false
 
-gradle_version = '7.4.2' # Update to the latest when possible - https://github.com/gradle/gradle/issues/20468
+gradle_version = '7.5.1'
 default['travis_build_environment']['gradle_version'] = gradle_version
 default['travis_build_environment']['gradle_url'] = "https://services.gradle.org/distributions/gradle-#{gradle_version}-bin.zip"
 default['travis_build_environment']['gradle_checksum'] = '29e49b10984e585d8118b7d0bc452f944e386458df27371b49b4ac1dec4b7fda'
