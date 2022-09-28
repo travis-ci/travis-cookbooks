@@ -1,7 +1,15 @@
 # frozen_string_literal: true
 
+# Xenial removed from the official PostgreSQL apt repository
+case node['lsb']['codename']
+when 'xenial'
+  pgp_uri = 'https://apt-archive.postgresql.org/pub/repos/apt'
+else
+  pgp_uri = 'http://apt.postgresql.org/pub/repos/apt/'
+end
+
 apt_repository 'pgdg' do
-  uri 'http://apt.postgresql.org/pub/repos/apt/'
+  uri pgp_uri
   distribution "#{node['lsb']['codename']}-pgdg"
   components %w(main)
   key 'http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc'
