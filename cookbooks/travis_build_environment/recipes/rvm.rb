@@ -124,7 +124,7 @@ bash 'run rvm installer' do
   retry_delay 30
 end
 
-install_flag = "--autolibs=enable --fuzzy"
+install_flag = "--with-openssl-dir=/home/travis/.rvm/usr --autolibs=enable --fuzzy"
 
 bash "install default ruby #{node['travis_build_environment']['default_ruby']}" do
   code %W(
