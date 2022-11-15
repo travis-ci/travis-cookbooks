@@ -69,7 +69,7 @@ apt_update do
 end
 
 apt_package 'default_java' do
-  package_name %w(default-jre default-jdk)
+  package_name %w(default-jre)
 end
 
 versions.each do |jdk|

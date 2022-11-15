@@ -71,7 +71,7 @@ node['travis_perlbrew']['perls'].each do |pl|
   bash "installing #{pl['version']} as #{pl['name']} " \
        "with Perlbrew arguments: #{args}" do
     permissions.call(self)
-    code "#{perlbrew} install #{pl['version']} --as #{pl['name']} #{args}"
+    code "#{perlbrew} install #{pl['version']} --as #{pl['name']} #{args} --switch"
     not_if "ls #{home}/perl5/perlbrew/perls | grep #{pl['name']}"
   end
 

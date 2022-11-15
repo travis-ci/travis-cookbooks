@@ -113,6 +113,7 @@ node['travis_build_environment']['pythons'].each do |py|
     code "virtualenv --python=/opt/python/#{py}/bin/python #{venv_fullname}"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
+    not_if { ::File.exist?("/home/travis/virtualenv/python#{py}/bin/python") }
   end
 
   node['travis_build_environment']['python_aliases'].fetch(py, []).each do |pyalias|
@@ -182,4 +183,13 @@ template ::File.join(
     build_environment: build_environment
   )
   backup false
+end
+
+bash "Set default python" do
+  code "source /home/travis/.bash_profile.d/pyenv.bash && pyenv global 3.7.13"
+  user 'root'
+  group 'root'
+  # user node['travis_build_environment']['user']
+  # group node['travis_build_environment']['group']
+  environment build_environment
 end
