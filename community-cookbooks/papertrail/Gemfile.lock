@@ -10,7 +10,7 @@ GIT
       rspec (~> 2.0)
 
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     archive-tar-minitar (0.5.2)
     builder (3.2.0)
@@ -37,8 +37,8 @@ GEM
       httparty
       net-ssh
     highline (1.6.18)
-    httparty (0.11.0)
-      multi_json (~> 1.0)
+    httparty (0.21.0)
+      mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
     ipaddress (0.8.0)
     json (1.7.7)
@@ -50,6 +50,7 @@ GEM
       chef (>= 0.10)
       librarian (~> 0.1.0)
     mime-types (1.23)
+    mini_mime (1.1.2)
     minitest (4.7.4)
     minitest-chef-handler (1.0.1)
       chef
@@ -61,8 +62,7 @@ GEM
     mixlib-config (1.1.2)
     mixlib-log (1.6.0)
     mixlib-shellout (1.1.0)
-    multi_json (1.7.2)
-    multi_xml (0.5.3)
+    multi_xml (0.6.0)
     net-ssh (2.6.7)
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
