@@ -262,7 +262,7 @@ default['travis_build_environment']['maven_url'] = [
   maven_version,
   '-bin.tar.gz',
 ].join('')
-default['travis_build_environment']['maven_checksum'] = 'c7047a48deb626abf26f71ab3643d296db9b1e67f1faa7d988637deac876b5a9'
+default['travis_build_environment']['maven_checksum'] = '628b49352130d1d25d5519b1c724f0efe58b86bad55f37a694ca8f73f11e3604'
 
 default['travis_build_environment']['neo4j']['service_enabled'] = false
 default['travis_build_environment']['neo4j']['jvm_heap'] = '128m'
