@@ -253,7 +253,7 @@ default['travis_build_environment']['sysctl_kernel_shmmax'] = 45_794_432
 default['travis_build_environment']['sysctl_disable_ipv6'] = true
 default['travis_build_environment']['sysctl_enable_ipv4_forwarding'] = true
 
-maven_version = '3.8.6'
+maven_version = '3.8.7'
 default['travis_build_environment']['maven_version'] = maven_version
 default['travis_build_environment']['maven_url'] = [
   'https://www.apache.org/dist/maven/maven-3/',
@@ -262,7 +262,7 @@ default['travis_build_environment']['maven_url'] = [
   maven_version,
   '-bin.tar.gz',
 ].join('')
-default['travis_build_environment']['maven_checksum'] = 'c7047a48deb626abf26f71ab3643d296db9b1e67f1faa7d988637deac876b5a9'
+default['travis_build_environment']['maven_checksum'] = '628b49352130d1d25d5519b1c724f0efe58b86bad55f37a694ca8f73f11e3604'
 
 default['travis_build_environment']['neo4j']['service_enabled'] = false
 default['travis_build_environment']['neo4j']['jvm_heap'] = '128m'
