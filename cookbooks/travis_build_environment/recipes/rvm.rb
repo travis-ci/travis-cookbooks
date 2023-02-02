@@ -49,7 +49,6 @@ packages = value_for_platform(
     libtool
     libyaml-dev
     make
-    openssl
     patch
     pkg-config
     sqlite3
