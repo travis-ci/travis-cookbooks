@@ -111,6 +111,13 @@ file rvmrc_path do
   mode '644'
 end
 
+file '/home/travis/.rvm/config/remote' do
+  content ' '
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode '644'
+end
+
 bash 'run rvm installer' do
   code "#{rvm_installer_path} stable"
   user node['travis_build_environment']['user']
