@@ -111,13 +111,6 @@ file rvmrc_path do
   mode '644'
 end
 
-file '/home/travis/.rvm/config/remote' do
-  content ' '
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  mode '644'
-end
-
 bash 'run rvm installer' do
   code "#{rvm_installer_path} stable"
   user node['travis_build_environment']['user']
@@ -132,6 +125,14 @@ bash 'run rvm installer' do
 end
 
 install_flag = "--autolibs=enable --fuzzy"
+
+file '/home/travis/.rvm/config/remote' do
+  content ' '
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode '644'
+end
+
 
 bash "install default ruby #{node['travis_build_environment']['default_ruby']}" do
   code %W(
