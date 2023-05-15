@@ -209,23 +209,24 @@ default['travis_build_environment']['firefox_download_url'] = ::File.join(
   "firefox-#{node['travis_build_environment']['firefox_version']}.tar.bz2"
 )
 
-default['travis_build_environment']['clang']['version'] = '7.0.0'
+default['travis_build_environment']['clang']['version'] = '16.0.0'
 default['travis_build_environment']['clang']['download_url'] = ::File.join(
-  'http://releases.llvm.org',
-  node['travis_build_environment']['clang']['version'],
-  "clang+llvm-#{node['travis_build_environment']['clang']['version']}-x86_64-linux-gnu-ubuntu-16.04.tar.xz"
+  "https://github.com/llvm/llvm-project/releases/download/llvmorg-#{node['travis_build_environment']['clang']['version']}",
+  "clang+llvm-#{node['travis_build_environment']['clang']['version']}-x86_64-linux-gnu-ubuntu-18.04.tar.xz"
 )
-default['travis_build_environment']['clang']['extension'] = 'tar.xz'
-default['travis_build_environment']['clang']['checksum'] = '69b85c833cd28ea04ce34002464f10a6ad9656dd2bba0f7133536a9927c660d2'
 
-default['travis_build_environment']['cmake']['version'] = '3.12.4'
+default['travis_build_environment']['clang']['extension'] = 'tar.xz'
+default['travis_build_environment']['clang']['checksum'] = '2b8a69798e8dddeb57a186ecac217a35ea45607cb2b3cf30014431cff4340ad1'
+
+default['travis_build_environment']['cmake']['version'] = '3.26.3'
 default['travis_build_environment']['cmake']['download_url'] = ::File.join(
   'https://cmake.org/files',
   "v#{node['travis_build_environment']['cmake']['version'].split('.')[0, 2].join('.')}",
-  "cmake-#{node['travis_build_environment']['cmake']['version']}-Linux-x86_64.tar.gz"
+  "cmake-#{node['travis_build_environment']['cmake']['version']}-linux-x86_64.tar.gz"
 )
+
 default['travis_build_environment']['cmake']['extension'] = 'tar.gz'
-default['travis_build_environment']['cmake']['checksum'] = '486edd6710b5250946b4b199406ccbf8f567ef0e23cfe38f7938b8c78a2ffa5f'
+default['travis_build_environment']['cmake']['checksum'] = '28d4d1d0db94b47d8dfd4f7dec969a3c747304f4a28ddd6fd340f553f2384dc2'
 
 default['travis_build_environment']['gimme']['default_version'] = '1.11.1'
 default['travis_build_environment']['gimme']['versions'] = %w(1.11.1)
