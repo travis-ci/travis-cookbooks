@@ -22,11 +22,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-apt_repository 'mongodb-4.0' do
+apt_repository 'mongodb-4.4' do
   uri 'http://repo.mongodb.org/apt/ubuntu'
-  distribution "#{node['lsb']['codename']}/mongodb-org/4.0"
+  distribution "#{node['lsb']['codename']}/mongodb-org/4.4"
   components %w(multiverse)
-  key 'https://www.mongodb.org/static/pgp/server-4.0.asc'
+  key 'https://www.mongodb.org/static/pgp/server-4.4.asc'
   retries 2
   retry_delay 30
   not_if { node['kernel']['machine'] == 'ppc64le' }
@@ -42,7 +42,7 @@ service 'mongod' do
   not_if { node['travis_build_environment']['mongodb']['service_enabled'] }
 end
 
-apt_repository 'mongodb-4.0' do
+apt_repository 'mongodb-4.4' do
   action :remove
   not_if { node['kernel']['machine'] == 'ppc64le' }
   not_if { node['travis_build_environment']['mongodb']['keep_repo'] }
