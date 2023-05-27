@@ -133,7 +133,6 @@ file '/home/travis/.rvm/config/remote' do
   mode '644'
 end
 
-
 bash "install default ruby #{node['travis_build_environment']['default_ruby']}" do
   code %W(
     #{rvm_script_path} install
