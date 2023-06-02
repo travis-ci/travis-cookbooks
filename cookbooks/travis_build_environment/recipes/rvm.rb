@@ -157,7 +157,7 @@ else
 end
 
 bash 'install global gems' do
-  code "rvm pkg install openssl && #{rvm_script_path} @global do gem install #{global_gems} --force#{install_flag}"
+  code "#{rvm_script_path} pkg install openssl && #{rvm_script_path} @global do gem install #{global_gems} --force#{install_flag}"
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   environment('HOME' => node['travis_build_environment']['home'])
