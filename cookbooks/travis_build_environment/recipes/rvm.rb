@@ -123,7 +123,16 @@ bash 'run rvm installer' do
   retry_delay 30
 end
 
-install_flag = "--autolibs=enable --fuzzy"
+bash 'install openssl differently' do
+  code "#{rvm_script_path} pkg install openssl"
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  environment('HOME' => node['travis_build_environment']['home'])
+  retries 2
+  retry_delay 30
+end
+
+install_flag = "--autolibs=enable --fuzzy --with-openssl-dir=$HOME/.rvm/usr"
 
 bash "install default ruby #{node['travis_build_environment']['default_ruby']}" do
   code %W(
