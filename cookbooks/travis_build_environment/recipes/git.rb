@@ -20,7 +20,7 @@ package pkgs do
 end
 
 case node['lsb']['codename']
-when 'trusty', 'xenial', 'bionic'
+when 'trusty', 'xenial'
   packagecloud_repo_enable = true
 else
   packagecloud_repo_enable = false
