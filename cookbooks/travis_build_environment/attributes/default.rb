@@ -185,15 +185,15 @@ default['travis_build_environment']['sphinxsearch']['ppas'] = %w(
   ppa:builds/sphinxsearch-rel22
 )
 
-version = '8.11.1'
+version = '8.11.3'
 default['travis_build_environment']['elasticsearch']['version'] = version
-default['travis_build_environment']['elasticsearch']['package_name'] = "elasticsearch-#{version}-#{default['travis_build_environment']['arch']}.deb"
+default['travis_build_environment']['elasticsearch']['package_name'] = "elasticsearch-#{version}-linux-x86_64.tar.gz"
 # Latest versions of elasticsearch provide arch specific deb files which are not available for ppc64le
 # Use noarch elasticsearch deb file for ppc64le
 if node['kernel']['machine'] == 'ppc64le'
   version = '6.8.23'
   default['travis_build_environment']['elasticsearch']['version'] = version
-  default['travis_build_environment']['elasticsearch']['package_name'] = "elasticsearch-#{version}.deb"
+  default['travis_build_environment']['elasticsearch']['package_name'] = "elasticsearch-#{version}-linux-x86_64.tar.gz"
 end
 default['travis_build_environment']['elasticsearch']['service_enabled'] = false
 default['travis_build_environment']['elasticsearch']['jvm_heap'] = '128m'
@@ -201,7 +201,7 @@ default['travis_build_environment']['elasticsearch']['jvm_heap'] = '128m'
 default['travis_build_environment']['redis']['service_enabled'] = false
 default['travis_build_environment']['redis']['keep_repo'] = false
 
-default['travis_build_environment']['firefox_version'] = '63.0.1'
+default['travis_build_environment']['firefox_version'] = '99.0'
 default['travis_build_environment']['firefox_download_url'] = ::File.join(
   'https://releases.mozilla.org/pub/firefox/releases',
   node['travis_build_environment']['firefox_version'],
