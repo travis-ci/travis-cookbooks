@@ -187,13 +187,13 @@ default['travis_build_environment']['sphinxsearch']['ppas'] = %w(
 
 version = '8.11.3'
 default['travis_build_environment']['elasticsearch']['version'] = version
-default['travis_build_environment']['elasticsearch']['package_name'] = "elasticsearch-#{version}-linux-x86_64.tar.gz"
+default['travis_build_environment']['elasticsearch']['package_name'] = "elasticsearch-#{version}-amd64.deb"
 # Latest versions of elasticsearch provide arch specific deb files which are not available for ppc64le
 # Use noarch elasticsearch deb file for ppc64le
 if node['kernel']['machine'] == 'ppc64le'
   version = '6.8.23'
   default['travis_build_environment']['elasticsearch']['version'] = version
-  default['travis_build_environment']['elasticsearch']['package_name'] = "elasticsearch-#{version}-linux-x86_64.tar.gz"
+  default['travis_build_environment']['elasticsearch']['package_name'] = "elasticsearch-#{version}-amd64.deb"
 end
 default['travis_build_environment']['elasticsearch']['service_enabled'] = false
 default['travis_build_environment']['elasticsearch']['jvm_heap'] = '128m'
