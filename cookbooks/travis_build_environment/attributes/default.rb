@@ -185,7 +185,7 @@ default['travis_build_environment']['sphinxsearch']['ppas'] = %w(
   ppa:builds/sphinxsearch-rel22
 )
 
-version = '8.11.3'
+version = '7.16.3'
 default['travis_build_environment']['elasticsearch']['version'] = version
 default['travis_build_environment']['elasticsearch']['package_name'] = "elasticsearch-#{version}-amd64.deb"
 # Latest versions of elasticsearch provide arch specific deb files which are not available for ppc64le
