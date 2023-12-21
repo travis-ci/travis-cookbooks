@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+if node['lsb']['codename'] != 'bionic'
+
 apt_repository 'git-ppa' do
   uri 'ppa:git-core/ppa'
   retries 2
@@ -47,4 +49,6 @@ execute 'remove git-lfs repo' do
   not_if { node['kernel']['machine'] == 'ppc64le' }
   not_if { node['travis_build_environment']['git-lfs']['keep_repo'] }
   only_if { packagecloud_repo_enable }
+end
+
 end
