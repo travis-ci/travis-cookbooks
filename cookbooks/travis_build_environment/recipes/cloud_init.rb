@@ -24,10 +24,12 @@
 
 apt_repository 'pollinate' do
   uri 'ppa:pollinate/ppa'
+  ignore_failure true
 end
 
 package 'pollinate' do
   action %i(install upgrade)
+  ignore_failure true
 end
 
 %w(
