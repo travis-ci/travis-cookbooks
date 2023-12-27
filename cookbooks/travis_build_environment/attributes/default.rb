@@ -44,7 +44,7 @@ default['travis_build_environment']['rubies'] = %w(2.2.7 2.4.1 2.7.4)
 default['travis_build_environment']['default_ruby'] = '2.7.4'
 default['travis_build_environment']['gems'] = {}
 default['travis_build_environment']['global_gems'] = %w(
-  bundler -v 2.4.13
+  bundler:2.4.13
   nokogiri
   rake
   cookstyle
