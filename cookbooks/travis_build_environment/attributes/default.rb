@@ -269,7 +269,7 @@ default['travis_build_environment']['neo4j']['service_enabled'] = false
 default['travis_build_environment']['neo4j']['jvm_heap'] = '128m'
 default['travis_build_environment']['neo4j_url'] = 'https://dist.neo4j.org/deb/neo4j-enterprise_5.12.0_all.deb'
 default['travis_build_environment']['neo4j_version'] = '5.12.0'
-default['travis_build_environment']['neo4j_checksum'] = '05b46f5f2b21ac0ed6ebbe2d1d42cbc3a29a334d0694ff356fc0f1234fcb8df7'
+default['travis_build_environment']['neo4j_checksum'] = '16c9af19b415758633088d93406be6bbbd6ca670ba87a47cfddb630e0681fed6'
 
 default['travis_build_environment']['mercurial_install_type'] = 'ppa'
 if node['kernel']['machine'] == 'ppc64le'
