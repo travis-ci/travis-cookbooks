@@ -256,13 +256,7 @@ default['travis_build_environment']['sysctl_enable_ipv4_forwarding'] = true
 
 maven_version = '3.9.4'
 default['travis_build_environment']['maven_version'] = maven_version
-default['travis_build_environment']['maven_url'] = [
-  'https://www.apache.org/dist/maven/maven-3/',
-  maven_version,
-  '/binaries/apache-maven-',
-  maven_version,
-  '-bin.tar.gz',
-].join('')
+default['travis_build_environment']['maven_url'] = "https://downloads.apache.org/maven/maven-3/#{maven_version}/binaries/apache-maven-#{maven_version}-bin.tar.gz"
 default['travis_build_environment']['maven_checksum'] = 'ff66b70c830a38d331d44f6c25a37b582471def9a161c93902bac7bea3098319'
 
 default['travis_build_environment']['neo4j']['service_enabled'] = false
