@@ -7,7 +7,7 @@ case node['lsb']['codename']
 when 'trusty', 'xenial', 'bionic'
   package %w(python-dev python3-dev)
 else
-  package %w(python3-dev python3.10)
+  package %w(python3.10 python3-dev)
 end
 
 # Create a directory to store our virtualenvs in
