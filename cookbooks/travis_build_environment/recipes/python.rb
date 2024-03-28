@@ -143,7 +143,7 @@ node['travis_build_environment']['pythons'].each do |py|
   end
 
   execute "install wheel in #{py}" do
-    command "ls -al #{venv_fullname}/bin/ && #{venv_fullname}/bin/pip install --upgrade wheel"
+    command "#{venv_fullname}/bin/pip install --upgrade wheel"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment(

@@ -36,7 +36,7 @@ node['travis_build_environment']['system_python']['pythons'].each do |py|
     packages.concat node['travis_build_environment']['pip']['packages'].fetch(name, [])
   end
 
-  execute "install wheel in #{venv_name}" do
+  execute "ls -al #{venv_fullname}/bin/ && install wheel in #{venv_name}" do
     command "#{venv_fullname}/bin/pip install --upgrade wheel"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
