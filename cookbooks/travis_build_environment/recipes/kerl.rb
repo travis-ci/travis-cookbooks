@@ -38,6 +38,7 @@ directory installation_root do
   mode '755'
 end
 
+# risky - old otp versions not supported!
 remote_file node['travis_build_environment']['kerl_path'] do
   source 'https://raw.githubusercontent.com/kerl/kerl/1.8.5/kerl'
   mode '755'

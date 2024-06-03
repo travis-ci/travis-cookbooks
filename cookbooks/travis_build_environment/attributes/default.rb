@@ -44,7 +44,7 @@ default['travis_build_environment']['rubies'] = %w(2.2.7 2.4.1 2.7.4)
 default['travis_build_environment']['default_ruby'] = '2.7.4'
 default['travis_build_environment']['gems'] = {}
 default['travis_build_environment']['global_gems'] = %w(
-  bundler
+  bundler:2.4.13
   nokogiri
   rake
   cookstyle
@@ -187,13 +187,13 @@ default['travis_build_environment']['sphinxsearch']['ppas'] = %w(
 
 version = '7.16.3'
 default['travis_build_environment']['elasticsearch']['version'] = version
-default['travis_build_environment']['elasticsearch']['package_name'] = "elasticsearch-#{version}-#{default['travis_build_environment']['arch']}.deb"
+default['travis_build_environment']['elasticsearch']['package_name'] = "elasticsearch-#{version}-amd64.deb"
 # Latest versions of elasticsearch provide arch specific deb files which are not available for ppc64le
 # Use noarch elasticsearch deb file for ppc64le
 if node['kernel']['machine'] == 'ppc64le'
   version = '6.8.23'
   default['travis_build_environment']['elasticsearch']['version'] = version
-  default['travis_build_environment']['elasticsearch']['package_name'] = "elasticsearch-#{version}.deb"
+  default['travis_build_environment']['elasticsearch']['package_name'] = "elasticsearch-#{version}-amd64.deb"
 end
 default['travis_build_environment']['elasticsearch']['service_enabled'] = false
 default['travis_build_environment']['elasticsearch']['jvm_heap'] = '128m'
@@ -243,10 +243,10 @@ default['travis_build_environment']['haskell']['cabal_versions'] = %w(
 )
 default['travis_build_environment']['haskell']['keep_repo'] = false
 
-gradle_version = '7.5.1'
+gradle_version = '8.3'
 default['travis_build_environment']['gradle_version'] = gradle_version
 default['travis_build_environment']['gradle_url'] = "https://services.gradle.org/distributions/gradle-#{gradle_version}-bin.zip"
-default['travis_build_environment']['gradle_checksum'] = 'f6b8596b10cce501591e92f229816aa4046424f3b24d771751b06779d58c8ec4'
+default['travis_build_environment']['gradle_checksum'] = '591855b517fc635b9e04de1d05d5e76ada3f89f5fc76f87978d1b245b4f69225'
 
 default['travis_build_environment']['lein_url'] = 'https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein'
 
@@ -254,22 +254,16 @@ default['travis_build_environment']['sysctl_kernel_shmmax'] = 45_794_432
 default['travis_build_environment']['sysctl_disable_ipv6'] = true
 default['travis_build_environment']['sysctl_enable_ipv4_forwarding'] = true
 
-maven_version = '3.8.8'
+maven_version = '3.9.4'
 default['travis_build_environment']['maven_version'] = maven_version
-default['travis_build_environment']['maven_url'] = [
-  'https://www.apache.org/dist/maven/maven-3/',
-  maven_version,
-  '/binaries/apache-maven-',
-  maven_version,
-  '-bin.tar.gz',
-].join('')
-default['travis_build_environment']['maven_checksum'] = '17811e108701af5985bf5167abbd47c06e92c6c6bd1c13a1a1c095c9b4ecc32a'
+default['travis_build_environment']['maven_url'] = "https://downloads.apache.org/maven/maven-3/#{maven_version}/binaries/apache-maven-#{maven_version}-bin.tar.gz"
+default['travis_build_environment']['maven_checksum'] = 'ff66b70c830a38d331d44f6c25a37b582471def9a161c93902bac7bea3098319'
 
 default['travis_build_environment']['neo4j']['service_enabled'] = false
 default['travis_build_environment']['neo4j']['jvm_heap'] = '128m'
-default['travis_build_environment']['neo4j_url'] = 'https://neo4j.com/artifact.php?name=neo4j-community-3.5.2-unix.tar.gz'
-default['travis_build_environment']['neo4j_version'] = '3.5.2'
-default['travis_build_environment']['neo4j_checksum'] = 'c1dec66aaf4d97b2e538ec0068de172ef454de101cce37196c8b8865f4db6644'
+default['travis_build_environment']['neo4j_url'] = 'https://dist.neo4j.org/deb/neo4j-enterprise_5.12.0_all.deb'
+default['travis_build_environment']['neo4j_version'] = '5.12.0'
+default['travis_build_environment']['neo4j_checksum'] = '16c9af19b415758633088d93406be6bbbd6ca670ba87a47cfddb630e0681fed6'
 
 default['travis_build_environment']['mercurial_install_type'] = 'ppa'
 if node['kernel']['machine'] == 'ppc64le'
@@ -283,13 +277,13 @@ default['travis_build_environment']['mercurial_url'] = "https://www.mercurial-sc
 default['travis_build_environment']['mongodb']['service_enabled'] = false
 default['travis_build_environment']['mongodb']['keep_repo'] = false
 
-default['travis_build_environment']['shellcheck_url'] = 'https://github.com/koalaman/shellcheck/releases/download/v0.7.2/shellcheck-v0.7.2.linux.x86_64.tar.xz'
-default['travis_build_environment']['shellcheck_version'] = '0.7.2'
-default['travis_build_environment']['shellcheck_checksum'] = '70423609f27b504d6c0c47e340f33652aea975e45f312324f2dbf91c95a3b188'
+default['travis_build_environment']['shellcheck_url'] = 'https://github.com/koalaman/shellcheck/releases/download/v0.10.0/shellcheck-v0.10.0.linux.x86_64.tar.xz'
+default['travis_build_environment']['shellcheck_version'] = '0.10.0'
+default['travis_build_environment']['shellcheck_checksum'] = '6c881ab0698e4e6ea235245f22832860544f17ba386442fe7e9d629f8cbedf87'
 default['travis_build_environment']['shellcheck_binaries'] = %w(shellcheck)
 
-default['travis_build_environment']['shfmt_url'] = 'https://github.com/mvdan/sh/releases/download/v3.2.1/shfmt_v3.2.1_linux_amd64'
-default['travis_build_environment']['shfmt_checksum'] = '43439b996942b53dfafa9b6ff084f394555d049c98fb7ec37978f7668b43e1be'
+default['travis_build_environment']['shfmt_url'] = 'https://github.com/mvdan/sh/releases/download/v3.8.0/shfmt_v3.8.0_linux_amd64'
+default['travis_build_environment']['shfmt_checksum'] = '27b3c6f9d9592fc5b4856c341d1ff2c88856709b9e76469313642a1d7b558fe0'
 
 default['travis_build_environment']['yarn_url'] = 'https://yarnpkg.com/latest.tar.gz'
 default['travis_build_environment']['yarn_version'] = 'latest'

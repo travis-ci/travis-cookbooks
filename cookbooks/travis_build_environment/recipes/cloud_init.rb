@@ -24,6 +24,7 @@
 
 apt_repository 'pollinate' do
   uri 'ppa:pollinate/ppa'
+  ignore_failure true
 end
 
 package 'pollinate' do

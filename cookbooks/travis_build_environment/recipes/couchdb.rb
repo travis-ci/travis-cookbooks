@@ -72,6 +72,8 @@ end
 
 service 'couchdb' do
   action %i(disable start)
+  retries 4
+  retry_delay 30
 end
 
 # file '/etc/init/couchdb.override' do

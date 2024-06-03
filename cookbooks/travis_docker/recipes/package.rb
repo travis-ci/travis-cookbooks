@@ -47,7 +47,7 @@ package pkgs do
 end
 
 case node['lsb']['codename']
-when 'trusty', 'xenial', 'bionic'
+when 'trusty', 'xenial'
   package 'docker-ce' do
     version node['travis_docker']['version']
   end
