@@ -132,7 +132,9 @@ bash 'install openssl differently' do
   retry_delay 30
 end
 
-install_flag = "--autolibs=enable --fuzzy --with-openssl-dir=$HOME/.rvm/usr"
+# install_flag = "--autolibs=enable --fuzzy --with-openssl-dir=$HOME/.rvm/usr"
+
+install_flag = "--autolibs=enable --fuzzy"
 
 bash "install default ruby #{node['travis_build_environment']['default_ruby']}" do
   code %W(
@@ -177,15 +179,29 @@ end
 Array(node['travis_build_environment']['rubies']).each do |ruby_def|
   next if ruby_def == node['travis_build_environment']['default_ruby']
 
-  bash "install ruby #{ruby_def}" do
-    code %W(
-      #{rvm_script_path} install
-      #{ruby_def} #{install_flag}
-    ).join(' ')
-    user node['travis_build_environment']['user']
-    group node['travis_build_environment']['group']
-    environment('HOME' => node['travis_build_environment']['home'])
-    retries 2
-    retry_delay 30
+  if ruby_def == '2.7.8'
+    bash "install ruby 2.7.8" do
+      code %W(
+        #{rvm_script_path} install
+        #{ruby_def} --autolibs=enable --fuzzy --with-openssl-dir=$HOME/.rvm/usr
+      ).join(' ')
+      user node['travis_build_environment']['user']
+      group node['travis_build_environment']['group']
+      environment('HOME' => node['travis_build_environment']['home'])
+      retries 2
+      retry_delay 30
+    end
+  else
+    bash "install ruby #{ruby_def}" do
+      code %W(
+        #{rvm_script_path} install
+        #{ruby_def} #{install_flag}
+      ).join(' ')
+      user node['travis_build_environment']['user']
+      group node['travis_build_environment']['group']
+      environment('HOME' => node['travis_build_environment']['home'])
+      retries 2
+      retry_delay 30
+    end
   end
 end

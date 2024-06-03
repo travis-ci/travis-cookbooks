@@ -7,7 +7,7 @@ case node['lsb']['codename']
 when 'trusty', 'xenial', 'bionic'
   package %w(python-dev python3-dev)
 else
-  package %w(python3-dev)
+  package %w(python3.10 python3-dev)
 end
 
 # Create a directory to store our virtualenvs in
@@ -36,8 +36,17 @@ node['travis_build_environment']['system_python']['pythons'].each do |py|
     packages.concat node['travis_build_environment']['pip']['packages'].fetch(name, [])
   end
 
+  execute "install setuptools in #{venv_name}" do
+    command "pip install --upgrade setuptools"
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    environment(
+      'HOME' => node['travis_build_environment']['home']
+    )
+  end
+
   execute "install wheel in #{venv_name}" do
-    command "#{venv_fullname}/bin/pip install --upgrade wheel"
+    command "pip install --upgrade wheel"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment(
@@ -46,7 +55,7 @@ node['travis_build_environment']['system_python']['pythons'].each do |py|
   end
 
   execute "install packages in #{venv_name}" do
-    command "#{venv_fullname}/bin/pip install --upgrade #{packages.join(' ')}"
+    command "pip install --upgrade #{packages.join(' ')}"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment(

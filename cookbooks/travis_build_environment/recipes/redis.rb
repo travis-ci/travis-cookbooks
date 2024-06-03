@@ -1,11 +1,21 @@
 # frozen_string_literal: true
 
-apt_repository 'ppa:redis-server' do
-  uri 'ppa:chris-lea/redis-server'
-end
-
-package %w(redis-server redis-tools) do
-  action :install
+case node['lsb']['codename']
+when 'jammy'
+  execute 'install_redis' do
+    command 'sudo apt update && sudo apt install redis-server'
+  end
+else
+  apt_repository 'ppa:redis-server' do
+    uri 'ppa:chris-lea/redis-server'
+  end
+  package %w(redis-server redis-tools) do
+    action :install
+  end
+  apt_repository 'ppa:redis-server' do
+    not_if { node['travis_build_environment']['redis']['keep_repo'] }
+    action :remove
+  end
 end
 
 execute 'redis do not listen to ipv6' do
@@ -20,7 +30,4 @@ service 'redis-server' do
   end
 end
 
-apt_repository 'ppa:redis-server' do
-  not_if { node['travis_build_environment']['redis']['keep_repo'] }
-  action :remove
-end
+

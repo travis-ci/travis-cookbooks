@@ -142,8 +142,17 @@ node['travis_build_environment']['pythons'].each do |py|
     packages.concat(node['travis_build_environment']['pip']['packages'].fetch(name, []))
   end
 
+  execute "install setuptools in #{py}" do
+    command "pip install --upgrade setuptools"
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    environment(
+      'HOME' => node['travis_build_environment']['home']
+    )
+  end
+
   execute "install wheel in #{py}" do
-    command "#{venv_fullname}/bin/pip install --upgrade wheel"
+    command "pip install --upgrade wheel"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment(
@@ -152,7 +161,7 @@ node['travis_build_environment']['pythons'].each do |py|
   end
 
   execute "install packages in #{py}" do
-    command "#{venv_fullname}/bin/pip install --upgrade #{packages.join(' ')}"
+    command "pip install --upgrade #{packages.join(' ')}"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment(
