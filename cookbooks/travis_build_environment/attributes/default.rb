@@ -137,7 +137,7 @@ default['travis_build_environment']['packer_binaries'] = %w(packer)
 default['travis_build_environment']['ramfs_dir'] = '/var/ramfs'
 default['travis_build_environment']['ramfs_size'] = '768m'
 default['travis_build_environment']['bats_git_repository'] = \
-  'https://github.com/sstephenson/bats.git'
+  'https://github.com/bats-core/bats-core.git'
 
 default['travis_build_environment']['hhvm']['enabled'] = false
 default['travis_build_environment']['hhvm']['package_name'] = 'hhvm'
