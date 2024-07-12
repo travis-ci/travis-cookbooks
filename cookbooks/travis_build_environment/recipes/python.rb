@@ -144,7 +144,7 @@ node['travis_build_environment']['pythons'].each do |py|
   end
 
   execute "install wheel in #{py}" do
-    command "#{venv_fullname}/bin/pip install --upgrade wheel"
+    command "#{venv_fullname}/bin/pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --upgrade wheel"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment(
@@ -153,7 +153,7 @@ node['travis_build_environment']['pythons'].each do |py|
   end
 
   execute "install packages in #{py}" do
-    command "#{venv_fullname}/bin/pip install --upgrade #{packages.join(' ')}"
+    command "#{venv_fullname}/bin/pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --upgrade #{packages.join(' ')}"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment(

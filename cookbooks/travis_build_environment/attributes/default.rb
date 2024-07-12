@@ -91,7 +91,7 @@ default['travis_build_environment']['python_aliases'] = {
 }
 
 default['travis_build_environment']['pip']['packages'] = {
-  'default' => %w(nose pytest mock setuptools wheel),
+  'default' => %w(nose mock setuptools wheel),
   '2.7' => %w(numpy),
   '3.6' => %w(numpy),
 }
