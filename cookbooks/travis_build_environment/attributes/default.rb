@@ -228,8 +228,8 @@ default['travis_build_environment']['cmake']['download_url'] = ::File.join(
 default['travis_build_environment']['cmake']['extension'] = 'tar.gz'
 default['travis_build_environment']['cmake']['checksum'] = '28d4d1d0db94b47d8dfd4f7dec969a3c747304f4a28ddd6fd340f553f2384dc2'
 
-default['travis_build_environment']['gimme']['default_version'] = '1.11.1'
-default['travis_build_environment']['gimme']['versions'] = %w(1.11.1)
+default['travis_build_environment']['gimme']['default_version'] = '1.22.5'
+default['travis_build_environment']['gimme']['versions'] = %w(1.22.5)
 default['travis_build_environment']['gimme']['install_user'] = 'travis'
 default['travis_build_environment']['gimme']['install_user_home'] = '/home/travis'
 default['travis_build_environment']['gimme']['debug'] = false
