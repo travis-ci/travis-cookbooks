@@ -301,7 +301,7 @@ default['travis_build_environment']['docker']['keep_repo'] = false
 default['travis_build_environment']['git-lfs']['keep_repo'] = false
 default['travis_build_environment']['git-ppa']['keep_repo'] = false
 default['travis_build_environment']['google_chrome']['keep_repo'] = false
-default['travis_build_environment']['pollinate']['keep_repo'] = false
+#default['travis_build_environment']['pollinate']['keep_repo'] = false
 
 default['travis_build_environment']['disable_ntp'] = true
 if File.exist?('/.dockerenv')
