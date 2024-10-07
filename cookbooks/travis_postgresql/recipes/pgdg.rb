@@ -2,7 +2,7 @@
 
 # Xenial and Bionic removed from the official PostgreSQL apt repository
 case node['lsb']['codename']
-when 'xenial','bionic'
+when 'xenial', 'bionic'
   pgp_uri = 'https://apt-archive.postgresql.org/pub/repos/apt'
 else
   pgp_uri = 'http://apt.postgresql.org/pub/repos/apt/'
