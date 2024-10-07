@@ -22,13 +22,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-apt_repository 'pollinate' do
-  uri 'ppa:pollinate/ppa'
-end
+# apt_repository 'pollinate' do
+#   uri 'ppa:pollinate/ppa'
+#   ignore_failure true
+# end
 
-package 'pollinate' do
-  action %i(install upgrade)
-end
+# package 'pollinate' do
+#   action %i(install upgrade)
+# end
 
 %w(
   /etc/cloud
@@ -46,7 +47,7 @@ template '/etc/cloud/cloud.cfg' do
   mode '644'
 end
 
-apt_repository 'pollinate' do
-  action :remove
-  not_if { node['travis_build_environment']['pollinate']['keep_repo'] }
-end
+# apt_repository 'pollinate' do
+#   action :remove
+#   not_if { node['travis_build_environment']['pollinate']['keep_repo'] }
+# end

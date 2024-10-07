@@ -44,7 +44,7 @@ package 'rabbitmq-server' do
   # which is newer than the stock Ubuntu package:
   # https://github.com/travis-ci/travis-cookbooks/issues/953
   # TODO: Install newer OTP from an upstream APT repo and unpin here.
-  version '3.6.14-1'
+  version '3.12.10-1'
 end
 
 execute 'rabbitmq-plugins enable rabbitmq_management'

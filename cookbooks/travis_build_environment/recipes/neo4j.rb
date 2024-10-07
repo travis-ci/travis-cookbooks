@@ -7,10 +7,10 @@ ark 'neo4j' do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   append_env_path true
-  extension 'tar.gz'
+  extension 'deb'
   retries 2
   retry_delay 30
-  strip_components 1
+  # strip_components 1
 end
 
 cookbook_file '/etc/polkit-1/localauthority/50-local.d/neo4j.pkla' do

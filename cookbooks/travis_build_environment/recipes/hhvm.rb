@@ -54,7 +54,7 @@ link "#{phpenv_path}/versions/hhvm" do
 end
 
 remote_file "#{hhvm_path}/bin/composer" do
-  source 'http://getcomposer.org/composer.phar'
+  source 'https://getcomposer.org/download/2.7.7/composer.phar'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   mode '755'

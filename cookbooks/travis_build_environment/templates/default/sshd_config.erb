@@ -13,11 +13,6 @@ HostKey /etc/ssh/ssh_host_rsa_key
 HostKey /etc/ssh/ssh_host_dsa_key
 HostKey /etc/ssh/ssh_host_ecdsa_key
 
-UsePrivilegeSeparation yes
-
-KeyRegenerationInterval 3600
-ServerKeyBits 768
-
 SyslogFacility AUTH
 LogLevel DEBUG2
 
@@ -25,11 +20,9 @@ LoginGraceTime 120
 PermitRootLogin yes
 StrictModes yes
 
-RSAAuthentication yes
 PubkeyAuthentication yes
 
 IgnoreRhosts yes
-RhostsRSAAuthentication no
 HostbasedAuthentication no
 
 PermitEmptyPasswords no

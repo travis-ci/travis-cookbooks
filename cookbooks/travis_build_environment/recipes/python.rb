@@ -144,7 +144,7 @@ node['travis_build_environment']['pythons'].each do |py|
   end
 
   execute "install wheel in #{py}" do
-    command "#{venv_fullname}/bin/pip install --upgrade wheel"
+    command "#{venv_fullname}/bin/pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --upgrade wheel"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment(
@@ -153,7 +153,7 @@ node['travis_build_environment']['pythons'].each do |py|
   end
 
   execute "install packages in #{py}" do
-    command "#{venv_fullname}/bin/pip install --upgrade #{packages.join(' ')}"
+    command "#{venv_fullname}/bin/pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --upgrade #{packages.join(' ')}"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment(
@@ -186,10 +186,23 @@ template ::File.join(
 end
 
 bash "Set default python" do
-  code "source /home/travis/.bash_profile.d/pyenv.bash && pyenv global 3.7.13"
+  code "source /home/travis/.bash_profile.d/pyenv.bash && pyenv global 3.7.17"
   user 'root'
   group 'root'
   # user node['travis_build_environment']['user']
   # group node['travis_build_environment']['group']
   environment build_environment
 end
+
+# bash 'Install pyenv-update' do
+#   code "cd #{pyenv_root} && git checkout master && git clone https://github.com/pyenv/pyenv-update.git #{pyenv_root}/plugins/pyenv-update"
+# end
+
+# bash "Update pyenv" do
+#   code "source /home/travis/.bash_profile.d/pyenv.bash && #{pyenv_root}/plugins/pyenv-update/bin/pyenv-update"
+#   user 'root'
+#   group 'root'
+#   # user node['travis_build_environment']['user']
+#   # group node['travis_build_environment']['group']
+#   environment build_environment
+# end
