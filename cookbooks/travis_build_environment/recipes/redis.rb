@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 case node['lsb']['codename']
+when 'jammy'
+  execute 'install_redis' do
+    command 'sudo apt update && sudo apt install redis-server'
+  end
 when 'xenial'
   apt_repository 'ppa:redis-server' do
     uri 'ppa:chris-lea/redis-server'
