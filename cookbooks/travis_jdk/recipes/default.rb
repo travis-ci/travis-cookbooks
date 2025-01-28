@@ -82,7 +82,7 @@ versions.each do |jdk|
   # Dodanie opcji --cacerts dla licencji GPL
   cacerts = '--cacerts' if args =~ /GPL/
 
-  bash "Install #{jdk} #{args} #{target} #{cache} #{cacerts}" do
+  bash "Install #{jdk} #{args} --target #{target} --workspace #{cache} #{cacerts}" do
     # Użycie heredoc do lepszej czytelności i obsługi wieloliniowego kodu
     code <<-EOH
       echo "===== Instalacja JDK #{jdk} ====="
