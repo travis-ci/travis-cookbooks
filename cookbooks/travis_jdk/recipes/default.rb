@@ -25,6 +25,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+
 return if node['kernel']['machine'] == 'ppc64le'
 
 def install_jdk_args(jdk)
@@ -78,6 +79,7 @@ versions.each do |jdk|
     node['travis_jdk']['destination_path'],
     jdk
   )
+  
   cacerts = '--cacerts' if args =~ /GPL/
 
   bash "Install #{jdk}" do
