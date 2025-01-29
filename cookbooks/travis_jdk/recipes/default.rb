@@ -25,18 +25,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-# install_jdk.sh does not support ppc64le
 return if node['kernel']['machine'] == 'ppc64le'
 
 def install_jdk_args(jdk)
   m = jdk.match(/(?<vendor>[a-z]+)-?(?<version>.+)?/)
-  if m[:vendor].start_with? 'oracle'
-    license = 'BCL'
-  elsif m[:vendor].start_with? 'openjdk'
-    license = 'GPL'
-  else
-    puts 'Houston is calling'
-  end
+  license = if m[:vendor].start_with?('oracle')
+              'BCL'
+            elsif m[:vendor].start_with?('openjdk')
+              'GPL'
+            end
   "--feature #{m[:version]} --license #{license}"
 end
 
@@ -44,16 +41,6 @@ versions = [
   node['travis_jdk']['default'],
   node['travis_jdk']['versions'],
 ].flatten.uniq
-
-# remote_file 'install-jdk.sh' do
-#  source 'https://raw.githubusercontent.com/sormuras/bach/master/install-jdk.sh'
-#  path node['travis_jdk']['install-jdk.sh_path']
-#  owner 'root'
-#  group 'root'
-#  mode '0755'
-#  action :create
-#  sensitive true
-# end
 
 cookbook_file '/usr/local/bin/install-jdk.sh' do
   source 'install-jdk.sh'
@@ -64,7 +51,15 @@ cookbook_file '/usr/local/bin/install-jdk.sh' do
   sensitive true
 end
 
-apt_update do
+directory node['travis_jdk']['destination_path'] do
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode '0755'
+  recursive true
+  action :create
+end
+
+apt_update 'update' do
   action :update
 end
 
@@ -76,19 +71,18 @@ versions.each do |jdk|
   next if jdk.nil?
 
   args = install_jdk_args(jdk)
-  cache = "#{Chef::Config[:file_cache_path]}/#{jdk}"
-  target = ::File.join(
-    node['travis_jdk']['destination_path'],
-    jdk
-  )
-  # Get system ca-certs symlinked
+  target = ::File.join(node['travis_jdk']['destination_path'], jdk)
+
   cacerts = '--cacerts' if args =~ /GPL/
 
-  bash "Install #{jdk} #{args} --target #{target} #{cacerts}" do
-    code "#{node['travis_jdk']['install-jdk.sh_path']}" \
-      " #{args} --target #{target} #{cacerts}"
+  bash "Install #{jdk}" do
+    code <<-EOH
+      #{node['travis_jdk']['install-jdk.sh_path']} \
+        #{args} --target #{target} #{cacerts}
+    EOH
   end
 end
+
 
 include_recipe 'travis_build_environment::bash_profile_d'
 
@@ -99,7 +93,7 @@ template ::File.join(
   source 'travis_jdk.bash.erb'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode '644'
+  mode '0644'
   variables(
     jdk: node['travis_jdk']['default'],
     path: node['travis_jdk']['destination_path'],
