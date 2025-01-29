@@ -83,9 +83,12 @@ versions.each do |jdk|
   cacerts = '--cacerts' if args =~ /GPL/
 
   bash "Install #{jdk}" do
-    code "#{node['travis_jdk']['install-jdk.sh_path']}" \
-      " #{args} --target #{target} --workspace #{cache} #{cacerts}"
-  end
+  user 'root'
+  group 'root'
+  code <<-EOH
+    #{node['travis_jdk']['install-jdk.sh_path']} \
+      #{args} --target #{target} --workspace #{cache} #{cacerts}
+  EOH
 end
 
 include_recipe 'travis_build_environment::bash_profile_d'
