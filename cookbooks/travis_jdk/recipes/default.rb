@@ -76,10 +76,8 @@ versions.each do |jdk|
   cacerts = '--cacerts' if args =~ /GPL/
 
   bash "Install #{jdk}" do
-    code <<-EOH
-      #{node['travis_jdk']['install-jdk.sh_path']} \
-        #{args} --target #{target} #{cacerts}
-    EOH
+    code "#{node['travis_jdk']['install-jdk.sh_path']}" \
+      " #{args} --target #{target} --workspace #{cache} #{cacerts}"
   end
 end
 
