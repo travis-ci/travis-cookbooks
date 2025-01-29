@@ -29,11 +29,13 @@ return if node['kernel']['machine'] == 'ppc64le'
 
 def install_jdk_args(jdk)
   m = jdk.match(/(?<vendor>[a-z]+)-?(?<version>.+)?/)
-  license = if m[:vendor].start_with?('oracle')
-              'BCL'
-            elsif m[:vendor].start_with?('openjdk')
-              'GPL'
-            end
+  if m[:vendor].start_with? 'oracle'
+    license = 'BCL'
+  elsif m[:vendor].start_with? 'openjdk'
+    license = 'GPL'
+  else
+    puts 'Houston is calling'
+  end
   "--feature #{m[:version]} --license #{license}"
 end
 
@@ -59,7 +61,7 @@ directory node['travis_jdk']['destination_path'] do
   action :create
 end
 
-apt_update 'update' do
+apt_update do
   action :update
 end
 
@@ -71,8 +73,11 @@ versions.each do |jdk|
   next if jdk.nil?
 
   args = install_jdk_args(jdk)
-  target = ::File.join(node['travis_jdk']['destination_path'], jdk)
-
+  cache = "#{Chef::Config[:file_cache_path]}/#{jdk}"
+  target = ::File.join(
+    node['travis_jdk']['destination_path'],
+    jdk
+  )
   cacerts = '--cacerts' if args =~ /GPL/
 
   bash "Install #{jdk}" do
@@ -80,7 +85,6 @@ versions.each do |jdk|
       " #{args} --target #{target} --workspace #{cache} #{cacerts}"
   end
 end
-
 
 include_recipe 'travis_build_environment::bash_profile_d'
 
@@ -91,7 +95,7 @@ template ::File.join(
   source 'travis_jdk.bash.erb'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode '0644'
+  mode '644'
   variables(
     jdk: node['travis_jdk']['default'],
     path: node['travis_jdk']['destination_path'],
