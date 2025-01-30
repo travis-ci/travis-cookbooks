@@ -82,7 +82,13 @@ versions.each do |jdk|
   
   cacerts = '--cacerts' if args =~ /GPL/
 
-  bash "Install #{jdk}" do
+  bash "Install #{jdk} directory node['travis_jdk']['destination_path'] do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  recursive true
+  action :create
+  end " do
   user 'root'
   group 'root'
   code <<-EOH
