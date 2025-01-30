@@ -25,7 +25,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-
 return if node['kernel']['machine'] == 'ppc64le'
 
 def install_jdk_args(jdk)
@@ -36,6 +35,7 @@ def install_jdk_args(jdk)
     license = 'GPL'
   else
     puts 'Houston is calling'
+    return nil
   end
   "--feature #{m[:version]} --license #{license}"
 end
@@ -74,22 +74,25 @@ versions.each do |jdk|
   next if jdk.nil?
 
   args = install_jdk_args(jdk)
+  next if args.nil? # Jeśli args są nil, przeskocz iterację
+
   cache = "#{Chef::Config[:file_cache_path]}/#{jdk}"
   target = ::File.join(
     node['travis_jdk']['destination_path'],
     jdk
   )
-  
+
   cacerts = '--cacerts' if args =~ /GPL/
 
   bash "Install #{jdk}" do
-  user 'root'
-  group 'root'
-  code <<-EOH
-    #{node['travis_jdk']['install-jdk.sh_path']} \
-      #{args} --target #{target} --workspace #{cache} #{cacerts}
-  EOH
-end
+    user 'root'
+    group 'root'
+    code <<-EOH
+      #{node['travis_jdk']['install-jdk.sh_path']} \
+        #{args} --target #{target} --workspace #{cache} #{cacerts}
+    EOH
+  end
+end 
 
 include_recipe 'travis_build_environment::bash_profile_d'
 
