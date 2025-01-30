@@ -55,8 +55,8 @@ cookbook_file '/usr/local/bin/install-jdk.sh' do
 end
 
 directory node['travis_jdk']['destination_path'] do
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
+  owner 'root'
+  group 'root'
   mode '0755'
   recursive true
   action :create
