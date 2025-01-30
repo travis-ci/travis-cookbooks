@@ -84,7 +84,7 @@ versions.each do |jdk|
 
   cacerts = '--cacerts' if args =~ /GPL/
 
-  bash "Install #{jdk}" do
+  bash "Install #{jdk} #{target}" do
     user 'root'
     group 'root'
     code <<-EOH
