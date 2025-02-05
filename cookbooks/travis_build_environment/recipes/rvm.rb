@@ -44,7 +44,7 @@ packages = value_for_platform(
       sqlite3
       zlib1g
       zlib1g-dev
-    )
+    ),
   },
   'freebsd' => {
     'default' => %w(
@@ -63,7 +63,7 @@ packages = value_for_platform(
       readline
       libxslt
       libxml2
-    )
+    ),
   }
 )
 
@@ -123,7 +123,7 @@ bash 'run rvm installer' do
 end
 
 rvm_install_flag = "--autolibs=enable --fuzzy"
-rvm_install_flag += " -- --use-system-libraries" if node['platform_family'] == 'freebsd'
+rvm_install_flag += " -- --use-system-libraries" if platform_family?('freebsd')
 
 unless node['travis_build_environment']['default_ruby'].to_s.empty?
   bash "install default ruby #{node['travis_build_environment']['default_ruby']}" do
