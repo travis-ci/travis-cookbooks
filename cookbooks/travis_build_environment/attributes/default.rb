@@ -40,6 +40,7 @@ default['travis_build_environment']['language_codes'] = %w(
   zh_CN
   zh_TW
 ).map { |l| "#{l}.UTF-8" }
+
 default['travis_build_environment']['rubies'] = %w(2.2.7 2.4.1 2.7.4)
 default['travis_build_environment']['default_ruby'] = '2.7.4'
 default['travis_build_environment']['gems'] = {}
@@ -51,31 +52,24 @@ default['travis_build_environment']['global_gems'] = %w(
 ).map { |gem| { name: gem } }
 default['travis_build_environment']['rvm_release'] = 'stable'
 default['travis_build_environment']['rvmrc_env'] = {
-  'rvm_autoupdate_flag' => '0',
-  'rvm_binary_flag' => '1',
-  'rvm_fuzzy_flag' => '1',
-  'rvm_gem_options' => '--no-document',
-  'rvm_max_time_flag' => '5',
-  'rvm_path' => "#{node['travis_build_environment']['home']}/.rvm",
-  'rvm_project_rvmrc' => '0',
-  'rvm_remote_server_type4' => 'rubies',
-  'rvm_remote_server_url4' => 'https://s3.amazonaws.com/travis-rubies/binaries',
+  'rvm_autoupdate_flag'               => '0',
+  'rvm_binary_flag'                   => '1',
+  'rvm_fuzzy_flag'                    => '1',
+  'rvm_gem_options'                   => '--no-document',
+  'rvm_max_time_flag'                 => '5',
+  'rvm_path'                          => "#{node['travis_build_environment']['home']}/.rvm",
+  'rvm_project_rvmrc'                 => '0',
+  'rvm_remote_server_type4'           => 'rubies',
+  'rvm_remote_server_url4'            => 'https://s3.amazonaws.com/travis-rubies/binaries',
   'rvm_remote_server_verify_downloads4' => '1',
   'rvm_silence_path_mismatch_check_flag' => '1',
-  'rvm_user_install_flag' => '1',
-  'rvm_with_default_gems' => 'rake bundler',
-  'rvm_without_gems' => 'rubygems-bundler',
-  'rvm_autolibs_flag' => 'read-fail',
+  'rvm_user_install_flag'             => '1',
+  'rvm_with_default_gems'             => 'rake bundler',
+  'rvm_without_gems'                  => 'rubygems-bundler',
+  'rvm_autolibs_flag'                 => 'read-fail',
 }
 
 default['travis_build_environment']['pyenv_revision'] = 'v2.2.2'
-
-# Order matters for this list of Pythons. It will be used to construct the
-# $PATH so items earlier in the list will take precedence over items later in
-# the list. This order means that ``python`` will be 2.7.x, ``python2`` will be
-# 2.7.x, and ``python3`` will be 3.6.x
-# For the list of supported aliases, see:
-# https://github.com/pyenv/pyenv/tree/master/plugins/python-build/share/python-build
 default['travis_build_environment']['pythons'] = %w(
   2.7.14
   3.6.3
@@ -84,19 +78,20 @@ default['travis_build_environment']['pythons'] = %w(
 )
 
 default['travis_build_environment']['python_aliases'] = {
-  '2.7.14' => %w(2.7),
-  '3.6.3' => %w(3.6),
+  '2.7.14'       => %w(2.7),
+  '3.6.3'        => %w(3.6),
   'pypy2.7-5.8.0' => %w(pypy),
   'pypy3.5-5.8.0' => %w(pypy3),
 }
 
 default['travis_build_environment']['pip']['packages'] = {
   'default' => %w(nose mock setuptools wheel),
-  '2.7' => %w(numpy),
-  '3.6' => %w(numpy),
+  '2.7'     => %w(numpy),
+  '3.6'     => %w(numpy),
 }
 
 default['travis_build_environment']['system_python']['pythons'] = %w(2.7 3.2)
+
 case node['platform']
 when 'ubuntu'
   if node['lsb']['codename'] == 'trusty'
@@ -110,34 +105,25 @@ when 'ubuntu'
   end
 end
 
-default['travis_build_environment']['rebar_url'] = \
-  'https://github.com/rebar/rebar/wiki/rebar'
+default['travis_build_environment']['rebar_url'] = 'https://github.com/rebar/rebar/wiki/rebar'
 default['travis_build_environment']['rebar3_url'] = 'https://s3.amazonaws.com/rebar3/rebar3'
 default['travis_build_environment']['rebar3_version'] = '3.6.2'
 default['travis_build_environment']['rebar3_checksum'] = '2a107ee8f88de431d89f7a3bdccaf4b7bbba268cd02ab2e7ebf1e7976798b9bf'
 default['travis_build_environment']['kerl_path'] = '/usr/local/bin/kerl'
-default['travis_build_environment']['kerl_base_dir'] = \
-  "#{node['travis_build_environment']['home']}/.kerl"
-default['travis_build_environment']['otp_releases'] = %w(
-  23.3.1
-)
-default['travis_build_environment']['elixir_versions'] = %w(
-  1.7.4
-)
+default['travis_build_environment']['kerl_base_dir'] = "#{node['travis_build_environment']['home']}/.kerl"
+default['travis_build_environment']['otp_releases'] = %w(23.3.1)
+default['travis_build_environment']['elixir_versions'] = %w(1.7.4)
 default['travis_build_environment']['required_otp_release_for']['1.7.4'] = '21.1'
 default['travis_build_environment']['default_elixir_version'] = '1.7.4'
 default['travis_build_environment']['mysql']['socket'] = '/var/run/mysqld/mysqld.sock'
 default['travis_build_environment']['packer']['amd64']['version'] = '1.7.5'
-default['travis_build_environment']['packer']['amd64']['checksum'] = \
-  'a574d20719e86d9d38854050184b78d158e62619b2a4b33b79d03b94c782dbc5'
+default['travis_build_environment']['packer']['amd64']['checksum'] = 'a574d20719e86d9d38854050184b78d158e62619b2a4b33b79d03b94c782dbc5'
 default['travis_build_environment']['packer']['ppc64le']['version'] = '1.7.5'
-default['travis_build_environment']['packer']['ppc64le']['checksum'] = \
-  '32871bc5a610e2454177081d407cadcdce384c0dc1eb578f01435e667f922c9a'
+default['travis_build_environment']['packer']['ppc64le']['checksum'] = '32871bc5a610e2454177081d407cadcdce384c0dc1eb578f01435e667f922c9a'
 default['travis_build_environment']['packer_binaries'] = %w(packer)
 default['travis_build_environment']['ramfs_dir'] = '/var/ramfs'
 default['travis_build_environment']['ramfs_size'] = '768m'
-default['travis_build_environment']['bats_git_repository'] = \
-  'https://github.com/bats-core/bats-core.git'
+default['travis_build_environment']['bats_git_repository'] = 'https://github.com/bats-core/bats-core.git'
 
 default['travis_build_environment']['hhvm']['enabled'] = false
 default['travis_build_environment']['hhvm']['package_name'] = 'hhvm'
@@ -150,29 +136,20 @@ default['travis_build_environment']['php_packages'] = %w(
   libfreetype6-dev
   libreadline6-dev
 )
-php_versions = %w(
-  5.6.32
-  7.0.25
-  7.1.11
-)
+php_versions = %w(5.6.32 7.0.25 7.1.11)
 default['travis_build_environment']['php_versions'] = php_versions
 default['travis_build_environment']['php_default_version'] = php_versions.max
 default['travis_build_environment']['php_aliases'] = Hash[
   php_versions.map { |v| [v.split('.')[0, 2].join('.'), v] }
 ]
 
-nodejs_versions = %w(
-  16.15.1
-)
-
+nodejs_versions = %w(16.15.1)
 default['travis_build_environment']['nodejs_versions'] = nodejs_versions
 default['travis_build_environment']['nodejs_default'] = nodejs_versions.max
 default['travis_build_environment']['nodejs_aliases'] = Hash[
   nodejs_versions.map { |v| [v.split('.')[0, 2].join('.'), v] }
 ]
-default['travis_build_environment']['nodejs_default_modules'] = %w(
-  grunt-cli
-)
+default['travis_build_environment']['nodejs_default_modules'] = %w(grunt-cli)
 
 default['travis_build_environment']['arch'] = 'i386'
 if node['kernel']['machine'] =~ /x86_64/
@@ -188,8 +165,6 @@ default['travis_build_environment']['sphinxsearch']['ppas'] = %w(
 version = '7.16.3'
 default['travis_build_environment']['elasticsearch']['version'] = version
 default['travis_build_environment']['elasticsearch']['package_name'] = "elasticsearch-#{version}-amd64.deb"
-# Latest versions of elasticsearch provide arch specific deb files which are not available for ppc64le
-# Use noarch elasticsearch deb file for ppc64le
 if node['kernel']['machine'] == 'ppc64le'
   version = '6.8.23'
   default['travis_build_environment']['elasticsearch']['version'] = version
@@ -214,30 +189,23 @@ default['travis_build_environment']['clang']['download_url'] = ::File.join(
   "https://github.com/llvm/llvm-project/releases/download/llvmorg-#{node['travis_build_environment']['clang']['version']}",
   "clang+llvm-#{node['travis_build_environment']['clang']['version']}-x86_64-linux-gnu-ubuntu-18.04.tar.xz"
 )
-
 default['travis_build_environment']['clang']['extension'] = 'tar.xz'
 default['travis_build_environment']['clang']['checksum'] = '2b8a69798e8dddeb57a186ecac217a35ea45607cb2b3cf30014431cff4340ad1'
 
 default['travis_build_environment']['cmake']['version'] = '3.26.3'
 default['travis_build_environment']['cmake']['download_url'] = ::File.join(
   'https://cmake.org/files',
-  "v#{node['travis_build_environment']['cmake']['version'].split('.')[0, 2].join('.')}",
-  "cmake-#{node['travis_build_environment']['cmake']['version']}-linux-x86_64.tar.gz"
+  "v#{default['travis_build_environment']['cmake']['version'].split('.')[0, 2].join('.')}",
+  "cmake-#{default['travis_build_environment']['cmake']['version']}-linux-x86_64.tar.gz"
 )
-
 default['travis_build_environment']['cmake']['extension'] = 'tar.gz'
 default['travis_build_environment']['cmake']['checksum'] = '28d4d1d0db94b47d8dfd4f7dec969a3c747304f4a28ddd6fd340f553f2384dc2'
 
 default['travis_build_environment']['go']['default_version'] = '1.23'
 default['travis_build_environment']['go']['versions'] = %w(1.23)
 
-default['travis_build_environment']['haskell']['ghc_versions'] = %w(
-  8.6.1
-)
-default['travis_build_environment']['haskell']['cabal_versions'] = %w(
-  2.2
-  2.4
-)
+default['travis_build_environment']['haskell']['ghc_versions'] = %w(8.6.1)
+default['travis_build_environment']['haskell']['cabal_versions'] = %w(2.2 2.4)
 default['travis_build_environment']['haskell']['keep_repo'] = false
 
 gradle_version = '8.3'
@@ -284,35 +252,33 @@ default['travis_build_environment']['shfmt_checksum'] = '27b3c6f9d9592fc5b4856c3
 
 default['travis_build_environment']['yarn_url'] = 'https://yarnpkg.com/latest.tar.gz'
 default['travis_build_environment']['yarn_version'] = 'latest'
-default['travis_build_environment']['yarn_binaries'] = %w(
-  bin/yarn
-  bin/yarn.js
-  bin/yarnpkg
-)
+default['travis_build_environment']['yarn_binaries'] = %w(bin/yarn bin/yarn.js bin/yarnpkg)
 
 default['tz'] = 'UTC'
 default['travis_java']['default_version'] = ''
-
 default['travis_build_environment']['couchdb']['keep_repo'] = false
 default['travis_build_environment']['docker']['keep_repo'] = false
 default['travis_build_environment']['git-lfs']['keep_repo'] = false
 default['travis_build_environment']['git-ppa']['keep_repo'] = false
 default['travis_build_environment']['google_chrome']['keep_repo'] = false
-# default['travis_build_environment']['pollinate']['keep_repo'] = false
-
 default['travis_build_environment']['disable_ntp'] = true
+
 if File.exist?('/.dockerenv')
   default['travis_build_environment']['disable_ntp'] = false
 end
 
 default['travis_build_environment']['root_user'] = 'root'
 default['travis_build_environment']['root_group'] = 'root'
-
 default['travis_build_environment']['virtualenv']['version'] = '15.1.0'
 
-default['travis_build_environment']['ibm_advanced_tool_chain_apt_key_url'] = ::File.join(
-  'https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists',
-  "#{node['lsb']['codename']}/6976a827.gpg.key"
-)
-default['travis_build_environment']['ibm_advanced_tool_chain_apt_deb_url'] =
-  'https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu'
+if platform_family?('debian', 'rhel')
+  default['travis_build_environment']['ibm_advanced_tool_chain_apt_key_url'] = ::File.join(
+    'https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists',
+    "#{node['lsb']['codename']}/6976a827.gpg.key"
+  )
+  default['travis_build_environment']['ibm_advanced_tool_chain_apt_deb_url'] =
+    'https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu'
+else
+  default['travis_build_environment']['ibm_advanced_tool_chain_apt_key_url'] = ''
+  default['travis_build_environment']['ibm_advanced_tool_chain_apt_deb_url'] = ''
+end
