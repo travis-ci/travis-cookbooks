@@ -31,6 +31,7 @@ when 'xenial', 'bionic'
     INSTALL_PIP3
     not_if 'which pip3'
   end
+# Noble doesn't like pip install, packages need to be installed by apt install
 when 'focal', 'jammy'
   remote_file "#{Chef::Config[:file_cache_path]}/get-pip.py" do
     source 'https://bootstrap.pypa.io/get-pip.py'

@@ -22,12 +22,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-ark 'clang' do
-  url node['travis_build_environment']['clang']['download_url']
-  checksum node['travis_build_environment']['clang']['checksum']
-  version node['travis_build_environment']['clang']['version']
-  extension node['travis_build_environment']['clang']['extension']
-  retries 2
-  retry_delay 30
-  append_env_path true
+case node['lsb']['codename']
+when 'noble'
+  execute 'clang_llvm_install' do
+    command 'sudo apt update -yqq && sudo apt install clang llvm -y'
+  end
+when 'xenial', 'bionic', 'focal', 'jammy'
+  ark 'clang' do
+    url node['travis_build_environment']['clang']['download_url']
+    checksum node['travis_build_environment']['clang']['checksum']
+    version node['travis_build_environment']['clang']['version']
+    extension node['travis_build_environment']['clang']['extension']
+    retries 2
+    retry_delay 30
+    append_env_path true
+  end
 end
