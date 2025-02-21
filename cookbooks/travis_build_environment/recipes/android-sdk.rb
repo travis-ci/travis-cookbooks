@@ -1,16 +1,17 @@
 require 'digest'
 
 # Ustawienia ścieżek
-setup_root       = node['android-sdk']['setup_root'].to_s.empty? ? node['ark']['prefix_home'] : node['android-sdk']['setup_root']
-android_home     = File.join(setup_root, node['android-sdk']['name'])
-android_bin      = File.join(android_home, 'cmdline-tools', 'latest', 'bin', 'sdkmanager')
-temp_file        = "/tmp/android-sdk.zip"
-android_sdk_url  = node['android-sdk']['download_url']
+setup_root = node['android-sdk']['setup_root'].to_s.empty? ? node['ark']['prefix_home'] : node['android-sdk']['setup_root']
+android_home = File.join(setup_root, node['android-sdk']['name'])
+android_bin = File.join(android_home, 'cmdline-tools', 'latest', 'bin', 'sdkmanager')
+temp_file = "/tmp/android-sdk.zip"
+android_sdk_url = node['android-sdk']['download_url']
 
-# Pobranie pliku Android SDK przed jego instalacją
+# Pobranie pliku Android SDK
 remote_file temp_file do
   source android_sdk_url
   action :create
+  not_if { ::File.exist?(temp_file) }
 end
 
 # Obliczenie sumy kontrolnej SHA256
@@ -28,27 +29,23 @@ ruby_block "calculate_checksum" do
   only_if { ::File.exist?(temp_file) }
 end
 
-# Tworzenie katalogu instalacyjnego
-if File.directory?(android_home)
+# Sprawdzenie i usunięcie istniejącego katalogu
+if Dir.exist?(android_home)
   directory android_home do
     recursive true
     action :delete
   end
 end
 
-directory setup_root do
-  owner node['android-sdk']['owner']
-  group node['android-sdk']['group']
-  mode '755'
-  recursive true
-  action :create
-end
-
-directory android_home do
-  owner node['android-sdk']['owner']
-  group node['android-sdk']['group']
-  mode '755'
-  action :create
+# Tworzenie wymaganych katalogów
+[directory setup_root, directory android_home].each do |dir|
+  directory dir do
+    owner node['android-sdk']['owner']
+    group node['android-sdk']['group']
+    mode '755'
+    recursive true
+    action :create
+  end
 end
 
 # Instalacja Android SDK
@@ -65,15 +62,9 @@ ark node['android-sdk']['name'] do
   action node['android-sdk']['with_symlink'] ? :install : :put
 end
 
-# Nadanie uprawnień
-execute 'Grant all users read access to android files' do
-  command "chmod -R a+r #{android_home}/*"
-  user node['android-sdk']['owner']
-  group node['android-sdk']['group']
-end
-
-execute 'Grant all users execute permission for android tools' do
-  command "chmod -R a+X #{File.join(android_home, 'cmdline-tools', 'latest', 'bin')}/*"
+# Nadanie uprawnień do plików
+execute 'Grant read and execute permissions' do
+  command "chmod -R a+rX #{android_home}/*"
   user node['android-sdk']['owner']
   group node['android-sdk']['group']
 end
@@ -97,7 +88,9 @@ ruby_block "install_sdk_components" do
 end
 
 # Kopiowanie dodatkowych skryptów
-directory node['android-sdk']['scripts']['path'] do
+scripts_path = node['android-sdk']['scripts']['path']
+
+directory scripts_path do
   owner node['android-sdk']['scripts']['owner']
   group node['android-sdk']['scripts']['group']
   mode '755'
@@ -105,18 +98,18 @@ directory node['android-sdk']['scripts']['path'] do
   action :create
 end
 
-%w(android-accept-licenses android-wait-for-emulator).each do |android_helper_script|
-  cookbook_file File.join(node['android-sdk']['scripts']['path'], android_helper_script) do
-    source android_helper_script
+%w(android-accept-licenses android-wait-for-emulator).each do |script|
+  cookbook_file File.join(scripts_path, script) do
+    source script
     owner node['android-sdk']['scripts']['owner']
     group node['android-sdk']['scripts']['group']
     mode '755'
   end
 end
 
-%w(android-update-sdk).each do |android_helper_script|
-  template File.join(node['android-sdk']['scripts']['path'], android_helper_script) do
-    source "#{android_helper_script}.erb"
+%w(android-update-sdk).each do |script|
+  template File.join(scripts_path, script) do
+    source "#{script}.erb"
     owner node['android-sdk']['scripts']['owner']
     group node['android-sdk']['scripts']['group']
     mode '755'
