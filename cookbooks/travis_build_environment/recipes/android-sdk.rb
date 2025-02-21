@@ -14,14 +14,6 @@ remote_file temp_file do
 end
 
 # Obliczenie sumy kontrolnej SHA256
-directory "#{setup_root}" do
-  owner node['android-sdk']['owner']
-  group node['android-sdk']['group']
-  mode '755'
-  recursive true
-  action :create
-end
-
 ruby_block "calculate_checksum" do
   block do
     if File.exist?(temp_file)
@@ -36,17 +28,22 @@ ruby_block "calculate_checksum" do
   only_if { ::File.exist?(temp_file) }
 end
 
-# Instalacja pakietów zależnych
-if platform?('ubuntu')
-  package 'libgl1-mesa-dev'
-  if node['kernel']['machine'] != 'i686'
-    package 'lib32stdc++6' if node['platform_version'].to_f >= 13.04
-    package 'libstdc++6:i386' if node['platform_version'].to_f >= 11.10
-    package 'lib32z1'
+# Tworzenie katalogu instalacyjnego
+if File.directory?(android_home)
+  directory android_home do
+    recursive true
+    action :delete
   end
 end
 
-# Pobranie i instalacja Android SDK
+directory setup_root do
+  owner node['android-sdk']['owner']
+  group node['android-sdk']['group']
+  mode '755'
+  recursive true
+  action :create
+end
+
 directory android_home do
   owner node['android-sdk']['owner']
   group node['android-sdk']['group']
@@ -54,6 +51,7 @@ directory android_home do
   action :create
 end
 
+# Instalacja Android SDK
 ark node['android-sdk']['name'] do
   url android_sdk_url
   path node['android-sdk']['setup_root']
@@ -68,29 +66,34 @@ ark node['android-sdk']['name'] do
 end
 
 # Nadanie uprawnień
-execute 'Grant all users to read android files' do
+execute 'Grant all users read access to android files' do
   command "chmod -R a+r #{android_home}/*"
   user node['android-sdk']['owner']
   group node['android-sdk']['group']
 end
 
-execute 'Grant all users to execute android tools' do
+execute 'Grant all users execute permission for android tools' do
   command "chmod -R a+X #{File.join(android_home, 'cmdline-tools', 'latest', 'bin')}/*"
   user node['android-sdk']['owner']
   group node['android-sdk']['group']
 end
 
 # Instalacja składników SDK
-if File.exist?(android_bin)
-  node['android-sdk']['components'].each do |sdk_component|
-    execute "Install Android SDK component #{sdk_component}" do
-      command "#{android_bin} --install #{sdk_component} --sdk_root=#{android_home}"
-      user node['android-sdk']['owner']
-      group node['android-sdk']['group']
+ruby_block "install_sdk_components" do
+  block do
+    if File.exist?(android_bin)
+      node['android-sdk']['components'].each do |sdk_component|
+        execute "Install Android SDK component #{sdk_component}" do
+          command "#{android_bin} --install #{sdk_component} --sdk_root=#{android_home}"
+          user node['android-sdk']['owner']
+          group node['android-sdk']['group']
+        end
+      end
+    else
+      Chef::Log.error("❌ Android SDK Manager nie został znaleziony: #{android_bin}")
     end
   end
-else
-  Chef::Log.error("❌ Android SDK Manager nie został znaleziony: #{android_bin}")
+  action :run
 end
 
 # Kopiowanie dodatkowych skryptów
