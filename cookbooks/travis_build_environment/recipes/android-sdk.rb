@@ -38,7 +38,7 @@ if Dir.exist?(android_home)
 end
 
 # Tworzenie wymaganych katalogów
-[directory setup_root, directory android_home].each do |dir|
+[setup_root, android_home].each do |dir|
   directory dir do
     owner node['android-sdk']['owner']
     group node['android-sdk']['group']
