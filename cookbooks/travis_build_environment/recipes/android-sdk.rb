@@ -7,7 +7,8 @@ end
 setup_root = node['android-sdk']['setup_root'].to_s.empty? ? node['ark']['prefix_home'] : node['android-sdk']['setup_root']
 android_name = node['android-sdk']['name']
 android_home = File.join(setup_root, android_name)
-android_bin = File.join(android_home, 'tools', 'bin', 'sdkmanager')
+cmdline_tools_path = File.join(android_home, 'cmdline-tools', 'latest')
+sdkmanager_bin = File.join(cmdline_tools_path, 'bin', 'sdkmanager')
 temp_file = "/tmp/android-sdk.zip"
 android_sdk_url = node['android-sdk']['download_url']
 
@@ -24,21 +25,14 @@ ruby_block "calculate_checksum" do
       node.run_state['android_sdk_checksum'] = checksum
       Chef::Log.info("✅ Dynamic checksum: #{checksum}")
     else
-      Chef::Log.error("❌ Plik #{temp_file} nie istnieje! Nie można obliczyć sumy kontrolnej.")
+      Chef::Log.error("❌ File #{temp_file} does not exist! Cannot compute checksum.")
     end
   end
   action :run
   only_if { ::File.exist?(temp_file) }
 end
 
-if ::Dir.exist?(android_home)
-  directory android_home do
-    recursive true
-    action :delete
-  end
-end
-
-[setup_root, android_home].each do |dir_path|
+[setup_root, android_home, cmdline_tools_path].each do |dir_path|
   directory dir_path do
     owner node['android-sdk']['owner']
     group node['android-sdk']['group']
@@ -48,17 +42,10 @@ end
   end
 end
 
-ark android_name do
-  url android_sdk_url
-  path setup_root
-  checksum lazy { node.run_state['android_sdk_checksum'] }
-  version node['android-sdk']['version']
-  prefix_root setup_root
-  prefix_home setup_root
-  owner node['android-sdk']['owner']
-  group node['android-sdk']['group']
-  strip_components 0
-  action :put
+execute "Unpack Android SDK" do
+  command "unzip -q #{temp_file} -d #{cmdline_tools_path} && mv #{cmdline_tools_path}/cmdline-tools #{cmdline_tools_path}/latest"
+  not_if { ::File.exist?(sdkmanager_bin) }
+  action :run
 end
 
 execute 'Grant read and execute permissions' do
@@ -70,19 +57,19 @@ end
 
 node['android-sdk']['components'].each do |sdk_component|
   execute "Install Android SDK component #{sdk_component}" do
-    command "#{android_bin} --install #{sdk_component} --sdk_root=#{android_home}"
+    command "#{sdkmanager_bin} --install #{sdk_component} --sdk_root=#{android_home}"
     user node['android-sdk']['owner']
     group node['android-sdk']['group']
-    only_if { ::File.exist?(android_bin) }
+    only_if { ::File.exist?(sdkmanager_bin) }
     action :run
   end
 end
 
 ruby_block "log_sdk_manager_not_found" do
   block do
-    Chef::Log.error("❌ Android SDK Manager nie został znaleziony: #{android_bin}")
+    Chef::Log.error("❌ Android SDK Manager not found: #{sdkmanager_bin}")
   end
-  not_if { ::File.exist?(android_bin) }
+  not_if { ::File.exist?(sdkmanager_bin) }
   action :run
 end
 
