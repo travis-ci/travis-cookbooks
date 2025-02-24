@@ -7,7 +7,7 @@ end
 setup_root = node['android-sdk']['setup_root'].to_s.empty? ? node['ark']['prefix_home'] : node['android-sdk']['setup_root']
 android_name = node['android-sdk']['name']
 android_home = File.join(setup_root, android_name)
-android_bin = File.join(android_home, 'cmdline-tools', 'bin', 'sdkmanager')
+android_bin = File.join(android_home, 'tools', 'bin', 'sdkmanager')
 temp_file = "/tmp/android-sdk.zip"
 android_sdk_url = node['android-sdk']['download_url']
 
