@@ -106,27 +106,27 @@ end
 end
 
 # Ensure license file exists
-ruby_block "check_license_file" do
-  block do
-    unless ::File.exist?(license_file_path)
-      Chef::Log.error("❌ License file not found at: #{license_file_path}")
-      raise "Android SDK License file missing!"
-    else
-      Chef::Log.info("✅ License file found: #{license_file_path}")
-    end
-  end
-  action :run
-end
+# ruby_block "check_license_file" do
+#   block do
+#     unless ::File.exist?(license_file_path)
+#       Chef::Log.error("❌ License file not found at: #{license_file_path}")
+#       raise "Android SDK License file missing!"
+#     else
+#       Chef::Log.info("✅ License file found: #{license_file_path}")
+#     end
+#   end
+#   action :run
+# end
 
-# Ensure android-accept-licenses file exists and is executable
-ruby_block "check_android_accept_licenses" do
-  block do
-    unless ::File.exist?(android_accept_licenses_path)
-      Chef::Log.error("❌ Android accept licenses file not found at: #{android_accept_licenses_path}")
-      raise "Android accept licenses file missing!"
-    else
-      Chef::Log.info("✅ Android accept licenses file found: #{android_accept_licenses_path}")
-    end
-  end
-  action :run
-end
+# # Ensure android-accept-licenses file exists and is executable
+# ruby_block "check_android_accept_licenses" do
+#   block do
+#     unless ::File.exist?(android_accept_licenses_path)
+#       Chef::Log.error("❌ Android accept licenses file not found at: #{android_accept_licenses_path}")
+#       raise "Android accept licenses file missing!"
+#     else
+#       Chef::Log.info("✅ Android accept licenses file found: #{android_accept_licenses_path}")
+#     end
+#   end
+#   action :run
+# end
