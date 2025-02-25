@@ -1,104 +1,71 @@
-require 'digest'
+# frozen_string_literal: true
 
-package 'unzip' do
-  action :install
-end
+# Definicja zmiennych atrybutów
+android_sdk = node['android-sdk']
+sdk_root = android_sdk['setup_root']
+sdk_version = android_sdk['version']
+license_file = android_sdk['license_file_path']
 
-setup_root = node['android-sdk']['setup_root'].to_s.empty? ? node['ark']['prefix_home'] : node['android-sdk']['setup_root']
-android_name = node['android-sdk']['name']
-android_home = File.join(setup_root, android_name)
-cmdline_tools_path = File.join(android_home, 'cmdline-tools', 'latest')
-sdkmanager_bin = File.join(cmdline_tools_path, 'bin', 'sdkmanager')
-temp_file = "/tmp/android-sdk.zip"
-android_sdk_url = node['android-sdk']['download_url']
-
-remote_file temp_file do
-  source android_sdk_url
-  action :create
-  not_if { ::File.exist?(temp_file) }
-end
-
-ruby_block "calculate_checksum" do
-  block do
-    if ::File.exist?(temp_file)
-      checksum = Digest::SHA256.file(temp_file).hexdigest
-      node.run_state['android_sdk_checksum'] = checksum
-      Chef::Log.info("✅ Dynamic checksum: #{checksum}")
-    else
-      Chef::Log.error("❌ File #{temp_file} does not exist! Cannot compute checksum.")
-    end
-  end
-  action :run
-  only_if { ::File.exist?(temp_file) }
-end
-
-[setup_root, android_home, cmdline_tools_path].each do |dir_path|
-  directory dir_path do
-    owner node['android-sdk']['owner']
-    group node['android-sdk']['group']
-    mode '0755'
-    recursive true
-    action :create
-  end
-end
-
-execute "Unpack Android SDK" do
-  command "unzip -q #{temp_file} -d #{cmdline_tools_path} && mv #{cmdline_tools_path}/cmdline-tools #{cmdline_tools_path}/latest"
-  not_if { ::File.exist?(sdkmanager_bin) }
-  action :run
-end
-
-execute 'Grant read and execute permissions' do
-  command "chmod -R a+rX #{android_home}/*"
-  user node['android-sdk']['owner']
-  group node['android-sdk']['group']
-  action :run
-end
-
-node['android-sdk']['components'].each do |sdk_component|
-  execute "Install Android SDK component #{sdk_component}" do
-    command "#{sdkmanager_bin} --install #{sdk_component} --sdk_root=#{android_home}"
-    user node['android-sdk']['owner']
-    group node['android-sdk']['group']
-    only_if { ::File.exist?(sdkmanager_bin) }
-    action :run
-  end
-end
-
-ruby_block "log_sdk_manager_not_found" do
-  block do
-    Chef::Log.error("❌ Android SDK Manager not found: #{sdkmanager_bin}")
-  end
-  not_if { ::File.exist?(sdkmanager_bin) }
-  action :run
-end
-
-scripts_path = node['android-sdk']['scripts']['path']
-
-directory scripts_path do
-  owner node['android-sdk']['scripts']['owner']
-  group node['android-sdk']['scripts']['group']
+# Tworzenie katalogu dla Android SDK
+directory sdk_root do
+  owner android_sdk['owner']
+  group android_sdk['group']
   mode '0755'
+  action :create
   recursive true
+end
+
+# Pobieranie pakietu Android SDK CLI tools
+remote_file "#{Chef::Config[:file_cache_path]}/commandlinetools-linux-#{sdk_version}_latest.zip" do
+  source android_sdk['download_url']
+  checksum android_sdk['checksum']
+  owner android_sdk['owner']
+  group android_sdk['group']
+  mode '0644'
   action :create
 end
 
-%w(android-accept-licenses android-wait-for-emulator).each do |script|
-  cookbook_file File.join(scripts_path, script) do
-    source script
-    owner node['android-sdk']['scripts']['owner']
-    group node['android-sdk']['scripts']['group']
+# Rozpakowanie pakietu do katalogu Android SDK
+execute 'extract_android_sdk' do
+  command "unzip -o #{Chef::Config[:file_cache_path]}/commandlinetools-linux-#{sdk_version}_latest.zip -d #{sdk_root}"
+  user android_sdk['owner']
+  group android_sdk['group']
+  not_if { ::File.exist?("#{sdk_root}/cmdline-tools") }
+end
+
+# Konfiguracja pliku akceptującego licencje Android SDK
+cookbook_file '/usr/local/bin/android-accept-licenses' do
+  source license_file
+  owner android_sdk['owner']
+  group android_sdk['group']
+  mode '0755'
+  action :create
+end
+
+# Ustawienie zmiennych środowiskowych dla Android SDK
+if android_sdk['set_environment_variables']
+  file '/etc/profile.d/android-sdk.sh' do
+    content <<-EOF
+      export ANDROID_HOME=#{sdk_root}
+      export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
+    EOF
+    owner 'root'
+    group 'root'
     mode '0755'
     action :create
   end
 end
 
-%w(android-update-sdk).each do |script|
-  template File.join(scripts_path, script) do
-    source "#{script}.erb"
-    owner node['android-sdk']['scripts']['owner']
-    group node['android-sdk']['scripts']['group']
-    mode '0755'
-    action :create
+# Instalacja wymaganych komponentów SDK
+android_sdk['components'].each do |component|
+  execute "install_#{component}" do
+    command "#{sdk_root}/cmdline-tools/latest/bin/sdkmanager --install '#{component}' --sdk_root=#{sdk_root}"
+    user android_sdk['owner']
+    group android_sdk['group']
+    environment(
+      'ANDROID_HOME' => sdk_root,
+      'PATH' => "#{sdk_root}/cmdline-tools/latest/bin:#{sdk_root}/platform-tools:#{ENV['PATH']}"
+    )
+    not_if { ::Dir.exist?("#{sdk_root}/#{component}") }
   end
 end
