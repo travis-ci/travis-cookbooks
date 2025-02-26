@@ -23,7 +23,7 @@ end
 ruby_block "calculate_checksum" do
   block do
     if ::File.exist?(temp_file)
-      checksum = Digest::SHA256.file(temp_file).hexdigest
+      checksum = Digest::MD5.file(temp_file).hexdigest
       node.run_state['android_sdk_checksum'] = checksum
       Chef::Log.info("✅ Dynamic checksum: #{checksum}")
     else
