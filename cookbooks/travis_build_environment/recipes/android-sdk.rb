@@ -86,7 +86,7 @@ end
 
 node['android-sdk']['components'].each do |sdk_component|
   execute "Install Android SDK component #{sdk_component}" do
-    command "#{sdkmanager_bin} --install #{sdk_component} --sdk_root=#{android_home}"
+    command "#{sdkmanager_bin} --install \"#{sdk_component}\" --sdk_root=#{android_home}"
     user node['android-sdk']['owner']
     group node['android-sdk']['group']
     only_if { ::File.exist?(sdkmanager_bin) }
