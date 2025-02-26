@@ -60,7 +60,7 @@ end
 end
 
 execute "Unpack Android SDK" do
-  command "unzip -q #{temp_file} -d #{cmdline_tools_path} && mv #{cmdline_tools_path}/cmdline-tools #{cmdline_tools_path}/latest"
+  command "unzip -q #{temp_file} -d #{cmdline_tools_path}"
   not_if { ::File.exist?(sdkmanager_bin) }
   action :run
 end
