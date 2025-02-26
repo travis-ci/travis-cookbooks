@@ -34,6 +34,21 @@ ruby_block "calculate_checksum" do
   only_if { ::File.exist?(temp_file) }
 end
 
+ruby_block "verify_checksum" do
+  block do
+    expected_checksum = node['android-sdk']['checksum']
+    computed_checksum = node.run_state['android_sdk_checksum']
+    if computed_checksum != expected_checksum
+      Chef::Log.error("❌ Checksum mismatch: expected #{expected_checksum}, got #{computed_checksum}")
+      raise "Checksum verification failed for #{temp_file}"
+    else
+      Chef::Log.info("✅ Checksum verification passed.")
+    end
+  end
+  action :run
+  only_if { ::File.exist?(temp_file) && node.run_state['android_sdk_checksum'] }
+end
+
 [setup_root, android_home, cmdline_tools_path].each do |dir_path|
   directory dir_path do
     owner node['android-sdk']['owner']
@@ -47,6 +62,18 @@ end
 execute "Unpack Android SDK" do
   command "unzip -q #{temp_file} -d #{cmdline_tools_path} && mv #{cmdline_tools_path}/cmdline-tools #{cmdline_tools_path}/latest"
   not_if { ::File.exist?(sdkmanager_bin) }
+  action :run
+end
+
+ruby_block "verify_extraction" do
+  block do
+    unless ::File.exist?(sdkmanager_bin)
+      Chef::Log.error("❌ Android SDK Manager not found after extraction: #{sdkmanager_bin}")
+      raise "Extraction of Android SDK failed"
+    else
+      Chef::Log.info("✅ Android SDK successfully extracted at: #{sdkmanager_bin}")
+    end
+  end
   action :run
 end
 
