@@ -11,7 +11,8 @@ android_name = node['android-sdk']['name']
 android_home = File.join(setup_root, android_name)
 cmdline_tools_dir = File.join(android_home, 'cmdline-tools')
 cmdline_tools_latest = File.join(cmdline_tools_dir, 'latest')
-cmdline_tools_bin = File.join(cmdline_tools_latest, 'cmdline-tools', 'bin')
+# Poprawiona ścieżka - usunięto nadmiarowy katalog 'cmdline-tools'
+cmdline_tools_bin = File.join(cmdline_tools_latest, 'bin')
 sdkmanager_bin = File.join(cmdline_tools_bin, 'sdkmanager')
 
 # Use Chef::Config[:file_cache_path] instead of hardcoded /tmp
