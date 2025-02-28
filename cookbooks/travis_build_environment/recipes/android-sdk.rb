@@ -102,6 +102,15 @@ execute 'Grant read and execute permissions' do
   action :run
 end
 
+# Set full permissions (777) on Android SDK directory using Chef directory resource
+directory android_home do
+  owner node['android-sdk']['owner']
+  group node['android-sdk']['group']
+  mode '0777'
+  recursive true
+  action :create
+end
+
 # Install SDK components
 node['android-sdk']['components'].each do |sdk_component|
   execute "Install Android SDK component: #{sdk_component}" do
