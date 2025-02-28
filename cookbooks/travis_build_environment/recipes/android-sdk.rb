@@ -12,7 +12,7 @@ android_home = File.join(setup_root, android_name)
 cmdline_tools_dir = File.join(android_home, 'cmdline-tools')
 cmdline_tools_latest = File.join(cmdline_tools_dir, 'latest')
 # Poprawiona ścieżka - usunięto nadmiarowy katalog 'cmdline-tools'
-cmdline_tools_bin = File.join(cmdline_tools_latest, 'bin')
+cmdline_tools_bin = File.join(cmdline_tools_dir, 'bin')
 sdkmanager_bin = File.join(cmdline_tools_bin, 'sdkmanager')
 
 # Use Chef::Config[:file_cache_path] instead of hardcoded /tmp
@@ -74,7 +74,7 @@ end
 
 # Extract SDK archive
 execute "Extract Android SDK" do
-  command "unzip -q #{temp_file} -d #{cmdline_tools_latest}"
+  command "unzip -q #{temp_file} -d #{android_home}"
   user node['android-sdk']['owner']
   group node['android-sdk']['group']
   not_if { ::File.exist?(sdkmanager_bin) }
