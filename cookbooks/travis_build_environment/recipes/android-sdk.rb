@@ -10,7 +10,7 @@ setup_root = node['android-sdk']['setup_root'].to_s.empty? ? node['ark']['prefix
 android_name = node['android-sdk']['name']
 android_home = File.join(setup_root, android_name)
 cmdline_tools_dir = File.join(android_home, 'cmdline-tools')
-cmdline_tools_latest = File.join(cmdline_tools_dir, 'latest')
+#cmdline_tools_latest = File.join(cmdline_tools_dir, 'latest')
 # Poprawiona ścieżka - usunięto nadmiarowy katalog 'cmdline-tools'
 cmdline_tools_bin = File.join(cmdline_tools_dir, 'bin')
 sdkmanager_bin = File.join(cmdline_tools_bin, 'sdkmanager')
@@ -62,7 +62,7 @@ ruby_block "verify_checksum" do
 end
 
 # Create directories with proper permissions
-[setup_root, android_home, cmdline_tools_dir, cmdline_tools_latest].each do |dir_path|
+[setup_root, android_home, cmdline_tools_dir, cmdline_tools_dir].each do |dir_path|
   directory dir_path do
     owner node['android-sdk']['owner']
     group node['android-sdk']['group']
