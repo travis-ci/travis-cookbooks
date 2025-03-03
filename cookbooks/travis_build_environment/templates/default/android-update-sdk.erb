@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# This little script code is in the public domain
+# It is strongly inspired from https://github.com/embarkmobile/android-sdk-installer
+
+set +e
+
+# Defaults
+LICENSES="<%= node['android-sdk']['license']['white_list'].join('|') %>"
+
+for i in "$@"
+do
+case $i in
+    --components=*)
+    COMPONENTS=`echo $i | sed 's/[-a-zA-Z0-9]*=//'`
+    ;;
+    --accept-licenses=*)
+    LICENSES=`echo $i | sed 's/[-a-zA-Z0-9]*=//'`
+    ;;
+    *)
+    # unknown option
+    ;;
+esac
+done
+
+echo "Installing $COMPONENTS"
+android-accept-licenses "android update sdk --no-ui --all --filter $COMPONENTS" "$LICENSES"
+
