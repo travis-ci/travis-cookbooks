@@ -25,16 +25,10 @@ execute %W(
   only_if { node['travis_build_environment']['mercurial_install_type'] == 'pip' }
 end
 
-package 'python-docutils' do
-  action %i(install upgrade)
-  only_if { node['kernel']['machine'] == 'ppc64le' }
-end
-
-ark 'mercurial' do
-  url node['travis_build_environment']['mercurial_url']
-  version node['travis_build_environment']['mercurial_ppc_version']
-  make_opts ['all']
-  action :install_with_make
-  only_if { node['travis_build_environment']['mercurial_install_type'] == 'src' }
-  only_if { node['kernel']['machine'] == 'ppc64le' }
+execute %W(
+  apt install -y python3-mercurial
+) do
+  user 'root'
+  group 'root'
+  only_if { node['travis_build_environment']['mercurial_install_type'] == 'apt' }
 end

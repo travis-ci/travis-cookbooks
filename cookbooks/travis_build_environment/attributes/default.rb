@@ -136,7 +136,9 @@ default['travis_build_environment']['php_packages'] = %w(
   libfreetype6-dev
   libreadline6-dev
 )
-php_versions = %w(5.6.32 7.0.25 7.1.11)
+php_versions = %w(
+  7.1.11
+)
 default['travis_build_environment']['php_versions'] = php_versions
 default['travis_build_environment']['php_default_version'] = php_versions.max
 default['travis_build_environment']['php_aliases'] = Hash[
@@ -162,7 +164,7 @@ default['travis_build_environment']['sphinxsearch']['ppas'] = %w(
   ppa:builds/sphinxsearch-rel22
 )
 
-version = '7.16.3'
+version = '8.17.1'
 default['travis_build_environment']['elasticsearch']['version'] = version
 default['travis_build_environment']['elasticsearch']['package_name'] = "elasticsearch-#{version}-amd64.deb"
 if node['kernel']['machine'] == 'ppc64le'

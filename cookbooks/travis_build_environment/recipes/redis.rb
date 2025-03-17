@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 case node['lsb']['codename']
-when 'jammy'
+when 'jammy', 'noble'
   execute 'install_redis' do
     command 'sudo apt update && sudo apt install redis-server'
   end

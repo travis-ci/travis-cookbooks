@@ -27,12 +27,19 @@ when 'jammy'
     components ['main']
     key 'https://couchdb.apache.org/repo/keys.asc'
   end
+when 'noble'
+  apt_repository 'couchdb' do
+    uri 'https://apache.jfrog.io/artifactory/couchdb-deb'
+    distribution 'noble'
+    components ['main']
+    key 'https://couchdb.apache.org/repo/keys.asc'
+  end
 end
 
 package 'couchdb'
 
 case node['lsb']['codename']
-when 'focal', 'jammy'
+when 'focal', 'jammy', 'noble'
   execute 'edit_local_ini' do
     command 'echo "travis = travis" >> /opt/couchdb/etc/local.ini'
   end
@@ -57,7 +64,7 @@ when 'trusty', 'xenial'
     group 'root'
     mode '644'
   end
-when 'bionic', 'focal', 'jammy'
+when 'bionic', 'focal', 'jammy', 'noble'
   cookbook_file '/opt/couchdb/etc/local.d/erlang_query_server.ini' do
     source 'erlang_query_server.ini'
     owner 'couchdb'
