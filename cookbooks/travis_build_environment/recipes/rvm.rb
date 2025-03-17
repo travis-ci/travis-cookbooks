@@ -1,69 +1,70 @@
 # frozen_string_literal: true
 
 gpg_keys = {
-  mpapis: '08f64631c598cbe4398c5850725c8e6ab60dc5d86b6214e069d7ced1d546043b',
+  mpapis:     '08f64631c598cbe4398c5850725c8e6ab60dc5d86b6214e069d7ced1d546043b',
   pkuczynski: 'd33ce5907fe28e6938feab7f63a9ef8a26a565878b1ad5bce063a86019aeaf77',
 }
 
 def gpg_key_path(name)
-  ::File.join(
-    Chef::Config[:file_cache_path], "#{name}.asc"
-  )
+  ::File.join(Chef::Config[:file_cache_path], "#{name}.asc")
 end
 
-rvm_installer_path = ::File.join(
-  Chef::Config[:file_cache_path], 'rvm-installer'
-)
-rvmrc_path = ::File.join(
-  node['travis_build_environment']['home'], '.rvmrc'
-)
-rvmrc_content = Array(
-  node['travis_build_environment']['rvmrc_env']
-).map { |k, v| "#{k}='#{v}'" }.join("\n")
-rvm_script_path = ::File.join(
-  node['travis_build_environment']['home'], '.rvm', 'bin', 'rvm'
-)
-global_gems = Array(
-  node['travis_build_environment']['global_gems']
-).map { |g| g[:name] }.join(' ')
+rvm_installer_path = ::File.join(Chef::Config[:file_cache_path], 'rvm-installer')
+rvmrc_path = ::File.join(node['travis_build_environment']['home'], '.rvmrc')
+rvmrc_content = Array(node['travis_build_environment']['rvmrc_env']).map { |k, v| "#{k}='#{v}'" }.join("\n")
+rvm_script_path = ::File.join(node['travis_build_environment']['home'], '.rvm', 'bin', 'rvm')
+global_gems = Array(node['travis_build_environment']['global_gems']).map { |g| g[:name] }.join(' ')
 
 packages = value_for_platform(
-  'ubuntu' => { 'default' => %w(
-    automake
-    bash
-    bison
-    bzip2
-    curl
-    g++
-    gawk
-    gcc
-    gnupg2
-    libc6-dev
-    libffi-dev
-    libgdbm-dev
-    libgmp-dev
-    libncurses5-dev
-    libreadline6-dev
-    libsqlite3-dev
-    libssl-dev
-    libtool
-    libyaml-dev
-    make
-    openssl
-    patch
-    pkg-config
-    sqlite3
-    zlib1g
-    zlib1g-dev
-  ) },
-  'freebsd' => { 'default' => %w(
-    curl
-    bash
-    gnupg
-    pkgconf
-    libxslt
-    libxml2
-  ) }
+  'ubuntu' => {
+    'default' => %w(
+      automake
+      bash
+      bison
+      bzip2
+      curl
+      g++
+      gawk
+      gcc
+      gnupg2
+      libc6-dev
+      libffi-dev
+      libgdbm-dev
+      libgmp-dev
+      libncurses5-dev
+      libreadline6-dev
+      libsqlite3-dev
+      libssl-dev
+      libtool
+      libyaml-dev
+      make
+      openssl
+      patch
+      pkg-config
+      sqlite3
+      zlib1g
+      zlib1g-dev
+    ),
+  },
+  'freebsd' => {
+    'default' => %w(
+      bash
+      gmake
+      curl
+      gnupg
+      pkgconf
+      autoconf
+      automake
+      libtool
+      bison
+      openssl
+      libffi
+      libyaml
+      readline
+      libxslt
+      libxml2
+    ),
+  }
 )
 
 packages.each do |p|
@@ -115,55 +116,50 @@ bash 'run rvm installer' do
   code "#{rvm_installer_path} stable"
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  creates ::File.join(
-    node['travis_build_environment']['home'],
-    '.rvm', 'VERSION'
-  )
+  creates ::File.join(node['travis_build_environment']['home'], '.rvm', 'VERSION')
   environment('HOME' => node['travis_build_environment']['home'])
   retries 2
   retry_delay 30
 end
 
-install_flag = "--autolibs=enable --fuzzy"
+rvm_install_flag = "--autolibs=enable --fuzzy"
+rvm_install_flag += " -- --use-system-libraries" if platform_family?('freebsd')
 
-bash "install default ruby #{node['travis_build_environment']['default_ruby']}" do
-  code %W(
-    #{rvm_script_path} install
-    #{node['travis_build_environment']['default_ruby']}
-    #{install_flag}
-  ).join(' ')
-  user node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  environment('HOME' => node['travis_build_environment']['home'])
-  not_if { node['travis_build_environment']['default_ruby'].to_s.empty? }
-  retries 2
-  retry_delay 30
-end
+unless node['travis_build_environment']['default_ruby'].to_s.empty?
+  bash "install default ruby #{node['travis_build_environment']['default_ruby']}" do
+    code %W(
+      #{rvm_script_path} install
+      #{node['travis_build_environment']['default_ruby']}
+      #{rvm_install_flag}
+    ).join(' ')
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    environment('HOME' => node['travis_build_environment']['home'])
+    retries 2
+    retry_delay 30
+  end
 
-bash "create default alias for #{node['travis_build_environment']['default_ruby']}" do
-  code %W(
-    #{rvm_script_path} alias create
-    default #{node['travis_build_environment']['default_ruby']}
-  ).join(' ')
-  user node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  environment('HOME' => node['travis_build_environment']['home'])
-  not_if { node['travis_build_environment']['default_ruby'].to_s.empty? }
-end
-
-if node["platform_family"].include?("freebsd")
-  install_flag = " -- --use-system-libraries"
-else
-  install_flag = ""
+  bash "create default alias for #{node['travis_build_environment']['default_ruby']}" do
+    code %W(
+      #{rvm_script_path} alias create
+      default #{node['travis_build_environment']['default_ruby']}
+    ).join(' ')
+    user node['travis_build_environment']['user']
+    group node['travis_build_environment']['group']
+    environment('HOME' => node['travis_build_environment']['home'])
+    retries 2
+    retry_delay 30
+  end
 end
 
 bash 'install global gems' do
-  code "#{rvm_script_path} @global do gem install #{global_gems} --force#{install_flag}"
+  code "#{rvm_script_path} @global do gem install #{global_gems} --force"
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   environment('HOME' => node['travis_build_environment']['home'])
   retries 2
   retry_delay 30
+  not_if { global_gems.empty? }
 end
 
 Array(node['travis_build_environment']['rubies']).each do |ruby_def|
@@ -172,7 +168,7 @@ Array(node['travis_build_environment']['rubies']).each do |ruby_def|
   bash "install ruby #{ruby_def}" do
     code %W(
       #{rvm_script_path} install
-      #{ruby_def} #{install_flag}
+      #{ruby_def} #{rvm_install_flag}
     ).join(' ')
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']

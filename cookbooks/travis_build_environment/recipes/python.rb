@@ -185,7 +185,17 @@ template ::File.join(
   backup false
 end
 
+# This does not work for minimal images since python is preinstalled there using the native way
 case node['lsb']['codename']
+when 'noble'
+  bash "Set default python" do
+    code "source /home/travis/.bash_profile.d/pyenv.bash && pyenv global 3.12.8"
+    user 'root'
+    group 'root'
+    # user node['travis_build_environment']['user']
+    # group node['travis_build_environment']['group']
+    environment build_environment
+  end
 when 'jammy'
   bash "Set default python" do
     code "source /home/travis/.bash_profile.d/pyenv.bash && pyenv global 3.10.14"
