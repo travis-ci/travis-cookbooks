@@ -284,8 +284,3 @@ else
   default['travis_build_environment']['ibm_advanced_tool_chain_apt_key_url'] = ''
   default['travis_build_environment']['ibm_advanced_tool_chain_apt_deb_url'] = ''
 end
-default['travis_build_environment']['podman_repo_uri']       = 'http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_18.04/'
-default['travis_build_environment']['podman_distribution']   = 'bionic'
-default['travis_build_environment']['podman_components']     = ['']
-default['travis_build_environment']['podman_repo_key']       = 'https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_18.04/Release.key'
-default['travis_build_environment']['podman_version']        = '2.2.1-1~ubuntu18.04'
