@@ -41,10 +41,19 @@ execute 'add-libcontainers-key' do
   action :run
 end
 
-# Update package cache (ignoring failure to prevent build przerwania)
+# Update package cache (ignoring failure to prevent build interruption)
 apt_update 'update' do
   ignore_failure true
   action :update
+end
+
+# Install necessary dependencies for Podman to run properly
+package 'uidmap' do
+  action :install
+end
+
+package 'containernetworking-plugins' do
+  action :install
 end
 
 # Install Podman package from the Kubic repository
@@ -126,7 +135,7 @@ end
 # Determine storage driver based on Ubuntu version
 ruby_block 'set_storage_driver' do
   block do
-    # Dla Bionic używamy "vfs", dla Focal i Jammy pozostawiamy "overlay"
+    # For Bionic use "vfs", for Focal and Jammy use "overlay"
     driver = node['lsb']['codename'] == 'bionic' ? 'vfs' : 'overlay'
     node.run_state['podman_storage_driver'] = driver
     Chef::Log.info("Using storage driver: #{driver}")
@@ -209,3 +218,18 @@ end
 
 Chef::Log.info("Podman installation completed on Ubuntu (#{node['lsb']['codename']})")
 Chef::Log.info("Optional dependencies containers-common and catatonit are not required for basic functionality")
+
+# Stop Podman service (socket) so it doesn't run by default.
+# You can start it manually when needed.
+service 'podman.socket' do
+  action :stop
+  only_if { ::File.exist?('/usr/lib/systemd/system/podman.socket') }
+  ignore_failure true
+  notifies :write, 'log[Podman service stopped]', :immediately
+end
+
+log 'Podman service stopped' do
+  message "Podman socket service has been stopped. You can start it manually when needed."
+  level :info
+  action :nothing
+end
