@@ -1,15 +1,33 @@
 # podman.rb
-# Recipe for Podman installation and configuration on Ubuntu Bionic
+# Recipe for Podman installation and configuration on Ubuntu distributions (Bionic, Focal, Jammy)
 
-# Ensure universe repository is enabled (Podman is in universe for Bionic)
+# Ensure universe repository is enabled (Podman is in universe for Ubuntu)
 execute 'enable-universe' do
   command 'apt-add-repository universe -y'
   not_if 'apt-cache policy | grep -q universe'
 end
 
+# Determine repository URL based on Ubuntu codename
+ruby_block 'set_podman_repo_url' do
+  block do
+    case node['lsb']['codename']
+    when 'bionic'
+      node.run_state['podman_repo_url'] = 'https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_18.04/'
+    when 'focal'
+      node.run_state['podman_repo_url'] = 'https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/'
+    when 'jammy'
+      node.run_state['podman_repo_url'] = 'https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_22.04/'
+    else
+      node.run_state['podman_repo_url'] = 'https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_18.04/'
+    end
+    Chef::Log.info("Using Podman repository URL: #{node.run_state['podman_repo_url']}")
+  end
+  action :run
+end
+
 # Add Kubic repository with trusted option
 file '/etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list' do
-  content 'deb [trusted=yes] https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_18.04/ /'
+  content lazy { "deb [trusted=yes] #{node.run_state['podman_repo_url']} /" }
   owner 'root'
   group 'root'
   mode '0644'
@@ -18,7 +36,7 @@ end
 
 # Add Kubic repository key
 execute 'add-libcontainers-key' do
-  command 'curl -fsSL https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_18.04/Release.key | gpg --dearmor | tee /etc/apt/trusted.gpg.d/libcontainers.gpg'
+  command lazy { "curl -fsSL #{node.run_state['podman_repo_url']}Release.key | gpg --dearmor | tee /etc/apt/trusted.gpg.d/libcontainers.gpg" }
   not_if { ::File.exist?('/etc/apt/trusted.gpg.d/libcontainers.gpg') }
   action :run
 end
@@ -29,7 +47,7 @@ apt_update 'update' do
   action :update
 end
 
-# Try to install Podman from the Kubic repository
+# Install Podman package from the Kubic repository
 package 'podman' do
   action :install
   retries 2
@@ -52,7 +70,7 @@ bash 'try-alternative-podman-install' do
   not_if 'which podman'
 end
 
-# Install related packages if available
+# Install related optional packages (containers-common, catatonit)
 %w(containers-common catatonit).each do |pkg|
   bash "check-#{pkg}-availability" do
     code <<-EOH
@@ -70,7 +88,7 @@ end
 
   ruby_block "log-#{pkg}-status" do
     block do
-      Chef::Log.info("Note: #{pkg} is an optional dependency. Installation skipped if not available.")
+      Chef::Log.info("Optional dependency #{pkg} is not installed if not available.")
     end
     action :run
   end
@@ -105,25 +123,38 @@ file '/etc/containers/registries.conf' do
   action :create_if_missing
 end
 
-# Create storage.conf file with driver changed to "vfs"
+# Determine storage driver based on Ubuntu version
+ruby_block 'set_storage_driver' do
+  block do
+    # Dla Bionic używamy "vfs", dla Focal i Jammy pozostawiamy "overlay"
+    driver = node['lsb']['codename'] == 'bionic' ? 'vfs' : 'overlay'
+    node.run_state['podman_storage_driver'] = driver
+    Chef::Log.info("Using storage driver: #{driver}")
+  end
+  action :run
+end
+
+# Create storage.conf file with proper storage driver
 file '/etc/containers/storage.conf' do
-  content <<~EOL
-    # Storage configuration for Podman
-    # Driver changed to "vfs" to address overlay fs issues on Ubuntu Bionic
-    
-    [storage]
-    driver = "vfs"
-    runroot = "/var/run/containers/storage"
-    graphroot = "/var/lib/containers/storage"
-    
-    [storage.options]
-    additionalimagestores = []
-    
-    [storage.options.overlay]
-    ignore_chown_errors = "false"
-    
-    [storage.options.thinpool]
-  EOL
+  content lazy {
+    <<~EOL
+      # Storage configuration for Podman
+      # Using driver #{node.run_state['podman_storage_driver']}
+      
+      [storage]
+      driver = "#{node.run_state['podman_storage_driver']}"
+      runroot = "/var/run/containers/storage"
+      graphroot = "/var/lib/containers/storage"
+      
+      [storage.options]
+      additionalimagestores = []
+      
+      [storage.options.overlay]
+      ignore_chown_errors = "false"
+      
+      [storage.options.thinpool]
+    EOL
+  }
   owner 'root'
   group 'root'
   mode '0644'
@@ -176,5 +207,5 @@ ruby_block 'verify-podman' do
   ignore_failure true
 end
 
-Chef::Log.info("Podman installation completed on Ubuntu 18.04 (bionic)")
-Chef::Log.info("Note: Missing packages containers-common and catatonit are optional and not required for basic functionality")
+Chef::Log.info("Podman installation completed on Ubuntu (#{node['lsb']['codename']})")
+Chef::Log.info("Optional dependencies containers-common and catatonit are not required for basic functionality")
