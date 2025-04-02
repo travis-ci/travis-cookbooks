@@ -1,11 +1,9 @@
 # frozen_string_literal: true
-
 package_name = node['travis_build_environment']['elasticsearch']['package_name']
 deb_download_dest = File.join(
   Chef::Config[:file_cache_path],
   package_name
 )
-
 remote_file deb_download_dest do
   source "https://artifacts.elastic.co/downloads/elasticsearch/#{package_name}"
   owner node['travis_build_environment']['user']
@@ -15,8 +13,14 @@ end
 dpkg_package package_name do
   source deb_download_dest
   notifies :run, 'ruby_block[create-symbolic-links]'
+  notifies :run, 'execute[systemctl-daemon-reload]', :immediately
   action :install
   not_if 'which elasticsearch'
+end
+
+execute 'systemctl-daemon-reload' do
+  command 'systemctl daemon-reload'
+  action :nothing
 end
 
 ruby_block 'create-symbolic-links' do
