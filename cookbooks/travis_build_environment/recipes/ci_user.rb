@@ -210,7 +210,7 @@ Array(node['travis_build_environment']['elixir_versions']).each do |elixir|
   local_archive = "#{Chef::Config[:file_cache_path]}/v#{elixir}.zip"
   dest = "#{node['travis_build_environment']['home']}/.kiex/elixirs/elixir-#{elixir}"
 
-  elixir_download_url = if node['platform_version'] == 'noble'
+  elixir_download_url = if node['lsb'] && node['lsb']['codename'] == 'noble'
                           "https://github.com/elixir-lang/elixir/releases/download/v#{elixir}/elixir-otp-27.zip"
                         else
                           "https://github.com/elixir-lang/elixir/releases/download/v#{elixir}/Precompiled.zip"
