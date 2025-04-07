@@ -13,7 +13,7 @@ ruby_block 'set_podman_repo_url' do
     when 'jammy'
       node.run_state['podman_repo_url'] = 'https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_22.04/'
     else
-      node.run_state['podman_repo_url'] = 'https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_18.04/'
+      node.run_state['podman_repo_url'] = 'https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_22.04/'
     end
     Chef::Log.info("Using Podman repository URL: #{node.run_state['podman_repo_url']}")
   end
