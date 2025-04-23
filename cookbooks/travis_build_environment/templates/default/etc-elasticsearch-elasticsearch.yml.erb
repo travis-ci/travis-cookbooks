@@ -1,6 +1,3 @@
-# Enable or disable Elasticsearch service start
-enabled: <%= @service_enabled ? 'true' : 'false' %>
-
 # ======================== Elasticsearch Configuration =========================
 #
 # NOTE: Elasticsearch comes with reasonable defaults for most settings.
@@ -64,7 +61,6 @@ path.logs: /var/log/elasticsearch
 #http.port: 9200
 #
 # For more information, consult the network module documentation.
-#
 # --------------------------------- Discovery ----------------------------------
 #
 # Pass an initial list of hosts to perform discovery when this node is started:
@@ -86,28 +82,29 @@ path.logs: /var/log/elasticsearch
 #----------------------- BEGIN SECURITY AUTO CONFIGURATION -----------------------
 #
 # The following settings, TLS certificates, and keys have been automatically      
-# generated to configure Elasticsearch security features on <%= Time.now.strftime('%d-%m-%Y %H:%M:%S') %>
+# generated to configure Elasticsearch security features on 02-04-2025 15:45:39
 #
 # --------------------------------------------------------------------------------
 # Enable security features
-xpack.security.enabled: true
-xpack.security.enrollment.enabled: true
+xpack.security.enabled: false
+xpack.security.enrollment.enabled: false
 # Enable encryption for HTTP API client connections, such as Kibana, Logstash, and Agents
 xpack.security.http.ssl:
-  enabled: true
+  enabled: false
   keystore.path: certs/http.p12
 # Enable encryption and mutual authentication between cluster nodes
 xpack.security.transport.ssl:
-  enabled: true
+  enabled: false
   verification_mode: certificate
   keystore.path: certs/transport.p12
   truststore.path: certs/transport.p12
 # Create a new cluster with the current node only
 # Additional nodes can still join the cluster later
-cluster.initial_master_nodes: ["packer-6807936d-399e-e1a1-5f23-e1e322ec8dcf"]
+cluster.initial_master_nodes: ["packer-67ed5627-475d-8373-5bba-592c1f1f289b"]
 # Allow HTTP API connections from anywhere
 # Connections are encrypted and require user authentication
 http.host: 0.0.0.0
 # Allow other nodes to join the cluster from anywhere
+# Connections are encrypted and mutually authenticated
 #transport.host: 0.0.0.0
 #----------------------- END SECURITY AUTO CONFIGURATION -------------------------
