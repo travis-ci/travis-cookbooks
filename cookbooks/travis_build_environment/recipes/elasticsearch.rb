@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 package_name = node['travis_build_environment']['elasticsearch']['package_name']
-deb_download_dest = ::File.join(
+deb_download_dest = File.join(
   Chef::Config[:file_cache_path],
   package_name
 )
@@ -27,7 +27,7 @@ ruby_block 'create-symbolic-links' do
       next if file == '.' || file == '..'
       src = "/usr/share/elasticsearch/bin/#{file}"
       dst = "/usr/local/bin/#{file}"
-      File.symlink(src, dst) unless ::File.exist?(dst)
+      File.symlink(src, dst) unless File.exist?(dst)
     end
   end
   action :nothing
@@ -41,9 +41,7 @@ template '/etc/elasticsearch/jvm.options' do
   variables(
     jvm_heap: node['travis_build_environment']['elasticsearch']['jvm_heap']
   )
-  if node['travis_build_environment']['elasticsearch']['service_enabled']
-    notifies :restart, 'service[elasticsearch]', :delayed
-  end
+  notifies :restart, 'service[elasticsearch]', :delayed
 end
 
 template '/etc/elasticsearch/elasticsearch.yml' do
@@ -54,17 +52,21 @@ template '/etc/elasticsearch/elasticsearch.yml' do
   variables(
     service_enabled: node['travis_build_environment']['elasticsearch']['service_enabled']
   )
-  if node['travis_build_environment']['elasticsearch']['service_enabled']
-    notifies :restart, 'service[elasticsearch]', :delayed
-  end
+  notifies :restart, 'service[elasticsearch]', :delayed
 end
 
 service 'elasticsearch' do
-  if node['travis_build_environment']['elasticsearch']['service_enabled']
-    action %i(enable start)
-  else
-    action %i(disable stop)
-  end
+  supports status: true, restart: true
+  action [:enable, :start]
   retries     4
   retry_delay 30
+end
+
+execute 'wait-for-elasticsearch' do
+  command 'until curl -s http://localhost:9200 >/dev/null; do sleep 1; end'
+  action :run
+end
+
+service 'elasticsearch' do
+  action [:disable, :stop]
 end
