@@ -41,7 +41,6 @@ template '/etc/elasticsearch/jvm.options' do
   variables(
     jvm_heap: node['travis_build_environment']['elasticsearch']['jvm_heap']
   )
-  # tylko restart, gdy usługa jest włączona
   if node['travis_build_environment']['elasticsearch']['service_enabled']
     notifies :restart, 'service[elasticsearch]', :delayed
   end
@@ -55,7 +54,6 @@ template '/etc/elasticsearch/elasticsearch.yml' do
   variables(
     service_enabled: node['travis_build_environment']['elasticsearch']['service_enabled']
   )
-  # tylko restart, gdy usługa jest włączona
   if node['travis_build_environment']['elasticsearch']['service_enabled']
     notifies :restart, 'service[elasticsearch]', :delayed
   end
