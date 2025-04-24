@@ -54,13 +54,3 @@ template '/etc/elasticsearch/elasticsearch.yml' do
   )
   notifies :restart, 'service[elasticsearch]', :delayed
 end
-
-service 'elasticsearch' do
-  if node['travis_build_environment']['elasticsearch']['service_enabled']
-    action %i(enable start)
-  else
-    action %i(disable stop)
-  end
-  retries     4
-  retry_delay 30
-end
