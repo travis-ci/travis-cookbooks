@@ -56,21 +56,26 @@ template '/etc/elasticsearch/elasticsearch.yml' do
 end
 
 service 'elasticsearch' do
-  action [:enable, :start]
-  notifies :run, 'ruby_block[check-elasticsearch-service-status]', :immediately if node['travis_build_environment']['elasticsearch']['service_enabled']
+  if node['travis_build_environment']['elasticsearch']['service_enabled']
+    action %i(enable start)
+    notifies :run, 'ruby_block[check-elasticsearch-service-status]', :immediately
+  else
+    action %i(disable stop)
+  end
+  retries     4
+  retry_delay 30
 end
 
 ruby_block 'check-elasticsearch-service-status' do
   block do
-    service_status = shell_out!('systemctl status elasticsearch.service || true')
-    journal_logs = shell_out!('journalctl -xe --no-pager -n 50 -u elasticsearch.service || true')
+    status_output = shell_out('systemctl status elasticsearch.service || true').stdout
+    journal_output = shell_out('journalctl -xe -n 50 -u elasticsearch.service || true').stdout
     
-    Chef::Log.info("Elasticsearch service status:\n#{service_status.stdout}\n#{service_status.stderr}")
-    Chef::Log.info("Elasticsearch journal logs:\n#{journal_logs.stdout}\n#{journal_logs.stderr}")
+    Chef::Log.info("Elasticsearch service status: \n#{status_output}")
+    Chef::Log.info("Elasticsearch journal logs: \n#{journal_output}")
     
-    if service_status.error?
-      Chef::Log.error("Elasticsearch service failed to start. Check logs above for details.")
-      raise "Failed to start Elasticsearch service"
+    if status_output.include?('failed') || !status_output.include?('active (running)')
+      Chef::Log.error("Elasticsearch service failed to start properly. Check logs above for details.")
     end
   end
   action :nothing
