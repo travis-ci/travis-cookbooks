@@ -1,6 +1,5 @@
 # recipes/elasticsearch.rb
 # frozen_string_literal: true
-
 package_name = node['travis_build_environment']['elasticsearch']['package_name']
 deb_download_dest = File.join(
   Chef::Config[:file_cache_path],
