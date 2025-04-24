@@ -63,6 +63,9 @@ path.logs: /var/log/elasticsearch
 # For more information, consult the network module documentation.
 # --------------------------------- Discovery ----------------------------------
 #
+# Set single-node discovery to eliminate master election issues
+discovery.type: single-node
+#
 # Pass an initial list of hosts to perform discovery when this node is started:
 # The default list of hosts is ["127.0.0.1", "[::1]"]
 #
@@ -100,7 +103,8 @@ xpack.security.transport.ssl:
   truststore.path: certs/transport.p12
 # Create a new cluster with the current node only
 # Additional nodes can still join the cluster later
-cluster.initial_master_nodes: ["packer-67ed5627-475d-8373-5bba-592c1f1f289b"]
+# Commented out because we're using discovery.type: single-node instead
+#cluster.initial_master_nodes: ["packer-67ed5627-475d-8373-5bba-592c1f1f289b"]
 # Allow HTTP API connections from anywhere
 # Connections are encrypted and require user authentication
 http.host: 0.0.0.0
