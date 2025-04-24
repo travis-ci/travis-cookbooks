@@ -57,11 +57,10 @@ end
 service 'elasticsearch' do
   if node['travis_build_environment']['elasticsearch']['service_enabled']
     action %i(enable start)
-    notifies :run, 'ruby_block[check-elasticsearch-service-status]', :immediately
   else
-    action %i(disable stop)
+    action %i(disable start)
   end
-  retries     4
+  retries 4
   retry_delay 30
 end
 
