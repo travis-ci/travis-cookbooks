@@ -54,3 +54,24 @@ template '/etc/elasticsearch/elasticsearch.yml' do
   )
   notifies :restart, 'service[elasticsearch]', :delayed
 end
+
+service 'elasticsearch' do
+  action [:enable, :start]
+  notifies :run, 'ruby_block[check-elasticsearch-service-status]', :immediately if node['travis_build_environment']['elasticsearch']['service_enabled']
+end
+
+ruby_block 'check-elasticsearch-service-status' do
+  block do
+    service_status = shell_out!('systemctl status elasticsearch.service || true')
+    journal_logs = shell_out!('journalctl -xe --no-pager -n 50 -u elasticsearch.service || true')
+    
+    Chef::Log.info("Elasticsearch service status:\n#{service_status.stdout}\n#{service_status.stderr}")
+    Chef::Log.info("Elasticsearch journal logs:\n#{journal_logs.stdout}\n#{journal_logs.stderr}")
+    
+    if service_status.error?
+      Chef::Log.error("Elasticsearch service failed to start. Check logs above for details.")
+      raise "Failed to start Elasticsearch service"
+    end
+  end
+  action :nothing
+end
