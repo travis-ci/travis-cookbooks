@@ -56,17 +56,11 @@ template '/etc/elasticsearch/elasticsearch.yml' do
 end
 
 service 'elasticsearch' do
-  supports status: true, restart: true
-  action [:enable, :start]
+  if node['travis_build_environment']['elasticsearch']['service_enabled']
+    action %i(enable start)
+  else
+    action %i(disable stop)
+  end
   retries     4
   retry_delay 30
-end
-
-execute 'wait-for-elasticsearch' do
-  command 'until curl -s http://localhost:9200 >/dev/null; do sleep 1; end'
-  action :run
-end
-
-service 'elasticsearch' do
-  action [:disable, :stop]
 end
