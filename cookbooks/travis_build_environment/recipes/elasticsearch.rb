@@ -65,7 +65,7 @@ template '/etc/elasticsearch/jvm.options' do
   )
 end
 
-ruby_block 'print-elasticsearch-config-afer' do
+ruby_block 'print-elasticsearch-config-after' do
   block do
     cfg = ::File.read('/etc/elasticsearch/elasticsearch.yml')
     Chef::Log.info("=== Elasticsearch configuration (elasticsearch.yml) ===\n\n#{cfg}")
