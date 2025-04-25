@@ -1,10 +1,6 @@
-# recipes/elasticsearch.rb
 # frozen_string_literal: true
 package_name = node['travis_build_environment']['elasticsearch']['package_name']
-deb_download_dest = File.join(
-  Chef::Config[:file_cache_path],
-  package_name
-)
+deb_download_dest = File.join(Chef::Config[:file_cache_path], package_name)
 
 remote_file deb_download_dest do
   source "https://artifacts.elastic.co/downloads/elasticsearch/#{package_name}"
@@ -49,6 +45,14 @@ template '/etc/elasticsearch/elasticsearch.yml' do
   mode   '0644'
 end
 
+# 🔄 Log before attempting to start the service
+ruby_block 'log-before-elasticsearch-start' do
+  block do
+    Chef::Log.info("🔄 Attempting to start the Elasticsearch service...")
+  end
+end
+
+# 🟢 Service definition with retry logic
 service 'elasticsearch' do
   if node['travis_build_environment']['elasticsearch']['service_enabled']
     action %i(enable start)
@@ -60,17 +64,27 @@ service 'elasticsearch' do
   retry_delay 90
 end
 
+# 📝 Post-start log for service status and logs
 ruby_block 'check-elasticsearch-service-status' do
   block do
     status_output = shell_out('systemctl status elasticsearch.service || true').stdout
     journal_output = shell_out('journalctl -xe -n 50 -u elasticsearch.service || true').stdout
-    
-    Chef::Log.info("Elasticsearch service status: \n#{status_output}")
-    Chef::Log.info("Elasticsearch journal logs: \n#{journal_output}")
-    
+
+    Chef::Log.info("ℹ️ Elasticsearch service status: \n#{status_output}")
+    Chef::Log.info("📝 Elasticsearch journal logs: \n#{journal_output}")
+
     if status_output.include?('failed') || !status_output.include?('active (running)')
-      Chef::Log.error("Elasticsearch service failed to start properly. Check logs above for details.")
+      Chef::Log.error("❌ Elasticsearch service failed to start properly. Check the logs above.")
+    else
+      Chef::Log.info("✅ Elasticsearch started successfully.")
     end
   end
   action :nothing
+end
+
+# Trigger pre-start and start logic
+ruby_block 'log-before-elasticsearch-start-run' do
+  block {}
+  notifies :run, 'ruby_block[log-before-elasticsearch-start]', :immediately
+  notifies :run, 'service[elasticsearch]', :immediately
 end
