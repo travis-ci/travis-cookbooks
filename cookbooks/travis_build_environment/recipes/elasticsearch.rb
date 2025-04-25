@@ -1,6 +1,7 @@
 # frozen_string_literal: true
-package_name = node['travis_build_environment']['elasticsearch']['package_name']
-deb_download_dest = File.join(Chef::Config[:file_cache_path], package_name)
+
+package_name       = node['travis_build_environment']['elasticsearch']['package_name']
+deb_download_dest  = File.join(Chef::Config[:file_cache_path], package_name)
 
 remote_file deb_download_dest do
   source "https://artifacts.elastic.co/downloads/elasticsearch/#{package_name}"
@@ -10,9 +11,9 @@ remote_file deb_download_dest do
 end
 
 dpkg_package package_name do
-  source deb_download_dest
-  action :install
-  not_if 'which elasticsearch'
+  source  deb_download_dest
+  action  :install
+  not_if  'which elasticsearch'
   notifies :run, 'ruby_block[create-symbolic-links]', :immediately
 end
 
@@ -45,46 +46,25 @@ template '/etc/elasticsearch/elasticsearch.yml' do
   mode   '0644'
 end
 
-# 🔄 Log before attempting to start the service
-ruby_block 'log-before-elasticsearch-start' do
-  block do
-    Chef::Log.info("🔄 Attempting to start the Elasticsearch service...")
-  end
-end
-
-# 🟢 Service definition with retry logic
 service 'elasticsearch' do
-  if node['travis_build_environment']['elasticsearch']['service_enabled']
-    action %i(enable start)
-    notifies :run, 'ruby_block[check-elasticsearch-service-status]', :immediately
-  else
-    action %i(disable start)
-  end
-  retries     4
+  action node['travis_build_environment']['elasticsearch']['service_enabled'] ? [:enable] : [:disable]
+end
+
+execute 'start elasticsearch' do
+  command 'systemctl start elasticsearch.service'
+  retries 4
   retry_delay 90
+  not_if  'systemctl is-active --quiet elasticsearch.service'
 end
 
-# 📝 Post-start log for service status and logs
-ruby_block 'check-elasticsearch-service-status' do
-  block do
-    status_output = shell_out('systemctl status elasticsearch.service || true').stdout
-    journal_output = shell_out('journalctl -xe -n 50 -u elasticsearch.service || true').stdout
-
-    Chef::Log.info("ℹ️ Elasticsearch service status: \n#{status_output}")
-    Chef::Log.info("📝 Elasticsearch journal logs: \n#{journal_output}")
-
-    if status_output.include?('failed') || !status_output.include?('active (running)')
-      Chef::Log.error("❌ Elasticsearch service failed to start properly. Check the logs above.")
-    else
-      Chef::Log.info("✅ Elasticsearch started successfully.")
-    end
-  end
-  action :nothing
-end
-
-# Trigger pre-start and start logic
-ruby_block 'log-before-elasticsearch-start-run' do
-  block {}
-  notifies :run, 'ruby_block[log-before-elasticsearch-start]', :immediately
-  notifies :run, 'service[elasticsearch]', :immediately
+execute 'log elasticsearch errors' do
+  command <<~EOH
+    echo "=== Elasticsearch service status ==="
+    systemctl status elasticsearch.service
+    echo
+    echo "=== Elasticsearch journal (last 50 lines) ==="
+    journalctl -xeu elasticsearch.service -n 50
+  EOH
+  action :run
+  only_if 'systemctl is-failed --quiet elasticsearch.service'
 end
