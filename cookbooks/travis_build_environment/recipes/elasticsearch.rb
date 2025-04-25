@@ -40,7 +40,6 @@ template '/etc/elasticsearch/jvm.options' do
   variables(
     jvm_heap: node['travis_build_environment']['elasticsearch']['jvm_heap']
   )
-  notifies :restart, 'service[elasticsearch]', :delayed
 end
 
 template '/etc/elasticsearch/elasticsearch.yml' do
@@ -51,7 +50,6 @@ template '/etc/elasticsearch/elasticsearch.yml' do
   variables(
     service_enabled: node['travis_build_environment']['elasticsearch']['service_enabled']
   )
-  notifies :restart, 'service[elasticsearch]', :delayed
 end
 
 service 'elasticsearch' do
