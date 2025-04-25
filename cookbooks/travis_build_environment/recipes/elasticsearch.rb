@@ -47,9 +47,6 @@ template '/etc/elasticsearch/elasticsearch.yml' do
   owner  node['travis_build_environment']['user']
   group  node['travis_build_environment']['group']
   mode   '0644'
-  variables(
-    service_enabled: node['travis_build_environment']['elasticsearch']['service_enabled']
-  )
 end
 
 service 'elasticsearch' do
