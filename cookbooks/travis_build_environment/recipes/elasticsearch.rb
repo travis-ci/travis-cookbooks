@@ -81,5 +81,5 @@ service 'elasticsearch' do
   end
   retries     4
   retry_delay 30
-  notifies :run, 'ruby_block[print-elasticsearch-config]', :immediately
+  notifies :run, 'ruby_block[print-elasticsearch-config-after]', :immediately
 end
