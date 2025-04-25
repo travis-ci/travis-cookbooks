@@ -1,22 +1,21 @@
-# encoding: utf-8
+# frozen_string_literal: true
 
 package_name      = node['travis_build_environment']['elasticsearch']['package_name']
 deb_download_dest = File.join(Chef::Config[:file_cache_path], package_name)
 
 remote_file deb_download_dest do
-  source "#{node['travis_build_environment']['elasticsearch']['download_url']}/#{package_name}"
+  source "https://artifacts.elastic.co/downloads/elasticsearch/#{package_name}"
   owner  node['travis_build_environment']['user']
   group  node['travis_build_environment']['group']
   mode   '0644'
 end
 
 dpkg_package package_name do
-  source   deb_download_dest
-  action   :install
-  not_if   'which elasticsearch'
-  notifies :run, 'ruby_block[create-symbolic-links]',                    :immediately
-  notifies :run, 'ruby_block[disable-xpack-security]',                 :immediately
-  notifies :run, 'ruby_block[print-elasticsearch-config-before-start]', :immediately
+  source     deb_download_dest
+  action     :install
+  not_if     'which elasticsearch'
+  notifies   :run, 'ruby_block[create-symbolic-links]', :immediately
+  notifies   :run, 'ruby_block[disable-xpack-security]', :immediately
 end
 
 ruby_block 'create-symbolic-links' do
@@ -27,6 +26,14 @@ ruby_block 'create-symbolic-links' do
       dst = "/usr/local/bin/#{file}"
       File.symlink(src, dst) unless File.exist?(dst)
     end
+  end
+  action :nothing
+end
+
+ruby_block 'print-elasticsearch-config-before' do
+  block do
+    cfg = ::File.read('/etc/elasticsearch/elasticsearch.yml')
+    Chef::Log.info("=== Elasticsearch configuration (elasticsearch.yml) ===\n\n#{cfg}")
   end
   action :nothing
 end
@@ -48,14 +55,6 @@ ruby_block 'disable-xpack-security' do
   action :nothing
 end
 
-ruby_block 'print-elasticsearch-config-before-start' do
-  block do
-    cfg = ::File.read('/etc/elasticsearch/elasticsearch.yml')
-    Chef::Log.info("=== Elasticsearch configuration BEFORE starting service (elasticsearch.yml) ===\n\n#{cfg}")
-  end
-  action :nothing
-end
-
 template '/etc/elasticsearch/jvm.options' do
   source   'etc-elasticsearch-jvm.options.erb'
   owner    node['travis_build_environment']['user']
@@ -66,10 +65,10 @@ template '/etc/elasticsearch/jvm.options' do
   )
 end
 
-ruby_block 'print-elasticsearch-config-after-start' do
+ruby_block 'print-elasticsearch-config-afer' do
   block do
     cfg = ::File.read('/etc/elasticsearch/elasticsearch.yml')
-    Chef::Log.info("=== Elasticsearch configuration AFTER starting service (elasticsearch.yml) ===\n\n#{cfg}")
+    Chef::Log.info("=== Elasticsearch configuration (elasticsearch.yml) ===\n\n#{cfg}")
   end
   action :nothing
 end
@@ -82,5 +81,5 @@ service 'elasticsearch' do
   end
   retries     4
   retry_delay 30
-  notifies :run, 'ruby_block[print-elasticsearch-config-after-start]', :immediately
+  notifies :run, 'ruby_block[print-elasticsearch-config]', :immediately
 end
