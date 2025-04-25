@@ -1,9 +1,6 @@
 ## Cookbook Name:: travis_build_environment
 ## Recipe:: elasticsearch
 
-# Ensure line cookbook is available for replace_or_add resource
-include_recipe 'line'
-
 package_name      = node['travis_build_environment']['elasticsearch']['package_name']
 deb_download_dest = ::File.join(Chef::Config[:file_cache_path], package_name)
 
@@ -35,6 +32,13 @@ ruby_block 'print-elasticsearch-config-before' do
 end
 
 # Create symlinks for each Elasticsearch binary
+directory '/usr/local/bin' do
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode '0755'
+  action :create
+end
+
 Dir.glob('/usr/share/elasticsearch/bin/*').each do |src|
   bin_name = ::File.basename(src)
   link "/usr/local/bin/#{bin_name}" do
@@ -47,10 +51,21 @@ Dir.glob('/usr/share/elasticsearch/bin/*').each do |src|
 end
 
 # Disable X-Pack security in elasticsearch.yml
-replace_or_add 'disable xpack security' do
-  path    '/etc/elasticsearch/elasticsearch.yml'
-  pattern /^xpack\.security\.enabled\s*:/
-  line    'xpack.security.enabled: false'
+ruby_block 'disable-xpack-security' do
+  block do
+    require 'chef/util/file_edit'
+    edit = Chef::Util::FileEdit.new('/etc/elasticsearch/elasticsearch.yml')
+    edit.search_file_replace_line(
+      /^xpack\.security\.enabled\s*:/,
+      'xpack.security.enabled: false'
+    )
+    edit.insert_line_if_no_match(
+      /^xpack\.security\.enabled\s*:/,
+      'xpack.security.enabled: false'
+    )
+    edit.write_file
+  end
+  action :nothing
 end
 
 # Configure JVM heap settings
@@ -65,7 +80,7 @@ template '/etc/elasticsearch/jvm.options' do
   notifies :restart, 'service[elasticsearch]', :immediately
 end
 
-
+# Log config after modifications
 ruby_block 'print-elasticsearch-config-after' do
   block do
     cfg = ::File.read('/etc/elasticsearch/elasticsearch.yml')
