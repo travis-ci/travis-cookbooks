@@ -172,7 +172,7 @@ if node['kernel']['machine'] == 'ppc64le'
   default['travis_build_environment']['elasticsearch']['version'] = version
   default['travis_build_environment']['elasticsearch']['package_name'] = "elasticsearch-#{version}-amd64.deb"
 end
-default['travis_build_environment']['elasticsearch']['service_enabled'] = false
+default['travis_build_environment']['elasticsearch']['service_enabled'] = true
 default['travis_build_environment']['elasticsearch']['jvm_heap'] = '128m'
 
 default['travis_build_environment']['redis']['service_enabled'] = false
