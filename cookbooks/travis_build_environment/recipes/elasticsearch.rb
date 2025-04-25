@@ -65,7 +65,7 @@ template '/etc/elasticsearch/jvm.options' do
   notifies :restart, 'service[elasticsearch]', :immediately
 end
 
-# Log config after modifications
+
 ruby_block 'print-elasticsearch-config-after' do
   block do
     cfg = ::File.read('/etc/elasticsearch/elasticsearch.yml')
