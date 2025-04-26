@@ -18,7 +18,6 @@ dpkg_package package_name do
   action     :install
   not_if     { ::File.exist?('/usr/share/elasticsearch/bin/elasticsearch') }
   notifies   :run, 'ruby_block[print-elasticsearch-config-before]', :before
-  notifies   :run, 'ruby_block[create-symbolic-links]', :immediately
   notifies   :run, 'ruby_block[disable-xpack-security]', :immediately
 end
 
@@ -31,7 +30,7 @@ ruby_block 'print-elasticsearch-config-before' do
   action :nothing
 end
 
-# Create symlinks for each Elasticsearch binary
+# Create /usr/local/bin directory for symlinks
 directory '/usr/local/bin' do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
@@ -39,6 +38,7 @@ directory '/usr/local/bin' do
   action :create
 end
 
+# Symlink all Elasticsearch binaries to /usr/local/bin
 Dir.glob('/usr/share/elasticsearch/bin/*').each do |src|
   bin_name = ::File.basename(src)
   link "/usr/local/bin/#{bin_name}" do
