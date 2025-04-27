@@ -249,8 +249,8 @@ default['travis_build_environment']['shellcheck_version'] = '0.10.0'
 default['travis_build_environment']['shellcheck_checksum'] = '6c881ab0698e4e6ea235245f22832860544f17ba386442fe7e9d629f8cbedf87'
 default['travis_build_environment']['shellcheck_binaries'] = %w(shellcheck)
 
-default['travis_build_environment']['shfmt_url'] = 'https://github.com/mvdan/sh/releases/download/v3.8.0/shfmt_v3.8.0_linux_amd64'
-default['travis_build_environment']['shfmt_checksum'] = '27b3c6f9d9592fc5b4856c341d1ff2c88856709b9e76469313642a1d7b558fe0'
+default['travis_build_environment']['shfmt_url'] = 'https://github.com/mvdan/sh/releases/download/v3.9.0/shfmt_v3.9.0_linux_amd64'
+default['travis_build_environment']['shfmt_checksum'] = 'd99b06506aee2ac9113daec3049922e70dc8cffb84658e3ae512c6a6cbe101b6'
 
 default['travis_build_environment']['yarn_url'] = 'https://yarnpkg.com/latest.tar.gz'
 default['travis_build_environment']['yarn_version'] = 'latest'
