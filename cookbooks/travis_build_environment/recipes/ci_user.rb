@@ -211,7 +211,7 @@ Array(node['travis_build_environment']['elixir_versions']).each do |elixir|
   dest = "#{node['travis_build_environment']['home']}/.kiex/elixirs/elixir-#{elixir}"
 
   remote_file local_archive do
-    source "https://github.com/elixir-lang/elixir/releases/download/v#{elixir}/Precompiled.zip"
+    source "https://github.com/elixir-lang/elixir/releases/download/v#{elixir}/elixir-otp-27.exe"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     mode '644'
