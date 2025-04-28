@@ -30,23 +30,6 @@ ruby_block 'create-symbolic-links' do
   action :nothing
 end
 
-ruby_block 'disable-xpack-security' do
-  block do
-    require 'chef/util/file_edit'
-    edit = Chef::Util::FileEdit.new('/etc/elasticsearch/elasticsearch.yml')
-    edit.search_file_replace_line(
-      /^xpack\.security\.enabled\s*:/,
-      'xpack.security.enabled: false'
-    )
-    edit.insert_line_if_no_match(
-      /^xpack\.security\.enabled\s*:/,
-      'xpack.security.enabled: false'
-    )
-    edit.write_file
-  end
-  action :nothing
-end
-
 template '/etc/elasticsearch/jvm.options' do
   source   'etc-elasticsearch-jvm.options.erb'
   owner    node['travis_build_environment']['user']
@@ -61,6 +44,23 @@ ruby_block 'print-elasticsearch-config' do
   block do
     cfg = ::File.read('/etc/elasticsearch/elasticsearch.yml')
     Chef::Log.info("=== Elasticsearch configuration (elasticsearch.yml) ===\n\n#{cfg}")
+  end
+  action :nothing
+end
+
+ruby_block 'disable-xpack-security' do
+  block do
+    require 'chef/util/file_edit'
+    edit = Chef::Util::FileEdit.new('/etc/elasticsearch/elasticsearch.yml')
+    edit.search_file_replace_line(
+      /^xpack\.security\.enabled\s*:/,
+      'xpack.security.enabled: false'
+    )
+    edit.insert_line_if_no_match(
+      /^xpack\.security\.enabled\s*:/,
+      'xpack.security.enabled: false'
+    )
+    edit.write_file
   end
   action :nothing
 end
