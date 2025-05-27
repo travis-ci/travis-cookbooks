@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 gpg_keys = {
-  mpapis:     '08f64631c598cbe4398c5850725c8e6ab60dc5d86b6214e069d7ced1d546043b',
+  mpapis: '08f64631c598cbe4398c5850725c8e6ab60dc5d86b6214e069d7ced1d546043b',
   pkuczynski: 'd33ce5907fe28e6938feab7f63a9ef8a26a565878b1ad5bce063a86019aeaf77',
 }
 

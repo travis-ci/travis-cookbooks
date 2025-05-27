@@ -147,6 +147,7 @@ Array(node['travis_build_environment']['otp_releases']).each do |rel|
     retry_delay 10
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
+
     ignore_failure true
   end
 
@@ -156,8 +157,10 @@ Array(node['travis_build_environment']['otp_releases']).each do |rel|
       > echo #{rel} >> #{::File.join(node['travis_build_environment']['kerl_base_dir'], 'otp_installations')}
       > echo #{rel},#{rel} >> #{::File.join(node['travis_build_environment']['kerl_base_dir'], 'otp_builds')}
     EOF
+
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
+
     not_if { ::File.exist?(rel_dir) }
     only_if { ::File.exist?(local_archive) }
   end
@@ -169,12 +172,15 @@ Array(node['travis_build_environment']['otp_releases']).each do |rel|
 
   bash "build erlang #{rel}" do
     code kerl_build_cmd
+
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
+
     environment(
       'HOME' => node['travis_build_environment']['home'],
       'USER' => node['travis_build_environment']['user']
     )
+
     not_if { ::File.exist?("#{rel_dir}/activate") }
   end
 
@@ -185,10 +191,12 @@ Array(node['travis_build_environment']['otp_releases']).each do |rel|
       > #{node['travis_build_environment']['kerl_path']} cleanup #{rel}
       > rm -rf #{node['travis_build_environment']['home']}/.kerl/archives/*
     EOF
+
     environment(
       'HOME' => node['travis_build_environment']['home'],
       'USER' => node['travis_build_environment']['user']
     )
+
     not_if { ::File.exist?("#{rel_dir}/activate") }
   end
 end
@@ -198,40 +206,18 @@ unless Array(node['travis_build_environment']['otp_releases']).empty?
   include_recipe 'travis_build_environment::kiex'
 end
 
-# Modified block for Elixir installation with fallback for Precompiled.zip
 Array(node['travis_build_environment']['elixir_versions']).each do |elixir|
   local_archive = "#{Chef::Config[:file_cache_path]}/v#{elixir}.zip"
   dest = "#{node['travis_build_environment']['home']}/.kiex/elixirs/elixir-#{elixir}"
 
-  ruby_block "determine download url for elixir version #{elixir}" do
-    block do
-      require 'net/http'
-      require 'uri'
-      # Function to check URL availability
-      def url_exists?(url)
-        uri = URI(url)
-        req = Net::HTTP::Head.new(uri)
-        http = Net::HTTP.new(uri.host, uri.port)
-        http.use_ssl = (uri.scheme == 'https')
-        response = http.request(req)
-        response.code == "200"
-      rescue => e
-        Chef::Log.warn("Error checking URL #{url}: #{e}")
-        false
-      end
-
-      primary_url = "https://github.com/elixir-lang/elixir/releases/download/v#{elixir}/Precompiled.zip"
-      fallback_url = "https://github.com/elixir-lang/elixir/releases/download/v#{elixir}/elixir-otp-27.zip"
-
-      chosen_url = url_exists?(primary_url) ? primary_url : fallback_url
-      node.run_state["elixir_download_url_#{elixir}"] = chosen_url
-      Chef::Log.info("Chosen URL for Elixir version #{elixir}: #{chosen_url}")
-    end
-    action :run
-  end
+  elixir_download_url = if node['lsb']['codename'] == 'noble'
+                          "https://github.com/elixir-lang/elixir/releases/download/v#{elixir}/elixir-otp-27.zip"
+                        else
+                          "https://github.com/elixir-lang/elixir/releases/download/v#{elixir}/Precompiled.zip"
+                        end
 
   remote_file local_archive do
-    source lazy { node.run_state["elixir_download_url_#{elixir}"] }
+    source elixir_download_url
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     mode '644'
@@ -329,6 +315,9 @@ end
 include_recipe 'travis_build_environment::hhvm'
 
 bash 'set global default php' do
+  # NOTE: It is important that this happens *after* the conditional inclusion of
+  # the travis_build_environment::hhvm recipe just above so that the default php
+  # version is not hhvm.
   code "phpenv global #{node['travis_build_environment']['php_default_version']}"
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
