@@ -45,7 +45,7 @@ module Windows
       hkey = {
         'HKLM' => 'HKEY_LOCAL_MACHINE',
         'HKCU' => 'HKEY_CURRENT_USER',
-        'HKU'  => 'HKEY_USERS',
+        'HKU' => 'HKEY_USERS',
       }[hive_name] || hive_name
 
       Chef::Log.debug("Hive resolved to #{hkey}")

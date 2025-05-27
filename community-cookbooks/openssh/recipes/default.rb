@@ -74,7 +74,7 @@ service 'ssh' do
   service_name node['openssh']['service_name']
   supports value_for_platform_family(
     %w(debian rhel fedora) => [:restart, :reload, :status],
-    %w(arch) =>  [:restart],
+    %w(arch) => [:restart],
     'default' => [:restart, :reload]
   )
   action [:enable, :start]

@@ -42,9 +42,9 @@ def install_deb
     source 'apt.erb'
     cookbook 'packagecloud'
     mode '0644'
-    variables :base_url     => repo_url.to_s,
+    variables :base_url => repo_url.to_s,
               :distribution => node['lsb']['codename'],
-              :component    => 'main'
+              :component => 'main'
 
     notifies :run, "execute[apt-key-add-#{filename}]", :immediately
     notifies :run, "execute[apt-get-update-#{filename}]", :immediately
@@ -106,12 +106,12 @@ def install_rpm
     source 'yum.erb'
     cookbook 'packagecloud'
     mode '0644'
-    variables :base_url        => base_url.to_s,
-              :name            => filename,
-              :gpg_url         => gpg_url.to_s,
-              :repo_gpgcheck   => 1,
-              :description     => filename,
-              :priority        => new_resource.priority,
+    variables :base_url => base_url.to_s,
+              :name => filename,
+              :gpg_url => gpg_url.to_s,
+              :repo_gpgcheck => 1,
+              :description => filename,
+              :priority => new_resource.priority,
               :metadata_expire => new_resource.metadata_expire
 
     notifies :run, "execute[yum-makecache-#{filename}]", :immediately
@@ -182,7 +182,7 @@ def install_endpoint_params
           'if it cannot be automatically determined by Ohai.')
   end
 
-  { :os   => os_platform,
+  { :os => os_platform,
     :dist => dist,
     :name => hostname }
 end

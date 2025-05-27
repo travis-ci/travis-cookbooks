@@ -39,7 +39,6 @@ end
 
 def run_cookstyle_for_cookbook(cookbook: '', quiet: false, cs_args: '',
                                cookstyle_exe: 'cookstyle')
-
   return if cookbook.empty?
   return unless File.directory?(cookbook)
 

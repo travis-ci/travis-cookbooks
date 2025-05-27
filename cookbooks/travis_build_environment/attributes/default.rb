@@ -52,21 +52,21 @@ default['travis_build_environment']['global_gems'] = %w(
 ).map { |gem| { name: gem } }
 default['travis_build_environment']['rvm_release'] = 'stable'
 default['travis_build_environment']['rvmrc_env'] = {
-  'rvm_autoupdate_flag'               => '0',
-  'rvm_binary_flag'                   => '1',
-  'rvm_fuzzy_flag'                    => '1',
-  'rvm_gem_options'                   => '--no-document',
-  'rvm_max_time_flag'                 => '5',
-  'rvm_path'                          => "#{node['travis_build_environment']['home']}/.rvm",
-  'rvm_project_rvmrc'                 => '0',
-  'rvm_remote_server_type4'           => 'rubies',
-  'rvm_remote_server_url4'            => 'https://s3.amazonaws.com/travis-rubies/binaries',
+  'rvm_autoupdate_flag' => '0',
+  'rvm_binary_flag' => '1',
+  'rvm_fuzzy_flag' => '1',
+  'rvm_gem_options' => '--no-document',
+  'rvm_max_time_flag' => '5',
+  'rvm_path' => "#{node['travis_build_environment']['home']}/.rvm",
+  'rvm_project_rvmrc' => '0',
+  'rvm_remote_server_type4' => 'rubies',
+  'rvm_remote_server_url4' => 'https://s3.amazonaws.com/travis-rubies/binaries',
   'rvm_remote_server_verify_downloads4' => '1',
   'rvm_silence_path_mismatch_check_flag' => '1',
-  'rvm_user_install_flag'             => '1',
-  'rvm_with_default_gems'             => 'rake bundler',
-  'rvm_without_gems'                  => 'rubygems-bundler',
-  'rvm_autolibs_flag'                 => 'read-fail',
+  'rvm_user_install_flag' => '1',
+  'rvm_with_default_gems' => 'rake bundler',
+  'rvm_without_gems' => 'rubygems-bundler',
+  'rvm_autolibs_flag' => 'read-fail',
 }
 
 default['travis_build_environment']['pyenv_revision'] = 'v2.2.2'
@@ -78,16 +78,16 @@ default['travis_build_environment']['pythons'] = %w(
 )
 
 default['travis_build_environment']['python_aliases'] = {
-  '2.7.14'       => %w(2.7),
-  '3.6.3'        => %w(3.6),
+  '2.7.14' => %w(2.7),
+  '3.6.3' => %w(3.6),
   'pypy2.7-5.8.0' => %w(pypy),
   'pypy3.5-5.8.0' => %w(pypy3),
 }
 
 default['travis_build_environment']['pip']['packages'] = {
   'default' => %w(nose mock setuptools wheel),
-  '2.7'     => %w(numpy),
-  '3.6'     => %w(numpy),
+  '2.7' => %w(numpy),
+  '3.6' => %w(numpy),
 }
 
 default['travis_build_environment']['system_python']['pythons'] = %w(2.7 3.2)

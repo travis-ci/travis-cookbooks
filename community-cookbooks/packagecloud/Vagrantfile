@@ -79,7 +79,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     }
 
     chef.run_list = [
-        'recipe[packagecloud::default]',
+      'recipe[packagecloud::default]',
     ]
   end
 end
