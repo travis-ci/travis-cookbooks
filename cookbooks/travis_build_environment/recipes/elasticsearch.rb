@@ -62,7 +62,7 @@ remote_file deb_download_dest do
   owner    node['travis_build_environment']['user']
   group    node['travis_build_environment']['group']
   mode     '0644'
-  not_if   { ::File.exist?(deb_download_dest) }
+  action   :create_if_missing
   notifies :write, 'log[remote_file_downloaded]', :immediately
 end
 

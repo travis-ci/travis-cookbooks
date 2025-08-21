@@ -282,7 +282,7 @@ Array(node['travis_build_environment']['php_versions']).each do |php_version|
     )
     retries 2
     retry_delay 10
-    not_if { ::File.exist?(local_archive) }
+    action :create_if_missing
   end
 
   bash "Expand PHP #{php_version} archive" do

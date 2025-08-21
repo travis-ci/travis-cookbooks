@@ -25,7 +25,7 @@ execute %W(
   only_if { node['travis_build_environment']['mercurial_install_type'] == 'pip' }
 end
 
-execute %W(
+execute %w(
   apt install -y python3-mercurial
 ) do
   user 'root'

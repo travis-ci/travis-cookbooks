@@ -6,7 +6,6 @@ when 'focal', 'jammy', 'noble'
     uri "https://packages.redis.io/deb"
     components ['main']
     arch 'amd64'
-    distribution node['lsb']['codename']
     key ['https://packages.redis.io/gpg']
     action :add
   end

@@ -80,7 +80,7 @@ default['travis_build_environment']['python_aliases'] = {
 }
 
 default['travis_build_environment']['pip']['packages'] = {
-  'default' => %w(nose mock setuptools wheel numpy pytest pip-tools build)
+  'default' => %w(nose mock setuptools wheel numpy pytest pip-tools build),
 }
 
 default['travis_build_environment']['system_python']['pythons'] = %w(3.7 3.12)
