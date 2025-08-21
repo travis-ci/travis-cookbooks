@@ -140,7 +140,7 @@ node['travis_build_environment']['pythons'].each do |py|
   packages = []
 
   node['travis_build_environment']['python_aliases'].to_hash.fetch(py, []).push('default', py).each do |name|
-   packages.concat(node['travis_build_environment']['pip']['packages'].fetch(name, []))
+    packages.concat(node['travis_build_environment']['pip']['packages'].fetch(name, []))
   end
 
   execute "install wheel in #{py}" do
