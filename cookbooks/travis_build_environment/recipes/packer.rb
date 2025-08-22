@@ -23,7 +23,7 @@
 # THE SOFTWARE.
 
 ark 'packer' do
-  arch = node['kernel']['machine'].gsub(/x86_64/, 'amd64').gsub(/aarch64/, 'arm64')
+  arch = node['kernel']['machine'].gsub('x86_64', 'amd64').gsub('aarch64', 'arm64')
   version node['travis_build_environment']['packer'][arch]['version']
   checksum node['travis_build_environment']['packer'][arch]['checksum']
   url "https://releases.hashicorp.com/packer/#{version}/packer_#{version}_linux_#{arch}.zip"

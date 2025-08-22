@@ -41,15 +41,10 @@ default['travis_build_environment']['language_codes'] = %w(
   zh_TW
 ).map { |l| "#{l}.UTF-8" }
 
-default['travis_build_environment']['rubies'] = %w(2.2.7 2.4.1 2.7.4)
-default['travis_build_environment']['default_ruby'] = '2.7.4'
+default['travis_build_environment']['rubies'] = %w(2.7.6 3.3.5)
+default['travis_build_environment']['default_ruby'] = '3.3.5'
 default['travis_build_environment']['gems'] = {}
-default['travis_build_environment']['global_gems'] = %w(
-  bundler:2.4.13
-  nokogiri
-  rake
-  cookstyle
-).map { |gem| { name: gem } }
+default['travis_build_environment']['global_gems'] = %w()
 default['travis_build_environment']['rvm_release'] = 'stable'
 default['travis_build_environment']['rvmrc_env'] = {
   'rvm_autoupdate_flag' => '0',
@@ -69,41 +64,39 @@ default['travis_build_environment']['rvmrc_env'] = {
   'rvm_autolibs_flag' => 'read-fail',
 }
 
-default['travis_build_environment']['pyenv_revision'] = 'v2.2.2'
+default['travis_build_environment']['pyenv_revision'] = 'v2.6.5'
 default['travis_build_environment']['pythons'] = %w(
-  2.7.14
-  3.6.3
-  pypy2.7-5.8.0
-  pypy3.5-5.8.0
+  3.7.17
+  3.12.4
+  pypy2.7-7.3.1
+  pypy3.8-7.3.9
 )
 
 default['travis_build_environment']['python_aliases'] = {
-  '2.7.14' => %w(2.7),
-  '3.6.3' => %w(3.6),
-  'pypy2.7-5.8.0' => %w(pypy),
-  'pypy3.5-5.8.0' => %w(pypy3),
+  '3.7.17' => %w(3.7),
+  '3.12.4' => %w(3.12),
+  'pypy2.7-7.3.1' => %w(pypy),
+  'pypy3.8-7.3.9' => %w(pypy3),
 }
 
 default['travis_build_environment']['pip']['packages'] = {
-  'default' => %w(nose mock setuptools wheel),
-  '2.7' => %w(numpy),
-  '3.6' => %w(numpy),
+  'default' => %w(nose mock setuptools wheel numpy pytest pip-tools build),
 }
 
-default['travis_build_environment']['system_python']['pythons'] = %w(2.7 3.2)
+default['travis_build_environment']['system_python']['pythons'] = %w(3.7 3.12)
 
-case node['platform']
-when 'ubuntu'
-  if node['lsb']['codename'] == 'trusty'
-    default['travis_build_environment']['system_python']['pythons'] = %w(2.7 3.4)
-  elsif node['lsb']['codename'] == 'xenial'
-    default['travis_build_environment']['system_python']['pythons'] = %w(2.7 3.5)
-  elsif node['lsb']['codename'] == 'bionic'
-    default['travis_build_environment']['system_python']['pythons'] = %w(2.7 3.6)
-  else
-    default['travis_build_environment']['system_python']['pythons'] = %w(3.7)
-  end
-end
+# case node['platform']
+# when 'ubuntu'
+#   if node['lsb']['codename'] == 'trusty'
+#     default['travis_build_environment']['system_python']['pythons'] = %w(2.7 3.4)
+#   elsif node['lsb']['codename'] == 'xenial'
+#     default['travis_build_environment']['system_python']['pythons'] = %w(2.7 3.5)
+#   elsif node['lsb']['codename'] == 'bionic'
+#     default['travis_build_environment']['system_python']['pythons'] = %w(2.7 3.6)
+#   else
+#     default['travis_build_environment']['system_python']['pythons'] = %w(3.12)
+#   end
+# end
 
 default['travis_build_environment']['rebar_url'] = 'https://github.com/rebar/rebar/wiki/rebar'
 default['travis_build_environment']['rebar3_url'] = 'https://s3.amazonaws.com/rebar3/rebar3'
@@ -111,13 +104,13 @@ default['travis_build_environment']['rebar3_version'] = '3.6.2'
 default['travis_build_environment']['rebar3_checksum'] = '2a107ee8f88de431d89f7a3bdccaf4b7bbba268cd02ab2e7ebf1e7976798b9bf'
 default['travis_build_environment']['kerl_path'] = '/usr/local/bin/kerl'
 default['travis_build_environment']['kerl_base_dir'] = "#{node['travis_build_environment']['home']}/.kerl"
-default['travis_build_environment']['otp_releases'] = %w(23.3.1)
+default['travis_build_environment']['otp_releases'] = %w(25.3.2.6)
 default['travis_build_environment']['elixir_versions'] = %w(1.7.4)
 default['travis_build_environment']['required_otp_release_for']['1.7.4'] = '21.1'
 default['travis_build_environment']['default_elixir_version'] = '1.7.4'
 default['travis_build_environment']['mysql']['socket'] = '/var/run/mysqld/mysqld.sock'
-default['travis_build_environment']['packer']['amd64']['version'] = '1.7.5'
-default['travis_build_environment']['packer']['amd64']['checksum'] = 'a574d20719e86d9d38854050184b78d158e62619b2a4b33b79d03b94c782dbc5'
+default['travis_build_environment']['packer']['amd64']['version'] = '1.14.1'
+default['travis_build_environment']['packer']['amd64']['checksum'] = 'b9c39b150fd856c6a6ab1639acc01a181d85033f4e0dc6c9ef87bbb692a59c31'
 default['travis_build_environment']['packer']['ppc64le']['version'] = '1.7.5'
 default['travis_build_environment']['packer']['ppc64le']['checksum'] = '32871bc5a610e2454177081d407cadcdce384c0dc1eb578f01435e667f922c9a'
 default['travis_build_environment']['packer_binaries'] = %w(packer)
@@ -137,7 +130,7 @@ default['travis_build_environment']['php_packages'] = %w(
   libreadline6-dev
 )
 php_versions = %w(
-  7.1.11
+  8.3.6
 )
 default['travis_build_environment']['php_versions'] = php_versions
 default['travis_build_environment']['php_default_version'] = php_versions.max
@@ -145,7 +138,7 @@ default['travis_build_environment']['php_aliases'] = Hash[
   php_versions.map { |v| [v.split('.')[0, 2].join('.'), v] }
 ]
 
-nodejs_versions = %w(16.15.1)
+nodejs_versions = %w(18.20.3)
 default['travis_build_environment']['nodejs_versions'] = nodejs_versions
 default['travis_build_environment']['nodejs_default'] = nodejs_versions.max
 default['travis_build_environment']['nodejs_aliases'] = Hash[
@@ -164,56 +157,51 @@ default['travis_build_environment']['sphinxsearch']['ppas'] = %w(
   ppa:builds/sphinxsearch-rel22
 )
 
-version = '8.17.1'
+version = '9.1.0'
 default['travis_build_environment']['elasticsearch']['version'] = version
 default['travis_build_environment']['elasticsearch']['package_name'] = "elasticsearch-#{version}-amd64.deb"
-if node['kernel']['machine'] == 'ppc64le'
-  version = '6.8.23'
-  default['travis_build_environment']['elasticsearch']['version'] = version
-  default['travis_build_environment']['elasticsearch']['package_name'] = "elasticsearch-#{version}-amd64.deb"
-end
 default['travis_build_environment']['elasticsearch']['service_enabled'] = false
 default['travis_build_environment']['elasticsearch']['jvm_heap'] = '128m'
 
 default['travis_build_environment']['redis']['service_enabled'] = false
 default['travis_build_environment']['redis']['keep_repo'] = false
 
-default['travis_build_environment']['firefox_version'] = '63.0.1'
+default['travis_build_environment']['firefox_version'] = '141.0.3'
 default['travis_build_environment']['firefox_download_url'] = ::File.join(
   'https://releases.mozilla.org/pub/firefox/releases',
   node['travis_build_environment']['firefox_version'],
   "linux-#{node['kernel']['machine']}/en-US",
-  "firefox-#{node['travis_build_environment']['firefox_version']}.tar.bz2"
+  "firefox-#{node['travis_build_environment']['firefox_version']}.tar.xz"
 )
 
-default['travis_build_environment']['clang']['version'] = '16.0.0'
+default['travis_build_environment']['clang']['version'] = '18.1.8'
 default['travis_build_environment']['clang']['download_url'] = ::File.join(
   "https://github.com/llvm/llvm-project/releases/download/llvmorg-#{node['travis_build_environment']['clang']['version']}",
   "clang+llvm-#{node['travis_build_environment']['clang']['version']}-x86_64-linux-gnu-ubuntu-18.04.tar.xz"
 )
 default['travis_build_environment']['clang']['extension'] = 'tar.xz'
-default['travis_build_environment']['clang']['checksum'] = '2b8a69798e8dddeb57a186ecac217a35ea45607cb2b3cf30014431cff4340ad1'
+default['travis_build_environment']['clang']['checksum'] = '54ec30358afcc9fb8aa74307db3046f5187f9fb89fb37064cdde906e062ebf36'
 
-default['travis_build_environment']['cmake']['version'] = '3.26.3'
+default['travis_build_environment']['cmake']['version'] = '4.1.0'
 default['travis_build_environment']['cmake']['download_url'] = ::File.join(
   'https://cmake.org/files',
   "v#{default['travis_build_environment']['cmake']['version'].split('.')[0, 2].join('.')}",
   "cmake-#{default['travis_build_environment']['cmake']['version']}-linux-x86_64.tar.gz"
 )
 default['travis_build_environment']['cmake']['extension'] = 'tar.gz'
-default['travis_build_environment']['cmake']['checksum'] = '28d4d1d0db94b47d8dfd4f7dec969a3c747304f4a28ddd6fd340f553f2384dc2'
+default['travis_build_environment']['cmake']['checksum'] = '2637dab096e65c7d011ca0504fc0c563f8ffb531919754156ddec4b7a2f8584d'
 
-default['travis_build_environment']['go']['default_version'] = '1.23'
-default['travis_build_environment']['go']['versions'] = %w(1.23)
+default['travis_build_environment']['go']['default_version'] = '1.24'
+default['travis_build_environment']['go']['versions'] = %w(1.24)
 
-default['travis_build_environment']['haskell']['ghc_versions'] = %w(8.6.1)
-default['travis_build_environment']['haskell']['cabal_versions'] = %w(2.2 2.4)
+default['travis_build_environment']['haskell']['ghc_versions'] = %w(9.0.1)
+default['travis_build_environment']['haskell']['cabal_versions'] = %w(3.4)
 default['travis_build_environment']['haskell']['keep_repo'] = false
 
-gradle_version = '8.3'
+gradle_version = '9.0.0'
 default['travis_build_environment']['gradle_version'] = gradle_version
 default['travis_build_environment']['gradle_url'] = "https://services.gradle.org/distributions/gradle-#{gradle_version}-bin.zip"
-default['travis_build_environment']['gradle_checksum'] = '591855b517fc635b9e04de1d05d5e76ada3f89f5fc76f87978d1b245b4f69225'
+default['travis_build_environment']['gradle_checksum'] = '8fad3d78296ca518113f3d29016617c7f9367dc005f932bd9d93bf45ba46072b'
 
 default['travis_build_environment']['lein_url'] = 'https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein'
 
@@ -221,36 +209,36 @@ default['travis_build_environment']['sysctl_kernel_shmmax'] = 45_794_432
 default['travis_build_environment']['sysctl_disable_ipv6'] = true
 default['travis_build_environment']['sysctl_enable_ipv4_forwarding'] = true
 
-maven_version = '3.9.4'
+maven_version = '3.9.11'
 default['travis_build_environment']['maven_version'] = maven_version
 default['travis_build_environment']['maven_url'] = "https://downloads.apache.org/maven/maven-3/#{maven_version}/binaries/apache-maven-#{maven_version}-bin.tar.gz"
-default['travis_build_environment']['maven_checksum'] = 'ff66b70c830a38d331d44f6c25a37b582471def9a161c93902bac7bea3098319'
+default['travis_build_environment']['maven_checksum'] = '4b7195b6a4f5c81af4c0212677a32ee8143643401bc6e1e8412e6b06ea82beac'
 
 default['travis_build_environment']['neo4j']['service_enabled'] = false
 default['travis_build_environment']['neo4j']['jvm_heap'] = '128m'
-default['travis_build_environment']['neo4j_url'] = 'https://dist.neo4j.org/deb/neo4j-enterprise_5.12.0_all.deb'
-default['travis_build_environment']['neo4j_version'] = '5.12.0'
-default['travis_build_environment']['neo4j_checksum'] = '16c9af19b415758633088d93406be6bbbd6ca670ba87a47cfddb630e0681fed6'
+default['travis_build_environment']['neo4j_url'] = 'https://dist.neo4j.org/deb/neo4j-enterprise_5.26.0_all.deb'
+default['travis_build_environment']['neo4j_version'] = '5.26.0'
+default['travis_build_environment']['neo4j_checksum'] = 'de2fb1afec5b2259b5abf0d3fe492a68783f59c1893a1f5048d0b1e96b8dda9c'
 
 default['travis_build_environment']['mercurial_install_type'] = 'ppa'
 if node['kernel']['machine'] == 'ppc64le'
   default['travis_build_environment']['mercurial_install_type'] = 'src'
 end
-default['travis_build_environment']['mercurial_version'] = '4.2.2~trusty1'
-mercurial_ppc_version = '4.2.2'
+default['travis_build_environment']['mercurial_version'] = '7.1'
+mercurial_ppc_version = '7.1'
 default['travis_build_environment']['mercurial_ppc_version'] = mercurial_ppc_version
 default['travis_build_environment']['mercurial_url'] = "https://www.mercurial-scm.org/release/mercurial-#{mercurial_ppc_version}.tar.gz"
 
 default['travis_build_environment']['mongodb']['service_enabled'] = false
 default['travis_build_environment']['mongodb']['keep_repo'] = false
 
-default['travis_build_environment']['shellcheck_url'] = 'https://github.com/koalaman/shellcheck/releases/download/v0.10.0/shellcheck-v0.10.0.linux.x86_64.tar.xz'
-default['travis_build_environment']['shellcheck_version'] = '0.10.0'
-default['travis_build_environment']['shellcheck_checksum'] = '6c881ab0698e4e6ea235245f22832860544f17ba386442fe7e9d629f8cbedf87'
+default['travis_build_environment']['shellcheck_url'] = 'https://github.com/koalaman/shellcheck/releases/download/v0.11.0/shellcheck-v0.11.0.linux.x86_64.tar.xz'
+default['travis_build_environment']['shellcheck_version'] = '0.11.0'
+default['travis_build_environment']['shellcheck_checksum'] = '8c3be12b05d5c177a04c29e3c78ce89ac86f1595681cab149b65b97c4e227198'
 default['travis_build_environment']['shellcheck_binaries'] = %w(shellcheck)
 
-default['travis_build_environment']['shfmt_url'] = 'https://github.com/mvdan/sh/releases/download/v3.8.0/shfmt_v3.8.0_linux_amd64'
-default['travis_build_environment']['shfmt_checksum'] = '27b3c6f9d9592fc5b4856c341d1ff2c88856709b9e76469313642a1d7b558fe0'
+default['travis_build_environment']['shfmt_url'] = 'https://github.com/mvdan/sh/releases/download/v3.12.0/shfmt_v3.12.0_linux_amd64'
+default['travis_build_environment']['shfmt_checksum'] = 'd9fbb2a9c33d13f47e7618cf362a914d029d02a6df124064fff04fd688a745ea'
 
 default['travis_build_environment']['yarn_url'] = 'https://yarnpkg.com/latest.tar.gz'
 default['travis_build_environment']['yarn_version'] = 'latest'
@@ -271,7 +259,7 @@ end
 
 default['travis_build_environment']['root_user'] = 'root'
 default['travis_build_environment']['root_group'] = 'root'
-default['travis_build_environment']['virtualenv']['version'] = '15.1.0'
+default['travis_build_environment']['virtualenv']['version'] = '20.33.1'
 
 if platform_family?('debian', 'rhel')
   default['travis_build_environment']['ibm_advanced_tool_chain_apt_key_url'] = ::File.join(

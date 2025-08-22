@@ -1,11 +1,34 @@
 # frozen_string_literal: true
+
 case node['lsb']['codename']
-when 'jammy', 'noble'
-  execute 'install_redis' do
-    command 'sudo apt update && sudo apt install redis-server'
+when 'focal', 'jammy', 'noble'
+  apt_repository 'redis' do
+    uri "https://packages.redis.io/deb"
+    components ['main']
+    arch 'amd64'
+    key ['https://packages.redis.io/gpg']
+    action :add
   end
-when 'xenial'
-  apt_repository 'ppa:redis-server' do
+
+  package %w(redis redis-server redis-tools) do
+    action :install
+  end
+
+  execute 'redis do not listen to ipv6' do
+    command "sed -i 's/^bind .*/bind 127.0.0.1/' /etc/redis/redis.conf"
+    only_if { ::File.exist?('/etc/redis/redis.conf') }
+  end
+
+  service 'redis-server' do
+    if node['travis_build_environment']['redis']['service_enabled']
+      action %i(enable restart)
+    else
+      action %i(disable stop)
+    end
+  end
+
+when 'xenial', 'bionic'
+  apt_repository 'redis-ppa' do
     uri 'ppa:chris-lea/redis-server'
   end
 
@@ -14,18 +37,19 @@ when 'xenial'
   end
 
   execute 'redis do not listen to ipv6' do
-    command "sed -ie 's/^bind.*/bind 127.0.0.1/' /etc/redis/redis.conf"
+    command "sed -i 's/^bind .*/bind 127.0.0.1/' /etc/redis/redis.conf"
+    only_if { ::File.exist?('/etc/redis/redis.conf') }
   end
 
   service 'redis-server' do
     if node['travis_build_environment']['redis']['service_enabled']
       action %i(enable restart)
     else
-      action %i(disable restart)
+      action %i(disable stop)
     end
   end
 
-  apt_repository 'ppa:redis-server' do
+  apt_repository 'redis-ppa' do
     not_if { node['travis_build_environment']['redis']['keep_repo'] }
     action :remove
   end
