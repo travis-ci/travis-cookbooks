@@ -44,7 +44,7 @@ include_recipe 'travis_build_environment::bash_profile_d'
 
 cookbook_file 'kiex.bash' do
   path ::File.join(
-    node['travis_build_environment']['home'], '.kiex/scripts/kiex.bash'
+    node['travis_build_environment']['home'], '.bash_profile.d/kiex.bash'
   )
   mode '644'
 end
