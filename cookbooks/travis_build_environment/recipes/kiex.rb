@@ -48,3 +48,14 @@ cookbook_file 'kiex.bash' do
   )
   mode '644'
 end
+
+execute 'fix kiex script path' do
+  command "sed -i 's|/scripts/kiex.bash|$HOME/.kiex/scripts/kiex.bash|' #{node['travis_build_environment']['home']}/.kiex/scripts/kiex"
+  user node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  environment(
+    'HOME' => node['travis_build_environment']['home'],
+    'USER' => node['travis_build_environment']['user']
+  )
+  only_if { ::File.exist?("#{node['travis_build_environment']['home']}/.kiex/scripts/kiex") }
+end
