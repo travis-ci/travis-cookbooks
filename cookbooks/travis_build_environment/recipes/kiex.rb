@@ -31,20 +31,17 @@ end
 
 execute kiex_install_path do
   user node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
   cwd node['travis_build_environment']['home']
+  group node['travis_build_environment']['group']
   creates "#{node['travis_build_environment']['home']}/.kiex/bin/kiex"
-  environment(
-    'HOME' => node['travis_build_environment']['home'],
-    'USER' => node['travis_build_environment']['user']
-  )
+  environment('HOME' => node['travis_build_environment']['home'])
 end
 
 include_recipe 'travis_build_environment::bash_profile_d'
 
 cookbook_file 'kiex.bash' do
   path ::File.join(
-    node['travis_build_environment']['home'], '.kiex/scripts/kiex.bash'
+    node['travis_build_environment']['home'], '.bash_profile.d/kiex.bash'
   )
   mode '644'
 end
