@@ -40,8 +40,26 @@ end
 include_recipe 'travis_build_environment::bash_profile_d'
 
 cookbook_file 'kiex.bash' do
-  path ::File.join(
-    node['travis_build_environment']['home'], '.bash_profile.d/kiex.bash'
-  )
+  path ::File.join(node['travis_build_environment']['home'], '.bash_profile.d/kiex.bash')
   mode '644'
+end
+
+directory "#{node['travis_build_environment']['home']}/.kiex/scripts" do
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode '755'
+  recursive true
+end
+
+file "#{node['travis_build_environment']['home']}/.kiex/scripts/kiex" do
+  content <<~'EOS'
+    #!/bin/bash
+    # Corrected kiex loader
+    if [ -s "$HOME/.kiex/scripts/kiex.bash" ]; then
+      source "$HOME/.kiex/scripts/kiex.bash"
+    fi
+  EOS
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode '755'
 end
