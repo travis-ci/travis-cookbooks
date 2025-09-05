@@ -1,2 +1,2 @@
 #!/bin/bash
-test -s "$HOME/.kiex/scripts/kiex" && source "$HOME/.kiex/scripts/kiex"
+test -s "$KIEX_HOME/scripts/kiex" && source "$KIEX_HOME/scripts/kiex"
