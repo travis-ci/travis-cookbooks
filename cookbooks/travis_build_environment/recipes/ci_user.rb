@@ -213,7 +213,7 @@ Array(node['travis_build_environment']['elixir_versions']).each do |elixir|
   elixir_download_url = "https://github.com/elixir-lang/elixir/releases/download/v#{elixir}/elixir-otp-27.zip"
 
   remote_file local_archive do
-    source elixir_download_url
+    source "https://github.com/elixir-lang/elixir/releases/download/v#{elixir}/Precompiled.zip"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     mode '644'
