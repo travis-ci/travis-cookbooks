@@ -12,7 +12,7 @@ if node['kernel']['machine'] == 'ppc64le'
   default['travis_java']['default_version'] = 'openjdk8'
 end
 
-default['travis_java']['jdk_switcher_url'] = 'https://raw.githubusercontent.com/michaelklishin/jdk_switcher/1e091549285fb0f2591cef679b4135cfbfcc0b4c/jdk_switcher.sh'
+default['travis_java']['jdk_switcher_url'] = 'https://raw.githubusercontent.com/michaelklishin/jdk_switcher/10fee199ca369af1aba9fc012bf6ac8870ca2e74/jdk_switcher.sh'
 default['travis_java']['jdk_switcher_path'] = '/opt/jdk_switcher/jdk_switcher.sh'
 default['travis_java']['jvm_base_dir'] = '/usr/lib/jvm'
 
@@ -33,3 +33,6 @@ default['travis_java']['oraclejdk9']['pinned_release'] = nil
 default['travis_java']['ibmjava']['platform'] = 'linux'
 default['travis_java']['ibmjava8']['jvm_name'] = "java-8-ibm-#{node['travis_java']['arch']}"
 default['travis_java']['ibmjava8']['pinned_release'] = nil
+
+default['travis_java']['openjdk8-openj9']['jvm_name'] = "openjdk8-openj9-#{node['travis_java']['arch']}"
+default['travis_java']['openjdk8-openj9']['pinned_release'] = nil
