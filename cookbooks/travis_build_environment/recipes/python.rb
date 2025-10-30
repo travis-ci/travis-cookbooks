@@ -189,7 +189,7 @@ end
 case node['lsb']['codename']
 when 'noble'
   bash "Set default python" do
-    code "source /home/travis/.bash_profile.d/pyenv.bash && pyenv global 3.12.8"
+    code "source /home/travis/.bash_profile.d/pyenv.bash && pyenv global 3.12.12"
     user 'root'
     group 'root'
     # user node['travis_build_environment']['user']
@@ -198,7 +198,7 @@ when 'noble'
   end
 when 'jammy'
   bash "Set default python" do
-    code "source /home/travis/.bash_profile.d/pyenv.bash && pyenv global 3.10.14"
+    code "source /home/travis/.bash_profile.d/pyenv.bash && pyenv global 3.10.19"
     user 'root'
     group 'root'
     # user node['travis_build_environment']['user']
@@ -207,7 +207,7 @@ when 'jammy'
   end
 when 'xenial', 'bionic', 'focal'
   bash "Set default python" do
-    code "source /home/travis/.bash_profile.d/pyenv.bash && pyenv global 3.7.17"
+    code "source /home/travis/.bash_profile.d/pyenv.bash && pyenv global 3.8.20"
     user 'root'
     group 'root'
     # user node['travis_build_environment']['user']

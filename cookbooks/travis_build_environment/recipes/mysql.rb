@@ -2,7 +2,7 @@
 
 # Cookbook:: travis_build_environment
 # Recipe:: mysql
-# Copyright:: 2017 Travis CI GmbH
+# Copyright:: 2025 Travis CI
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -93,13 +93,6 @@ end
 
 template "/etc/mysql/conf.d/innodb_flush_log_at_trx_commit.cnf" do
   source 'root/innodb_flush_log_at_trx_commit.cnf.erb'
-  owner 'root'
-  group 'root'
-  mode '644'
-end
-
-template "/etc/mysql/conf.d/performance-schema.cnf" do
-  source 'root/performance-schema.cnf.erb'
   owner 'root'
   group 'root'
   mode '644'

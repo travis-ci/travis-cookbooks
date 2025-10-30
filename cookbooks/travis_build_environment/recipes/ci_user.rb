@@ -2,7 +2,7 @@
 
 # Cookbook:: travis_build_environment
 # Recipe:: ci_user
-# Copyright:: 2018 Travis CI GmbH
+# Copyright:: 2025 Travis CI
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -211,7 +211,6 @@ Array(node['travis_build_environment']['elixir_versions']).each do |elixir|
   dest = "#{node['travis_build_environment']['home']}/.kiex/elixirs/elixir-#{elixir}"
 
   elixir_download_url = "https://github.com/elixir-lang/elixir/releases/download/v#{elixir}/elixir-otp-27.zip"
-
   remote_file local_archive do
     source elixir_download_url
     user node['travis_build_environment']['user']

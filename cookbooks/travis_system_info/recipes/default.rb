@@ -3,7 +3,7 @@
 # Cookbook:: travis_system_info
 # Recipe:: default
 #
-# Copyright:: 2017 Travis CI GmbH
+# Copyright:: 2025 Travis CI
 #
 # MIT License
 #

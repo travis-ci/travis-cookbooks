@@ -2,7 +2,7 @@
 
 # Cookbook:: travis_build_environment
 # Recipe:: clang_tarball
-# Copyright:: 2017 Travis CI GmbH
+# Copyright:: 2025 Travis CI
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,7 @@
 case node['lsb']['codename']
 when 'noble'
   execute 'clang_llvm_install' do
-    command 'sudo apt update -yqq && sudo apt install clang llvm -y'
+    command 'sudo apt update -yqq && sudo apt install -y clang llvm'
   end
 when 'xenial', 'bionic', 'focal', 'jammy'
   ark 'clang' do
@@ -38,3 +38,4 @@ when 'xenial', 'bionic', 'focal', 'jammy'
     append_env_path true
   end
 end
+

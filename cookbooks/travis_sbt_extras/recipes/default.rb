@@ -4,7 +4,7 @@
 # Recipe:: default
 #
 # Copyright:: 2012-2013, Gilles Cornu
-# Copyright:: 2017 Travis CI GmbH
+# Copyright:: 2025 Travis CI
 #
 
 if node['travis_java']['default_version'] =~ /jdk/

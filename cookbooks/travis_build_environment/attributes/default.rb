@@ -41,8 +41,8 @@ default['travis_build_environment']['language_codes'] = %w(
   zh_TW
 ).map { |l| "#{l}.UTF-8" }
 
-default['travis_build_environment']['rubies'] = %w(2.7.6 3.3.5)
-default['travis_build_environment']['default_ruby'] = '3.3.5'
+default['travis_build_environment']['rubies'] = %w(2.7.6 3.3.10)
+default['travis_build_environment']['default_ruby'] = '3.3.10'
 default['travis_build_environment']['gems'] = {}
 default['travis_build_environment']['global_gems'] = %w()
 default['travis_build_environment']['rvm_release'] = 'stable'
@@ -66,17 +66,17 @@ default['travis_build_environment']['rvmrc_env'] = {
 
 default['travis_build_environment']['pyenv_revision'] = 'v2.6.5'
 default['travis_build_environment']['pythons'] = %w(
-  3.7.17
-  3.12.4
+  3.8.20
+  3.12.12
   pypy2.7-7.3.1
   pypy3.8-7.3.9
 )
 
 default['travis_build_environment']['python_aliases'] = {
-  '3.7.17' => %w(3.7),
-  '3.12.4' => %w(3.12),
-  'pypy2.7-7.3.1' => %w(pypy),
-  'pypy3.8-7.3.9' => %w(pypy3),
+  '3.8.20' => %w(3.8),
+  '3.12.12' => %w(3.12),
+  'pypy2.7-7.3.20' => %w(pypy),
+  'pypy3.11-7.3.20' => %w(pypy3),
 }
 
 default['travis_build_environment']['pip']['packages'] = {
@@ -105,9 +105,9 @@ default['travis_build_environment']['rebar3_checksum'] = '2a107ee8f88de431d89f7a
 default['travis_build_environment']['kerl_path'] = '/usr/local/bin/kerl'
 default['travis_build_environment']['kerl_base_dir'] = "#{node['travis_build_environment']['home']}/.kerl"
 default['travis_build_environment']['otp_releases'] = %w(25.3.2.6)
-default['travis_build_environment']['elixir_versions'] = %w(1.18.4)
-default['travis_build_environment']['required_otp_release_for']['1.18.4'] = '25.3.2.6'
-default['travis_build_environment']['default_elixir_version'] = '1.18.4'
+default['travis_build_environment']['elixir_versions'] = %w(1.19.1)
+default['travis_build_environment']['required_otp_release_for']['1.19.1'] = '25.3.2.6'
+default['travis_build_environment']['default_elixir_version'] = '1.19.1'
 default['travis_build_environment']['mysql']['socket'] = '/var/run/mysqld/mysqld.sock'
 default['travis_build_environment']['packer']['amd64']['version'] = '1.14.2'
 default['travis_build_environment']['packer']['amd64']['checksum'] = 'cfefdea4ac580eba7b254ef34d25b756d4961741004e3e701a1476594d13e64a'
@@ -130,7 +130,7 @@ default['travis_build_environment']['php_packages'] = %w(
   libreadline6-dev
 )
 php_versions = %w(
-  8.3.6
+  8.4.13
 )
 default['travis_build_environment']['php_versions'] = php_versions
 default['travis_build_environment']['php_default_version'] = php_versions.max
@@ -166,7 +166,7 @@ default['travis_build_environment']['elasticsearch']['jvm_heap'] = '128m'
 default['travis_build_environment']['redis']['service_enabled'] = false
 default['travis_build_environment']['redis']['keep_repo'] = false
 
-default['travis_build_environment']['firefox_version'] = '141.0.3'
+default['travis_build_environment']['firefox_version'] = '144.0'
 default['travis_build_environment']['firefox_download_url'] = ::File.join(
   'https://releases.mozilla.org/pub/firefox/releases',
   node['travis_build_environment']['firefox_version'],
@@ -182,26 +182,26 @@ default['travis_build_environment']['clang']['download_url'] = ::File.join(
 default['travis_build_environment']['clang']['extension'] = 'tar.xz'
 default['travis_build_environment']['clang']['checksum'] = '54ec30358afcc9fb8aa74307db3046f5187f9fb89fb37064cdde906e062ebf36'
 
-default['travis_build_environment']['cmake']['version'] = '4.1.0'
+default['travis_build_environment']['cmake']['version'] = '4.1.2'
 default['travis_build_environment']['cmake']['download_url'] = ::File.join(
   'https://cmake.org/files',
   "v#{default['travis_build_environment']['cmake']['version'].split('.')[0, 2].join('.')}",
   "cmake-#{default['travis_build_environment']['cmake']['version']}-linux-x86_64.tar.gz"
 )
 default['travis_build_environment']['cmake']['extension'] = 'tar.gz'
-default['travis_build_environment']['cmake']['checksum'] = '2637dab096e65c7d011ca0504fc0c563f8ffb531919754156ddec4b7a2f8584d'
+default['travis_build_environment']['cmake']['checksum'] = '773cc679c3a7395413bd096523f8e5d6c39f8718af4e12eb4e4195f72f35e4ab'
 
-default['travis_build_environment']['go']['default_version'] = '1.24'
-default['travis_build_environment']['go']['versions'] = %w(1.24)
+default['travis_build_environment']['go']['default_version'] = '1.25'
+default['travis_build_environment']['go']['versions'] = %w(1.25)
 
 default['travis_build_environment']['haskell']['ghc_versions'] = %w(9.0.1)
 default['travis_build_environment']['haskell']['cabal_versions'] = %w(3.4)
 default['travis_build_environment']['haskell']['keep_repo'] = false
 
-gradle_version = '9.0.0'
+gradle_version = '9.1.0'
 default['travis_build_environment']['gradle_version'] = gradle_version
 default['travis_build_environment']['gradle_url'] = "https://services.gradle.org/distributions/gradle-#{gradle_version}-bin.zip"
-default['travis_build_environment']['gradle_checksum'] = '8fad3d78296ca518113f3d29016617c7f9367dc005f932bd9d93bf45ba46072b'
+default['travis_build_environment']['gradle_checksum'] = 'a17ddd85a26b6a7f5ddb71ff8b05fc5104c0202c6e64782429790c933686c806'
 
 default['travis_build_environment']['lein_url'] = 'https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein'
 
