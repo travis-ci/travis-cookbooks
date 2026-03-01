@@ -1,24 +1,56 @@
-apt_repository 'chris-lea-redis-server' do
-  uri 'http://ppa.launchpad.net/chris-lea/redis-server/ubuntu'
-  distribution node['lsb']['codename']
-  components ['main']
-  key 'C7917B12'
-  keyserver 'hkp://keyserver.ubuntu.com'
-  retries 2
-  retry_delay 30
-  action :add
-end
+# frozen_string_literal: true
 
-package 'redis-server' do
-  action :install
-end
+case node['lsb']['codename']
+when 'focal', 'jammy', 'noble'
+  apt_repository 'redis' do
+    uri "https://packages.redis.io/deb"
+    components ['main']
+    arch 'amd64'
+    key ['https://packages.redis.io/gpg']
+    action :add
+  end
 
-service 'redis-server' do
-  provider Chef::Provider::Service::Init::Debian
-  supports restart: true, status: true, reload: true
-  if node['travis_build_environment']['redis']['service_enabled']
-    action %i[enable start]
-  else
-    action %i[disable start]
+  package %w(redis redis-server redis-tools) do
+    action :install
+  end
+
+  execute 'redis do not listen to ipv6' do
+    command "sed -i 's/^bind .*/bind 127.0.0.1/' /etc/redis/redis.conf"
+    only_if { ::File.exist?('/etc/redis/redis.conf') }
+  end
+
+  service 'redis-server' do
+    if node['travis_build_environment']['redis']['service_enabled']
+      action %i(enable restart)
+    else
+      action %i(disable stop)
+    end
+  end
+
+when 'xenial', 'bionic'
+  apt_repository 'redis-ppa' do
+    uri 'ppa:chris-lea/redis-server'
+  end
+
+  package %w(redis-server redis-tools) do
+    action :install
+  end
+
+  execute 'redis do not listen to ipv6' do
+    command "sed -i 's/^bind .*/bind 127.0.0.1/' /etc/redis/redis.conf"
+    only_if { ::File.exist?('/etc/redis/redis.conf') }
+  end
+
+  service 'redis-server' do
+    if node['travis_build_environment']['redis']['service_enabled']
+      action %i(enable restart)
+    else
+      action %i(disable stop)
+    end
+  end
+
+  apt_repository 'redis-ppa' do
+    not_if { node['travis_build_environment']['redis']['keep_repo'] }
+    action :remove
   end
 end

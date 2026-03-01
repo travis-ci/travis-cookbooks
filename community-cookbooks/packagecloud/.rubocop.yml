@@ -1,0 +1,42 @@
+AllCops:
+  Include:
+    - Berksfile
+    - Gemfile
+    - Rakefile
+    - Thorfile
+    - Guardfile
+  Exclude:
+    - vendor/**
+
+Metrics/ClassLength:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/Encoding:
+  Enabled: false
+
+Style/HashSyntax:
+  Enabled: false
+
+Layout/LineLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Style/SignalException:
+  Enabled: false
+
+Style/WordArray:
+  Enabled: false
+
+Chef/Deprecations/ResourceWithoutUnifiedTrue:
+  Enabled: false
+
+Style/IdenticalConditionalBranches:
+  Enabled: false
+
+Style/MutableConstant:
+  Enabled: false

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 default[:tmate_proxy][:src_path] = "/srv/tmate-proxy-src"
 default[:tmate_proxy][:app_path] = "/srv/tmate-proxy"
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 default[:tmate_remote_tmux][:app_path] = "/srv/tmate-remote-tmux"
 default[:tmate_remote_tmux][:keys_dir] = "/etc/ssh/tmate-keys"
 default[:tmate_remote_tmux][:use_syslog] = true

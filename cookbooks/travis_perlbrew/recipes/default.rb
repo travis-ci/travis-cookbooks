@@ -1,6 +1,8 @@
-# Cookbook Name:: travis_perlbrew
+# frozen_string_literal: true
+
+# Cookbook:: travis_perlbrew
 # Recipe:: default
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -51,5 +53,5 @@ cookbook_file ::File.join(
 ) do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0o644
+  mode '644'
 end

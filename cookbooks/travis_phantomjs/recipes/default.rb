@@ -1,6 +1,8 @@
-# Cookbook Name:: travis_phantomjs
+# frozen_string_literal: true
+
+# Cookbook:: travis_phantomjs
 # Recipe:: default
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +28,7 @@ ark 'phantomjs' do
   url node['travis_phantomjs']['tarball']['url']
   version node['travis_phantomjs']['version']
   checksum node['travis_phantomjs']['tarball']['checksum']
-  has_binaries %w[phantomjs]
+  has_binaries %w(phantomjs)
   owner 'root'
 end
 
@@ -34,5 +36,5 @@ cookbook_file '/etc/profile.d/phantomjs.sh' do
   source 'etc/profile.d/phantomjs.sh'
   owner 'root'
   group 'root'
-  mode 0o644
+  mode '644'
 end

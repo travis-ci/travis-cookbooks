@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: memcached
+# Cookbook:: memcached
 # Recipe:: default
 #
-# Copyright 2009-2013, Chef Software, Inc.
+# Copyright:: 2009-2013, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@
 #
 
 # include epel on redhat/centos 5 and below in order to get the memcached packages
-include_recipe 'yum-epel' if node['platform_family'] == 'rhel' && node['platform_version'].to_i == 5
+include_recipe 'yum-epel' if platform_family?('rhel') && node['platform_version'].to_i == 5
 
-if node['platform_family'] == 'debian' && shell_out('dpkg -l memcached | grep "^ii  memcached"').error?
+if platform_family?('debian') && shell_out('dpkg -l memcached | grep "^ii  memcached"').error?
   # dpkg, imma let you finish but don't start services automatically
   # https://jpetazzo.github.io/2013/10/06/policy-rc-d-do-not-start-services-automatically/
   execute 'disable auto-start' do
@@ -42,7 +42,6 @@ else
     action :install
   end
 end
-
 
 package 'libmemcache-dev' do
   case node['platform_family']

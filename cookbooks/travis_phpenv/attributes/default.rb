@@ -1,3 +1,5 @@
-default['travis_phpenv']['prerequisite_recipes'] = %w[git]
-default['travis_phpenv']['git']['repository'] = 'git://github.com/CHH/phpenv.git'
-default['travis_phpenv']['git']['revision'] = '44f89b8d124386d9920a2ae747caff288cf4d64c'
+# frozen_string_literal: true
+
+default['travis_phpenv']['prerequisite_recipes'] = %w(git)
+default['travis_phpenv']['git']['repository'] = 'https://github.com/travis-ci/phpenv.git'
+default['travis_phpenv']['git']['revision'] = 'fb7716339914e5ff1cd9ba6a60bbc71943d96f80'

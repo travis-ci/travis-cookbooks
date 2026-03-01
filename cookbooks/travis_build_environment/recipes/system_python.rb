@@ -1,7 +1,14 @@
+# frozen_string_literal: true
+
 virtualenv_root = File.join(node['travis_build_environment']['home'], 'virtualenv')
 
 # Install Python2 and Python3
-package %w[python-dev python3-dev]
+case node['lsb']['codename']
+when 'trusty', 'bionic'
+  package %w(python-dev python3-dev)
+else
+  package %w(python3-dev)
+end
 
 # Create a directory to store our virtualenvs in
 directory virtualenv_root do
@@ -25,12 +32,12 @@ node['travis_build_environment']['system_python']['pythons'].each do |py|
 
   packages = []
 
-  node['travis_build_environment']['python_aliases'].fetch(py, []).concat(['default', py]).each do |name|
+  node['travis_build_environment']['python_aliases'].to_hash.fetch(py, []).push('default', py).each do |name|
     packages.concat node['travis_build_environment']['pip']['packages'].fetch(name, [])
   end
 
   execute "install wheel in #{venv_name}" do
-    command "#{venv_fullname}/bin/pip install --upgrade wheel"
+    command "#{venv_fullname}/bin/pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --upgrade wheel"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment(
@@ -39,7 +46,7 @@ node['travis_build_environment']['system_python']['pythons'].each do |py|
   end
 
   execute "install packages in #{venv_name}" do
-    command "#{venv_fullname}/bin/pip install --upgrade #{packages.join(' ')}"
+    command "#{venv_fullname}/bin/pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --upgrade #{packages.join(' ')}"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment(

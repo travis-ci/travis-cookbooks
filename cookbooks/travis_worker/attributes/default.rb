@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Set this to a branch name to copy down a binary directly from S3
 default['travis_worker']['branch'] = ''
 

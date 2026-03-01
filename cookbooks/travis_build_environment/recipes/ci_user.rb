@@ -1,6 +1,8 @@
-# Cookbook Name:: travis_build_environment
+# frozen_string_literal: true
+
+# Cookbook:: travis_build_environment
 # Recipe:: ci_user
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2018 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +22,23 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+require 'json'
+require 'net/http'
+require 'openssl'
 require 'pathname'
+
+def obtain_nvm_url
+  http = Net::HTTP.new('api.github.com', 443)
+  http.use_ssl = true
+  http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+  request = Net::HTTP::Get.new('/repos/nvm-sh/nvm/releases/latest')
+  request['Accept'] = 'application/json'
+  token = node&.[]('travis_packer_build')&.[]('github_token')
+  request['Authorization'] = "token #{token}" if token
+  response = http.request(request)
+  tag = JSON.parse(response.body).fetch('tag_name')
+  "https://raw.githubusercontent.com/nvm-sh/nvm/#{tag}/nvm.sh"
+end
 
 home = Pathname.new(node['travis_build_environment']['home'])
 
@@ -41,7 +59,7 @@ end
   { name: home.join('bin'), perms: 0o755 },
   { name: home.join('builds'), perms: 0o755 },
   { name: home.join('gopath') },
-  { name: home.join('gopath/bin') }
+  { name: home.join('gopath/bin') },
 ].each do |entry|
   directory entry[:name].to_s do
     owner node['travis_build_environment']['user']
@@ -55,7 +73,7 @@ include_recipe 'travis_build_environment::bash_profile_d'
 [
   { src: 'dot_bashrc.sh.erb', dest: '.bashrc', mode: 0o640 },
   { src: 'dot_bash_profile.sh.erb', dest: '.bash_profile', mode: 0o640 },
-  { src: 'dot_gitconfig.erb', dest: '.gitconfig', mode: 0o640 }
+  { src: 'dot_gitconfig.erb', dest: '.gitconfig', mode: 0o640 },
 ].each do |entry|
   template "#{node['travis_build_environment']['home']}/#{entry[:dest]}" do
     source "ci_user/#{entry[:src]}"
@@ -72,14 +90,14 @@ file "#{node['travis_build_environment']['home']}/.travis_ci_environment.yml" do
   ) + "\n"
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0o640
+  mode '640'
 end
 
 [
   { src: 'dot_gemrc.yml', dest: '.gemrc', mode: 0o640 },
   { src: 'dot_erlang_dot_cookie', dest: '.erlang.cookie' },
   { src: 'known_hosts', dest: '.ssh/known_hosts', mode: 0o600 },
-  { src: 'maven_user_settings.xml', dest: '.m2/settings.xml', mode: 0o640 }
+  { src: 'maven_user_settings.xml', dest: '.m2/settings.xml', mode: 0o640 },
 ].each do |entry|
   cookbook_file "#{node['travis_build_environment']['home']}/#{entry[:dest]}" do
     source "ci_user/#{entry[:src]}"
@@ -93,7 +111,7 @@ mount "#{node['travis_build_environment']['home']}/builds" do
   fstype 'tmpfs'
   device '/dev/null'
   options "defaults,size=#{node['travis_build_environment']['builds_volume_size']},noatime"
-  action %i[mount enable]
+  action %i(mount enable)
   only_if { node['travis_build_environment']['use_tmpfs_for_builds'] }
 end
 
@@ -101,7 +119,7 @@ link '/home/vagrant' do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   to node['travis_build_environment']['home']
-  not_if { File.exist?('/home/vagrant') }
+  not_if { ::File.exist?('/home/vagrant') }
 end
 
 unless Array(node['travis_build_environment']['otp_releases']).empty?
@@ -125,7 +143,8 @@ Array(node['travis_build_environment']['otp_releases']).each do |rel|
       node['kernel']['machine'],
       ::File.basename(local_archive)
     )
-
+    retries 2
+    retry_delay 10
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
 
@@ -191,11 +210,15 @@ Array(node['travis_build_environment']['elixir_versions']).each do |elixir|
   local_archive = "#{Chef::Config[:file_cache_path]}/v#{elixir}.zip"
   dest = "#{node['travis_build_environment']['home']}/.kiex/elixirs/elixir-#{elixir}"
 
+  elixir_download_url = "https://github.com/elixir-lang/elixir/releases/download/v#{elixir}/elixir-otp-27.zip"
+
   remote_file local_archive do
-    source "http://s3.hex.pm/builds/elixir/v#{elixir}.zip"
+    source elixir_download_url
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    mode 0o644
+    mode '644'
+    retries 2
+    retry_delay 10
   end
 
   bash "unpack #{local_archive}" do
@@ -218,7 +241,7 @@ Array(node['travis_build_environment']['elixir_versions']).each do |elixir|
     EOF
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
-    mode 0o644
+    mode '644'
   end
 end
 
@@ -257,7 +280,9 @@ Array(node['travis_build_environment']['php_versions']).each do |php_version|
       node['kernel']['machine'],
       ::File.basename(local_archive)
     )
-    not_if { ::File.exist?(local_archive) }
+    retries 2
+    retry_delay 10
+    action :create_if_missing
   end
 
   bash "Expand PHP #{php_version} archive" do
@@ -278,14 +303,12 @@ node['travis_build_environment']['php_aliases'].each do |short_version, target_v
   link "#{phpenv_path}/versions/#{short_version}" do
     to "#{phpenv_path}/versions/#{target_version}"
     not_if do
-      Array(node['travis_build_environment']['php_versions']).empty? ||
-        ::File.exist?("#{phpenv_path}/versions/#{target_version}")
+      Array(node['travis_build_environment']['php_versions']).empty?
     end
   end
 end
 
-include_recipe 'travis_build_environment::hhvm' if \
-  node['travis_build_environment']['hhvm_enabled']
+include_recipe 'travis_build_environment::hhvm'
 
 bash 'set global default php' do
   # NOTE: It is important that this happens *after* the conditional inclusion of
@@ -313,22 +336,23 @@ nvm_sh = ::File.join(node['travis_build_environment']['home'], '.nvm', 'nvm.sh')
 directory ::File.dirname(nvm_sh) do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['user']
-  mode 0o750
+  mode '750'
 end
 
+nvm_url = obtain_nvm_url
+
 remote_file nvm_sh do
-  source node['travis_build_environment']['nvm']['url']
-  checksum node['travis_build_environment']['nvm']['sha256sum']
+  source nvm_url
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['user']
-  mode 0o750
+  mode '750'
 end
 
 template home.join('.bash_profile.d/nvm.bash') do
   source 'ci_user/bash_profile.d-nvm.bash.erb'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['user']
-  mode 0o644
+  mode '644'
   variables(nvm_dir: home.join('.nvm'))
 end
 

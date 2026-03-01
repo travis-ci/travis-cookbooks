@@ -1,3 +1,4 @@
+
 # Managed by Chef on <%= node.name %>! :heart_eyes_cat:
 export PATH="$PATH:<%= @pyenv_root %>/bin"
 export PYENV_ROOT="<%= @pyenv_root %>"
@@ -5,4 +6,5 @@ export PYENV_ROOT="<%= @pyenv_root %>"
 <% @build_environment.each do |key, value| %>
 export <%= key %>="<%= value %>"
 <% end %>
+eval "$(pyenv init --path)"
 eval "$(pyenv init -)"

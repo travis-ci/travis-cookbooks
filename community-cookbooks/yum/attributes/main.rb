@@ -1,21 +1,21 @@
 # http://linux.die.net/man/5/yum.conf
-case node['platform_version'].to_i
-when 5
-  default['yum']['main']['cachedir'] = '/var/cache/yum'
-else
-  default['yum']['main']['cachedir'] = '/var/cache/yum/$basearch/$releasever'
-end
+default['yum']['main']['cachedir'] = case node['platform_version'].to_i
+                                     when 5
+                                       '/var/cache/yum'
+                                     else
+                                       '/var/cache/yum/$basearch/$releasever'
+                                     end
 
-case node['platform']
-when 'amazon'
-  default['yum']['main']['distroverpkg'] = 'system-release'
-when 'scientific'
-  default['yum']['main']['distroverpkg'] = 'sl-release'
-when 'redhat'
-  default['yum']['main']['distroverpkg'] = nil
-else
-  default['yum']['main']['distroverpkg'] = "#{node['platform']}-release"
-end
+default['yum']['main']['distroverpkg'] = case node['platform']
+                                         when 'amazon'
+                                           'system-release'
+                                         when 'scientific'
+                                           'sl-release'
+                                         when 'redhat'
+                                           nil
+                                         else
+                                           "#{node['platform']}-release"
+                                         end
 
 default['yum']['main']['alwaysprompt'] = nil # [TrueClass, FalseClass]
 default['yum']['main']['assumeyes'] = nil # [TrueClass, FalseClass]

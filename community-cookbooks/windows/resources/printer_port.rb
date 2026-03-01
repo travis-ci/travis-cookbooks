@@ -19,16 +19,17 @@
 #
 # See here for more info:
 # http://msdn.microsoft.com/en-us/library/windows/desktop/aa394492(v=vs.85).aspx
+unified_mode true
 
 require 'resolv'
 
-property :ipv4_address, String, name_attribute: true, required: true, regex: Resolv::IPv4::Regex
+property :ipv4_address, String, name_property: true, required: true, regex: Resolv::IPv4::Regex
 property :port_name, String
 property :port_number, Integer, default: 9100
 property :port_description, String
 property :snmp_enabled, [true, false], default: false
 property :port_protocol, Integer, default: 1, equal_to: [1, 2]
-property :exists, [true, false], desired_state: true
+property :exists, [true, false]
 
 PORTS_REG_KEY = 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Print\Monitors\Standard TCP/IP Port\Ports\\'.freeze unless defined?(PORTS_REG_KEY)
 
@@ -67,7 +68,7 @@ action :delete do
   end
 end
 
-action_class.class_eval do
+action_class do
   def create_printer_port
     port_name = new_resource.port_name || "IP_#{new_resource.ipv4_address}"
 

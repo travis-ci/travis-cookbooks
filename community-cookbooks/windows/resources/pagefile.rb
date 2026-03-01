@@ -18,14 +18,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+unified_mode true
 
-property :name, String, name_property: true
 property :system_managed, [true, false]
 property :automatic_managed, [true, false], default: false
 property :initial_size, Integer
 property :maximum_size, Integer
-
-include Chef::Mixin::ShellOut
 include Windows::Helper
 
 action :set do
@@ -62,7 +60,7 @@ action :delete do
   delete(pagefile) if exists?(pagefile)
 end
 
-action_class.class_eval do
+action_class do
   def validate_name
     return if /^.:.*.sys/ =~ new_resource.name
     raise "#{new_resource.name} does not match the format DRIVE:\\path\\file.sys for pagefiles. Example: C:\\pagefile.sys"
@@ -127,7 +125,7 @@ action_class.class_eval do
     end
   end
 
-  def set_system_managed(pagefile) # rubocop: disable Style/AccessorMethodName
+  def set_system_managed(pagefile) # rubocop: disable Naming/AccessorMethodName
     converge_by("set #{pagefile} to System Managed") do
       cmd = shell_out("#{wmic} pagefileset where SettingID=\"#{get_setting_id(pagefile)}\" set InitialSize=0,MaximumSize=0", returns: [0])
       check_for_errors(cmd.stderr)

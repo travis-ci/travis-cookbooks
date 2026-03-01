@@ -1,6 +1,6 @@
 #
 # Author:: Shawn Neal (<sneal@sneal.net>)
-# Cookbook Name:: seven_zip
+# Cookbook:: seven_zip
 # Resource:: archive
 #
 # Copyright:: 2013, Daptiv Solutions LLC
@@ -17,6 +17,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+unified_mode true
 
 default_action :extract
 

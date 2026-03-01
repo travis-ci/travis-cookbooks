@@ -6,12 +6,6 @@
 
 include OpenSSLCookbook::Helpers
 
-use_inline_resources
-
-def whyrun_supported?
-  true
-end
-
 attr_reader :key_file, :key, :cert, :ef
 
 action :create do
@@ -88,7 +82,7 @@ protected
   def extensions
     [
       ef.create_extension('basicConstraints', 'CA:TRUE', true),
-      ef.create_extension('subjectKeyIdentifier', 'hash')
+      ef.create_extension('subjectKeyIdentifier', 'hash'),
     ]
   end
 
@@ -100,5 +94,5 @@ protected
     cert.extensions = extensions
     cert.add_extension ef.create_extension('authorityKeyIdentifier',
                                            'keyid:always,issuer:always')
-    cert.sign key, OpenSSL::Digest::SHA256.new
+    cert.sign key, OpenSSL::Digest.new('SHA256')
   end

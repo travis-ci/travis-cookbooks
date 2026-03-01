@@ -10,7 +10,7 @@ maven_android_sdk_deployer_home = File.join(maven_android_sdk_deployer_root, nod
 directory maven_android_sdk_deployer_home do
   user node['android-sdk']['owner']
   group node['android-sdk']['group']
-  mode 00755
+  mode '755'
   action :create
 end
 git maven_android_sdk_deployer_home do
@@ -42,5 +42,5 @@ execute 'Execute maven-android-sdk-deployer' do
   #        or if -Dmaven.repo.local is unset (default to ~/.m2/repository)
   # environment   ({ 'HOME' => '/home/vagrant' })
 
-  # Note: There is no idempotent guard for now. Pending on https://github.com/gildegoma/chef-android-sdk/issues/12.
+  # NOTE: There is no idempotent guard for now. Pending on https://github.com/gildegoma/chef-android-sdk/issues/12.
 end

@@ -2,8 +2,6 @@ include ::PackageCloud::Helper
 
 require 'uri'
 
-use_inline_resources if defined?(use_inline_resources)
-
 action :add do
   case new_resource.type
   when 'deb'
@@ -17,49 +15,60 @@ action :add do
   end
 end
 
+def gpg_url(base_url, repo, format, master_token)
+  base_install_url = ::File.join(base_url, node['packagecloud']['base_repo_path'])
+  ext = (format == :deb) ? 'list' : 'repo'
+  gpg_key_url_endpoint = construct_uri_with_options({ base_url: base_install_url, repo: repo, endpoint: "gpg_key_url.#{ext}" })
+  unless master_token.nil?
+    gpg_key_url_endpoint.user = master_token
+    gpg_key_url_endpoint.password = ''
+  end
+
+  URI(get(gpg_key_url_endpoint, install_endpoint_params).body.chomp)
+end
+
 def install_deb
   base_url = new_resource.base_url
-  repo_url = construct_uri_with_options({base_url: base_url, repo: new_resource.repository, endpoint: node['platform']})
+  repo_url = construct_uri_with_options({ base_url: base_url, repo: new_resource.repository, endpoint: node['platform'] })
 
   Chef::Log.debug("#{new_resource.name} deb repo url = #{repo_url}")
 
+  package 'wget'
   package 'apt-transport-https'
+
+  repo_url = read_token(repo_url)
 
   template "/etc/apt/sources.list.d/#{filename}.list" do
     source 'apt.erb'
     cookbook 'packagecloud'
     mode '0644'
-    variables :base_url     => read_token(repo_url).to_s,
+    variables :base_url => repo_url.to_s,
               :distribution => node['lsb']['codename'],
-              :component    => 'main'
+              :component => 'main'
 
     notifies :run, "execute[apt-key-add-#{filename}]", :immediately
     notifies :run, "execute[apt-get-update-#{filename}]", :immediately
   end
 
-  gpg_key_url = ::File.join(base_url, node['packagecloud']['gpg_key_path'])
+  gpg_url = gpg_url(new_resource.base_url, new_resource.repository, :deb, new_resource.master_token)
 
   execute "apt-key-add-#{filename}" do
-    command "wget -qO - #{gpg_key_url} | apt-key add -"
+    command "wget --auth-no-challenge -qO - #{gpg_url.to_s} | apt-key add -"
     action :nothing
   end
 
   execute "apt-get-update-#{filename}" do
     command "apt-get update -o Dir::Etc::sourcelist=\"sources.list.d/#{filename}.list\"" \
-            " -o Dir::Etc::sourceparts=\"-\"" \
-            " -o APT::Get::List-Cleanup=\"0\""
+            ' -o Dir::Etc::sourceparts="-"' \
+            ' -o APT::Get::List-Cleanup="0"'
     action :nothing
   end
 end
 
 def install_rpm
   given_base_url = new_resource.base_url
-
   base_repo_url = ::File.join(given_base_url, node['packagecloud']['base_repo_path'])
-
-  base_url_endpoint = construct_uri_with_options({base_url: base_repo_url, repo: new_resource.repository, endpoint: 'rpm_base_url'})
-
-  gpg_filename = URI.parse(base_repo_url).host.gsub!('.', '_')
+  base_url_endpoint = construct_uri_with_options({ base_url: base_repo_url, repo: new_resource.repository, endpoint: 'rpm_base_url' })
 
   if new_resource.master_token
     base_url_endpoint.user     = new_resource.master_token
@@ -91,21 +100,18 @@ def install_rpm
     not_if 'rpm -qa | grep -qw pygpgme'
   end
 
-  remote_file "/etc/pki/rpm-gpg/RPM-GPG-KEY-#{gpg_filename}" do
-    source ::File.join(given_base_url, node['packagecloud']['gpg_key_path'])
-    mode '0644'
-  end
+  gpg_url = gpg_url(new_resource.base_url, new_resource.repository, :rpm, new_resource.master_token)
 
   template "/etc/yum.repos.d/#{filename}.repo" do
     source 'yum.erb'
     cookbook 'packagecloud'
     mode '0644'
-    variables :base_url        => read_token(base_url).to_s,
-              :gpg_filename    => gpg_filename,
-              :name            => filename,
-              :repo_gpgcheck   => 1,
-              :description     => filename,
-              :priority        => new_resource.priority,
+    variables :base_url => base_url.to_s,
+              :name => filename,
+              :gpg_url => gpg_url.to_s,
+              :repo_gpgcheck => 1,
+              :description => filename,
+              :priority => new_resource.priority,
               :metadata_expire => new_resource.metadata_expire
 
     notifies :run, "execute[yum-makecache-#{filename}]", :immediately
@@ -128,9 +134,8 @@ end
 def install_gem
   base_url = new_resource.base_url
 
-  repo_url = construct_uri_with_options({base_url: base_url, repo: new_resource.repository})
+  repo_url = construct_uri_with_options({ base_url: base_url, repo: new_resource.repository })
   repo_url = read_token(repo_url, true).to_s
-
 
   execute "install packagecloud #{new_resource.name} repo as gem source" do
     command "gem source --add #{repo_url}"
@@ -138,15 +143,14 @@ def install_gem
   end
 end
 
-
-def read_token(repo_url, gems=false)
+def read_token(repo_url, gems = false)
   return repo_url unless new_resource.master_token
 
   base_url = new_resource.base_url
 
   base_repo_url = ::File.join(base_url, node['packagecloud']['base_repo_path'])
 
-  uri = construct_uri_with_options({base_url: base_repo_url, repo: new_resource.repository, endpoint: 'tokens.text'})
+  uri = construct_uri_with_options({ base_url: base_repo_url, repo: new_resource.repository, endpoint: 'tokens.text' })
   uri.user     = new_resource.master_token
   uri.password = ''
 
@@ -166,19 +170,19 @@ end
 def install_endpoint_params
   dist = new_resource.force_dist || value_for_platform_family(
     'debian' => node['lsb']['codename'],
-    ['rhel', 'fedora'] => node['platform_version'],
+    ['rhel', 'fedora'] => node['platform_version']
   )
 
   hostname = node['packagecloud']['hostname_override'] ||
              node['fqdn'] ||
              node['hostname']
 
-  if !hostname
+  unless hostname
     raise("Can't determine hostname!  Set node['packagecloud']['hostname_override'] " \
-          "if it cannot be automatically determined by Ohai.")
+          'if it cannot be automatically determined by Ohai.')
   end
 
-  { :os   => os_platform,
+  { :os => os_platform,
     :dist => dist,
     :name => hostname }
 end
@@ -199,7 +203,7 @@ def construct_uri_with_options(options)
   required_options = [:base_url, :repo]
 
   required_options.each do |opt|
-    if !options[opt]
+    unless options[opt]
       raise ArgumentError,
             "A required option :#{opt} was not specified"
     end
@@ -208,9 +212,9 @@ def construct_uri_with_options(options)
   options[:base_url] = append_trailing_slash(options[:base_url])
   options[:repo]     = append_trailing_slash(options[:repo])
 
-  URI.join(options.delete(:base_url), options.inject([]) {|mem, opt| mem << opt[1]}.join)
+  URI.join(options.delete(:base_url), options.inject([]) { |acc, elem| acc << elem[1] }.join)
 end
 
 def append_trailing_slash(str)
-  str.end_with?("/") ? str : str + "/"
+  str.end_with?('/') ? str : str + '/'
 end

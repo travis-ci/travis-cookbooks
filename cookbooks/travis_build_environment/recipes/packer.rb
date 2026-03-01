@@ -1,6 +1,8 @@
-# Cookbook Name:: travis_build_environment
+# frozen_string_literal: true
+
+# Cookbook:: travis_build_environment
 # Recipe:: packer
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,10 +23,10 @@
 # THE SOFTWARE.
 
 ark 'packer' do
-  url node['travis_build_environment']['packer_url']
-  version node['travis_build_environment']['packer_version']
-  checksum node['travis_build_environment']['packer_checksum']
+  arch = node['kernel']['machine'].gsub('x86_64', 'amd64').gsub('aarch64', 'arm64')
+  version node['travis_build_environment']['packer'][arch]['version']
+  checksum node['travis_build_environment']['packer'][arch]['checksum']
+  url "https://releases.hashicorp.com/packer/#{version}/packer_#{version}_linux_#{arch}.zip"
   strip_components 0
   has_binaries node['travis_build_environment']['packer_binaries']
-  not_if { node['kernel']['machine'] == 'ppc64le' }
 end

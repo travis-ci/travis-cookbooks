@@ -1,6 +1,8 @@
-# Cookbook Name:: travis_docker
+# frozen_string_literal: true
+
+# Cookbook:: travis_docker
 # Recipe:: package
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -24,24 +26,42 @@ arch = node['kernel']['machine'] =~ /x86_64/ ? 'amd64' : 'ppc64el'
 apt_repository 'docker' do
   uri 'https://download.docker.com/linux/ubuntu'
   arch arch
-  distribution node['lsb']['codename']
-  components %w[stable edge]
+  components %w(stable edge)
   key 'https://download.docker.com/linux/ubuntu/gpg'
   retries 2
   retry_delay 30
   action :add
 end
 
-package %w[linux-generic-lts-xenial linux-image-generic-lts-xenial] do
-  action %i[install upgrade]
+case node['lsb']['codename']
+when 'xenial'
+  pkgs = %w(linux-generic-lts-xenial linux-image-generic-lts-xenial)
+when 'bionic'
+  pkgs = %w(linux-generic linux-image-generic)
+else
+  pkgs = %w(linux-generic linux-image-generic)
 end
 
-package 'docker-ce' do
-  version node['travis_docker']['version']
+package pkgs do
+  action %i(install upgrade)
+end
+
+case node['lsb']['codename']
+when 'trusty', 'xenial'
+  package 'docker-ce' do
+    version node['travis_docker']['version']
+  end
+else
+  package 'docker.io'
 end
 
 group 'adding user to docker group' do
   group_name 'docker'
   members node['travis_docker']['users']
-  action %i[create manage]
+  action %i(create manage)
+end
+
+apt_repository 'docker' do
+  action :remove
+  not_if { node['travis_build_environment']['docker']['keep_repo'] }
 end

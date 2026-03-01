@@ -1,19 +1,23 @@
-# Note: The docker-ce package version strings have been known to diverge between
+# frozen_string_literal: true
+
+# NOTE: The docker-ce package version strings have been known to diverge between
 # Trusty and Xenial. When updating check the version exists in both of:
 # https://download.docker.com/linux/ubuntu/dists/trusty/stable/binary-amd64/Packages
 # https://download.docker.com/linux/ubuntu/dists/xenial/stable/binary-amd64/Packages
-default['travis_docker']['version'] = '17.09.0~ce-0~ubuntu'
-default['travis_docker']['users'] = %w[travis]
-default['travis_docker']['compose']['url'] = 'https://github.com/docker/compose/releases/download/1.17.1/docker-compose-Linux-x86_64'
-default['travis_docker']['compose']['sha256sum'] = 'db0a7b79d195dc021461d5628a8d53eeb2e556d2548b764770fccabb0a319dd8'
+default['travis_docker']['version'] = '18.06.0~ce~3-0~ubuntu'
+default['travis_docker']['users'] = %w(travis)
+default['travis_docker']['compose']['url'] = 'https://github.com/docker/compose/releases/download/1.23.1/docker-compose-Linux-x86_64'
+default['travis_docker']['compose']['sha256sum'] = 'c176543737b8aea762022245f0f4d58781d3cb1b072bc14f3f8e5bb96f90f1a2'
 default['travis_docker']['update_grub'] = true
-default['travis_docker']['binary']['url'] = "https://download.docker.com/linux/static/stable/#{node['kernel']['machine']}/docker-17.09.0-ce.tgz"
-default['travis_docker']['binary']['version'] = '17.09.0-ce'
-default['travis_docker']['binary']['checksum'] = 'a9e90a73c3cdfbf238f148e1ec0eaff5eb181f92f35bdd938fd7dab18e1c4647'
+default['travis_docker']['binary']['version'] = '18.06.1-ce'
+default['travis_docker']['binary']['checksum'] = '83be159cf0657df9e1a1a4a127d181725a982714a983b2bdcc0621244df93687'
+machine = node['kernel']['machine']
+version = node['travis_docker']['binary']['version']
+default['travis_docker']['binary']['url'] = "https://download.docker.com/linux/static/stable/#{machine}/docker-#{version}.tgz"
 if node['kernel']['machine'] == 'ppc64le'
-  default['travis_docker']['binary']['checksum'] = 'f00d4cefd392893241e5ae3be292ade0e9076cbba6fde56e731ae5002558b82a'
+  default['travis_docker']['binary']['checksum'] = '479083ac0b2bae839782ea53870809b8590f440db5f0bdf1294eac95e1a2ec3b'
 end
-default['travis_docker']['binary']['binaries'] = %w[
+default['travis_docker']['binary']['binaries'] = %w(
   docker
   docker-containerd
   docker-containerd-ctr
@@ -22,4 +26,4 @@ default['travis_docker']['binary']['binaries'] = %w[
   docker-proxy
   docker-runc
   dockerd
-]
+)

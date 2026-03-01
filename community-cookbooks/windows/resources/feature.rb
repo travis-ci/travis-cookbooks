@@ -17,6 +17,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+unified_mode true
 
 property :feature_name, [Array, String], name_property: true
 property :source, String
@@ -37,7 +38,7 @@ action :delete do
   run_default_provider :delete
 end
 
-action_class.class_eval do
+action_class do
   def locate_default_provider
     if new_resource.install_method
       new_resource.install_method

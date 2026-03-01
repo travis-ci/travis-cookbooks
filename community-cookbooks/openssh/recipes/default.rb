@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: openssh
+# Cookbook:: openssh
 # Recipe:: default
 #
-# Copyright 2008-2016 Chef Software, Inc.
+# Copyright:: 2008-2016 Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ if node['openssh']['listen_interfaces']
     end
   end
 
-  node.set['openssh']['server']['listen_address'] = listen_addresses
+  node.normal['openssh']['server']['listen_address'] = listen_addresses
 end
 
 template '/etc/ssh/sshd_config' do
@@ -74,7 +74,7 @@ service 'ssh' do
   service_name node['openssh']['service_name']
   supports value_for_platform_family(
     %w(debian rhel fedora) => [:restart, :reload, :status],
-    %w(arch) =>  [:restart],
+    %w(arch) => [:restart],
     'default' => [:restart, :reload]
   )
   action [:enable, :start]

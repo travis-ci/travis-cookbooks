@@ -1,6 +1,8 @@
-# Cookbook Name:: travis_build_environment
+# frozen_string_literal: true
+
+# Cookbook:: travis_build_environment
 # Recipe:: kiex
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +26,7 @@ kiex_install_path = "#{Chef::Config[:file_cache_path]}/kiex-install"
 
 remote_file kiex_install_path do
   source 'https://raw.githubusercontent.com/taylor/kiex/master/install'
-  mode 0o755
+  mode '755'
 end
 
 execute kiex_install_path do
@@ -38,8 +40,26 @@ end
 include_recipe 'travis_build_environment::bash_profile_d'
 
 cookbook_file 'kiex.bash' do
-  path ::File.join(
-    node['travis_build_environment']['home'], '.bash_profile.d/kiex.bash'
-  )
-  mode 0o644
+  path ::File.join(node['travis_build_environment']['home'], '.bash_profile.d/kiex.bash')
+  mode '644'
+end
+
+directory "#{node['travis_build_environment']['home']}/.kiex/scripts" do
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode '755'
+  recursive true
+end
+
+file "#{node['travis_build_environment']['home']}/.kiex/scripts/kiex" do
+  content <<~'EOS'
+    #!/bin/bash
+    # Corrected kiex loader
+    if [ -s "$HOME/.kiex/scripts/kiex.bash" ]; then
+      source "$HOME/.kiex/scripts/kiex.bash"
+    fi
+  EOS
+  owner node['travis_build_environment']['user']
+  group node['travis_build_environment']['group']
+  mode '755'
 end

@@ -1,3 +1,5 @@
+unified_mode true
+
 property :name, String, regex: /^[\w-]+$/, name_property: true
 property :options, String
 
@@ -19,7 +21,7 @@ action :uninstall do
   end
 end
 
-action_class.class_eval do
+action_class do
   alias_method :action_cask, :action_install
   alias_method :action_uncask, :action_uninstall
 

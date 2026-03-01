@@ -43,8 +43,8 @@ module Powershell
       cmd = shell_out("#{interpreter} -InputFormat none -Command \"& echo $PSVersionTable.psversion.major\"")
       if cmd.stdout.empty? # PowerShell 1.0 doesn't have a $PSVersionTable
         1
-      else
-        Regexp.last_match(1).to_i if cmd.stdout =~ /^(\d+)/
+      elsif cmd.stdout =~ /^(\d+)/
+        Regexp.last_match(1).to_i
       end
     rescue Errno::ENOENT
       nil

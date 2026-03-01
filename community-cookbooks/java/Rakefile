@@ -1,9 +1,8 @@
 #!/usr/bin/env rake
 
-# Style tests. cookstyle (rubocop) and Foodcritic
+# Style tests. cookstyle (rubocop)
 namespace :style do
   begin
-    require 'cookstyle'
     require 'rubocop/rake_task'
 
     desc 'Run Ruby style checks'
@@ -13,10 +12,10 @@ namespace :style do
   end
 
   begin
-    require 'foodcritic'
+    require 'cookstyle'
 
     desc 'Run Chef style checks'
-    FoodCritic::Rake::LintTask.new(:chef) do |t|
+    Cookstyle::Rake::LintTask.new(:chef) do |t|
       t.options = {
         fail_tags: ['any'],
         progress: true,

@@ -1,6 +1,8 @@
-# Cookbook Name:: travis_perlbrew
+# frozen_string_literal: true
+
+# Cookbook:: travis_perlbrew
 # Recipe:: multi
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -54,7 +56,7 @@ node['travis_perlbrew']['perls'].each do |pl|
     )
     owner 'root'
     group 'root'
-    mode 0o644
+    mode '644'
     ignore_failure true
   end
 
@@ -69,7 +71,7 @@ node['travis_perlbrew']['perls'].each do |pl|
   bash "installing #{pl['version']} as #{pl['name']} " \
        "with Perlbrew arguments: #{args}" do
     permissions.call(self)
-    code "#{perlbrew} install #{pl['version']} --as #{pl['name']} #{args}"
+    code "#{perlbrew} install #{pl['version']} --as #{pl['name']} #{args} --switch"
     not_if "ls #{home}/perl5/perlbrew/perls | grep #{pl['name']}"
   end
 

@@ -1,4 +1,6 @@
-property :key, String, name_attribute: true
+unified_mode true
+
+property :key, String, name_property: true
 property :value, String
 property :scope, equal_to: %w(local global system), default: 'global', desired_state: false
 property :path, String, desired_state: false
@@ -7,8 +9,6 @@ property :group, String, desired_state: false
 property :options, String, desired_state: false
 
 attr_accessor :exists
-
-require 'mixlib/shellout'
 
 def initialize(*args)
   super
@@ -38,7 +38,7 @@ action :set do
   end
 end
 
-action_class.class_eval do
+action_class do
   def config_cmd
     "git config --#{new_resource.scope}"
   end

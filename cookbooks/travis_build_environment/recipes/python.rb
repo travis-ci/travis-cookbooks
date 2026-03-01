@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 virtualenv_root = "#{node['travis_build_environment']['home']}/virtualenv"
 
 include_recipe 'travis_build_environment::virtualenv'
 
-package %w[
+package %w(
   build-essential
   curl
   libbz2-dev
@@ -16,7 +18,7 @@ package %w[
   tk-dev
   wget
   zlib1g-dev
-]
+)
 
 pyenv_root = '/opt/pyenv'
 
@@ -31,31 +33,31 @@ execute "#{pyenv_root}/plugins/python-build/install.sh"
 directory '/opt/python' do
   owner 'root'
   group 'root'
-  mode 0o755
+  mode '755'
 end
 
 directory virtualenv_root do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0o755
+  mode '755'
 end
 
 build_environment = {
-  'PYTHON_CONFIGURE_OPTS' => %w[
+  'PYTHON_CONFIGURE_OPTS' => %w(
     --enable-unicode=ucs4
     --with-wide-unicode
     --enable-shared
     --enable-ipv6
     --enable-loadable-sqlite-extensions
     --with-computed-gotos
-  ].join(' '),
-  'PYTHON_CFLAGS' => %w[
+  ).join(' '),
+  'PYTHON_CFLAGS' => %w(
     -g
     -fstack-protector
     --param=ssp-buffer-size=4
     -Wformat
     -Werror=format-security
-  ].join(' ')
+  ).join(' '),
 }
 
 node['travis_build_environment']['pythons'].each do |py|
@@ -83,7 +85,7 @@ node['travis_build_environment']['pythons'].each do |py|
     )
     owner 'root'
     group 'root'
-    mode 0o644
+    mode '644'
     ignore_failure true
   end
 
@@ -91,14 +93,14 @@ node['travis_build_environment']['pythons'].each do |py|
     code "tar -xjf #{downloaded_tarball} --directory /"
     creates "/opt/python/#{py}"
     environment build_environment
-    only_if { File.exist?(downloaded_tarball) }
+    only_if { ::File.exist?(downloaded_tarball) }
   end
 
   bash "build #{py}" do
     code "python-build #{py} /opt/python/#{py}"
     creates "/opt/python/#{py}"
     environment build_environment
-    not_if { File.exist?("/opt/python/#{py}") }
+    not_if { ::File.exist?("/opt/python/#{py}") }
   end
 
   link "/opt/python/#{py}/bin/#{pyname}" do
@@ -111,6 +113,7 @@ node['travis_build_environment']['pythons'].each do |py|
     code "virtualenv --python=/opt/python/#{py}/bin/python #{venv_fullname}"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
+    not_if { ::File.exist?("/home/travis/virtualenv/python#{py}/bin/python") }
   end
 
   node['travis_build_environment']['python_aliases'].fetch(py, []).each do |pyalias|
@@ -136,12 +139,12 @@ node['travis_build_environment']['pythons'].each do |py|
 
   packages = []
 
-  node['travis_build_environment']['python_aliases'].fetch(py, []).concat(['default', py]).each do |name|
+  node['travis_build_environment']['python_aliases'].to_hash.fetch(py, []).push('default', py).each do |name|
     packages.concat(node['travis_build_environment']['pip']['packages'].fetch(name, []))
   end
 
   execute "install wheel in #{py}" do
-    command "#{venv_fullname}/bin/pip install --upgrade wheel"
+    command "#{venv_fullname}/bin/pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --upgrade wheel"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment(
@@ -150,7 +153,7 @@ node['travis_build_environment']['pythons'].each do |py|
   end
 
   execute "install packages in #{py}" do
-    command "#{venv_fullname}/bin/pip install --upgrade #{packages.join(' ')}"
+    command "#{venv_fullname}/bin/pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --upgrade #{packages.join(' ')}"
     user node['travis_build_environment']['user']
     group node['travis_build_environment']['group']
     environment(
@@ -174,10 +177,41 @@ template ::File.join(
   source 'pyenv.bash.erb'
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0o644
+  mode '644'
   variables(
     pyenv_root: pyenv_root,
     build_environment: build_environment
   )
   backup false
+end
+
+# This does not work for minimal images since python is preinstalled there using the native way
+case node['lsb']['codename']
+when 'noble'
+  bash "Set default python" do
+    code "source /home/travis/.bash_profile.d/pyenv.bash && pyenv global 3.12.8"
+    user 'root'
+    group 'root'
+    # user node['travis_build_environment']['user']
+    # group node['travis_build_environment']['group']
+    environment build_environment
+  end
+when 'jammy'
+  bash "Set default python" do
+    code "source /home/travis/.bash_profile.d/pyenv.bash && pyenv global 3.10.14"
+    user 'root'
+    group 'root'
+    # user node['travis_build_environment']['user']
+    # group node['travis_build_environment']['group']
+    environment build_environment
+  end
+when 'xenial', 'bionic', 'focal'
+  bash "Set default python" do
+    code "source /home/travis/.bash_profile.d/pyenv.bash && pyenv global 3.7.17"
+    user 'root'
+    group 'root'
+    # user node['travis_build_environment']['user']
+    # group node['travis_build_environment']['group']
+    environment build_environment
+  end
 end

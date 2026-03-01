@@ -4,7 +4,7 @@ Lint/UselessAssignment:
   Exclude:
     - 'providers/ark.rb'
 
-Style/AccessorMethodName:
+Naming/AccessorMethodName:
   Exclude:
     - 'libraries/matchers.rb'
 
@@ -20,3 +20,21 @@ Style/FormatString:
 Style/RegexpLiteral:
   Exclude:
     - 'providers/ark.rb'
+
+Chef/Deprecations/UsesChefRESTHelpers:
+ Enabled: false
+
+Chef/Correctness/PropertyWithoutType:
+  Enabled: false
+
+Chef/Deprecations/ResourceWithoutUnifiedTrue:
+  Enabled: false
+
+Chef/Modernize/WindowsZipfileUsage:
+  Enabled: false
+
+Chef/Style/UsePlatformHelpers:
+  Enabled: false
+
+Layout/MultilineOperationIndentation:
+  Enabled: false

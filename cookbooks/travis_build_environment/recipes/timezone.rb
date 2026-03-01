@@ -1,6 +1,8 @@
-# Cookbook Name:: travis_build_environment
+# frozen_string_literal: true
+
+# Cookbook:: travis_build_environment
 # Recipe:: timezone
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -32,6 +34,6 @@ file '/etc/timezone' do
   content "#{node['tz']}\n"
   owner 'root'
   group 'root'
-  mode 0o644
+  mode '644'
   notifies :run, 'bash[dpkg-reconfigure tzdata]'
 end

@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: rsyslog
+# Cookbook:: rsyslog
 # Recipe:: client
 #
-# Copyright 2009-2015, Chef Software, Inc.
+# Copyright:: 2009-2015, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ end
 unless node['rsyslog']['custom_remote'].first.empty?
   node['rsyslog']['custom_remote'].each do |server|
     if server['server'].nil?
-      Chef::Application.fatal!('Found a custom_remote server with no IP. Check your custom_remote attribute definition!')
+      raise('Found a custom_remote server with no IP. Check your custom_remote attribute definition!')
     end
   end
   rsyslog_servers += node['rsyslog']['custom_remote']

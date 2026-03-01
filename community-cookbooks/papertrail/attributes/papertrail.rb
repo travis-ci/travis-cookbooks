@@ -1,24 +1,24 @@
 
 # Logger to use. Support loggers include: rsyslog.
-default['papertrail']['logger'] = "rsyslog"
+default['papertrail']['logger'] = 'rsyslog'
 
 # Papertrail host to send stats to.
-default['papertrail']['remote_host'] = "logs.papertrailapp.com"
+default['papertrail']['remote_host'] = 'logs.papertrailapp.com'
 
 # Port to use. MUST be set
 # XXX: should pull from a databag since this is private
 default['papertrail']['remote_port'] = nil
 
 # Where to store papertrail cert file.
-default['papertrail']['cert_file'] = "/etc/papertrail-bundle.pem"
+default['papertrail']['cert_file'] = '/etc/papertrail-bundle.pem'
 
 # URL to download certificate from.
-default['papertrail']['cert_url'] = "https://papertrailapp.com/tools/papertrail-bundle.pem"
+default['papertrail']['cert_url'] = 'https://papertrailapp.com/tools/papertrail-bundle.pem'
 
 # What CN should we accept from remote host?
 # Note. Wildcard here is a hack to support logs2.papertrailapp.com's wildcard certificate
 # Rsyslog doesn't support Wildcard certificates, but a wildcard matches '*.papertrailapp.com'
-default['papertrail']['permitted_peer'] = "*.papertrailapp.com"
+default['papertrail']['permitted_peer'] = '*.papertrailapp.com'
 
 # By default, this recipe will log to Papertrail using the system's
 # hostname. If you want to set the hostname that will be used (think
@@ -26,12 +26,12 @@ default['papertrail']['permitted_peer'] = "*.papertrailapp.com"
 # set it will use the hostname_name first and the hostname_cmd second.
 
 # Set the logging hostname to this string.
-default['papertrail']['hostname_name'] = ""
+default['papertrail']['hostname_name'] = ''
 
 # Set the logging hostname to the output of this command passed to
 # system(). This is useful if the desired hostname comes from a
 # dynamic source like EC2 meta-data.
-default['papertrail']['hostname_cmd'] = ""
+default['papertrail']['hostname_cmd'] = ''
 
 # The number of times to retry the sending of failed messages (defaults to unlimited)
 default['papertrail']['resume_retry_count'] = -1

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 unless Array(node['travis_phpenv']['prerequisite_recipes']).empty?
   Array(node['travis_phpenv']['prerequisite_recipes']).each do |recipe_name|
     include_recipe recipe_name
@@ -19,21 +21,21 @@ bash 'install phpenv' do
   user node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
   cwd phpenv_clone
-  code <<-EOF
+  code <<-PHPENV_INSTALL
     . bin/phpenv-install.sh
     cp extensions/rbenv-config-add #{phpenv_path}/libexec/
     cp extensions/rbenv-config-rm #{phpenv_path}/libexec/
-  EOF
+  PHPENV_INSTALL
   environment(
     'PHPENV_ROOT' => phpenv_path
   )
-  not_if { File.exist?("#{phpenv_path}/bin/phpenv") }
+  not_if { ::File.exist?("#{phpenv_path}/bin/phpenv") }
 end
 
 directory "#{phpenv_path}/versions" do
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0o755
+  mode '755'
   action :create
 end
 
@@ -47,11 +49,12 @@ template ::File.join(
   group node['travis_build_environment']['group']
   source 'phpenv.bash.erb'
   variables(phpenv_path: phpenv_path)
-  mode 0o644
+  mode '644'
 end
 
 # A couple fixes for building php 5.3.29c and 5.4.45
 
-package 'libxslt1-dev' do
+package 'Install system dependencies' do
+  package_name %w(libxslt1-dev libc-client2007e libmcrypt4)
   action :install
 end

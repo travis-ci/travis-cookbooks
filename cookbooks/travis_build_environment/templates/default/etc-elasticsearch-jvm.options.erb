@@ -1,9 +1,6 @@
 # Managed by Chef on <%= node.name %> :heart:
 -Xms<%= @jvm_heap %>
 -Xmx<%= @jvm_heap %>
--XX:+UseConcMarkSweepGC
--XX:CMSInitiatingOccupancyFraction=75
--XX:+UseCMSInitiatingOccupancyOnly
 -XX:+DisableExplicitGC
 -XX:+AlwaysPreTouch
 -server

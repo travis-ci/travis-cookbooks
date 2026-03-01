@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 create_superusers_script = ::File.join(
   Chef::Config[:file_cache_path],
   'postgresql_create_superusers.sql'
@@ -6,6 +8,8 @@ create_superusers_script = ::File.join(
 if !node['travis_postgresql']['superusers'].to_a.empty? && !::File.exist?(create_superusers_script)
   service 'postgresql' do
     action :start
+    ignore_failure true
+    timeout 30
   end
 
   template create_superusers_script do
@@ -25,43 +29,39 @@ if !node['travis_postgresql']['superusers'].to_a.empty? && !::File.exist?(create
 end
 
 service 'postgresql' do
-  action %i[disable stop]
+  action %i(disable stop)
 end
 
 template '/etc/init.d/postgresql' do
   source 'initd_postgresql.erb'
   owner 'root'
   group 'root'
-  mode 0o755
+  mode '755'
 end
 
 file '/lib/systemd/system/postgresql.service' do
   action :delete
   notifies :run, 'execute[systemctl daemon-reload]', :immediately
-  only_if { node['lsb']['codename'] == 'xenial' }
+  only_if { node['lsb']['codename'] == 'xenial' || node['lsb']['codename'] == 'bionic' }
 end
 
 execute 'systemctl daemon-reload' do
   action :nothing
-  only_if { node['lsb']['codename'] == 'xenial' }
+  only_if { node['lsb']['codename'] == 'xenial' || node['lsb']['codename'] == 'bionic' }
 end
 
-Array(
-  [
-    node['travis_postgresql']['default_version']
-  ] + node['travis_postgresql']['alternate_versions']
-).each do |pg_version|
+TravisPostgresqlMethods.pg_versions(node).each do |pg_version|
   template "/etc/postgresql/#{pg_version}/main/postgresql.conf" do
     source "#{pg_version}/postgresql.conf.erb"
     owner 'postgres'
     group 'postgres'
-    mode 0o644 # apply same permissions as in 'pdpg' packages
+    mode '644' # apply same permissions as in 'pdpg' packages
   end
 
   template "/etc/postgresql/#{pg_version}/main/pg_hba.conf" do
     source 'pg_hba.conf.erb'
     owner 'postgres'
     group 'postgres'
-    mode 0o640 # apply same permissions as in 'pdpg' packages
+    mode '640' # apply same permissions as in 'pdpg' packages
   end
 end

@@ -1,9 +1,9 @@
 #
-# Cookbook Name:: runit
+# Cookbook:: runit
 # Provider:: service
 #
-# Copyright 2011, Joshua Timberman
-# Copyright 2011, Chef Software, Inc.
+# Copyright:: 2011, Joshua Timberman
+# Copyright:: 2011, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,14 +25,18 @@ class Chef
   class Resource
     # Missing top-level class documentation comment
     class RunitService < Chef::Resource::Service
+      resource_name :runit_service
+      provides :runit_service
+
+      allowed_actions [:nothing, :start, :stop, :enable, :disable, :restart, :reload, :status, :once, :hup, :cont, :term, :kill, :up, :down, :usr1, :usr2, :create]
+
+      default_action :enable
+
       def initialize(name, run_context = nil)
         super
         runit_node = runit_attributes_from_node(run_context)
-        @resource_name = :runit_service
         @provider = Chef::Provider::RunitService
         @supports = { restart: true, reload: true, status: true }
-        @action = :enable
-        @allowed_actions = [:nothing, :start, :stop, :enable, :disable, :restart, :reload, :status, :once, :hup, :cont, :term, :kill, :up, :down, :usr1, :usr2, :create]
 
         # sv_bin, sv_dir, service_dir and lsb_init_dir may have been set in the
         # node attributes
@@ -105,7 +109,7 @@ class Chef
       end
 
       def sv_timeout(arg = nil)
-        set_or_return(:sv_timeout, arg, kind_of: [Fixnum])
+        set_or_return(:sv_timeout, arg, kind_of: [Integer])
       end
 
       def sv_verbose(arg = nil)
@@ -256,8 +260,8 @@ class Chef
       end
 
       def runit_attributes_from_node(run_context)
-        if run_context && run_context.node && run_context.node[:runit]
-          run_context.node[:runit]
+        if run_context && run_context.node && run_context.node['runit']
+          run_context.node['runit']
         else
           {}
         end

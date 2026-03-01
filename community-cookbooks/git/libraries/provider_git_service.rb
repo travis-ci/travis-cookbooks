@@ -1,12 +1,6 @@
 class Chef
   class Provider
     class GitClient < Chef::Provider::LWRPBase
-      use_inline_resources
-
-      def whyrun_supported?
-        true
-      end
-
       include Chef::DSL::IncludeRecipe
       include GitCookbook::Helpers
 

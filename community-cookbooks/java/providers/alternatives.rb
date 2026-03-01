@@ -20,7 +20,7 @@ include Chef::Mixin::ShellOut
 action :set do
   if new_resource.bin_cmds
     # I couldn't find a way to cleanly avoid repeating this variable declaration in both :set and :unset
-    alternatives_cmd = node['platform_family'] == 'rhel' ? 'alternatives' : 'update-alternatives'
+    alternatives_cmd = platform_family?('rhel') ? 'alternatives' : 'update-alternatives'
     new_resource.bin_cmds.each do |cmd|
       bin_path = "/usr/bin/#{cmd}"
       alt_path = "#{new_resource.java_location}/bin/#{cmd}"
@@ -41,7 +41,7 @@ action :set do
           remove_cmd = shell_out("#{alternatives_cmd} --remove #{cmd} #{alt_path}")
           alternative_exists = false
           unless remove_cmd.exitstatus == 0
-            Chef::Application.fatal!(%( remove alternative failed ))
+            raise(%( remove alternative failed ))
           end
         end
       end
@@ -55,7 +55,7 @@ action :set do
           end
           install_cmd = shell_out("#{alternatives_cmd} --install #{bin_path} #{cmd} #{alt_path} #{priority}")
           unless install_cmd.exitstatus == 0
-            Chef::Application.fatal!(%( install alternative failed ))
+            raise(%( install alternative failed ))
           end
         end
         new_resource.updated_by_last_action(true)
@@ -70,7 +70,7 @@ action :set do
         Chef::Log.debug "Setting alternative for #{cmd}"
         set_cmd = shell_out("#{alternatives_cmd} --set #{cmd} #{alt_path}")
         unless set_cmd.exitstatus == 0
-          Chef::Application.fatal!(%( set alternative failed ))
+          raise(%( set alternative failed ))
         end
       end
       new_resource.updated_by_last_action(true)
@@ -80,7 +80,7 @@ end
 
 action :unset do
   # I couldn't find a way to cleanly avoid repeating this variable declaration in both :set and :unset
-  alternatives_cmd = node['platform_family'] == 'rhel' ? 'alternatives' : 'update-alternatives'
+  alternatives_cmd = platform_family?('rhel') ? 'alternatives' : 'update-alternatives'
   new_resource.bin_cmds.each do |cmd|
     alt_path = "#{new_resource.java_location}/bin/#{cmd}"
     cmd = shell_out("#{alternatives_cmd} --remove #{cmd} #{alt_path}")

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ark 'yarn' do
   url node['travis_build_environment']['yarn_url']
   version node['travis_build_environment']['yarn_version']

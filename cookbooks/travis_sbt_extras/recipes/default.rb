@@ -1,12 +1,17 @@
-#
-# Cookbook Name:: travis_sbt_extras
+# frozen_string_literal: true
+
+# Cookbook:: travis_sbt_extras
 # Recipe:: default
 #
-# Copyright 2012-2013, Gilles Cornu
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2012-2013, Gilles Cornu
+# Copyright:: 2017 Travis CI GmbH
 #
 
-include_recipe 'travis_java'
+if node['travis_java']['default_version'] =~ /jdk/
+  include_recipe 'travis_java'
+elsif node['travis_jdk']['default_version'] =~ /jdk/
+  include_recipe 'travis_jdk'
+end
 
 script_absolute_path = File.join(
   node['travis_sbt_extras']['setup_dir'],
@@ -24,7 +29,7 @@ tmp_project_dir = File.join(
 remote_file script_absolute_path do
   source node['travis_sbt_extras']['download_url']
   backup false
-  mode 0o755
+  mode '755'
   owner node['travis_sbt_extras']['owner']
   group node['travis_sbt_extras']['group']
 end
@@ -35,7 +40,7 @@ end
 directory node['travis_sbt_extras']['config_dir'] do
   owner node['travis_sbt_extras']['owner']
   group node['travis_sbt_extras']['group']
-  mode 0o755
+  mode '755'
 end
 
 jvmopts_path = if node['travis_sbt_extras']['jvmopts']['filename'].to_s.empty?
@@ -51,7 +56,7 @@ template jvmopts_path do
   source 'jvmopts.erb'
   owner node['travis_sbt_extras']['owner']
   group node['travis_sbt_extras']['group']
-  mode 0o644
+  mode '644'
   not_if { jvmopts_path.empty? }
 end
 
@@ -68,7 +73,7 @@ template sbtopts_path do
   source 'sbtopts.erb'
   owner node['travis_sbt_extras']['owner']
   group node['travis_sbt_extras']['group']
-  mode 0o644
+  mode '644'
   not_if { sbtopts_path.empty? }
 end
 
@@ -76,7 +81,7 @@ template "/etc/profile.d/#{node['travis_sbt_extras']['script_name']}.sh" do
   source 'profile_sbt.sh.erb'
   owner node['travis_sbt_extras']['owner']
   group node['travis_sbt_extras']['group']
-  mode 0o640
+  mode '640'
 
   variables(
     jvmopts: jvmopts_path,

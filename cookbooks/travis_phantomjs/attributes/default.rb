@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 version = '1.9.8'
 
 default['travis_phantomjs']['version'] = version

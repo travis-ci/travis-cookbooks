@@ -1,41 +1,41 @@
-AlignParameters:
-  Enabled: false
-
-Encoding:
-  Enabled: false
-
-ClassLength:
-  Enabled: false
-
-MethodLength:
-  Enabled: false
-
-LineLength:
-  Enabled: false
-
-# HashSyntax:
-#  EnforcedStyle: hash_rockets
-
-Documentation:
-  Enabled: false
-
-PerceivedComplexity:
-  Enabled: false
-
-CyclomaticComplexity:
-  Enabled: false
-
-Style/FileName:
-  Enabled: false
-
-Metrics/AbcSize:
-  Enabled: false
-
 AllCops:
   Exclude:
     - 'Guardfile'
     - 'tmp/**/*'
     - 'cookbooks/**/*'
+
+Layout/ParameterAlignment:
+  Enabled: false
+
+Style/Encoding:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Layout/LineLength:
+  Enabled: false
+
+# HashSyntax:
+#  EnforcedStyle: hash_rockets
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Naming/FileName:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
 
 Style/GuardClause:
   Enabled: false
@@ -43,3 +43,12 @@ Style/GuardClause:
 # TODO: remove override for ModuleLength once RunitCookbook::Helpers has been refactored
 Metrics/ModuleLength:
   Max: 150
+
+Chef/Modernize/SetOrReturnInResources:
+  Enabled: false
+
+Chef/Deprecations/Cheffile:
+  Enabled: false
+
+Chef/Style/UsePlatformHelpers:
+  Enabled: false

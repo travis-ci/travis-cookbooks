@@ -1,6 +1,8 @@
-# Cookbook Name:: travis_build_environment
+# frozen_string_literal: true
+
+# Cookbook:: travis_build_environment
 # Recipe:: basic
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package %w[
+package %w(
   bsdmainutils
   bzip2
   bzr
@@ -48,8 +50,8 @@ package %w[
   wamerican
   wget
   zip
-] do
-  action %i[install upgrade]
+) do
+  action %i(install upgrade)
 end
 
 execute 'rm -rf /etc/update-motd.d/*'
@@ -57,17 +59,18 @@ execute 'rm -rf /etc/update-motd.d/*'
 include_recipe 'travis_build_environment::rvm'
 include_recipe 'travis_build_environment::git'
 include_recipe 'travis_build_environment::timezone'
-include_recipe 'travis_build_environment::gimme'
+include_recipe 'travis_build_environment::go'
 include_recipe 'travis_build_environment::apt'
 include_recipe 'travis_build_environment::bats'
 include_recipe 'travis_build_environment::jq'
 include_recipe 'travis_build_environment::cmake'
 include_recipe 'travis_build_environment::clang'
+include_recipe 'travis_build_environment::ntp'
 include_recipe 'travis_build_environment::packer'
 include_recipe 'travis_build_environment::virtualenv'
 include_recipe 'travis_build_environment::system_python'
 include_recipe 'travis_build_environment::python'
-if node['kernel']['machine'] != 'ppc64le'
+if node['kernel']['machine'] != 'ppc64le' && node['kernel']['machine'] != 'aarch64'
   include_recipe 'travis_build_environment::heroku_toolbelt'
 end
 include_recipe 'travis_build_environment::yarn'

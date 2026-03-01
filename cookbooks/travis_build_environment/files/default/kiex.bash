@@ -1,2 +1,3 @@
 #!/bin/bash
-test -s "$HOME/.kiex/scripts/kiex" && source "$HOME/.kiex/scripts/kiex"
+export KIEX_HOME="$HOME/.kiex"
+test -s "$KIEX_HOME/scripts/kiex" && source "$KIEX_HOME/scripts/kiex"

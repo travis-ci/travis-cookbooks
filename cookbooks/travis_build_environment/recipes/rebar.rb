@@ -1,7 +1,9 @@
-# Cookbook Name:: travis_build_environment
+# frozen_string_literal: true
+
+# Cookbook:: travis_build_environment
 # Recipe:: rebar
 #
-# Copyright 2017 Travis CI GmbH
+# Copyright:: 2017 Travis CI GmbH
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,16 +23,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-remote_file '/usr/local/bin/rebar' do
-  source node['travis_build_environment']['rebar_url']
-  owner node['travis_build_environment']['user']
-  group node['travis_build_environment']['group']
-  mode 0o755
-end
+# remote_file '/usr/local/bin/rebar' do
+#   source node['travis_build_environment']['rebar_url']
+#   owner node['travis_build_environment']['user']
+#   group node['travis_build_environment']['group']
+#   mode '755'
+# end
 
 remote_file '/usr/local/bin/rebar3' do
   source node['travis_build_environment']['rebar3_url']
   owner node['travis_build_environment']['user']
   group node['travis_build_environment']['group']
-  mode 0o755
+  mode '755'
 end

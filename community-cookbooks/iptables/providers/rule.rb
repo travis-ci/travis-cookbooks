@@ -1,9 +1,9 @@
 #
-# Cookbook Name:: iptables
+# Cookbook:: iptables
 # Provider:: rule
 #
-# Copyright 2008-2015, Chef Software, Inc.
-# Copyright 2015, Tim Smith
+# Copyright:: 2008-2015, Chef Software, Inc.
+# Copyright:: 2015, Tim Smith
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,12 +18,6 @@
 # limitations under the License.
 #
 
-def whyrun_supported?
-  true
-end
-
-use_inline_resources
-
 action :enable do
   execute 'rebuild-iptables' do
     command '/usr/sbin/rebuild-iptables'
@@ -31,12 +25,12 @@ action :enable do
   end
 
   template "/etc/iptables.d/#{new_resource.name}" do
-    source new_resource.source ? new_resource.source : "#{new_resource.name}.erb"
+    source new_resource.source || "#{new_resource.name}.erb"
     mode '0644'
     cookbook new_resource.cookbook if new_resource.cookbook
     variables new_resource.variables
     backup false
-    notifies :run, resources(:execute => 'rebuild-iptables')
+    notifies :run, ':execute[rebuild-iptables]'
   end
 end
 
@@ -49,6 +43,6 @@ action :disable do
   file "/etc/iptables.d/#{new_resource.name}" do
     action :delete
     backup false
-    notifies :run, resources(:execute => 'rebuild-iptables')
+    notifies :run, ':execute[rebuild-iptables]'
   end
 end

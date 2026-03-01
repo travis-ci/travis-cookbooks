@@ -10,7 +10,7 @@
         <repository>
           <id>central</id>
           <name>Central Repository</name>
-          <url>http://repo.maven.apache.org/maven2</url>
+          <url>https://repo.maven.apache.org/maven2</url>
           <releases>
             <enabled>true</enabled>
           </releases>
@@ -64,7 +64,7 @@
             <updatePolicy>never</updatePolicy>
             <checksumPolicy>fail</checksumPolicy>
           </snapshots>
-          <url>https://repository.apache.org/releases/</url>
+          <url>https://repository.apache.org/content/repositories/releases/</url>
         </repository>
 
         <repository>

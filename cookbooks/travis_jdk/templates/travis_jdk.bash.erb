@@ -1,0 +1,10 @@
+<% unless @jdk.nil? || @jdk.empty? %>
+if [[ -d <%= @path =%>/<%= @jdk =%> ]]; then
+  export JAVA_HOME=<%= @path =%>/<%= @jdk %>
+  export PATH="$JAVA_HOME/bin:$PATH"
+fi
+<% if @docker %>
+export _JAVA_OPTIONS='-Xmx2048m -Xms512m'
+export MALLOC_ARENA_MAX=2
+<% end %>
+<% end %>

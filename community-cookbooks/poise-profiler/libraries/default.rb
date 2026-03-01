@@ -1,5 +1,5 @@
 #
-# Copyright 2015, Noah Kantrowitz
+# Copyright:: 2015, Noah Kantrowitz
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,5 +15,5 @@
 #
 
 raise 'Halite is not compatible with no_lazy_load false, please set no_lazy_load true in your Chef configuration file.' unless Chef::Config[:no_lazy_load]
-$LOAD_PATH << File.expand_path('../../files/halite_gem', __FILE__)
-require "poise_profiler/cheftie"
+$LOAD_PATH << File.expand_path('../files/halite_gem', __dir__)
+require 'poise_profiler/cheftie'

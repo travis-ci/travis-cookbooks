@@ -6,12 +6,6 @@
 
 include OpenSSLCookbook::Helpers
 
-use_inline_resources
-
-def whyrun_supported?
-  true
-end
-
 action :create do
   converge_by("Create an RSA key #{@new_resource}") do
     unless key_file_valid?(new_resource.name, new_resource.key_pass)

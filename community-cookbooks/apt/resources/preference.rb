@@ -16,8 +16,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+unified_mode true
 
-property :package_name, String, name_attribute: true, regex: [/^([a-z]|[A-Z]|[0-9]|_|-|\.|\*|\+)+$/]
+property :package_name, String, name_property: true, regex: [/^([a-z]|[A-Z]|[0-9]|_|-|\.|\*|\+)+$/]
 property :glob, String
 property :pin, String
 property :pin_priority, String, required: true
@@ -76,7 +77,7 @@ action :remove do
   end
 end
 
-action_class.class_eval do
+action_class do
   # Build preferences.d file contents
   def build_pref(package_name, pin, pin_priority)
     pref = "Package: #{package_name}\nPin: #{pin}\n"

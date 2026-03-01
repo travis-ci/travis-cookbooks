@@ -38,8 +38,7 @@ r = remote_file "#{Chef::Config[:file_cache_path]}/jce.zip" do
   not_if { ::File.exist?(::File.join(node['java']['oracle']['jce']['home'], jdk_version, 'US_export_policy.jar')) }
 end
 
-if node['os'] == 'windows'
-  include_recipe 'windows'
+if platform_family?('windows')
 
   staging_path = ::File.join(node['java']['oracle']['jce']['home'], jdk_version)
   staging_local_policy = ::File.join(staging_path, "UnlimitedJCEPolicyJDK#{jdk_version}", 'local_policy.jar')

@@ -21,10 +21,6 @@ require 'uri'
 require 'chef/mixin/shell_out'
 include Chef::Mixin::ShellOut
 
-def whyrun_supported?
-  true
-end
-
 def parse_app_dir_name(url)
   uri = URI.parse(url)
   file_name = uri.path.split('/').last
@@ -85,7 +81,7 @@ def download_direct_from_oracle(tarball_name, new_resource)
       )
     end
   else
-    Chef::Application.fatal!("You must set the attribute node['java']['oracle']['accept_oracle_download_terms'] to true if you want to download directly from the oracle site!")
+    raise("You must set the attribute node['java']['oracle']['accept_oracle_download_terms'] to true if you want to download directly from the oracle site!")
   end
 end
 
@@ -93,11 +89,7 @@ action :install do
   app_dir_name, tarball_name = parse_app_dir_name(new_resource.url)
   app_root = new_resource.app_home.split('/')[0..-2].join('/')
   app_dir = app_root + '/' + app_dir_name
-  app_group = if new_resource.group
-                new_resource.group
-              else
-                new_resource.owner
-              end
+  app_group = new_resource.group || new_resource.owner
 
   if !new_resource.default && new_resource.use_alt_suffix
     Chef::Log.debug('processing alternate jdk')
@@ -151,21 +143,21 @@ action :install do
             )
         )
         unless cmd.exitstatus == 0
-          Chef::Application.fatal!("Failed to extract file #{tarball_name}!")
+          raise("Failed to extract file #{tarball_name}!")
         end
       when /^.*\.zip/
         cmd = shell_out(
           %( unzip "#{Chef::Config[:file_cache_path]}/#{tarball_name}" -d "#{Chef::Config[:file_cache_path]}" )
         )
         unless cmd.exitstatus == 0
-          Chef::Application.fatal!("Failed to extract file #{tarball_name}!")
+          raise("Failed to extract file #{tarball_name}!")
         end
       when /^.*\.(tar.gz|tgz)/
         cmd = shell_out(
           %( tar xvzf "#{Chef::Config[:file_cache_path]}/#{tarball_name}" -C "#{Chef::Config[:file_cache_path]}" --no-same-owner)
         )
         unless cmd.exitstatus == 0
-          Chef::Application.fatal!("Failed to extract file #{tarball_name}!")
+          raise("Failed to extract file #{tarball_name}!")
         end
       end
 
@@ -173,7 +165,7 @@ action :install do
         %( mv "#{Chef::Config[:file_cache_path]}/#{app_dir_name}" "#{app_dir}" )
       )
       unless cmd.exitstatus == 0
-        Chef::Application.fatal!(%( Command \' mv "#{Chef::Config[:file_cache_path]}/#{app_dir_name}" "#{app_dir}" \' failed ))
+        raise(%( Command \' mv "#{Chef::Config[:file_cache_path]}/#{app_dir_name}" "#{app_dir}" \' failed ))
       end
 
       # change ownership of extracted files

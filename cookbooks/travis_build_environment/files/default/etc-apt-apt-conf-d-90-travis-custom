@@ -1,0 +1,20 @@
+# Managed by Chef :heart_eyes_cat:
+# vim:filetype=aptconf
+
+APT::Get::Assume-Yes "true";
+APT::Install-Recommends "0";
+APT::Install-Suggests "0";
+APT::Periodic::Enable "0";
+APT::Periodic::Unattended-Upgrade "0";
+APT::Periodic::Update-Package-Lists "0";
+
+Acquire::CompressionTypes::Order:: "gz";
+Acquire::ForceIPv4 "1";
+Acquire::Retries "5";
+Acquire::http::Timeout "30";
+Acquire::https::Timeout "30";
+
+Dpkg::Options {
+  "--force-confdef";
+  "--force-confold";
+}

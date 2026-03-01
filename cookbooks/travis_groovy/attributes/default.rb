@@ -1,6 +1,8 @@
-groovy_version = '2.4.5'
+# frozen_string_literal: true
+
+groovy_version = '5.0.0-rc-1'
 
 default['travis_groovy']['version'] = groovy_version
 default['travis_groovy']['installation_dir'] = '/usr/local/groovy'
-default['travis_groovy']['url'] = "http://dl.bintray.com/groovy/maven/apache-groovy-binary-#{groovy_version}.zip"
-default['travis_groovy']['checksum'] = '87e8e9af1f718b84c9bca5a8c42425aadb9e97d8e4ad64e0c91f7c1454cd4caa'
+default['travis_groovy']['url'] = "https://groovy.jfrog.io/artifactory/dist-release-local/groovy-zips/apache-groovy-binary-#{groovy_version}.zip"
+default['travis_groovy']['checksum'] = 'd248907a133cdb02eae2a7973e746abbf18241726e1d006eea579025ad7b234e'

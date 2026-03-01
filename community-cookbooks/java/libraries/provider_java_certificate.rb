@@ -23,10 +23,6 @@ require 'openssl'
 require 'fileutils'
 
 class Chef::Provider::JavaCertificate < Chef::Provider::LWRPBase
-  include Chef::Mixin::ShellOut
-
-  use_inline_resources
-
   action :install do
     directory(Chef::Config[:file_cache_path]).to_s
 

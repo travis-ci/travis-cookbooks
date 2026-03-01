@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: runit
+# Cookbook:: runit
 # Recipe:: default
 #
-# Copyright 2008-2010, Chef Software, Inc.
+# Copyright:: 2008-2010, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the 'License');
 # you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ when 'debian', 'gentoo'
   if platform?('gentoo')
     template '/etc/init.d/runit-start' do
       source 'runit-start.sh.erb'
-      mode 0755
+      mode '755'
     end
 
     service 'runit-start' do
@@ -83,7 +83,7 @@ when 'debian', 'gentoo'
   if node['platform'] =~ /ubuntu/i && node['platform_version'].to_f <= 8.04
     cookbook_file '/etc/event.d/runsvdir' do
       source 'runsvdir'
-      mode 0644
+      mode '644'
       notifies :run, 'execute[start-runsvdir]', :immediately
       only_if { ::File.directory?('/etc/event.d') }
     end

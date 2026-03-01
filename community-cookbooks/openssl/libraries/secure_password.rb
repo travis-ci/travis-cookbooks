@@ -1,9 +1,9 @@
 #
-# Cookbook Name:: openssl
+# Cookbook:: openssl
 # Library:: secure_password
 # Author:: Joshua Timberman <joshua@chef.io>
 #
-# Copyright 2009, Chef Software, Inc.
+# Copyright:: 2009, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,9 +27,7 @@ module Opscode
       def secure_password(length = 20)
         pw = ''
 
-        while pw.length < length
-          pw << ::OpenSSL::Random.random_bytes(1).gsub(/\W/, '')
-        end
+        pw << ::OpenSSL::Random.random_bytes(1).gsub(/\W/, '') while pw.length < length
 
         pw
       end

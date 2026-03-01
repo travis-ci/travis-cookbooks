@@ -18,8 +18,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+unified_mode true
 
-property :name, String, name_property: true
 property :source, String, required: false
 
 include Windows::Helper
@@ -34,7 +34,7 @@ action :install do
   end
 end
 
-action_class.class_eval do
+action_class do
   def retrieve_cookbook_font
     font_file = new_resource.name
     if new_resource.source

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TravisJava
   module OracleJdk
     def install_oraclejdk(version)

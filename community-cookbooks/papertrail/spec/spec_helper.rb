@@ -1,6 +1,6 @@
 require 'chefspec'
 
-Dir['./spec/support/**/*.rb'].sort.each {|f| require f}
+Dir['./spec/support/**/*.rb'].sort.each { |f| require f }
 
 def runner(environment = 'test', attributes = {})
   cookbook_paths = %W(#{File.expand_path('..', Dir.pwd)} #{File.expand_path(Dir.pwd)}/cookbooks)
